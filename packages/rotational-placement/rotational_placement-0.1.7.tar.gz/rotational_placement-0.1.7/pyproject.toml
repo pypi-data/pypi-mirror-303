@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rotational_placement"
+version = "0.1.7"
+description = "A package for generating and visualizing data related to the concept of rotational placement"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Academic Free License (AFL)" }
+
+authors = [
+  { name="ingwehr", email="backlund.hugo@gmail.com" },
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Academic Free License (AFL)",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "sympy"
+]
+
+[project.urls]
+Homepage = "https://github.com/Ingwehr/RotationalPlacementPackage"
+
+[tool.hatch.env.scripts]
+test = "pytest tests/"
+
+[tool.hatch.version]
+path = "src/rotational_placement/__init__.py"
+
+[tool.hatch.build]
+source = "src"
