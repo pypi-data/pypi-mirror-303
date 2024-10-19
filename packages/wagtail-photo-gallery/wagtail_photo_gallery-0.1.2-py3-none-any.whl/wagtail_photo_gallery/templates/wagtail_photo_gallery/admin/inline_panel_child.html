@@ -1,0 +1,21 @@
+{% load i18n wagtailadmin_tags %}
+
+{% fragment as id %}inline_child_{{ child.form.prefix }}{% endfragment %}
+{% fragment as panel_id %}{{ id }}-panel{% endfragment %}
+<div data-inline-panel-child id="{{ id }}" data-contentpath-disabled>
+    
+    {# no header needed #}
+    
+    {% panel id=panel_id %}
+        {% if child.form.non_field_errors %}
+            <ul>
+                {% for error in child.form.non_field_errors %}
+                    <li class="error-message">
+                        <span>{{ error|escape }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {{ child.render_form_content }}
+    {% endpanel %}
+</div>
