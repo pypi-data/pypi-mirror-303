@@ -1,0 +1,48 @@
+[project]
+name = "clias"
+version = "0.1.0a"
+description = "Turn shell script into cli command"
+readme = "README.md"
+authors = [{name = "kj-9"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = [
+    "click",
+    "jinja2>=3.1.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/kj-9/clias"
+Changelog = "https://github.com/kj-9/clias/releases"
+Issues = "https://github.com/kj-9/clias/issues"
+CI = "https://github.com/kj-9/clias/actions"
+
+[project.scripts]
+clias = "clias.cli:cli"
+
+[project.optional-dependencies]
+test = ["pytest", "pre-commit", "cogapp"]
+
+# see also: https://beta.ruff.rs/docs/configuration/#using-pyprojecttoml
+[tool.ruff]
+select = [
+    "E", "F", "I",
+    #"D", for now
+    "W", "PL", "B", "UP"
+]
+
+# Never enforce `E501` (line length violations).
+ignore = [
+    "E501",
+    "PLR2004"# for now
+]
+
+# Ignore `E402` (import violations) in all `__init__.py` files, and in `path/to/file.py`.
+[tool.ruff.per-file-ignores]
+"*__init__.py" = ["F401"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
