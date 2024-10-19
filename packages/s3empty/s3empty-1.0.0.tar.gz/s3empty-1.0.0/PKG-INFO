@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: s3empty
+Version: 1.0.0
+Summary: Python CLI for convenient emptying of S3 bucket
+Home-page: https://github.com/cliffano/s3empty
+License: Apache-2.0
+Keywords: s3empty,...
+Author: Cliffano Subagio
+Author-email: cliffano@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: PyYAML (==6.0.1)
+Requires-Dist: boto3 (==1.35.6)
+Requires-Dist: click (==8.1.7)
+Requires-Dist: conflog (==1.5.1)
+Requires-Dist: pillow (==10.3.0)
+Project-URL: Documentation, https://github.com/cliffano/s3empty
+Project-URL: Repository, https://github.com/cliffano/s3empty
+Description-Content-Type: text/markdown
+
+<img align="right" src="https://raw.github.com/cliffano/s3empty/main/avatar.jpg" alt="Avatar"/>
+
+[![Build Status](https://github.com/cliffano/s3empty/workflows/CI/badge.svg)](https://github.com/cliffano/s3empty/actions?query=workflow%3ACI)
+[![Security Status](https://snyk.io/test/github/cliffano/s3empty/badge.svg)](https://snyk.io/test/github/cliffano/s3empty)
+[![Dependencies Status](https://img.shields.io/librariesio/release/pypi/s3empty)](https://libraries.io/github/cliffano/s3empty)
+[![Published Version](https://img.shields.io/pypi/v/s3empty.svg)](https://pypi.python.org/pypi/s3empty)
+<br/>
+
+S3Empty
+--------
+
+S3Empty is a Python CLI for conveniently emptying an AWS S3 bucket.
+
+This tool is useful when you want to delete all objects in a bucket before deleting the bucket itself. It handles versioned and non-versioned S3 buckets.
+
+    BucketNotEmpty: The bucket you tried to delete is not empty. You must delete all versions in the bucket.
+
+Installation
+------------
+
+    pip3 install s3empty
+
+Usage
+-----
+
+Run S3Empty with specified bucket name:
+
+    s3empty --bucket-name some-bucket
+
+Show help guide:
+
+    s3empty --help
+
+Permission
+----------
+
+Here's an IAM policy with minimum permissions required by S3Empty:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3EmptyPolicy",
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetBucketVersioning",
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+            ],
+            "Resource": [
+                "arn:aws:s3:::some-bucket",
+                "arn:aws:s3:::some-bucket/*"
+            ]
+        }
+    ]
+}
+```
+
+Colophon
+--------
+
+[Developer's Guide](https://cliffano.github.io/developers_guide.html#python)
+
+Build reports:
+
+* [Lint report](https://cliffano.github.io/s3empty/lint/pylint/index.html)
+* [Code complexity report](https://cliffano.github.io/s3empty/complexity/wily/index.html)
+* [Unit tests report](https://cliffano.github.io/s3empty/test/pytest/index.html)
+* [Test coverage report](https://cliffano.github.io/s3empty/coverage/coverage/index.html)
+* [Integration tests report](https://cliffano.github.io/s3empty/test-integration/pytest/index.html)
+* [API Documentation](https://cliffano.github.io/s3empty/doc/sphinx/index.html)
+
