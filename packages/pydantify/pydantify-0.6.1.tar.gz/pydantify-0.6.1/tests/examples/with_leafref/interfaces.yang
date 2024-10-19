@@ -1,0 +1,33 @@
+module interfaces {
+  namespace
+  "http://ultraconfig.com.au/ns/yang/ultraconfig-interfaces";
+
+  prefix if;
+
+  description 'Example demonstarating leafref nodes';
+
+  list interfaces {
+    key "name";
+    description "List of configured device interfaces";
+
+    leaf test {
+      type uint8;
+      description "Test node";
+    }
+
+    leaf name {
+      type string;
+      description "Interface name";
+    }
+    leaf ip {
+      type string;
+      description "Interface IP";
+    }
+  }
+  leaf mgmt-interface {
+    type leafref {
+      path "../interfaces/name";
+    }
+    description "Dedicated management interface";
+  }
+}
