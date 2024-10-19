@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: no-exceptions
+Version: 0.1.0
+Summary: Errors as values for Python.
+Author: Vasiliy Spassky
+Author-email: spassky99@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Project-URL: Homepage, https://github.com/spassky99/no-exceptions
+Project-URL: Issues, https://github.com/spassky99/no-exceptions/issues
+Description-Content-Type: text/markdown
+
+# `no_exceptions`
+
+Errors as values for Python. A more functional alternative to `try-except` blocks, offering less indented code and a
+chainable API.
+
+- Do you hate exceptions?
+- Do you hate the extra indentation they bring?
+- Do you hate the convoluted flow of control they seed?
+- Do you hate APIs that throw exceptions in not-really-erroneous cases (like `ZeroDivisionError`, `KeyError`,
+`IndexError`, `StopIteration`)?
+
+Use this package to switch from this:
+
+```python
+def some_func() -> float:
+    ...
+    try:
+        return numerator / denominator
+    except ZeroDivisionError:
+        return 0.0
+```
+
+to this:
+
+```python
+from no_exceptions import try_expecting
+
+def some_func() -> float:
+    ...
+    return try_expecting(lambda: numerator / denominator, ZeroDivisionError).unwrap_or(0.0)
+```
+
