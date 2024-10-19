@@ -1,0 +1,41 @@
+Metadata-Version: 2.3
+Name: regex_generate_py
+Version: 2023.3.7
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Utilities
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Text Processing
+Classifier: Topic :: Software Development :: Testing
+Summary: Use regular expressions to generate text. This is the PyO3 Python binding of the Rust crate 'regex_generate'.
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# regex_generate.py
+
+**Use regular expressions to generate text.**
+This is the PyO3 Python binding of the Rust crate [regex_generate](https://github.com/CryptArchy/regex_generate).
+
+## Usage
+
+```python
+>>> from regex_generate_py import generate
+>>> # Use regular expressions to generate text
+>>> pattern = r"(My|Your) name is an(ji|na|t)"
+>>>
+>>> for i in range(10):
+...     print(generate(pattern))
+...
+Your name is anna
+My name is ant
+Your name is anji
+Your name is anji
+My name is ant
+Your name is anna
+My name is ant
+My name is anji
+Your name is anji
+My name is ant
+```
+
