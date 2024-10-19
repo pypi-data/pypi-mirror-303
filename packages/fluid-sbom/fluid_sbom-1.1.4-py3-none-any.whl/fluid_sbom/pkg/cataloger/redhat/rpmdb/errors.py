@@ -1,0 +1,2 @@
+class InvalidDBFormat(Exception):
+    pass
