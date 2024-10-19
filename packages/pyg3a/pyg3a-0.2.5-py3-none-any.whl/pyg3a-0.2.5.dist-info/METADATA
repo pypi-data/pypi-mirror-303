@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: pyg3a
+Version: 0.2.5
+Summary: A tool to convert Python files to Casio fx-CG 10/20/50 (Prizm) Add-ins
+Author-email: dr_carlos <dr.steven.carlos@gmail.com>
+Project-URL: Homepage, https://gitlab.com/dr_carlos/PyG3A
+Project-URL: Bug Tracker, https://gitlab.com/dr_carlos/PyG3A/-/issues
+Classifier: Development Status :: 4 - Beta
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)
+Requires-Python: >=3.12
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: libcst>=1.4.0
+Provides-Extra: testing
+Requires-Dist: pytest>=8.2.2; extra == "testing"
+Requires-Dist: pytest-cov>=5.0.0; extra == "testing"
+Requires-Dist: mypy>=1.10.1; extra == "testing"
+
+=====
+PyG3A
+=====
+
+Description
+-----------
+
+A tool to convert Python files to Casio fx-CG 10/20/50 (Prizm) Add-ins
+
+Installation
+------------
+::
+
+	pip install pyg3a
+
+Usage
+-----
+::
+
+	pyg3a [--help] [--debug] [--verbose] -l path/to/libfxcg <file.py>
+
+	arguments:
+		file.py               name of python file to convert
+
+	options:
+		-h, --help            show this help message and exit
+		--debug               use debug mode
+		--verbose             print command names in make
+		-l path/to/libfxcg, --libfxcg path/to/libfxcg
+				      libfxcg location
+
+
