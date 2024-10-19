@@ -1,0 +1,39 @@
+[project]
+name = "timed-audio-player"
+description = "An audio player that will play audio files in a directory for a specified amount of time."
+version = "1.0.1"
+dependencies = [
+  "playsound==1.3.0",
+  "python-vlc>=3.0.21203,<4",
+]
+requires-python = ">= 3.9"
+readme = "README.md"
+license = {file = "LICENSE"}
+[project.optional-dependencies]
+test = [
+  "pytest-cov",
+  "black",
+  "pydocstyle",
+  "pylint",
+  "mockito",
+]
+
+[project.scripts]
+timed-audio-player-cli = "timed_audio_player.main:main_cli"
+
+[project.urls]
+Homepage = "https://github.com/ambauma/TimedAudioPlayer"
+Documentation = "https://github.com/ambauma/TimedAudioPlayer"
+Repository = "https://github.com/ambauma/TimedAudioPlayer"
+Issues = "https://github.com/ambauma/TimedAudioPlayer/issues"
+Changelog = "https://github.com/ambauma/TimedAudioPlayer/blob/master/CHANGELOG.md"
+
+[tool.setuptools]
+packages = ["timed_audio_player"]
+
+[build-system]
+requires = [
+    "setuptools >= 65",
+    "wheel >= 0.38",
+]
+build-backend = "setuptools.build_meta"
