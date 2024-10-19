@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ParseWarning": {
+            "properties": {
+                "message": {
+                    "default": "",
+                    "type": "string"
+                },
+                "target": {
+                    "default": "OTHERS",
+                    "enum": [
+                        "CLL",
+                        "OTHERS",
+                        "TLL"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "_id": {
+            "default": "",
+            "description": "The ID for this lineage parse result. Value should be the MD5 hash of the SQL query and the processed entity's ID.",
+            "type": "string"
+        },
+        "processedAt": {
+            "description": "The date when the lineage parser result is generated.",
+            "format": "date-time",
+            "type": "string"
+        },
+        "sql": {
+            "default": "",
+            "description": "The SQL query.",
+            "type": "string"
+        },
+        "targetEntityId": {
+            "description": "This is the EntityId of the lineage parser run's target entity.",
+            "type": "string"
+        },
+        "warnings": {
+            "default": [],
+            "description": "Warnings generated during lineage parsing. If there is no warning, we don't store the parsed result into MongoDB.",
+            "items": {
+                "$ref": "#/definitions/ParseWarning"
+            },
+            "type": "array"
+        }
+    },
+    "type": "object"
+}
+
