@@ -1,0 +1,52 @@
+
+[core]
+dagster
+click
+structlog
+
+[dbt]
+dagster-dbt
+
+[in-airflow]
+click
+structlog
+
+[k8s]
+dagster-k8s
+
+[mwaa]
+boto3>=1.18.0
+
+[test]
+pytest
+dagster-dbt
+dbt-duckdb
+boto3
+dagster-webserver
+flask-session<0.6.0
+connexion<3.0.0
+click
+structlog
+
+[test:python_version < "3.12"]
+apache-airflow>=2.0.0
+pendulum<3.0.0,>=2.0.0
+
+[test:python_version >= "3.12"]
+apache-airflow>=2.9.0
+pendulum>=3.0.0
+
+[tutorial]
+dagster-webserver
+flask-session<0.6.0
+connexion<3.0.0
+click
+structlog
+
+[tutorial:python_version < "3.12"]
+apache-airflow>=2.0.0
+pendulum<3.0.0,>=2.0.0
+
+[tutorial:python_version >= "3.12"]
+apache-airflow>=2.9.0
+pendulum>=3.0.0
