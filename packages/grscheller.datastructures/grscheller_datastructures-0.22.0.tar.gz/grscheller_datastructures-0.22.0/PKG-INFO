@@ -1,0 +1,65 @@
+Metadata-Version: 2.1
+Name: grscheller.datastructures
+Version: 0.22.0
+Summary: ### package datastructures
+Keywords: datastructures,data structures,fifo,lifo,stack,queue,SplitEnd
+Author-email: "Geoffrey R. Scheller" <geoffrey@scheller.com>
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Dist: grscheller.circular-array >= 3.6.1, < 3.7
+Requires-Dist: grscheller.fp >= 1.0.0, < 1.1
+Requires-Dist: pytest >=8.3 ; extra == "test"
+Project-URL: Changelog, https://github.com/grscheller/datastructures/blob/main/CHANGELOG.md
+Project-URL: Documentation, https://grscheller.github.io/datastructures/
+Project-URL: Source, https://github.com/grscheller/datastructures
+Provides-Extra: test
+
+# Python Datastructures Useful for Algorithms
+
+Python package of data structures which support the use and
+implementation of algorithms.
+
+* **Repositories**
+  * [grscheller.datastructures][1] project on *PyPI*
+  * [Source code][2] on *GitHub*
+* **Detailed documentation**
+  * [Detailed API documentation][3] on *GH-Pages*
+
+
+### Overview
+
+Data structures allowing developers to focus on the algorithms they are
+using instead of all the "bit fiddling" required to implement behaviors,
+perform memory management, and handle coding edge cases. These data
+structures allow iterators to leisurely iterate over inaccessible copies
+of internal state while the data structures themselves are free to
+safely mutate. They are designed to be reasonably "atomic" without
+introducing inordinate complexity. Some of these data structures allow
+data to be safely shared between multiple data structure instances by
+making shared data immutable and inaccessible to client code.
+
+* functional & imperative programming styles supported
+  * functional programming encouraged
+  * project endeavors to remain Pythonic
+    * methods which mutate objects don't return anything
+      * like Python lists
+    * in caparisons identity is considered before equality
+      * like Python builtins
+
+Sometimes the real power of a data structure comes not from what it
+empowers you to do, but from what it prevents you from doing to
+yourself.
+
+---
+
+[1]: https://pypi.org/project/grscheller.datastructures/
+[2]: https://github.com/grscheller/datastructures/
+[3]: https://grscheller.github.io/datastructures/
+
