@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "marcobre-diff"
+version = "0.9.0"
+description = ""
+authors = ["glozanoac <glozanoac@gmail.com>"]
+readme = "README.md"
+packages = [
+  {include = "marcobre", from = "src"}
+]
+
+#[tool.poetry.include]
+#include = [
+#    { path = "static/*", format = "text" }
+#]
+
+[tool.poetry.scripts]
+marcobre-diff = "marcobre.diff.app:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+setuptools = "^75.2.0"
+altgraph = "0.17.4"
+customtkinter = "5.2.2"
+darkdetect = "0.8.0"
+pillow = "10.4.0"
+python-dateutil = "2.9.0.post0"
+pytz = "2024.2"
+six = "1.16.0"
+tzdata = "2024.2"
+numpy = "^2.1.2"
+pandas = "^2.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
