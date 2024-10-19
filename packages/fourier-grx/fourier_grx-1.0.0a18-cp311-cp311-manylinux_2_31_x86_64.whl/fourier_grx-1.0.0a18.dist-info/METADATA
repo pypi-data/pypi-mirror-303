@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: fourier-grx
+Version: 1.0.0a18
+Summary: Robotics Control System for the General Robotics (GR)
+Author-email: "Fourier Intelligence Ltd." <algorithm@fftai.com>, Xin Chen <xin.chen@fftai.com>, Yuxiang Gao <yuxiang.gao@fftai.com>
+License: MIT
+Requires-Python: ==3.11.*
+Description-Content-Type: text/markdown
+Requires-Dist: numpy<2.0.0
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: msgpack>=1.0.8
+Requires-Dist: msgpack-numpy>=0.4.8
+Requires-Dist: eclipse-zenoh==0.11.0
+Requires-Dist: typer>=0.12.3
+Requires-Dist: rich>=13.7.1
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: omegaconf>=2.3.0
+Requires-Dist: pin-pink>=3.0.0
+Requires-Dist: meshcat-shapes>=0.3.0
+Requires-Dist: ischedule>=1.2.7
+Requires-Dist: inputs>=0.5
+Requires-Dist: ruckig>=0.12.2
+Requires-Dist: fourier-core==0.2.4a4
+Requires-Dist: fourier-grx-client==0.2.0a8
+Requires-Dist: fourier-robot-descriptions==0.1.7
+
+# fourier-grx
+
+Fourier GRX is a python package that provides a guidance for Fourier GR-X series robot.
+
+---
+
+## Sturcture
+
+### src/fourier_grx
+
+- **control_system**: control system for Fourier GR-X series robot. It is mainly the control the main running loop of the robot.
+- **robot**: robot model definition, robot related algorithms, and predefined tasks for Fourier GR-X series robot.
+- **algorithm**: algorithm for Fourier GR-X series robot. It is mainly the common used algorithm for robot.
+- **task**: task for Fourier GR-X series robot. It is mainly the predefined task for robot.
+- **other_controller**: other controller for Fourier GR-X series robot, including the communication of MPC-WBC controller for Fourier GR-X series robot.
+- **tools**: tools for Fourier GR-X series robot. It is mainly the tools for the robot, including the calibration tools, the data processing tools, etc.
+- **webots**: Webots code for Fourier GR-X series robot. It is mainly the simulation of the robot in webots.
+- **zenoh**: zenoh for Fourier GR-X series robot. It is mainly the communication between the robot and the computer.
+- **sdk**: sdk for Fourier GR-X series robot. It is mainly the communication between the robot and the computer.
+
+### fourier-core
+
+`fourier-core` is the core package for Fourier GR-X series robot.
+It builds the basic structure for Fourier GR-X series robot or other robot.
+It is mainly the basic structure for the robot, including the robot model, the robot controller,
+the robot algorithm, etc.
+
+### tests
+
+test code for Fourier GR-X series robot.
+
+### data
+
+data for Fourier GR-X series robot:
+
+- **pictures**: pictures of the GR-X series robot.
+- **sensor_offset**: absolute encoder sensor offset value data for different robots.
+
+### webots
+
+Webots environment for Fourier GR-X series robot.
+
+### demo
+
+demo code for Fourier GR-X series robot.
+
+- **developer_mode**: use developer_mode interface to test the demos.
+- **zenoh**: use zenoh interface to test the demos.
+- **state_estimator**: config files for state estimator of the robot.
+
+---
+
+## Installation
+
+### Use PDM
+
+PDM is a modern Python package manager with a focus on simplicity and efficiency.
+
+```bash
+pip install pdm
+```
+
+Then, you can install the package by running the following command:
+
+```bash
+pdm install
+```
+
+### Use PIP
+
+You can also use pip to install the package.
+
+```bash
+pip install -e .
+```
