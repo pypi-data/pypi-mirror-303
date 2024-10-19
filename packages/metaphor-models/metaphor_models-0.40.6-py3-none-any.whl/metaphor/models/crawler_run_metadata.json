@@ -1,0 +1,118 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "RunStatus": {
+            "enum": [
+                "SUCCESS",
+                "FAILURE",
+                "PENDING"
+            ],
+            "type": "string"
+        }
+    },
+    "description": "Metadata of a crawler run",
+    "properties": {
+        "crawlerName": {
+            "default": "",
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "endTime": {
+            "format": "date-time",
+            "type": "string"
+        },
+        "entityCount": {
+            "default": 0,
+            "type": "number"
+        },
+        "errorMessage": {
+            "type": "string"
+        },
+        "logFile": {
+            "type": "string"
+        },
+        "platform": {
+            "enum": [
+                "AIRFLOW",
+                "ATHENA",
+                "AZURE_BLOB_STORAGE",
+                "AZURE_DATA_FACTORY_PIPELINE",
+                "AZURE_DATA_LAKE_STORAGE",
+                "BIGEYE",
+                "BIGQUERY",
+                "CONFLUENCE",
+                "CUSTOM",
+                "CUSTOM_DASHBOARD",
+                "DASH",
+                "DATAHUB",
+                "DBT",
+                "DBT_METRIC",
+                "DBT_MODEL",
+                "DOCUMENTDB",
+                "DYNAMODB",
+                "ELASTICSEARCH",
+                "EXTERNAL",
+                "FIVETRAN",
+                "GCS",
+                "GLUE",
+                "HIVE",
+                "HTTP",
+                "INFORMATICA",
+                "INFORMATICA_MAPPING",
+                "KAFKA",
+                "LIGHTUP",
+                "LOOKER",
+                "LOOKER_EXPLORE",
+                "LOOKER_VIEW",
+                "METABASE",
+                "MONDAY",
+                "MONGODB",
+                "MONTE_CARLO",
+                "MSSQL",
+                "MYSQL",
+                "NOTION",
+                "OPEN_API",
+                "ORACLE",
+                "POSTGRESQL",
+                "POWER_BI",
+                "POWER_BI_DATAFLOW",
+                "POWER_BI_DATASET",
+                "QUICK_SIGHT",
+                "RDS",
+                "REDIS",
+                "REDSHIFT",
+                "S3",
+                "SFTP",
+                "SHAREPOINT",
+                "SNOWFLAKE",
+                "SODA",
+                "SPARK",
+                "STATICWEB",
+                "SYNAPSE",
+                "TABLEAU",
+                "TABLEAU_DATASOURCE",
+                "THOUGHT_SPOT",
+                "THOUGHT_SPOT_DATA_OBJECT",
+                "TRINO",
+                "UNITY_CATALOG",
+                "UNITY_CATALOG_VOLUME_FILE",
+                "UNKNOWN"
+            ],
+            "type": "string"
+        },
+        "stackTrace": {
+            "type": "string"
+        },
+        "startTime": {
+            "format": "date-time",
+            "type": "string"
+        },
+        "status": {
+            "$ref": "#/definitions/RunStatus"
+        }
+    },
+    "type": "object"
+}
+
