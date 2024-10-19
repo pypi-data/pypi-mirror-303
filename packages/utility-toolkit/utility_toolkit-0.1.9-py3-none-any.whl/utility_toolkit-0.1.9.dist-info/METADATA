@@ -1,0 +1,144 @@
+Metadata-Version: 2.1
+Name: utility_toolkit
+Version: 0.1.9
+Summary: A comprehensive toolkit for AWS operations, database handling, and general utilities.
+Author-email: Eslam Hasanen <Eslamspot@gmail.com>
+Project-URL: Homepage, https://www.idealisticsolutions.com
+Project-URL: Bug Tracker, https://github.com/eslamspot/utility_toolkit/issues
+Keywords: tools_box,tools,utilities,toolkit
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: boto3==1.35.27
+Requires-Dist: botocore==1.35.27
+Requires-Dist: chardet==5.2.0
+Requires-Dist: cryptography==43.0.3
+Requires-Dist: lxml==5.3.0
+Requires-Dist: pandas==2.2.3
+Requires-Dist: pdfkit==1.0.0
+Requires-Dist: Pillow==11.0.0
+Requires-Dist: psutil==6.0.0
+Requires-Dist: psycopg2==2.9.9
+Requires-Dist: pytest==8.3.3
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: python-magic==0.4.27
+Requires-Dist: reportlab==4.2.2
+Requires-Dist: Requests==2.32.3
+Requires-Dist: SQLAlchemy==2.0.35
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: toolkit; extra == "dev"
+Requires-Dist: tools-box; extra == "dev"
+Requires-Dist: tools; extra == "dev"
+Requires-Dist: utilities; extra == "dev"
+
+# Utility Toolkit
+
+Utility Toolkit is a comprehensive Python package that provides a collection of tools for AWS operations, database handling (PostgreSQL and SQLite), and general utility functions.
+
+## Installation
+
+You can install Utility Toolkit using pip:
+``` cmd
+pip install utility_toolkit
+```
+
+## Features
+
+- AWS Tools: Functions for interacting with various AWS services
+- PostgreSQL Handler: Easy-to-use interface for PostgreSQL database operations
+- SQLite Handler: Simplified SQLite database management
+- General Tools: A collection of utility functions for common tasks
+
+## Changes and What's New
+
+- **Version 0.1.9** (Date: 2024-10-11)
+  - Improved logs.
+  - add more functions to global_tools.
+  - add sonarqube to the project.
+
+- **Version 0.1.8** (Date: 2024-10-04)
+  - Improved error handling in PostgreSQL and SQLite handlers.
+  - Introduced new utility functions for dynamodb handler.
+  - Enhance logging capabilities for better debugging.
+  - Performance optimizations and bug fixes.
+
+## Usage
+
+Here are some quick examples of how to use Utility Toolkit:
+
+
+```
+
+python from utility_toolkit import aws_tools, postgresql_handler, sqlite_handler, general_tools
+
+# AWS example
+
+s3_content = aws_tools.get_s3_file_content('s3://my-bucket/my-file.txt')
+
+# PostgreSQL example
+
+with postgresql_handler.PostgreSQLConnection('my_db', 'user', 'password', 'localhost') as conn: results = conn.execute_query('SELECT * FROM my_table')
+
+# SQLite example
+
+with sqlite_handler.SQLiteConnection('my_database.db') as conn: conn.execute_query('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)')
+
+# General tools example
+
+general_tools.create_directory_if_not_exists('my_new_directory')
+
+```
+
+For more detailed usage instructions, please refer to the documentation.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+```
+
+6.  **Choose a License**
+
+Choose an appropriate license (e.g., MIT License) and add it to the LICENSE file.
+
+7.  **Create .gitignore**
+
+Create a  `.gitignore`  file in the root directory:
+
+```
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+```
