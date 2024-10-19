@@ -1,0 +1,17 @@
+ci:
+  autoupdate_schedule: monthly
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v4.5.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/jsh9/cercis
+    rev: 0.2.5
+    hooks:
+      - id: cercis
+        args:
+          - --line-length=88
+          - --function-definition-extra-indent=False
