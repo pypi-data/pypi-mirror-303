@@ -1,0 +1,61 @@
+[tool.poetry]
+authors = ["mm21 <mm21.apps@gmail.com>"]
+classifiers = [
+  # Get the list of trove classifiers here: https://pypi.org/classifiers/
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Operating System :: OS Independent",
+  "Typing :: Typed",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Development Status :: 3 - Alpha",
+  "Natural Language :: English",
+  "License :: OSI Approved :: GNU Affero General Public License v3"
+]
+description = "Python SDK and CLI toolkit for Trilium Notes"
+documentation = "https://mm21.github.io/trilium-alchemy/"
+homepage = "https://github.com/mm21/trilium-alchemy"
+name = "trilium-alchemy"
+packages = [{include = "trilium_alchemy"}]
+readme = "README.pypi.md"
+version = "0.2.1"
+
+[tool.poetry.dependencies]
+pydantic = "^2"
+python = "^3.10"
+requests = "^2.31.0"
+pyrollup = "^0.1.0"
+trilium-client = "^0.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+furo = "^2023.5.20"
+genbadge = {extras = ["all"], version = "^1.1.0"}
+mypy = {extras = ["reports"], version = "^1.5.1"}
+myst-parser = "^2.0.0"
+pyright = "^1.1.329"
+pytest = "^7.3.1"
+pytest-cov = "^4.1.0"
+pytest-dependency = "^0.5.1"
+python-dotenv = "^1.0.0"
+scons = "^4.5.2"
+sphinx = "^7.0.1"
+sphinx-autodoc2 = {git = "https://github.com/mm21/sphinx-autodoc2.git"}
+sphinx-copybutton = "^0.5.2"
+sphinxcontrib-plantuml = "^0.25"
+toml-sort = "^0.23.1"
+types-requests = "^2.31.0.8"
+
+[tool.black]
+include = '\.pyi?$|SConstruct$'
+line-length = 80
+
+[tool.tomlsort]
+no_sort_tables = true
+sort_table_keys = true
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.10"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
