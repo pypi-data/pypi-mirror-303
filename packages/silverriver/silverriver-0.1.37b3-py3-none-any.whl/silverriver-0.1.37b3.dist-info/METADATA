@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: silverriver
+Version: 0.1.37b3
+Summary: SilverRiver SDK for advanced automation and AI-driven tasks
+Author: Silvestro
+Author-email: hello@silverstream.ai
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: httpx ==0.27.2
+Requires-Dist: playwright ==1.46.0
+Requires-Dist: pydantic ==2.8.2
+Requires-Dist: python-dotenv ==1.0.1
+Requires-Dist: slack-sdk ==3.31.0
+Requires-Dist: tabulate ==0.9.0
+
+# SilverRiver
+
+SilverRiver is an SDK for advanced automation and AI-driven tasks.
+
+## Installation
+
+You can install SilverRiver using pip:
+
+```
+pip install silverriver
+```
+
+## Agentic API
+
+Here's a basic example of how to use SilverRiver:
+
+```python
+import os
+import time
+
+from silverriver import AgentChatInterface
+from silverriver.client import Crux
+from silverriver.interfaces import SupportedModes
+from silverriver.interfaces.data_models import Observation, ChatMessage, HUMAN_ROLE
+
+
+# Create a custom chat interface
+class CustomChat(AgentChatInterface):
+    def __init__(self, init_message):
+        self.chat_history = init_message
+
+    def send_message_to_user(self, message):
+        # Implement this method to send messages to the user
+        pass
+
+    def wait_for_user_message(self):
+        # Implement this method to wait for and return user messages
+        pass
+
+
+# Initialize the Crux client
+client = Crux(api_key=os.environ["CRUX_API_KEY"])
+
+# Create a chat instance with an initial message
+chat = CustomChat(
+    init_message=[ChatMessage(role=HUMAN_ROLE, message="On which website are you?", timestamp=time.time())]
+)
+
+# Create a browser session
+browser_session, browser_obs, browser_meta = client.create_browser_session(
+    start_url="https://www.example.com",
+    chat=chat
+)
+
+# Create an observation
+browser_obs = Observation(
+    **dict(browser_obs),
+    chat_messages=chat.chat_history,
+    last_action_error="",
+)
+
+# Get an action from the AI agent
+code = client.get_action(browser_obs, mode=SupportedModes.FLASH)
+
+# Execute the action
+browser_session.execute(code)
+
+# Close the client when done
+client.close()
+```
+
+## Workflow Automation
+
+SilverRiver now includes a command-line interface (CLI) for easier interaction. Here are the available commands:
+
+### Authentication
+
+To authenticate with Crux and save the API token:
+
+```
+silverriver auth --api-key YOUR_API_KEY
+```
+
+This will save the configuration file in `~/.config/silverriver`.
+
+### Record a Trace
+
+To record a new trace:
+
+```
+silverriver record URL [-o OUTPUT] [--upload]
+```
+
+- `URL`: The URL of the webpage to trace (must start with http:// or https://)
+- `-o OUTPUT`, `--output OUTPUT`: The output filename for the trace (default: 'silverriver_trace')
+- `--upload`: Upload the trace after recording
+
+### Upload a Trace
+
+To upload an existing trace:
+
+```
+silverriver upload TRACE_FILE
+```
+
+- `TRACE_FILE`: The path to the trace file you want to upload
+
+## License
+
+This project is licensed under the MIT License.
