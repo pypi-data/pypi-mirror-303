@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "python-ntfy"
+version = "0.2.4"
+description = "An ntfy library aiming for feature completeness"
+authors = ["Matthew Cane <matthew.cane0@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/MatthewCane/python-ntfy"
+documentation = "https://matthewcane.github.io/python-ntfy/"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers"
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+mypy = "^1.12.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.4.1,<9.0.0"
+python-dotenv = "^1.0.0"
+pytest-asyncio = ">=0.21.1,<0.25.0"
+pytest-codecov = ">=0.5.1,<0.7.0"
+ruff = "^0.7.0"
+mkdocs-material = "^9.5.41"
+mkdocstrings-python = "^1.12.1"
+types-pygments = "^2.18.0.20240506"
+types-colorama = "^0.4.15.20240311"
+types-requests = "^2.32.0.20241016"
+types-setuptools = "^75.2.0.20241018"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
