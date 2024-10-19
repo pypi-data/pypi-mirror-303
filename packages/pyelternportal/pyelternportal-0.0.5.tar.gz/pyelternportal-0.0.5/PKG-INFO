@@ -1,0 +1,49 @@
+Metadata-Version: 2.3
+Name: pyelternportal
+Version: 0.0.5
+Summary: API to retrieve data from Eltern-Portal
+Project-URL: Homepage, https://github.com/michull/api-elternportal
+Project-URL: Issues, https://github.com/michull/api-elternportal/issues
+Author-email: michull <michull@github.com>
+License-File: LICENSE
+Keywords: elternportal
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: The Unlicense (Unlicense)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.11
+Requires-Dist: beautifulsoup4>=4.12.3
+Requires-Dist: html5lib>=1.1
+Requires-Dist: tzdata>=2024.2
+Description-Content-Type: text/markdown
+
+# pyelternportal
+Python client library to retrieve data provided by eltern-portal.org
+
+## Install
+```
+pip install pyelternportal
+```
+
+## Usage by example
+Get values
+```
+import pyelternportal
+
+try:
+    api = ElternPortalAPI("")
+
+    print(f"school_name:\t{api.school_name}")
+
+    for pupil in api.pupils:
+        print(f"pupil:\t{pupil}")
+except:
+    print("Something went wrong!")
+```
+
+Result
+```
+    print(f"school_name:\t\tAsam Gymnasium")
+```
