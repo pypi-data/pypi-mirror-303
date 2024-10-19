@@ -1,0 +1,38 @@
+services:
+
+  duploctl: &base
+    image: &image duplocloud/duploctl:latest
+    build: 
+      target: runner
+      args: &args
+        PY_VERSION: ${PY_VERSION:-3.12}
+      tags:
+      - *image
+      - duplocloud/duploctl:${GIT_SHA:-latest}
+      - duplocloud/duploctl:${GIT_REF:-latest}
+      - duplocloud/duploctl:${GIT_TAG:-latest}
+      x-bake: 
+        platforms: &platforms
+        - linux/amd64
+        - linux/arm64
+        cache-to: type=gha,scope=runner,mode=max
+        cache-from: type=gha,scope=runner
+    container_name: duploctl
+    environment: &environment
+      DUPLO_HOST: ${DUPLO_HOST:-}
+      DUPLO_TOKEN: ${DUPLO_TOKEN:-}
+      DUPLO_TENANT: ${DUPLO_TENANT:-}
+      DUPLO_OUTPUT: yaml
+
+  duploctl-bin:
+    <<: *base
+    container_name: duploctl-bin
+    image: duplocloud/duploctl:bin
+    build:
+      target: bin
+      args: *args
+      x-bake:
+        platforms: *platforms
+        output: type=local,dest=./dist
+        cache-to: type=gha,scope=installer,mode=max
+        cache-from: type=gha,scope=installer
