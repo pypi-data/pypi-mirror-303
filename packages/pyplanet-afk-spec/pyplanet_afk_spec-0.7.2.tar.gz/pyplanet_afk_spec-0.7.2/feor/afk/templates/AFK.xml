@@ -1,0 +1,15 @@
+{% extends 'core.views/generics/widget.xml' %}
+{% block maniascript %}
+  <script><!--{% include 'afk/AFK.Script.Txt' %}--></script>
+{% endblock %}
+
+{% block content %}
+ {% if rejoinbuttondisplay %}
+    {% if is_spec %}
+      <quad pos="-17.5 0" z-index="0" size="6.5 6" bgcolor="000000C0"/>
+      <quad pos="-11 0" z-index="0" size="28.5 6" bgcolor="00000060"/>
+      <label pos="-14.25 -3" z-index="2" textfont="RajdhaniMono" size="6.5 6"  textemboss="1"  textsize="1.6" textcolor="73FF51BB" text="" halign="center" valign="center2"/>
+      <label pos="3.25 -3" z-index="2" textfont="RajdhaniMono" size="28.5 6"  textemboss="1"  textsize="1.6"  text="Rejoin Game" halign="center" valign="center2" action="{{ id }}__Player_Rejoin" scriptevents="1" focusareacolor1="9EFF9300" />
+    {% endif %}
+  {% endif %}
+{% endblock %}

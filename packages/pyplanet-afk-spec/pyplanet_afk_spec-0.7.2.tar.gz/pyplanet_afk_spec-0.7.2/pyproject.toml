@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyplanet-afk_spec"
+version = "0.7.2"
+authors = [{ name = "feor" }]
+description = "A Pyplanet server controller plugin to automatically move players to spectator mode if they are AFK."
+readme = "readme.md"
+requires-python = ">=3.7"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+
+    "Topic :: Games/Entertainment",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/feored/pyplanet-afk_spec"
+"Bug Tracker" = "https://github.com/feored/pyplanet-afk_spec/issues"
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"feor/afk" = "feor/afk"

@@ -1,0 +1,33 @@
+#Const TIMEOUT {{ afktimeout }} 
+#Const TIMEOUT_WAIT {{ afktimeoutwait }}
+#Const TIMEOUT_CHECK_FREQUENCY {{ afktimeoutcheckfrequency }}
+
+
+
+Boolean isNotSpawned(){
+	return (IsSpectator || IsSpectatorClient || InputPlayer == Null || InputPlayer.IsSpawned == False);
+}
+
+Boolean isDriving(){
+	return (InputPlayer.InputSteer != 0 || InputPlayer.InputGasPedal != 0 || InputPlayer.InputIsBraking);
+}
+
+Boolean checkAfk(){
+	declare endTime = GameTime + TIMEOUT  * 1000;
+	while(GameTime < endTime){
+			if (isNotSpawned() || isDriving()){
+				return False;
+			}
+			sleep(TIMEOUT_CHECK_FREQUENCY);
+	}
+	return True;
+}
+
+main(){
+	while(True){
+		if (checkAfk()){
+			TriggerPageAction("{{ id }}__Player_AFK");
+		}
+		sleep(TIMEOUT_WAIT * 1000);
+	}
+}
