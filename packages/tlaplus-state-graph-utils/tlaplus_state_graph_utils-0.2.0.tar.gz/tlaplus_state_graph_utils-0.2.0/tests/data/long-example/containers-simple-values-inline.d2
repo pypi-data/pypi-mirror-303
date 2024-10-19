@@ -1,0 +1,155 @@
+state6: "" {
+  var0: "fs" {
+    var0: "fileExists |-> FALSE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"start\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"start\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state7: "" {
+  var0: "fs" {
+    var0: "fileExists |-> FALSE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"create\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"start\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state8: "" {
+  var0: "fs" {
+    var0: "fileExists |-> TRUE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"start\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state9: "" {
+  var0: "fs" {
+    var0: "fileExists |-> FALSE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"create\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"create\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state10: "" {
+  var0: "fs" {
+    var0: "fileExists |-> TRUE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"read\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state11: "" {
+  var0: "fs" {
+    var0: "fileExists |-> TRUE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"create\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state12: "" {
+  var0: "fs" {
+    var0: "fileExists |-> TRUE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state13: "" {
+  var0: "fs" {
+    var0: "fileExists |-> TRUE"
+  }
+  var1: "procs" {
+    var0: "A :>" {
+      var0: "pc |-> \"done\""
+      var1: "fileExists |-> FALSE"
+    }
+    var1: "B :>" {
+      var0: "pc |-> \"crashed\""
+      var1: "fileExists |-> FALSE"
+    }
+  }
+}
+state6 -> state7: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state7 -> state8: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state7 -> state9: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state8 -> state10: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state9 -> state11: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state10 -> state12: "ReadFile" {
+  style: {
+    stroke: purple
+  }
+}
+state11 -> state13: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}

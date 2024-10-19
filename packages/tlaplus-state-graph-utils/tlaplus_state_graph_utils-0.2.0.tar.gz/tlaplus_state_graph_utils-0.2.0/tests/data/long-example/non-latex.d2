@@ -1,0 +1,43 @@
+state6: "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"start\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )"
+state7: "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"create\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )"
+state8: "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )"
+state9: "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"create\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"create\", fileExists |-> FALSE] )"
+state10: "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"read\", fileExists |-> FALSE] )"
+state11: "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"create\", fileExists |-> FALSE] )"
+state12: "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"done\", fileExists |-> FALSE] )"
+state13: "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"crashed\", fileExists |-> FALSE] )"
+state6 -> state7: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state7 -> state8: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state7 -> state9: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state8 -> state10: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state9 -> state11: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state10 -> state12: "ReadFile" {
+  style: {
+    stroke: purple
+  }
+}
+state11 -> state13: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}

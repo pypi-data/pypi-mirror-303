@@ -1,0 +1,107 @@
+state6: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{FALSE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}start\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}start\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state7: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{FALSE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}create\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}start\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state8: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{TRUE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}start\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state9: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{FALSE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}create\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}create\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state10: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{TRUE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}read\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state11: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{TRUE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}create\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state12: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{TRUE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state13: "" {
+  equation: |latex
+    \\displaylines {
+            \\land fs = [fileExists \\mapsto \\mathrm{TRUE}] \\\\ \\land procs = ( A :> [pc \\mapsto \\text{"}done\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] @@ \\\\   B :> [pc \\mapsto \\text{"}crashed\\text{"}, fileExists \\mapsto \\mathrm{FALSE}] )
+    }
+    % add some spacing (otherwise it messes up)
+    \\ \\ \\ \\ \\ \\
+  |
+}
+state6 -> state7: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state7 -> state8: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state7 -> state9: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state8 -> state10: "CheckFileExists" {
+  style: {
+    stroke: green
+  }
+}
+state9 -> state11: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}
+state10 -> state12: "ReadFile" {
+  style: {
+    stroke: purple
+  }
+}
+state11 -> state13: "CreateFile" {
+  style: {
+    stroke: orange
+  }
+}

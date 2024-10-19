@@ -1,0 +1,653 @@
+{
+  "metadata": {
+    "format": {
+      "name": "reasonable-tlaplus-state-graph-json",
+      "version": "0.1.1"
+    }
+  },
+  "states": [
+    {
+      "id": 6,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"start\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": false
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "start"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "start"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"create\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": false
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "create"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "start"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"start\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": true
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "start"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> FALSE]\n/\\ procs = ( A :> [pc |-> \"create\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"create\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": false
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "create"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "create"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"read\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": true
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "read"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"create\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": true
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "create"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"done\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": true
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "labelTlaPlus": "/\\ fs = [fileExists |-> TRUE]\n/\\ procs = ( A :> [pc |-> \"done\", fileExists |-> FALSE] @@\n  B :> [pc |-> \"crashed\", fileExists |-> FALSE] )",
+      "structuredState": {
+        "fs": {
+          "type": "record",
+          "fields": [
+            {
+              "type": "recordField",
+              "key": "fileExists",
+              "value": {
+                "type": "simpleValue",
+                "value": true
+              }
+            }
+          ]
+        },
+        "procs": {
+          "type": "functionMerge",
+          "functions": [
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "A",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "done"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "singleElemDomainFunction",
+              "elem": "B",
+              "value": {
+                "type": "record",
+                "fields": [
+                  {
+                    "type": "recordField",
+                    "key": "pc",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": "crashed"
+                    }
+                  },
+                  {
+                    "type": "recordField",
+                    "key": "fileExists",
+                    "value": {
+                      "type": "simpleValue",
+                      "value": false
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": 0,
+      "actionName": "CheckFileExists",
+      "fromStateId": 6,
+      "toStateId": 7,
+      "colorId": "2"
+    },
+    {
+      "id": 1,
+      "actionName": "CreateFile",
+      "fromStateId": 7,
+      "toStateId": 8,
+      "colorId": "3"
+    },
+    {
+      "id": 2,
+      "actionName": "CheckFileExists",
+      "fromStateId": 7,
+      "toStateId": 9,
+      "colorId": "2"
+    },
+    {
+      "id": 3,
+      "actionName": "CheckFileExists",
+      "fromStateId": 8,
+      "toStateId": 10,
+      "colorId": "2"
+    },
+    {
+      "id": 4,
+      "actionName": "CreateFile",
+      "fromStateId": 9,
+      "toStateId": 11,
+      "colorId": "3"
+    },
+    {
+      "id": 5,
+      "actionName": "ReadFile",
+      "fromStateId": 10,
+      "toStateId": 12,
+      "colorId": "4"
+    },
+    {
+      "id": 6,
+      "actionName": "CreateFile",
+      "fromStateId": 11,
+      "toStateId": 13,
+      "colorId": "3"
+    }
+  ]
+}
