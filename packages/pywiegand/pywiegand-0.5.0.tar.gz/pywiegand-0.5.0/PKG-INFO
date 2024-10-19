@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: pywiegand
+Version: 0.5.0
+Summary: Wiegand protocol on Raspberry PI
+Home-page: https://github.com/ArPIHomeSecurity/pywiegand
+License: MIT
+Author: Gábor Kovács
+Author-email: gkovacs81@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Project-URL: Repository, https://github.com/ArPIHomeSecurity/pywiegand
+Description-Content-Type: text/markdown
+
+# Python Wiegand reader on Raspberry PI
+
+Using GPIO you can read the key presses and card codes from a keypad with the Wiegand protocol.
+
+[![Downloads](https://static.pepy.tech/personalized-badge/pywiegand?period=week&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/pywiegand)
+
+# Requirements
+
+* Raspberry PI OS
+* WiringPI
+
+# Wiring
+
+![Wiring](wiring.png)
+
+# Install
+
+```
+pip install pywiegand
+```
+
+# Usage
+
+```python
+>>> from  pywiegand import WiegandReader
+>>> wr = WiegandReader(6, 5)
+# reading card
+>>> wr.read()
+'560019750914'
+
+# reading keys
+>>> wr.read()
+['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '#']
+```
+
+# Building
+
+Do the following steps on the target device to build the package.
+
+1. Install WiringPI https://github.com/wiringPi/WiringPi/
+2. Install Python3 and poetry https://python-poetry.org/
+3. Clone the repository
+4. Run `poetry build`
+5. Install the package with `pip install dist/pywiegand-<version>.tar.gz`
+
