@@ -1,0 +1,473 @@
+Metadata-Version: 2.1
+Name: sm64_random_assets
+Version: 0.1.1
+Summary: The sm64-random-assets module
+Home-page: https://github.com/Erotemic/sm64-random-assets
+Author: Jon Crall
+Author-email: erotemic@gmail.com
+License: Apache 2
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+Requires-Dist: kwimage >=0.9.19
+Requires-Dist: ruamel.yaml <=0.17.32,>=0.17.22
+Requires-Dist: ubelt >=1.3.6
+Requires-Dist: kwutil >=0.3.3
+Requires-Dist: scriptconfig >=0.8.1
+Requires-Dist: rich >=12.3.0
+Requires-Dist: parse >=1.19.0
+Requires-Dist: colorama >=0.4.1 ; platform_system == "Windows"
+Requires-Dist: numpy >=1.21.0 ; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: matplotlib >=3.6.2 ; python_version < "3.10" and python_version >= "3.9"
+Requires-Dist: numpy >=1.21.6 ; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: matplotlib >=3.6.2 ; python_version < "3.11" and python_version >= "3.10"
+Requires-Dist: PyYaml >=6.0 ; python_version < "3.12"
+Requires-Dist: numpy >=1.23.2 ; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: matplotlib >=3.6.2 ; python_version < "3.12" and python_version >= "3.11"
+Requires-Dist: PyYaml >=6.0.1 ; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: numpy >=1.26.0 ; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: matplotlib >=3.7.3 ; python_version < "3.13" and python_version >= "3.12"
+Requires-Dist: numpy >=1.19.2 ; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: matplotlib >=3.6.2 ; python_version < "3.9" and python_version >= "3.8"
+Requires-Dist: PyYaml >=6.0.2 ; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: numpy >=2.1.0 ; python_version < "4.0" and python_version >= "3.13"
+Requires-Dist: matplotlib >=3.9.2 ; python_version < "4.0" and python_version >= "3.13"
+Provides-Extra: all
+Requires-Dist: kwimage >=0.9.19 ; extra == 'all'
+Requires-Dist: ruamel.yaml <=0.17.32,>=0.17.22 ; extra == 'all'
+Requires-Dist: ubelt >=1.3.6 ; extra == 'all'
+Requires-Dist: kwutil >=0.3.3 ; extra == 'all'
+Requires-Dist: scriptconfig >=0.8.1 ; extra == 'all'
+Requires-Dist: rich >=12.3.0 ; extra == 'all'
+Requires-Dist: parse >=1.19.0 ; extra == 'all'
+Requires-Dist: xdoctest >=1.1.5 ; extra == 'all'
+Requires-Dist: pytest-cov >=3.0.0 ; extra == 'all'
+Provides-Extra: all-strict
+Requires-Dist: kwimage ==0.9.19 ; extra == 'all-strict'
+Requires-Dist: ruamel.yaml <=0.17.32,==0.17.22 ; extra == 'all-strict'
+Requires-Dist: ubelt ==1.3.6 ; extra == 'all-strict'
+Requires-Dist: kwutil ==0.3.3 ; extra == 'all-strict'
+Requires-Dist: scriptconfig ==0.8.1 ; extra == 'all-strict'
+Requires-Dist: rich ==12.3.0 ; extra == 'all-strict'
+Requires-Dist: parse ==1.19.0 ; extra == 'all-strict'
+Requires-Dist: xdoctest ==1.1.5 ; extra == 'all-strict'
+Requires-Dist: pytest-cov ==3.0.0 ; extra == 'all-strict'
+Requires-Dist: colorama ==0.4.1 ; (platform_system == "Windows") and extra == 'all-strict'
+Requires-Dist: numpy ==1.21.0 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all-strict'
+Requires-Dist: coverage ==5.3.1 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all-strict'
+Requires-Dist: pytest ==6.2.5 ; (python_version < "3.10.0" and python_version >= "3.7.0") and extra == 'all-strict'
+Requires-Dist: numpy ==1.21.6 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all-strict'
+Requires-Dist: pytest ==6.2.5 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all-strict'
+Requires-Dist: PyYaml ==6.0 ; (python_version < "3.12") and extra == 'all-strict'
+Requires-Dist: pytest-timeout ==1.4.2 ; (python_version < "3.12") and extra == 'all-strict'
+Requires-Dist: coverage ==6.1.1 ; (python_version < "3.12" and python_version >= "3.10") and extra == 'all-strict'
+Requires-Dist: numpy ==1.23.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all-strict'
+Requires-Dist: PyYaml ==6.0.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: numpy ==1.26.0 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.7.3 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: numpy ==1.19.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all-strict'
+Requires-Dist: coverage ==6.1.1 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all-strict'
+Requires-Dist: pytest-timeout ==2.3.1 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: coverage ==7.3.0 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'all-strict'
+Requires-Dist: PyYaml ==6.0.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all-strict'
+Requires-Dist: numpy ==2.1.0 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all-strict'
+Requires-Dist: matplotlib ==3.9.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all-strict'
+Requires-Dist: colorama >=0.4.1 ; (platform_system == "Windows") and extra == 'all'
+Requires-Dist: numpy >=1.21.0 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all'
+Requires-Dist: coverage >=5.3.1 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'all'
+Requires-Dist: pytest >=6.2.5 ; (python_version < "3.10.0" and python_version >= "3.7.0") and extra == 'all'
+Requires-Dist: numpy >=1.21.6 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all'
+Requires-Dist: pytest >=6.2.5 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'all'
+Requires-Dist: PyYaml >=6.0 ; (python_version < "3.12") and extra == 'all'
+Requires-Dist: pytest-timeout >=1.4.2 ; (python_version < "3.12") and extra == 'all'
+Requires-Dist: coverage >=6.1.1 ; (python_version < "3.12" and python_version >= "3.10") and extra == 'all'
+Requires-Dist: numpy >=1.23.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'all'
+Requires-Dist: PyYaml >=6.0.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: numpy >=1.26.0 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: matplotlib >=3.7.3 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: numpy >=1.19.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all'
+Requires-Dist: coverage >=6.1.1 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'all'
+Requires-Dist: pytest-timeout >=2.3.1 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: coverage >=7.3.0 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'all'
+Requires-Dist: PyYaml >=6.0.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all'
+Requires-Dist: numpy >=2.1.0 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all'
+Requires-Dist: matplotlib >=3.9.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'all'
+Provides-Extra: docs
+Requires-Dist: sphinx >=5.0.1 ; extra == 'docs'
+Requires-Dist: sphinx-autobuild >=2021.3.14 ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme >=1.0.0 ; extra == 'docs'
+Requires-Dist: sphinxcontrib-napoleon >=0.7 ; extra == 'docs'
+Requires-Dist: sphinx-autoapi >=1.8.4 ; extra == 'docs'
+Requires-Dist: Pygments >=2.9.0 ; extra == 'docs'
+Requires-Dist: myst-parser >=0.18.0 ; extra == 'docs'
+Requires-Dist: sphinx-reredirects >=0.0.1 ; extra == 'docs'
+Provides-Extra: docs-strict
+Requires-Dist: sphinx ==5.0.1 ; extra == 'docs-strict'
+Requires-Dist: sphinx-autobuild ==2021.3.14 ; extra == 'docs-strict'
+Requires-Dist: sphinx-rtd-theme ==1.0.0 ; extra == 'docs-strict'
+Requires-Dist: sphinxcontrib-napoleon ==0.7 ; extra == 'docs-strict'
+Requires-Dist: sphinx-autoapi ==1.8.4 ; extra == 'docs-strict'
+Requires-Dist: Pygments ==2.9.0 ; extra == 'docs-strict'
+Requires-Dist: myst-parser ==0.18.0 ; extra == 'docs-strict'
+Requires-Dist: sphinx-reredirects ==0.0.1 ; extra == 'docs-strict'
+Provides-Extra: graphics
+Provides-Extra: graphics-strict
+Requires-Dist: opencv-python ==4.5.4.58 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'graphics-strict'
+Requires-Dist: opencv-python ==4.5.4.58 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'graphics-strict'
+Requires-Dist: opencv-python ==4.5.5.64 ; (python_version < "4.0" and python_version >= "3.11") and extra == 'graphics-strict'
+Requires-Dist: opencv-python >=4.5.4.58 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'graphics'
+Requires-Dist: opencv-python >=4.5.4.58 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'graphics'
+Requires-Dist: opencv-python >=4.5.5.64 ; (python_version < "4.0" and python_version >= "3.11") and extra == 'graphics'
+Provides-Extra: headless
+Provides-Extra: headless-strict
+Requires-Dist: opencv-python-headless ==4.5.4.58 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'headless-strict'
+Requires-Dist: opencv-python-headless ==4.5.4.58 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'headless-strict'
+Requires-Dist: opencv-python-headless ==4.5.5.64 ; (python_version < "4.0" and python_version >= "3.11") and extra == 'headless-strict'
+Requires-Dist: opencv-python-headless >=4.5.4.58 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'headless'
+Requires-Dist: opencv-python-headless >=4.5.4.58 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'headless'
+Requires-Dist: opencv-python-headless >=4.5.5.64 ; (python_version < "4.0" and python_version >= "3.11") and extra == 'headless'
+Provides-Extra: optional
+Provides-Extra: optional-strict
+Provides-Extra: runtime
+Requires-Dist: kwimage >=0.9.19 ; extra == 'runtime'
+Requires-Dist: ruamel.yaml <=0.17.32,>=0.17.22 ; extra == 'runtime'
+Requires-Dist: ubelt >=1.3.6 ; extra == 'runtime'
+Requires-Dist: kwutil >=0.3.3 ; extra == 'runtime'
+Requires-Dist: scriptconfig >=0.8.1 ; extra == 'runtime'
+Requires-Dist: rich >=12.3.0 ; extra == 'runtime'
+Requires-Dist: parse >=1.19.0 ; extra == 'runtime'
+Provides-Extra: runtime-strict
+Requires-Dist: kwimage ==0.9.19 ; extra == 'runtime-strict'
+Requires-Dist: ruamel.yaml <=0.17.32,==0.17.22 ; extra == 'runtime-strict'
+Requires-Dist: ubelt ==1.3.6 ; extra == 'runtime-strict'
+Requires-Dist: kwutil ==0.3.3 ; extra == 'runtime-strict'
+Requires-Dist: scriptconfig ==0.8.1 ; extra == 'runtime-strict'
+Requires-Dist: rich ==12.3.0 ; extra == 'runtime-strict'
+Requires-Dist: parse ==1.19.0 ; extra == 'runtime-strict'
+Requires-Dist: colorama ==0.4.1 ; (platform_system == "Windows") and extra == 'runtime-strict'
+Requires-Dist: numpy ==1.21.0 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'runtime-strict'
+Requires-Dist: numpy ==1.21.6 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'runtime-strict'
+Requires-Dist: PyYaml ==6.0 ; (python_version < "3.12") and extra == 'runtime-strict'
+Requires-Dist: numpy ==1.23.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'runtime-strict'
+Requires-Dist: PyYaml ==6.0.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime-strict'
+Requires-Dist: numpy ==1.26.0 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.7.3 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime-strict'
+Requires-Dist: numpy ==1.19.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.6.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'runtime-strict'
+Requires-Dist: PyYaml ==6.0.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime-strict'
+Requires-Dist: numpy ==2.1.0 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime-strict'
+Requires-Dist: matplotlib ==3.9.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime-strict'
+Requires-Dist: colorama >=0.4.1 ; (platform_system == "Windows") and extra == 'runtime'
+Requires-Dist: numpy >=1.21.0 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'runtime'
+Requires-Dist: numpy >=1.21.6 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'runtime'
+Requires-Dist: PyYaml >=6.0 ; (python_version < "3.12") and extra == 'runtime'
+Requires-Dist: numpy >=1.23.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'runtime'
+Requires-Dist: PyYaml >=6.0.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime'
+Requires-Dist: numpy >=1.26.0 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.7.3 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'runtime'
+Requires-Dist: numpy >=1.19.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.6.2 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'runtime'
+Requires-Dist: PyYaml >=6.0.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime'
+Requires-Dist: numpy >=2.1.0 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime'
+Requires-Dist: matplotlib >=3.9.2 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'runtime'
+Provides-Extra: tests
+Requires-Dist: xdoctest >=1.1.5 ; extra == 'tests'
+Requires-Dist: pytest-cov >=3.0.0 ; extra == 'tests'
+Provides-Extra: tests-strict
+Requires-Dist: xdoctest ==1.1.5 ; extra == 'tests-strict'
+Requires-Dist: pytest-cov ==3.0.0 ; extra == 'tests-strict'
+Requires-Dist: coverage ==5.3.1 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'tests-strict'
+Requires-Dist: pytest ==6.2.5 ; (python_version < "3.10.0" and python_version >= "3.7.0") and extra == 'tests-strict'
+Requires-Dist: pytest ==6.2.5 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'tests-strict'
+Requires-Dist: pytest-timeout ==1.4.2 ; (python_version < "3.12") and extra == 'tests-strict'
+Requires-Dist: coverage ==6.1.1 ; (python_version < "3.12" and python_version >= "3.10") and extra == 'tests-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'tests-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'tests-strict'
+Requires-Dist: coverage ==6.1.1 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'tests-strict'
+Requires-Dist: pytest-timeout ==2.3.1 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'tests-strict'
+Requires-Dist: coverage ==7.3.0 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'tests-strict'
+Requires-Dist: pytest ==8.1.1 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'tests-strict'
+Requires-Dist: coverage >=5.3.1 ; (python_version < "3.10" and python_version >= "3.9") and extra == 'tests'
+Requires-Dist: pytest >=6.2.5 ; (python_version < "3.10.0" and python_version >= "3.7.0") and extra == 'tests'
+Requires-Dist: pytest >=6.2.5 ; (python_version < "3.11" and python_version >= "3.10") and extra == 'tests'
+Requires-Dist: pytest-timeout >=1.4.2 ; (python_version < "3.12") and extra == 'tests'
+Requires-Dist: coverage >=6.1.1 ; (python_version < "3.12" and python_version >= "3.10") and extra == 'tests'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "3.12" and python_version >= "3.11") and extra == 'tests'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "3.13" and python_version >= "3.12") and extra == 'tests'
+Requires-Dist: coverage >=6.1.1 ; (python_version < "3.9" and python_version >= "3.8") and extra == 'tests'
+Requires-Dist: pytest-timeout >=2.3.1 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'tests'
+Requires-Dist: coverage >=7.3.0 ; (python_version < "4.0" and python_version >= "3.12") and extra == 'tests'
+Requires-Dist: pytest >=8.1.1 ; (python_version < "4.0" and python_version >= "3.13") and extra == 'tests'
+
+SM64 Randomized Asset Generator
+===============================
+
+|Pypi| |PypiDownloads| |ReadTheDocs| |GithubActions| |Codecov|
+
++---------------+-----------------------------------------------------+
+| Read the Docs | http://sm64-random-assets.readthedocs.io/en/latest/ |
++---------------+-----------------------------------------------------+
+| Pypi          | https://pypi.org/project/sm64_random_assets         |
++---------------+-----------------------------------------------------+
+
+Generates non-copyrighted randomized assets so `sm64 <https://github.com/n64decomp/sm64>`_ and `sm64-port <https://github.com/sm64-port/sm64-port>`_ can be used
+for educational purposes.
+
+This has only been tested for building the US variant, and only on Linux.
+
+For each asset in the game, this system generates a random texture, except in special cases like text
+where it is possible to generate reasonable textures with open source tools.
+The result is surprisingly playable.
+
+Future work will support configurable and procedural generation of assets.
+
+
+.. image:: https://i.imgur.com/iiMPSTZ.png
+
+.. image:: https://i.imgur.com/5OsOH1F.png
+
+.. image:: https://i.imgur.com/yFI8WV2.png
+
+.. image:: https://i.imgur.com/jlXDyMJ.png
+
+Python Requirements
+-------------------
+
+To run the asset generation script, the following requirements are needed.
+
+.. code:: bash
+
+   pip install kwimage opencv-python-headless ubelt numpy ruamel.yaml PyYAML scriptconfig rich parse
+
+   OR
+
+   pip install -r requirements/runtime.txt
+
+
+PC Port Example Usage
+---------------------
+
+The following instructions were written on an Ubuntu 22.04 PC
+
+.. code:: bash
+
+    # PC Port Dependencies
+    sudo apt install -y git build-essential pkg-config libusb-1.0-0-dev libsdl2-dev
+
+    # You can set your "code" directory path - the place where you will clone
+    # this repo - to be somewhere convenient for you
+    CODE_DPATH=$HOME/code
+
+    # Ensure your "code" directory exists
+    mkdir -p "$CODE_DPATH"
+
+    # Clone this repo
+    git clone https://github.com/Erotemic/sm64-random-assets.git $CODE_DPATH/sm64-random-assets
+
+    # Move into the root of this repo and initialize the sm64-port submodule,
+    # which will clone the official PC port repo.
+    cd "$CODE_DPATH"/sm64-random-assets
+    git submodule update --init tpl/sm64-port
+
+    # Run the asset generator
+    python "$CODE_DPATH"/sm64-random-assets/generate_assets.py --dst $CODE_DPATH/sm64-random-assets/tpl/sm64-port
+
+    # Move into the PC port directory
+    cd $CODE_DPATH/sm64-random-assets/tpl/sm64-port
+
+    # Compile
+    make NOEXTRACT=1 VERSION=us -j16
+
+
+The compiled executable can now be run directly:
+
+.. code:: bash
+
+    # Run the executable
+    build/us_pc/sm64.us
+
+
+Headless ROM Usage
+------------------
+
+.. code:: bash
+
+    # ROM-only dependencies
+    sudo apt install -y binutils-mips-linux-gnu build-essential git libcapstone-dev pkgconf python3
+
+    # You can set your "code" directory path - the place where you will clone
+    # this repo - to be somewhere convenient for you
+    CODE_DPATH=$HOME/code
+
+    # Ensure your "code" directory exists
+    mkdir -p $CODE_DPATH
+
+    # Clone this repo
+    git clone https://github.com/Erotemic/sm64-random-assets.git $CODE_DPATH/sm64-random-assets
+
+    # Move into the root of this repo and initialize the sm64 submodule,
+    # which will clone the official ROM-only sm64 repo.
+    cd $CODE_DPATH/sm64-random-assets
+    git submodule update --init tpl/sm64
+
+    # Run the asset generator
+    python $CODE_DPATH/sm64-random-assets/generate_assets.py --dst $CODE_DPATH/sm64-random-assets/tpl/sm64
+
+    # Move into the ROM-only sm64 directory
+    cd $CODE_DPATH/sm64-random-assets/tpl/sm64
+
+    # Compile
+    NUM_CPUS=$(nproc --all)
+    NOEXTRACT=1 COMPARE=0 NON_MATCHING=0 VERSION=us make -j$NUM_CPUS
+
+    # The compiled ROM is: build/us/sm64.us.z64
+
+This ROM can now be flashed on an N64 cartridge, copied onto an Everdrive, or run
+using an N64 emulator (like Mupen64Plus). For instance, if you have Mupen64Plus
+installed (e.g. ``sudo apt install mupen64plus-qt``) you can run:
+
+.. code:: bash
+
+   mupen64plus build/us/sm64.us.z64
+
+
+N64 Limitations
+---------------
+
+On real N64 hardware truly randomizing all textures will cause the system to
+lock up. This is because the N64 has 4 megabytes of RAM, and many of the
+original PNG textures are optimized to reduce their memory usage by having
+large continuous sections of the same color. Naively randomizing every pixel
+does not generate data well suited for PNG compression.
+
+I have verified that I can enter every major stage and complete every Bowser
+fight, so I think all of the crashes have been resolved by reducing texture
+sizes. I have completed a 16 star run on real N64 hardware with this.
+
+
+Development
+-----------
+
+While I'll try to keep the above instructions working / maintained, the
+``build.sh`` script is the end-to-end entry point for developers. Starting from
+a fresh repo, the ``build.sh`` script will take care of the entire process from
+initializing submodules, generating assets, compiling the binaries, and even
+running them with the PC port, in an emulator, or copying ROMs to an EverDrive.
+Environment variables can be used to control the build.sh behavior.
+
+The following are several common examples:
+
+.. code::
+
+   # Build and run the PC port
+   TEST_LOCALLY=1 TARGET=pc ./build.sh
+
+   # Build and run the ROM in an emulator (m64py)
+   TEST_LOCALLY=1 TARGET=rom EMULATOR=m64py ./build.sh
+
+
+Specialized Install Documentation
+---------------------------------
+
+See specialized install docs for:
+
+* `Windows <docs/source/manual/install_docs/install-on-windows.rst>`_
+* `Replit <docs/source/manual/install_docs/install_on_replit.rst>`_
+* `SteamDeck <docs/source/manual/install_docs/install_on_steamdeck.rst>`_
+
+
+Resources
+---------
+
+* Learning the basics slides: https://docs.google.com/presentation/d/1Ab8wlJfT7b7TlbOohgvsX43TqSAYQQ3azuJTkNdaB0c/edit?pli=1#slide=id.p
+
+* High resolution redrawn textures: https://github.com/TechieAndroid/sm64redrawn
+
+* SM64 Randomizer: https://github.com/andrelikesdogs/sm64-randomizer
+
+* SM64 PC Subreddit: https://www.reddit.com/r/SM64PC/
+
+
+N64 Stuff
+~~~~~~~~~
+
+* Everdrive 64 X7: https://krikzz.com/our-products/cartridges/ed64x7.html
+
+Emulator Stuff
+~~~~~~~~~~~~~~
+
+* Mupen64Plus Emulator: https://wiki.debian.org/Mupen64Plus
+
+* Python Frontend for Mupen64Plus: https://github.com/mupen64plus/mupen64plus-ui-python
+
+Rom Stuff
+~~~~~~~~~
+
+* Kaze Emanuar ROM Hacks: https://www.notabug.org/anomie/kaze-emanuar-romhacks
+
+* List of SM64 Hacks and Ports: https://en.wikipedia.org/wiki/List_of_Super_Mario_64_ROM_hacks,_mods_and_ports
+
+PC Port Extension Repos
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* SM64: https://github.com/n64decomp/sm64 - the original decomp
+
+* SM64-Port: https://github.com/sm64-port/sm64-port - the basic port
+
+* SM64-Plus: https://github.com/MorsGames/sm64plus
+
+* SM64ex: https://github.com/sm64pc/sm64ex
+
+* libsm64: https://github.com/libsm64/libsm64
+
+* Sm64ex-alo: https://github.com/AloUltraExt/sm64ex-alo
+
+* Render96ex: https://github.com/Render96/Render96ex - actively developed in 2024
+
+* SM64CoopDX: https://github.com/coop-deluxe/sm64coopdx - actively developed in 2024
+
+
+Other
+~~~~~~
+
+* The SM64 Decomp Discord: https://discord.gg/DuYH3Fh
+
+.. |Pypi| image:: https://img.shields.io/pypi/v/sm64-random-assets.svg
+    :target: https://pypi.python.org/pypi/sm64-random-assets
+.. |PypiDownloads| image:: https://img.shields.io/pypi/dm/sm64-random-assets.svg
+    :target: https://pypistats.org/packages/sm64-random-assets
+.. |ReadTheDocs| image:: https://readthedocs.org/projects/sm64-random-assets/badge/?version=latest
+    :target: http://sm64-random-assets.readthedocs.io/en/latest/
+.. |GithubActions| image:: https://github.com/Erotemic/sm64-random-assets/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/Erotemic/sm64-random-assets/actions?query=branch%3Amain
+.. |Codecov| image:: https://codecov.io/github/Erotemic/sm64-random-assets/badge.svg?branch=main&service=github
+    :target: https://codecov.io/github/Erotemic/sm64-random-assets?branch=main
