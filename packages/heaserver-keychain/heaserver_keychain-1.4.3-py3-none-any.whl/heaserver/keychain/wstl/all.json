@@ -1,0 +1,485 @@
+{
+    "wstl": {
+        "title": "HEA Keychain",
+        "actions": [
+            {
+                "name": "heaserver-keychain-credentials-duplicate",
+                "type": "unsafe",
+                "action": "append",
+                "target": "item read cj",
+                "prompt": "Duplicate"
+            },
+            {
+                "name": "heaserver-keychain-credentials-open-choices",
+                "description": "Open this credential",
+                "type": "safe",
+                "action": "read",
+                "target": "item read cj",
+                "prompt": "Open"
+            },
+            {
+                "name": "heaserver-keychain-get-generate-awscredential",
+                "description": "Generate a new aws credential",
+                "type": "unsafe",
+                "action": "update",
+                "target": "item read cj",
+                "prompt": "Generate credentials"
+            },
+            {
+                "name": "heaserver-keychain-get-generate-awscredential-form",
+                "description": "Generate a new aws credential",
+                "type": "safe",
+                "action": "read",
+                "target": "item cj-template",
+                "prompt": "Generate credentials",
+                "inputs": [
+                    {
+                        "name": "key_lifespan",
+                        "prompt": "Credential Duration",
+                        "type": "select",
+                        "required": true,
+                        "suggest": [
+                            {"value": "24", "text": "24 hours"},
+                            {"value": "48", "text": "48 hours"},
+                            {"value": "72", "text": "72 hours"}
+                        ],
+                        "value":  "24"
+                    },
+                    {
+                        "name": "type",
+                        "prompt": "Type",
+                        "required": true,
+                        "readOnly": true,
+                        "value": "heaobject.keychain.AWSCredentials",
+                        "hea": {
+                            "display": false
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "heaserver-keychain-awscredentials-get-cli-credentials-file",
+                "description": "Retrieve credentials file to copy and paste into your home directory's .aws directory",
+                "type": "unsafe",
+                "action": "update",
+                "target": "item read cj",
+                "prompt": "Retrieve credentials"
+            },
+            {
+                "name": "heaserver-keychain-awscredentials-get-cli-credentials-file-form",
+                "description": "Retrieve credentials file to copy and paste into your home directory's .aws directory",
+                "type": "safe",
+                "action": "read",
+                "target": "item cj-template",
+                "prompt": "Retrieve credentials",
+                "inputs": []
+            },
+            {
+                "name": "heaserver-keychain-credentials-get-properties",
+                "description": "View and edit these credentials' properties",
+                "type": "unsafe",
+                "target": "item cj-template",
+                "action": "update",
+                "prompt": "Properties",
+                "inputs": [
+                    {
+                        "name": "id",
+                        "prompt": "Id",
+                        "readOnly": true,
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "display_name",
+                        "prompt": "Name",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "readOnly": true,
+                        "required": true,
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "type_display_name",
+                        "prompt": "Type",
+                        "readOnly": true,
+                        "required": true,
+                        "value": "Credentials"
+                    },
+                    {
+                        "name": "description",
+                        "prompt": "Description",
+                        "type": "textarea"
+                    },
+                    {
+                        "name": "account",
+                        "prompt": "Account",
+                        "required": true
+                    },
+                    {
+                        "name": "where",
+                        "prompt": "Where"
+                    },
+                    {
+                        "name": "password",
+                        "prompt": "Secret",
+                        "hea": {
+                            "type": "password"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "prompt": "Owner",
+                        "required": true,
+                        "readOnly": true,
+                        "type": "select",
+                        "hea": {
+                            "optionsFromUrl": {
+                                "path": "people/",
+                                "value": "id",
+                                "text": "display_name"
+                            }
+                        }
+                    },
+                    {
+                        "name": "created",
+                        "prompt": "Created",
+                        "readOnly": true,
+                        "hea": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "modified",
+                        "prompt": "Modified",
+                        "readOnly": true,
+                        "hea": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "source",
+                        "prompt": "Source",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "hea": {
+                            "display": false,
+                            "section": "shares",
+                            "sectionPrompt": "Shares",
+                            "optionsFromUrl": {
+                                "path": "people/",
+                                "value": "id",
+                                "text": "display_name"
+                            }
+                        },
+                        "name": "user",
+                        "prompt": "User",
+                        "required": true,
+                        "type": "select"
+                    },
+                    {
+                        "hea": {
+                            "display": false,
+                            "section": "shares",
+                            "cardinality": "multiple"
+                        },
+                        "name": "permissions",
+                        "prompt": "Permissions",
+                        "type": "select",
+                        "suggest": [
+                            {"value":  "COOWNER", "text":  "Co-owner"},
+                            {"value":  "CREATOR", "text":  "Creator"},
+                            {"value":  "DELETER", "text":  "Deleter"},
+                            {"value":  "EDITOR", "text":  "Editor"},
+                            {"value":  "SHARER", "text":  "Sharer"},
+                            {"value":  "VIEWER", "text":  "Viewer"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "heaserver-keychain-awscredentials-get-properties",
+                "description": "View and edit these AWS credentials' properties",
+                "type": "safe",
+                "target": "item cj-template",
+                "action": "read",
+                "prompt": "Properties",
+                "inputs": [
+                    {
+                        "name": "id",
+                        "prompt": "Id",
+                        "readOnly": true,
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "display_name",
+                        "prompt": "Name",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "readOnly": true,
+                        "required": true,
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "type_display_name",
+                        "prompt": "Type",
+                        "readOnly": true,
+                        "required": true,
+                        "value": "AWS Credentials"
+                    },
+                    {
+                        "name": "description",
+                        "prompt": "Description",
+                        "type": "textarea"
+                    },
+                    {
+                        "name": "account",
+                        "prompt": "Access id",
+                        "readOnly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "prompt": "Secret",
+                        "readOnly": true
+                    },
+                    {
+                        "name": "session_token",
+                        "prompt": "Session token",
+                        "type": "textarea",
+                        "readOnly": true
+                    },
+                    {
+                        "name": "where",
+                        "prompt": "Region",
+                        "type": "select",
+                        "readOnly": true,
+                        "suggest": [
+                            {"value": "us-east-2", "text": "US East (Ohio)"},
+                            {"value": "us-east-1", "text": "US East (N. Virginia)"},
+                            {"value": "us-west-1", "text": "US West (N. California)"},
+                            {"value": "us-west-2", "text": "US West (Oregon)"},
+                            {"value": "af-south-1", "text": "Africa (Cape Town)"},
+                            {"value": "ap-east-1", "text": "Asia Pacific (Hong Kong)"},
+                            {"value": "ap-southeast-3", "text": "Asia Pacific (Jakarta)"},
+                            {"value": "ap-south-1", "text": "Asia Pacific (Mumbai)"},
+                            {"value": "ap-northeast-3", "text": "Asia Pacific (Osaka)"},
+                            {"value": "ap-northeast-2", "text": "Asia Pacific (Seoul)"},
+                            {"value": "ap-southeast-1", "text": "Asia Pacific (Singapore)"},
+                            {"value": "ap-southeast-2", "text": "Asia Pacific (Sydney)"},
+                            {"value": "ap-northeast-1", "text": "Asia Pacific (Tokyo)"},
+                            {"value": "ca-central-1", "text": "Canada (Central)"},
+                            {"value": "eu-central-1", "text": "Europe (Frankfurt)"},
+                            {"value": "eu-west-1", "text": "Europe (Ireland)"},
+                            {"value": "eu-west-2", "text": "Europe (London)"},
+                            {"value": "eu-south-1", "text": "Europe (Milan)"},
+                            {"value": "eu-west-3", "text": "Europe (Paris)"},
+                            {"value": "eu-north-1", "text": "Europe (Stockholm)"},
+                            {"value": "me-south-1", "text": "Middle East (Bahrain)"},
+                            {"value": "sa-east-1", "text": "South America (São Paulo)"}
+                        ]
+                    },
+                    {
+                        "name": "role",
+                        "prompt": "Role",
+                        "required": true
+                    },
+                    {
+                        "name": "expiration",
+                        "prompt": "Expiration",
+                        "readOnly": true,
+                        "hea": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "prompt": "Owner",
+                        "required": true,
+                        "readOnly": true,
+                        "type": "select",
+                        "hea": {
+                            "optionsFromUrl": {
+                                "path": "people/",
+                                "value": "id",
+                                "text": "display_name"
+                            }
+                        }
+                    },
+                    {
+                        "name": "created",
+                        "prompt": "Created",
+                        "readOnly": true,
+                        "hea": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "modified",
+                        "prompt": "Modified",
+                        "readOnly": true,
+                        "hea": {
+                            "type": "datetime"
+                        }
+                    },
+                    {
+                        "name": "temporary",
+                        "prompt": "Temporary",
+                        "readOnly": true,
+                        "type": "select",
+                        "suggest": [
+                            {"value":  "true", "text":  "True"},
+                            {"value":  "false", "text":  "False"}
+                        ],
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "source",
+                        "prompt": "Source",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "hea": {
+                            "section": "shares",
+                            "sectionPrompt": "Shares",
+                            "optionsFromUrl": {
+                                "path": "people/",
+                                "value": "id",
+                                "text": "display_name"
+                            }
+                        },
+                        "name": "user",
+                        "prompt": "User",
+                        "required": true,
+                        "type": "select"
+                    },
+                    {
+                        "hea": {
+                            "section": "shares",
+                            "cardinality": "multiple"
+                        },
+                        "name": "permissions",
+                        "prompt": "Permissions",
+                        "type": "select",
+                        "suggest": [
+                            {"value":  "COOWNER", "text":  "Co-owner"},
+                            {"value":  "CREATOR", "text":  "Creator"},
+                            {"value":  "DELETER", "text":  "Deleter"},
+                            {"value":  "EDITOR", "text":  "Editor"},
+                            {"value":  "SHARER", "text":  "Sharer"},
+                            {"value":  "VIEWER", "text":  "Viewer"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "heaserver-keychain-credentials-duplicate-form",
+                "description": "Duplicate these credentials",
+                "type": "unsafe",
+                "target": "item cj-template",
+                "action": "update",
+                "prompt": "Duplicate",
+                "inputs": [
+                    {
+                        "name": "display_name",
+                        "prompt": "Name",
+                        "required": true
+                    },
+                    {
+                        "name": "description",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "account",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "where",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "session_token",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "created",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "modified",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "name": "source",
+                        "hea": {
+                            "display": false
+                        }
+                    },
+                    {
+                        "hea": {
+                            "section": "shares",
+                            "display": false
+                        },
+                        "name": "user"
+                    },
+                    {
+                        "hea": {
+                            "section": "shares",
+                            "display": false
+                        },
+                        "name": "permissions"
+                    }
+                ]
+            },
+            {
+                "name": "heaserver-keychain-credentials-get-self",
+                "description": "View these credentials",
+                "type": "unsafe",
+                "action": "update",
+                "target": "item read cj",
+                "prompt": "View"
+            }
+        ]
+    }
+}
