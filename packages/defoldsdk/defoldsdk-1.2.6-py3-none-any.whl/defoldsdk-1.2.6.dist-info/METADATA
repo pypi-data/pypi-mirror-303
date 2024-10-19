@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: defoldsdk
+Version: 1.2.6
+Summary: Python Package made by Mhadhbi Issam . 
+Home-page: https://gitlab.com/game-dev-comapny/libraries/defoldsdk.git
+Author: $GITLAB_USER_LOGIN
+Author-email: mhadhbixissam@gmail.com
+Project-URL: Documentation, https://pydefold.readthedocs.io/en/latest/
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: Pydefold ==1.2.5
+Requires-Dist: gitpython
+Requires-Dist: jinja2
+
+# DefoldSdk
+
+full Defold game engine python api .
+
+## Install  : 
+```bash
+pip install defoldsdk
+```
+
+## Getting started
+this is minimal example  : 
+```python
+from DefoldSdk import Project 
+
+projectpath = "path/of/defold/game/project"
+game = Project(project=projectpath)
+
+c = game.newCollection(name = "main")
+go = c.addGameObject(id = "go1")
+go12 = go.addGameObject(id = "go1-2")
+go2 = c.addGameObject(id = "go2")
+model = go2.addModel(id = "model")
+model.setMaterial('model')
+model.setMesh('cube')
+model.setTexture('tex0' , 'logo_256')
+go2.position.update({
+    "x" : game.gameproject.display.width * 0.5  , 
+    "y" : game.gameproject.display.height * 0.5 
+})
+go2.scale3.update({
+    "x" : game.gameproject.display.width * 0.5  , 
+    "y" : game.gameproject.display.height * 0.5 
+})
+game.update()
+
+
+```
