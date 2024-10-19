@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blast_ct"
+version = "2.0.1"
+description = "Automatic segmentation of Traumatic Brain Injury (TBI) in Head CT"
+authors = [
+    { name = "Miguel Monteiro", email = "miguel.monteiro@imperial.ac.uk" }
+]
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.6"
+dependencies = [
+    "scipy",
+    "numpy",
+    "pandas",
+    "SimpleITK",
+    "torch",
+    "tensorboard"
+]
+
+[project.urls]
+"Repository" = "https://github.com/biomedia-mira/blast_ct"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["blast_ct"]
+
+[tool.setuptools.package-data]
+blast_ct = [
+    "data/saved_models/*.torch_model",
+    "data/config.json",
+    "README.md",
+    "data/localisation_files/*.nii.gz",
+    "data/localisation_files/atlas_labels.csv"
+]
+
+[project.scripts]
+blast-ct = "blast_ct.console_tool:console_tool"
+blast-ct-inference = "blast_ct.inference:inference"
+blast-ct-train = "blast_ct.train:train"
