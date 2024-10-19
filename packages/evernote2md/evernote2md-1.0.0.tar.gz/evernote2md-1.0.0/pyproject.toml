@@ -1,0 +1,42 @@
+[project]
+name = "evernote2md"
+version = "1.0.0"
+description = "A command line tool to make a Markdown vault from an Evernote export"
+authors = [
+    { name = "Dave Pearson", email = "davep@davep.org" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "markdownify>=0.13.1",
+    "pytz>=2024.2",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[project.urls]
+Homepage = "https://github.com/davep/evernote2md"
+Repository = "https://github.com/davep/evernote2md"
+Documentation = "https://github.com/davep/evernote2md"
+Issues = "https://github.com/davep/evernote2md/issues"
+
+[project.scripts]
+evernote2md = "evernote2md.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pre-commit>=4.0.1",
+    "mypy>=1.12.0",
+    "types-beautifulsoup4>=4.12.0.20240907",
+    "types-pytz>=2024.2.0.20241003",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/evernote2md"]
