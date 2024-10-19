@@ -1,0 +1,1 @@
+from fasthexgen.main import cli
