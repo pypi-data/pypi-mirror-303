@@ -1,0 +1,38 @@
+Getting Started
+===============
+
+Install
+-------
+
+You can obtain Pyrometheus from the Python Package Index (PyPI) by running::
+
+    pip install pyrometheus
+
+Test
+----
+
+You first need to install CMake (a build system generator). Then, you can install
+the required Python dependencies to run Pyrometheus's tests for all backends::
+
+    pip install .[test]
+
+before running the tests with CMake::
+
+    cmake -S test -B build
+    cmake --build build
+    ctest --test-dir build
+
+Building the Documentation
+--------------------------
+
+You need to install Sphinx (a Python documentation tool) and two third-party
+packages to build the docs::
+
+    pip install .[docs]
+
+Then simply run::
+
+    cd doc
+    make html
+
+and browse the docs starting from ``doc/_build/html/index.html``.
