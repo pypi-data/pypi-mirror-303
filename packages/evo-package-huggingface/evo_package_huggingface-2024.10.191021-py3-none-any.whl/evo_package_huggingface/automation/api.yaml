@@ -1,0 +1,40 @@
+#========================================================================================================================================
+# CyborgAI CC BY-NC-ND 4.0 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Internation    https://github.com/cyborg-ai-git | 
+#========================================================================================================================================
+
+# VALID TYPE FOR INPUT/OUTPUT:
+#   EOBJECT EOBJECT_CLASS
+
+package: evo_package_huggingface
+
+control:
+  CHuggingfaceChatApi:
+    _DOC_: "CHuggingfaceApi description"
+    
+    huggingface-chatstream:
+      description: "huggingface-chatstream _DESCRIPTION_ [USE evo.package.chat API]"
+      required: "eChatInput.apiToken|eChatInput.modelID"
+      callback: onChatStream
+      input: EOBJECT evo_package_chat.entity.EChatInput
+      output: EOBJECT evo_package_chat.entity.EChatMessage
+
+    huggingface-get_mapmodel:
+      description: "huggingface-get_mapmodel _DESCRIPTION_ [USE evo.package.chat API]"
+      required: "eChatInput.apiToken"
+      callback: onGetMapModel
+      input: EOBJECT evo_package_chat.entity.EChatInput
+      output: EOBJECT evo_package_chat.entity.EChatMapModel
+
+    huggingface-get_mapmessage:
+      description: "huggingface-get_mapmessage _DESCRIPTION_ [USE evo.package.chat API]"
+      required: "eChatInput.apiToken|eChatInput.modelID|eChatInput.sessionID"
+      callback: onGetMapMessage
+      input: EOBJECT evo_package_chat.entity.EChatInput
+      output: EOBJECT evo_package_chat.entity.EChatMapMessage
+
+    huggingface-get_mapsession:
+      description: "huggingface-get_mapsession _DESCRIPTION_ [USE evo.package.chat API]"
+      required: "eChatInput.apiToken|eChatInput.modelID"
+      callback: onGetMapSession
+      input: EOBJECT evo_package_chat.entity.EChatInput
+      output: EOBJECT evo_package_chat.entity.EChatMapSession
