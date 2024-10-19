@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "django-nitro-mailer"
+version = "0.1.0"
+description = "Django mails. Supercharged."
+authors = ["Kamil Marut <kamil@kamilmarut.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "dev_settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.0"
+pytest = "^8.3.3"
+pytest-django = "^4.9.0"
+mkdocs-material = "^9.5.41"
+mkdocs = "^1.6.1"
+djlint = "^1.35.2"
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "C90",
+    "I",
+    "N",
+    "UP",
+    "ICN",
+    "ANN",
+    "YTT",
+    "ASYNC",
+    "S",
+    "B",
+    "A",
+    "C4",
+    "DTZ",
+    "DJ",
+    "EM",
+    "G",
+    "PIE",
+    "T20",
+    "RSE",
+    "SIM",
+    "PTH",
+    "PD",
+    "TRY",
+    "RUF",
+    "PIE",
+    "INT",
+    "TCH",
+    "PERF",
+    "FURB",
+]
+ignore = ["ANN401", "TRY003"]
+
+[tool.ruff.lint.per-file-ignores]
+"test_*.py" = ["S101"]
+"**/migrations/0*.py" = ["RUF012"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
