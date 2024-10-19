@@ -1,0 +1,26 @@
+# -*- coding: UTF-8 -*-
+__author__ = 'helios'
+__doc__ = 'ModuleData'
+'''
+  * @File    :   ModuleData.py
+  * @Time    :   2023/06/03 10:36:13
+  * @Author  :   helios
+  * @Version :   1.0
+  * @Contact :   yuyang.0515@qq.com
+  * @License :   (C)Copyright 2019-2023, Ship of Ocean
+  * @Desc    :   None
+'''
+
+from importlib_resources import files
+from .BaseModuleData import BaseModuleData
+import {module_name}
+
+
+def is_empty_string(a_string: str | None):
+    return not isinstance(a_string, str) or not a_string or len(a_string) == 0
+
+class ModuleData(BaseModuleData):
+
+    def __init__(self):
+        self.data_path = files({module_name}.__name__).joinpath("data")  # type: ignore
+    

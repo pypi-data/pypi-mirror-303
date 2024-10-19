@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+requires-python = ">=3.11.3"
+
+name = "{module_name}"
+
+authors = [{{ name = "helios", email = "yuyang.0515@qq.com" }}]
+description = "{module_name} 模块"
+
+dynamic = ["version", "readme"]
+
+classifiers = ["Programming Language :: Python :: 3.11.3"]
+
+dependencies = ["importlib_resources"]
+
+{project_scripts}
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["{module_name}"]
+namespaces = false
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {{ file = "VERSION" }}
+readme = {{ file = ["README.rst", "USAGE.rst", "README.md", "USAGE.md"] }}
