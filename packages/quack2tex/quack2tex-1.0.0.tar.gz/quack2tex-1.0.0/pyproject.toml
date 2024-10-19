@@ -1,0 +1,32 @@
+[project]
+name = "quack2tex"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiosqlite>=0.20.0",
+    "google-generativeai>=0.8.3",
+    "markdown>=3.7",
+    "matplotlib>=3.9.2",
+    "mss>=9.0.2",
+    "ollama>=0.3.3",
+    "openai>=1.52.0",
+    "pillow>=11.0.0",
+    "pydantic>=2.9.2",
+    "pydantic-settings>=2.6.0",
+    "pyside6>=6.8.0.1",
+    "python-dotenv>=1.0.1",
+    "scipy>=1.14.1",
+    "sqlalchemy>=2.0.36",
+    "tenacity>=9.0.0",
+    "typer>=0.12.5",
+]
+
+
+[project.gui-scripts]
+quack2tex = "quack2tex.cli:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
