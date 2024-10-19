@@ -1,0 +1,62 @@
+# WebSocket Client Python Package
+
+This is a simple Python package that connects to a WebSocket server and consumes messages. It supports basic connection, message handling, and error handling functionality.
+
+## Features
+
+- Connect to a WebSocket server
+- Consume and process messages from the WebSocket
+- Handle connection and message errors
+
+## Requirements
+
+- Python 3.7+
+- `websockets` package
+
+## Installation
+
+You can install the package by cloning the repository and installing the dependencies:
+
+```bash
+git clone https://github.com/your-username/websocket-client-package.git
+cd websocket-client-package
+pip install -r requirements.txt
+```
+
+Alternatively, you can install the websockets package directly if you only need the WebSocket client:
+
+## Usage
+
+Here's an example of how to use the package to connect to a WebSocket and consume messages:
+
+```python
+import asyncio
+import websockets
+
+async def consume_messages():
+    uri = "ws://example.com/websocket"
+
+    async with websockets.connect(uri) as websocket:
+        print(f"Connected to {uri}")
+
+        try:
+            async for message in websocket:
+                print(f"Received: {message}")
+                # Add your message processing logic here
+
+        except websockets.ConnectionClosed as e:
+            print(f"Connection closed: {e}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    asyncio.run(consume_messages())
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue to report bugs or request features.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
