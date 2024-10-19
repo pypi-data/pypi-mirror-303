@@ -1,0 +1,146 @@
+<p align="center">
+  <img src="dsql.png" alt="DCheck Logo" width="150">
+</p>
+
+# dsqlenv-Env
+
+[中文](README_zh.md) | English
+
+`dsqlenv` is a SQL database operation tool designed to help developers quickly synchronize common variables, such as API keys, across different environments or hosts. All variables stored in the database are encrypted using AES for enhanced security.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Quick Usage](#quick-usage)
+- [Python Usage Examples](#python-usage-examples)
+- [CLI Usage Examples](#cli-usage-examples)
+- [License](#license)
+
+## Features
+
+- **Environment Variable Management**: Search and update environment variables using keywords or regular expressions.
+- **Database Operations**: Perform basic SQL operations like get, insert, update, and delete records securely.
+- **AES Encryption**: All variables stored in the database are encrypted to ensure sensitive information is protected.
+
+## Installation
+
+To install `dsqlenv`, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://gitee.com/iint/dsqlenv.git
+   cd dsqlenv
+   ```
+
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Create a `.env` file in the root directory and define the necessary environment variables, as explained in the next section.
+
+or 
+
+```bash
+pip install dsqlenv
+```
+
+## Configuration
+
+Before using `dsqlenv`, ensure that your environment variables contain the following database information:
+
+```bash
+DB_USER='<username>'  # Database username for authentication
+DB_PASSWORD='<password>'  # Password for the database user
+DB_NAME='xxx'  # The name of the database to connect to
+DB_HOST='xxx'  # Hostname or IP address of the database server
+DB_PORT='xxx'  # Port number for the database connection (default for MySQL is 3306)
+AES_KEY='xxx'  # AES encryption key for securing sensitive data
+TABLE_NAME='dagent_info'  # The name of the table to perform operations on
+ID_COLUMN='name'  # The column name that acts as the unique identifier for records
+INFO_COLUMN='data'  # The column name that stores the data you want to retrieve or update
+```
+
+Make sure to replace the placeholder values with your actual database credentials.
+
+## Quick Usage
+
+To get started with `dsqlenv`, you can use the command-line interface (CLI) for quick database and environment variable operations.
+
+### Basic Commands
+
+- **Get a Record**:
+  ```bash
+  dsqlenv db --action get --id <Record ID>
+  ```
+
+- **Insert a Record**:
+  ```bash
+  dsqlenv db --action insert --id <Record ID> --data <Record data>
+  ```
+
+- **Update a Record**:
+  ```bash
+  dsqlenv db --action update --id <Record ID> --data <Record data>
+  ```
+
+- **Delete a Record**:
+  ```bash
+  dsqlenv db --action delete --id <Record ID>
+  ```
+
+## Python Usage Examples
+
+You can also use the `dsqlenv` library directly in your Python code.
+
+```python
+from dsqlenv.core import SQL
+from dsqlenv.config import load_config
+
+# Load configuration
+config = load_config()
+db = SQL(config)
+
+# Insert a new record
+db.insert_data("api_key", "your_api_key")
+
+# Get a record by ID
+data = db.get_data_by_id("api_key")
+print(data)
+
+# Update a record
+db.update_data("api_key", "new_api_key")
+
+# Delete a record
+db.delete_data("api_key")
+```
+
+## CLI Usage Examples
+
+Here are some examples of how to use the CLI effectively:
+
+- **Search for Environment Variables**:
+  ```bash
+  dsqlenv search-env --keyword SECRET
+  ```
+
+- **Update an Environment Variable**:
+  ```bash
+  dsqlenv update-env --key API_KEY --value new_value
+  ```
+
+- **Search using Regular Expressions**:
+  ```bash
+  dsqlenv re search '^SECRET'
+  ```
+
+- **Update using Regular Expressions**:
+  ```bash
+  dsqlenv re update '^API_' 'new_value'
+  ```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
