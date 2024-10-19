@@ -1,0 +1,36 @@
+[project]
+name = "savvi"
+version = "0.2.0"
+description = "savvi is a package for Safe Anytime Valid Inference"
+authors = [
+    { name = "Luís Assunção", email = "assuncaolfi@gmail.com" },
+]
+dependencies = [
+    "numpy<2.0.0",
+    "scipy>=1.13.1",
+    "cvxpy>=1.5.2",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pyright>=1.1.368",
+    "quartodoc>=0.8.1",
+    "jupyter>=1.0.0",
+    "jupytext>=1.16.2",
+    "matplotlib>=3.9.0",
+    "jupyter-cache>=1.0.0",
+]
