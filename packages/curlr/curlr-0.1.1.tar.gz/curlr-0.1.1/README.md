@@ -1,0 +1,48 @@
+# curlr
+
+curlr is a Python package that allows you to parse and execute cURL commands easily.
+
+## Installation
+
+You can install curlr using pip:
+
+```
+pip install curlr
+```
+
+## Usage
+
+Here's a simple example of how to use curlr:
+
+```python
+import requests
+from curlr import CURL
+
+# Using a cURL command string
+curl_command = "curl -X POST -H 'Content-Type: application/json' -d '{\"key\":\"value\"}' https://api.example.com/endpoint"
+curl = CURL(command=curl_command)
+
+# Or using a file containing the cURL command
+# curl = CURL(path="path/to/curl.txt")
+
+# Get a prepared request
+request = curl.request()
+
+# Execute the request
+response = curl.execute()# equivalent to: requests.Session().send(request)
+
+# Or use individual properties
+response = getattr(requests, curl.method.lower())(
+    curl.url,
+    headers=curl.headers,
+    cookies=curl.cookies,
+    json=curl.data
+)
+
+print(response.status_code)
+print(response.json())
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
