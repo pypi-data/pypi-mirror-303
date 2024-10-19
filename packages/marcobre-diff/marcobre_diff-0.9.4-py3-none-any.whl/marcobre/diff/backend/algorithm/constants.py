@@ -1,0 +1,1 @@
+GRADES = ["CUT", "CUAS", "CUCN", "CUR", "C", "FE", "AG", "S", "AU", "AS", "P", "LITH"]
