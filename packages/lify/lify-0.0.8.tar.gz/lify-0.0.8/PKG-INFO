@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: lify
+Version: 0.0.8
+Summary: A Python cross-platform project management toolkit.
+Home-page: https://sidoware.com
+Author: sidoware
+Author-email: developer@sidoware.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# **Lify**
+- A Python cross-platform project management toolkit.
+
+## **Specification**
+
+### **Development Environment**
+- **Operating System**: Windows
+- **Python Version**: Python 3.10.11
+- **Editor**: Visual Studio Code (VSCode)
+
+### **Supported Environments**
+- **Operating Systems**: Windows, Linux, macOS
+- **Python Version**: Python 3.7+
+- **Editor**: Any editor (VSCode, PyCharm, etc.)
+
+## **Manual**
+
+### **Installation**
+To install `lify`, use the following pip command:
+```cmd
+pip install lify
+```
+
+### **Commands**
+- Create New Project:
+> Creates a `{name}.lify` file where the project name is the same as the directory name.
+```cmd
+:: Creates a project at the specified absolute path.
+lify new "{projectfullpath}"
+
+:: Creates a project in the current working directory by making a new directory named `{name}` and generating the project there.
+lify new "{name}"
+
+:: Creates a project in the current working directory.
+lify new
+```
+
+- Build Project:
+```cmd
+:: Builds the executable file for the project.
+lify build exec
+
+:: Builds the project as a library (e.g., a wheel package).
+lify build library
+```
+
+- Run Source Code:
+```cmd
+:: Runs the source code for the project in the current directory.
+lify run
+```
+
+- Remove Temporary Project Files:
+```cmd
+:: Removes temporary files from the project directory.
+lify clean
+```
+
+- Update Project:
+```cmd
+:: Automatically updates the project, handling package management and other necessary tasks.
+lify update
+```
+
+- Create Configuration:
+```cmd
+:: Creates a new configuration.
+lify config create "{name}"
+```
+
+- Set Configuration:
+```cmd
+:: Sets the current configuration.
+lify config set "{name}"
+```
+
+- Remove Configuration:
+```cmd
+:: Removes an existing configuration.
+lify config remove "{name}"
+```
+
+- List Configuration:
+```cmd
+:: Lists all available configurations.
+lify config list
+```
