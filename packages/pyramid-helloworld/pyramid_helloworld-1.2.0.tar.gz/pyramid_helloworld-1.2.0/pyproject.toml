@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "pyramid-helloworld"
+version = "1.2.0"
+description = "Hello World web app using pyramid."
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+license = "BSD-derived"
+include = ["development.yaml"]
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+celery = { version = "^5", optional = true}
+plaster-yaml = "^1.1.0"
+pyramid = ">1.10, ^2.0"
+waitress = "^2.0.0"
+
+[tool.poetry.extras]
+celery = ["celery", "celery-yaml"]
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.2"
+
+[tool.poetry.plugins."paste.app_factory"]
+main = "pyramid_helloworld:main"
+
+[tool.poetry.plugins."celery_yaml.app"]
+main = "pyramid_helloworld.backend:app"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
