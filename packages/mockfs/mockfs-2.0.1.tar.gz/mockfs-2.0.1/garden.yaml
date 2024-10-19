@@ -1,0 +1,74 @@
+# Use "cargo install garden-tools" to install garden https://gitlab.com/garden-rs/garden
+#
+# Usage:
+#   garden grow pages           # Clone mockfs.github.io to pages/.
+#   garden dev                  # Create an "env3" virtualenv for development.
+#   garden doc                  # Generate documentation to pages/.
+#   garden test                 # Run tests directly using "pytest".
+#   garden tox                  # Run tests using "tox".
+#   garden fmt                  # Format code using "cercis".
+trees:
+  mockfs:
+    description: A simple mock filesystem for unit tests
+    path: "${GARDEN_CONFIG_DIR}"
+    url: "git@github.com:mockfs/mockfs.git"
+    remotes:
+      davvid: "git@github.com:davvid/mockfs.git"
+    commands:
+      clean: |
+        rm -fr build .coverage dist ${TREE_NAME}.egg-info
+      check>:
+        - test
+        - check/fmt
+        - doc
+      check/fmt: "garden fmt ${GARDEN_CMD_VERBOSE} -- --check"
+      doc: |
+        ${activate}
+        python3 -m sphinx "$@" docs pages
+      fmt: |
+        if test -f ./${env_dir}/bin/activate
+        then
+          source ./${env_dir}/bin/activate
+        fi
+        cercis --version
+        cercis mockfs tests "$@"
+        isort --profile=black "$@" mockfs tests
+      install: |
+        ${activate}
+        if test -n "${DESTDIR}"
+        then
+            install_args="--root=${DESTDIR}"
+        fi
+        pip install --disable-pip-version-check --prefix="${prefix}" $install_args "$@" .
+      dev: |
+        test -d ${env_dir} || python3 -m venv --system-site-packages ${env_dir}
+        ${activate}
+        pip install --editable '.[build,dev,docs,testing]'
+      publish: |
+        ${activate}
+        twine upload --sign dist/*.whl dist/*.tar.gz
+      test: ${activate} python3 -m pytest --doctest-modules "$@" mockfs tests
+      tox: |
+        tox run-parallel --parallel-live "$@"
+      wheel: |
+        ${activate}
+        python3 -m build -n .
+  pages:
+    description: mockfs documentation hosted on mockfs.github.io
+    url: "git@github.com:mockfs/mockfs.github.io"
+
+variables:
+  DESTDIR: ""
+  prefix: "${TREE_PATH}/dist/${TREE_NAME}"
+  env_dir: env3
+  activate: |
+    if test -z "${is_virtualenv}" && test -f "${env_dir}/bin/activate"
+    then
+        source "${env_dir}/bin/activate"
+    fi
+  is_virtualenv: |
+    $ python3 -c '
+    import os, sys
+    if sys.prefix != sys.base_prefix or os.environ.get("VIRTUAL_ENV"):
+        print("true")
+    '

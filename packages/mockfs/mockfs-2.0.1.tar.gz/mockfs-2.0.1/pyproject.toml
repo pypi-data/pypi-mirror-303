@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools >= 56", "setuptools_scm[toml] >= 3.4.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mockfs"
+authors = [
+    {name = "David Aguilar", email = "davvid+mockfs@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Testing :: Mocking",
+    "Topic :: Software Development :: Testing :: Unit",
+]
+description = "A simple mock filesystem for unit tests"
+dependencies = []
+dynamic = ["version"]
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Documentation = "https://mockfs.readthedocs.org/"
+Homepage = "https://mockfs.github.io/"
+Source = "https://github.com/mockfs/mockfs"
+
+[project.optional-dependencies]
+cov = [
+    "pytest-cov",
+]
+testing = [
+    "pytest >= 6.0, != 8.1.*",
+    "pytest-checkdocs >= 2.4",
+    "pytest-enabler >= 2.2",
+    "pytest-ruff",
+]
+docs = [
+    "sphinx",
+    "jaraco.packaging >= 9",
+    "rst.linker >= 1.9",
+    "furo",
+]
+dev = [
+    "cercis",
+    "isort",
+]
+build = [
+    "build",
+    "setuptools >= 56",
+    "setuptools_scm[toml] >= 3.4.1",
+    "twine",
+    "wheel",
+]
+
+[tool.cercis]
+function-definition-extra-indent = false
+line-length = 88
+
+[tool.pytest-enabler.ruff]
+addopts = "--ruff"
+
+[tool.setuptools]
+packages = [
+    "mockfs",
+]
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools_scm]
+fallback_version = "2.0.0"
