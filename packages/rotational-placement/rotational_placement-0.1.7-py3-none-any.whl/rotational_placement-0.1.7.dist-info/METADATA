@@ -1,0 +1,63 @@
+Metadata-Version: 2.3
+Name: rotational_placement
+Version: 0.1.7
+Summary: A package for generating and visualizing data related to the concept of rotational placement
+Project-URL: Homepage, https://github.com/Ingwehr/RotationalPlacementPackage
+Author-email: ingwehr <backlund.hugo@gmail.com>
+License: Academic Free License (AFL)
+License-File: LICENSE
+Classifier: License :: OSI Approved :: Academic Free License (AFL)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: sympy
+Description-Content-Type: text/markdown
+
+# Rotational Placement
+
+A package for generating and visualizing data related to rotational placement.
+
+### Initial setup
+Using pip: `pip install rotational_placement`
+
+### Experiment class
+
+create an Experiment instance
+
+`exp = Experiment(alias="1.pi",a=113,b=355,step_size=1,experiment_type="num")`
+
+generate data and save it to a file
+
+`exp.run_experiment(151)`
+
+`exp.write_to_file()`
+
+read experiment instance from a file
+
+`exp = Experiment.read_from_file(alias="1.pi",a=113,b=355,step_size=1,experiment_type="num")`
+
+The Experiment class also has a number of getter methods, the following are included: 
+
+`.get_meta_data()`
+
+`.get_max_radius()`
+
+`.get_density_data()`
+
+`.get_radius_data()`
+
+`.get_seed_data()`
+
+`.get_efficacy_data()`
+
+## Plotting
+
+The following plots are included as of now: 
+
+They save the plots at the location specified in config.json.
+
+`plot_density(alias_list=['num','sym','ff'],*experiments=ff_exp,num_exp,sym_exp)`
+
