@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: filefrag
+Version: 0.0.1
+Summary: examine fragments of files in the filesystem
+Author-email: Gareth Davidson <gaz@bitplane.net>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: System :: Filesystems
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: Public Domain
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Environment :: Console
+Requires-Dist: flake8 ; extra == "dev"
+Requires-Dist: pre-commit ; extra == "dev"
+Requires-Dist: pytest ; extra == "dev"
+Requires-Dist: coverage ; extra == "dev"
+Requires-Dist: twine ; extra == "dev"
+Requires-Dist: build ; extra == "dev"
+Provides-Extra: dev
+
+# filefrag
+
+Python library to get FIE and command line tool
+
+## Install
+
+```bash
+pip install filefrag
+```
+
+## Usage
+
+```python
+from filefrag import FileMap
+
+mapping = FileMap('/usr/bin/bash')
+
+print(mapping)
+print(extents)
+```
+
+## Command line
+
+```bash
+pyfilefrag --help
+
+pyfilefrag -j /dev/null
+```
+
