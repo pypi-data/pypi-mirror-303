@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: mockfs
+Version: 2.0.1
+Summary: A simple mock filesystem for unit tests
+Author-email: David Aguilar <davvid+mockfs@gmail.com>
+Project-URL: Documentation, https://mockfs.readthedocs.org/
+Project-URL: Homepage, https://mockfs.github.io/
+Project-URL: Source, https://github.com/mockfs/mockfs
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Testing :: Mocking
+Classifier: Topic :: Software Development :: Testing :: Unit
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Provides-Extra: build
+Requires-Dist: build; extra == "build"
+Requires-Dist: setuptools>=56; extra == "build"
+Requires-Dist: setuptools-scm[toml]>=3.4.1; extra == "build"
+Requires-Dist: twine; extra == "build"
+Requires-Dist: wheel; extra == "build"
+Provides-Extra: cov
+Requires-Dist: pytest-cov; extra == "cov"
+Provides-Extra: dev
+Requires-Dist: cercis; extra == "dev"
+Requires-Dist: isort; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx; extra == "docs"
+Requires-Dist: jaraco.packaging>=9; extra == "docs"
+Requires-Dist: rst.linker>=1.9; extra == "docs"
+Requires-Dist: furo; extra == "docs"
+Provides-Extra: testing
+Requires-Dist: pytest!=8.1.*,>=6.0; extra == "testing"
+Requires-Dist: pytest-checkdocs>=2.4; extra == "testing"
+Requires-Dist: pytest-enabler>=2.2; extra == "testing"
+Requires-Dist: pytest-ruff; extra == "testing"
+
+.. image:: https://img.shields.io/pypi/v/mockfs.svg
+   :target: `PyPI link`_
+
+.. image:: https://img.shields.io/pypi/pyversions/mockfs.svg
+   :target: `PyPI link`_
+
+.. _PyPI link: https://pypi.org/project/mockfs
+
+.. .. image:: https://dev.azure.com/jaraco/skeleton/_apis/build/status/jaraco.skeleton?branchName=master
+..    :target: https://dev.azure.com/jaraco/skeleton/_build/latest?definitionId=1&branchName=master
+
+.. .. image:: https://img.shields.io/travis/jaraco/skeleton/master.svg
+..    :target: https://travis-ci.org/jaraco/skeleton
+
+.. .. image:: https://img.shields.io/appveyor/ci/jaraco/skeleton/master.svg
+..    :target: https://ci.appveyor.com/project/jaraco/skeleton/branch/master
+
+.. .. image:: https://readthedocs.org/projects/skeleton/badge/?version=latest
+..    :target: https://skeleton.readthedocs.io/en/latest/?badge=latest
+
+
+=================================================
+mockfs -- A simple mock filesystem for unit tests
+=================================================
+
+`mockfs` makes it possible to test filesystem-dependent code by
+replacing functions from the `os` and `glob` modules.
+
+* [Documentation](https://mockfs.readthedocs.org)
+* [Source](https://github.com/mockfs/mockfs)
