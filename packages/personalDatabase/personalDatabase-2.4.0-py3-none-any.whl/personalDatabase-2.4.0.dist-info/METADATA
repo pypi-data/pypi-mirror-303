@@ -1,0 +1,198 @@
+Metadata-Version: 2.1
+Name: personalDatabase
+Version: 2.4.0
+Summary: All functions that assist in standardising development approaches.
+Home-page: https://github.com/yourusername/your-repo
+Author: Marcus
+Author-email: marcusongkiansiong@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: custom-development-standardisation >=1.1.2
+Requires-Dist: log-data >=1.2.0
+Requires-Dist: psycopg2 >=2.9.9
+Requires-Dist: python-dotenv >=1.0.1
+
+# Notes
+1. about `insert` command
+    It is under the category of edit commands, which require committing after making the change. 
+
+
+## Modification
+### Bug fix
+- [x] insert method only allows for single insert and not bulk insert. 
+    > *Corrected by changing a condition that checks if new table count is not one more than the previous table count to checking if both are the same. If they are, means that there is a problem, so return error.*
+### Improvements
+- ✅ Added disconnect functionality (cursor and connection)
+    > Needed to counter the possibility of SSL disconnect unexpectedly by constantly refreshing connections.
+- ☑️ Change logging functionality to be optional rather than a necessity
+- ☑️ Restructuring code to increase readability and understanding
+    Blocking multiple psql commands such that one command can use the output of the previous command
+        ***(See appendix 1)***
+- ☑️ Add a way to chain multiple commands together. 
+    *Source [backend](../../projects/portfolio_display/infrastructure/testing_back_end/visualisation/email_performance/README.md):*
+    ```python
+        // Chain 1 (ABSTRACT THIS PART)
+        client.cursor.execute("""
+            CREATE temp TABLE strategy_times AS
+            SELECT
+                constructedmessage.strategy,
+                sent_timestamp,
+                replied_timestamp,
+                (replied_timestamp - sent_timestamp) AS time_difference
+            FROM
+                emails_sent
+            INNER JOIN
+                constructedmessage
+            ON
+                message_table_index = constructedmessage.id;                   
+        """)
+        client.connection.commit()
+
+        // Chain 2
+        outcome = client.retrieve('select * from strategy_times;')
+        if outcome["outcome"] == "error":  
+            client.cursor.execute("drop table strategy_times")
+            client.connection.commit()
+            return generate_outcome_message("error",data["output"],the_type=data["the_type"])
+
+        // Chain 3 (ABSTRACT THIS PART)
+        client.cursor.execute("drop table strategy_times")
+        client.connection.commit()
+    ```
+# Column types
+1. timestamp
+    - 
+
+
+
+# Concepts
+1.  timestamp
+    - Base:
+        - Minimum number of digits: 10
+            *Any lower precision involve turning beginning digits to 0.*
+    - precision levels:
+        10 digits: seconds
+        13 digits: Millisecond
+        16 digits: microseconds
+    - precision in python:
+        - seconds: timestamp(0)
+        - milliseconds: timestamp(3)
+2.  
+
+
+## Appendix
+1. Blocking multiple commands together
+```python
+    # Start a transaction block
+    conn.autocommit = False
+
+    # Create a table
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS table1 (
+            id SERIAL PRIMARY KEY,
+            data VARCHAR(100)
+        );
+    """)
+
+    # Insert data into the table
+    cur.execute("""
+        INSERT INTO table1 (data) VALUES ('Sample Data');
+    """)
+
+    # Commit the transaction
+    conn.commit()
+```
+
+10# Change log
+### [2.4.0] - 2024-10-19
+add:
+1. Disconnect method: Run cursor.close() and connection.close() method.
+fixed:
+others:
+1. Purpose: Counter the possibility of SSL disconnect unexpectedly by repeatedly creating new connections when you need to execute something in the database. 
+### [2.3.2] - 2024-09-08
+add:
+fixed:
+1. get_logger: Direct import of logger variable does not change for files that import it when logger changes.
+others:
+### [2.3.1] - 2024-09-07
+add:
+fixed:
+others:
+1. Reposition logger and insert_logger to high level init file, then have other files import logger variable to prevent multiple instances insert_logger execution for a single import of custom package.
+2. This rearrangement is built on the fact that importing objects will result in a pass by reference, and any reset of logging function will propagate towards all files within the package that uses log method.
+### [2.3.0] - 2024-09-07
+add:
+1. insert_logger: add log class instance
+2. logger: Variable to hold log class instance
+3. logging_method_execution_encapsulation: encapsulated log method in try except block.
+fixed:
+others:
+1. logging_method_execution_encapsulation: Allow for function execution even if there is something wrong with logging function.
+### [2.2.5] - 2024-07-05
+add:
+fixed:
+others:
+1. Foundation: Changed insert function operation (see .2 and .3) such that it allows for bulk insert in a single command.
+2. Previous operation - if the new table state after insert is not one more (count) than the previous table state, return an error.
+3. New operation - If the new table state (count) is equal to the previous table state, return an error.
+### [2.2.4] - 2024-06-20
+add:
+fixed:
+1. log_data package import problem involving conflicts due to codependency between log package and this package. 
+others:
+1. Problem is solved (see fixed, 1) by making logging operations use their own database operations created from psycopg2 package. See change_log of log_data (patch 1.1.0)
+### [2.2.3] - 2024-06-19
+add:
+fixed:
+1. In foundation, custom_logger class init cannot find any class called foundation(the database class). Attempting to rearrange custom_logger to the bottom of the foundation file to solve the problem.
+others:
+### [2.2.2] - 2024-06-19
+add:
+1. Added log operation.
+fixed:
+others:
+### [2.2.1] - 2024-06-17
+add:
+fixed:
+1. Foundation: bug in insert, involving the use of the self.execute function name when it should have been self.retrieve.
+others:
+### [2.2.0] - 2024-06-17
+add:
+1. Foundation: Added insert commands
+2. Foundation: connection variable added, for committing changes made by insert commands. 
+3. Foundation: check_for_edit_action checks if a command is of edit type, and what type of edit is being made. 
+fixed:
+1. Foundation: execute command checks if the command is of type edit. Ensuring errors arising from running fetchall method after an executing an edit based command does not occur again.
+others:
+1. Foundation: Changed the name from execute to retrieve, since its operation (fetch all) generates error for edit based commands.
+### [2.1.1] - 2024-06-17
+add:
+fixed:
+1. Foundation: Execution of scripts reliant on the package is slow because of code execution during testing phase that I forget to delete.
+others:
+### [2.1.0] - 2024-06-16
+add:
+1. Foundation: added user parameter for database connection
+2. Foundation: added host parameter for database connection
+fixed:
+others:
+1. Foundation: changed port number from 5432 to 5433
+2. Foundation: With the changes, initialising has two paths. One: default parameter with only data base name. Two: user and host specification alongside database name.
+### [2.0.0] - 2024-06-07
+add:
+fixed:
+others:
+1. Restructuring foundation: explicitly state the database to connect, within the script that uses the package, through the use of functions.
+2. Available commands: execute, initialise
+### [1.0.0] - 2024-06-07
+add:
+1. function_usage: a script for retrieving or modifying data for logging_data table
+2. actions: script for retrieving or modifying data for actions table
+3. general_functionality: utility functions that act on databases. for example, count number of uniques.
+fixed:
+others:
+1. remote_connection: An attempt to build a script to allow for remote connection to database.
