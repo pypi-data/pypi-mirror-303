@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: samudra_scale
+Version: 0.1.2
+Summary: A python library for extracting weights from byte data
+Home-page: https://github.com/dap23/samudra-scale
+Author: Muhammad Daffa
+Author-email: mdaffa2301@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Samudra Scale
+
+This Library helps you extract weight from byte data encoded in a specific way, by mapping byte sequences to numeric digits
+
+## Example usage:
+
+```python
+from samudra_scale import decode_bytes
+
+data = b'S\xd4\xacGS\xac+\xa000\xb8950\xeb\xe7\x8d\n'
+weight = decode_bytes(data)
+print(weight) # 8950
+```
