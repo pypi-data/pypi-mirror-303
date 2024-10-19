@@ -1,0 +1,1 @@
+from .rife_ncnn_vulkan import Rife, RIFE, wrapped
