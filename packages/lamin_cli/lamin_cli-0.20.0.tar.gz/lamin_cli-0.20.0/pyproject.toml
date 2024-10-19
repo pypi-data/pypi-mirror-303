@@ -1,0 +1,24 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "lamin_cli"
+authors = [{name = "Lamin Labs", email = "open-source@lamin.ai"}]
+readme = "README.md"
+dynamic = ["version", "description"]
+dependencies = [
+    # lamindb-setup is only pinned here
+    # NOT in lamindb
+    "lamindb_setup==0.79.0",
+    "rich-click>=1.7",
+]
+
+[project.urls]
+Home = "https://github.com/laminlabs/lamin-cli"
+
+[project.scripts]
+lamin = "lamin_cli.__main__:main"
+
+[tool.black]
+preview = true
