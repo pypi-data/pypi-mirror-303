@@ -1,0 +1,168 @@
+[project]
+authors = [
+    { name = "AIOSonos", email = "m.vanderveldt@users.noreply.github.com" },
+]
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "aiohttp>=3.8.4",
+    "orjson>=3.8.9",
+]
+description = "Async python library to communicate with Sonos devices."
+name = "aiosonos"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "0.1.6"
+
+[project.license]
+text = "Apache-2.0"
+
+[project.optional-dependencies]
+speedups = [
+    "faust-cchardet>=2.1.18",
+    "aiodns>=3.0.0",
+    "Brotli>=1.0.9",
+]
+test = [
+    "codespell==2.3.0",
+    "mypy==1.12.0",
+    "pre-commit==4.0.1",
+    "pre-commit-hooks==5.0.0",
+    "pytest==8.3.2",
+    "pytest-aiohttp==1.0.5",
+    "pytest-cov==4.1.0",
+    "ruff==0.2.1",
+]
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+    "aiosonos",
+]
+platforms = [
+    "any",
+]
+zip-safe = false
+
+[tool.setuptools.package-data]
+aiosonos = [
+    "py.typed",
+]
+
+[tool.ruff]
+fix = true
+show-fixes = true
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = [
+    "ANN002",
+    "ANN003",
+    "ANN101",
+    "ANN401",
+    "D203",
+    "D213",
+    "D417",
+    "EM101",
+    "FIX002",
+    "PLR2004",
+    "PD011",
+    "S101",
+    "TD002",
+    "TD003",
+    "TD004",
+    "TRY003",
+    "COM812",
+    "ISC001",
+]
+select = [
+    "ALL",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.pylint]
+max-args = 20
+max-branches = 25
+max-returns = 15
+max-statements = 50
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "aiosonos",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.mypy]
+platform = "linux"
+python_version = "3.11"
+follow_imports = "normal"
+ignore_missing_imports = true
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_optional = true
+warn_incomplete_stub = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pylint.MASTER]
+extension-pkg-whitelist = [
+    "orjson",
+]
+ignore = [
+    "tests",
+]
+
+[tool.pylint.BASIC]
+good-names = [
+    "_",
+    "id",
+    "on",
+    "Run",
+    "T",
+]
+
+[tool.pylint.DESIGN]
+max-attributes = 8
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "duplicate-code",
+    "format",
+    "unsubscriptable-object",
+    "unused-argument",
+    "unspecified-encoding",
+    "isinstance-second-argument-not-valid-type",
+    "fixme",
+]
+
+[tool.pylint.SIMILARITIES]
+ignore-imports = true
+
+[tool.pylint.FORMAT]
+max-line-length = 100
+
+[tool.pytest.ini_options]
+addopts = "--cov"
+asyncio_mode = "auto"
