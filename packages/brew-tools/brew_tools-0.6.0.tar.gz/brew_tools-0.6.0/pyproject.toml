@@ -1,0 +1,25 @@
+[project]
+name = "brew-tools"
+version = "0.6.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "appdirs>=1.4.4",
+    "click>=8.1.7",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.12.0",
+    "pytest>=8.3.3",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.7.0",
+]
+package = true
+
+[project.scripts]
+brew_tools = "brew_tools:main"
+
+[tool.ruff.lint]
+ignore = ["E741"]
