@@ -1,0 +1,40 @@
+# pylint:disable=invalid-name
+from enum import (
+    Enum,
+)
+
+
+class PackageType(Enum):
+    UnknownPkg = "UnknownPackage"
+    AlpmPkg = "alpm"
+    ApkPkg = "apk"
+    BinaryPkg = "binary"
+    CocoapodsPkg = "pod"
+    ConanPkg = "conan"
+    DartPubPkg = "dart-pub"
+    DebPkg = "deb"
+    DotnetPkg = "dotnet"
+    ErlangOTPPkg = "erlang-otp"
+    GemPkg = "gem"
+    GithubActionPkg = "github-action"
+    GithubActionWorkflowPkg = "github-action-workflow"
+    GoModulePkg = "go-module"
+    GraalVMNativeImagePkg = "graalvm-native-image"
+    HackagePkg = "hackage"
+    HexPkg = "hex"
+    JavaPkg = "java-archive"
+    JenkinsPluginPkg = "jenkins-plugin"
+    KbPkg = "msrc-kb"
+    LinuxKernelPkg = "linux-kernel"
+    LinuxKernelModulePkg = "linux-kernel-module"
+    NixPkg = "nix"
+    NpmPkg = "npm"
+    PhpComposerPkg = "php-composer"
+    PhpPeclPkg = "php-pecl-pkg"
+    PortagePkg = "portage"
+    PythonPkg = "python"
+    Rpkg = "R-package"
+    RpmPkg = "rpm"
+    RustPkg = "rust-crate"
+    SwiftPkg = "swift"
+    WordpressPluginPkg = "wordpress-plugin"
