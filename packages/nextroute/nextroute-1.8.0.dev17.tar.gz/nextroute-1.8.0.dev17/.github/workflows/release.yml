@@ -1,0 +1,200 @@
+name: release
+run-name: Release ${{ inputs.VERSION }} (pre-release - ${{ inputs.IS_PRE_RELEASE }}) by @${{ github.actor }} from ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      VERSION:
+        description: "The version to release"
+        required: true
+      IS_PRE_RELEASE:
+        description: "It IS a pre-release"
+        required: true
+        default: true
+        type: boolean
+
+env:
+  GO_VERSION: 1.22.0
+  PYTHON_VERSION: 3.12
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.VERSION }}
+      GH_TOKEN: ${{ github.token }}
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+    permissions:
+      contents: write
+    steps:
+      - name: ensure proper tagging
+        run: |
+          echo "If it's a pre-release, the version should contain a hyphen"
+          if [ ${{ inputs.IS_PRE_RELEASE }} = true ]; then
+            if [[ $VERSION != *-* ]]; then
+              echo "Pre-release versions should contain a hyphen"
+              exit 1
+            fi
+          else
+            if [[ $VERSION == *-* ]]; then
+              echo "Release versions should not contain a hyphen"
+              exit 1
+            fi
+          fi
+
+      - name: ensure version is not already released
+        run: |
+          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+            echo "Version $VERSION already exists"
+            exit 1
+          fi
+
+      - name: set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: set up go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: configure git with the bot credentials
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.NEXTMVBOT_SSH_KEY }}"
+
+          echo "${{ secrets.NEXTMVBOT_SIGNING_KEY }}" > ~/.ssh/signing.key
+          chmod 600 ~/.ssh/signing.key
+
+          git config --global user.name "nextmv-bot"
+          git config --global user.email "tech+gh-nextmv-bot@nextmv.io"
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/signing.key
+
+          git clone git@github.com:nextmv-io/nextroute.git
+
+          cd nextroute
+          git checkout ${{ github.ref_name }}
+
+          git rev-parse --short HEAD
+
+      - name: install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: ./nextroute
+
+      - name: bump version in version file for Go
+        run: |
+          echo $VERSION > VERSION
+        working-directory: ./nextroute
+
+      - name: upgrade version with hatch for Python
+        run: hatch version ${{ env.VERSION }}
+        working-directory: ./nextroute
+
+      - name: compile Nextroute Go binaries
+        run: |
+          bash .nextmv/compile_binaries.sh
+        working-directory: ./nextroute
+
+      - name: upload Go binaries
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./nextroute/nextroute/bin/
+
+      - name: commit version bump
+        run: |
+          git add VERSION
+          git add nextroute/__about__.py
+
+          git commit -S -m "Bump version to $VERSION"
+          git push
+
+          git tag $VERSION
+          git push origin $VERSION
+        working-directory: ./nextroute
+
+      - name: create release
+        run: |
+          PRERELEASE_FLAG=""
+          if [ ${{ inputs.IS_PRE_RELEASE }} = true ]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+
+          gh release create $VERSION \
+          --verify-tag \
+          --generate-notes \
+          --title $VERSION $PRERELEASE_FLAG
+        working-directory: ./nextroute
+
+      - name: ensure passing build for Python
+        run: python -m build
+        working-directory: ./nextroute
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        include:
+          - target-env: pypi
+            target-url: https://pypi.org/p/nextroute
+          - target-env: testpypi
+            target-url: https://test.pypi.org/p/nextroute
+    environment:
+      name: ${{ matrix.target-env }}
+      url: ${{ matrix.target-url }}
+    permissions:
+      contents: read
+      id-token: write # This is required for trusted publishing to PyPI
+    steps:
+      - name: git clone ${{ github.ref_name }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: build binary wheel and source tarball
+        run: python -m build
+
+      - name: download Go binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+          path: nextroute/nextroute/bin
+
+      - name: Publish package distributions to PyPI
+        if: ${{ matrix.target-env == 'pypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: ./dist
+
+      - name: Publish package distributions to TestPyPI
+        if: ${{ matrix.target-env == 'testpypi' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: ./dist
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.result == 'success' && inputs.IS_PRE_RELEASE == false }}
+    steps:
+      - name: notify slack
+        run: |
+          export DATA="{\"text\":\"Release notification - nextroute ${{ inputs.VERSION }} (see <https://github.com/nextmv-io/nextroute/releases/${{ inputs.VERSION }}|release notes> / <https://pypi.org/project/nextroute|PyPI>)\"}"
+          curl -X POST -H 'Content-type: application/json' --data "$DATA" ${{ secrets.SLACK_URL_MISSION_CONTROL }}
