@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: curlr
+Version: 0.1.0
+Summary: A Python package to parse and execute cURL commands
+Home-page: https://github.com/schizoprada/curlr
+Author: Joel Yisrael
+Author-email: joel@highlyawear.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests>=2.25.1
+
+# curlr
+
+curlr is a Python package that allows you to parse and execute cURL commands easily.
+
+## Installation
+
+You can install curlr using pip:
+
+```
+pip install curlr
+```
+
+## Usage
+
+Here's a simple example of how to use curlr:
+
+```python
+import requests
+from curlr import CURL
+
+# Using a cURL command string
+curl_command = "curl -X POST -H 'Content-Type: application/json' -d '{\"key\":\"value\"}' https://api.example.com/endpoint"
+curl = CURL(command=curl_command)
+
+# Or using a file containing the cURL command
+# curl = CURL(path="path/to/curl.txt")
+
+# Get a prepared request
+request = curl.request()
+
+# Execute the request
+response = curl.execute()# equivalent to: requests.Session().send(request)
+
+# Or use individual properties
+response = getattr(requests, curl.method.lower())(
+    curl.url,
+    headers=curl.headers,
+    cookies=curl.cookies,
+    json=curl.data
+)
+
+print(response.status_code)
+print(response.json())
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
