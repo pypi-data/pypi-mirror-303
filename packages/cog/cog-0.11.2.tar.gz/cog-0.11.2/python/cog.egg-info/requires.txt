@@ -1,0 +1,35 @@
+attrs<24,>=20.1
+fastapi<0.111.0,>=0.75.2
+pydantic<3,>=1.9
+PyYAML
+requests<3,>=2
+structlog<25,>=20
+typing_extensions>=4.4.0
+uvicorn[standard]<1,>=0.12
+
+[:python_version < "3.8"]
+typing-compat
+
+[dev]
+build
+setuptools_scm
+tox
+tox-uv
+
+[tests]
+httpx
+pillow
+pytest
+pytest-httpserver
+pytest-timeout
+pytest-xdist
+pytest-cov
+responses
+
+[tests:python_version < "3.8"]
+hypothesis<6.80.0
+numpy<1.22.0
+
+[tests:python_version >= "3.8"]
+hypothesis
+numpy
