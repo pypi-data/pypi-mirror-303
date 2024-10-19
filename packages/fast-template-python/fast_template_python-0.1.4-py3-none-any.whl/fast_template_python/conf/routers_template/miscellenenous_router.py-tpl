@@ -1,0 +1,23 @@
+from fastapi import APIRouter, Body, Depends, File, UploadFile
+
+from {{ project_name}}.schemas.file_upload_schema import FileUploadedResponse, UploadTarget
+from {{ project_name}}.services.utils import auth_utils
+from {{ project_name}}.schemas.auth_schemas import User
+from {{ project_name}}.services import miscelleneous_services
+
+
+miscellenenous_router = APIRouter(prefix="/misc", tags=["Miscellenenous Services"])
+
+
+@miscellenenous_router.post("/upload", response_model=FileUploadedResponse)
+async def upload(
+    file: UploadFile = File(...),
+    upload_target: UploadTarget = Body(),
+    # user: User = Depends(auth_utils.get_current_user),
+):
+    """
+    Handles Files Upload for different purposes.
+
+    Profile images, company logos, and documents can be uploaded using this endpoint.
+    """
+    return await miscelleneous_services.upload_file(file=file, upload_target=upload_target, user_id="user_id")

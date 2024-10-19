@@ -1,0 +1,119 @@
+from datetime import datetime
+from enum import Enum, StrEnum
+from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr, AnyUrl
+
+from {{ project_name}}.root.utils.base_models_abstract import AbstractModel
+
+
+class UserBase(AbstractModel):
+    full_name: str
+    email: EmailStr
+    profile_image: str | None = None
+
+
+class Login(AbstractModel):
+    email: EmailStr
+    password: str
+
+
+class Token(AbstractModel):
+    access_token: str
+    refresh_token: str
+
+
+class SignUpUser(Login, UserBase):
+    """
+    User class for a user that wants to sign up
+    """
+
+
+class User(UserBase):
+    is_verified: bool = False
+    user_id: UUID
+
+
+class UserCreate(UserBase):
+    """
+    User class for when a user is to be created
+    """
+
+    password: str  # Hashed password
+    date_created: datetime
+    is_verified: bool = False
+
+
+class UserExtended(UserCreate):
+    date_updated: datetime
+    user_id: UUID
+
+
+class UserEditBase(AbstractModel):
+    full_name: str | None = None
+    profile_image: str | None = None
+
+
+class UserEdit(UserEditBase):
+    is_verified: bool | None = None
+    password: str | None = None
+
+
+class SigninResponse(AbstractModel):
+    token: Token
+    user: User
+
+
+class VerifyRestPasswordToken(AbstractModel):
+    token: str
+    details: str
+
+
+class ResetPassword(AbstractModel):
+    password: str
+    token: str
+
+
+# Google SSO
+class GoogleSSOUserBase(AbstractModel):
+    """
+    The Google SSO User Base class
+    """
+
+    email: str
+    full_name: str
+
+
+class GoogleSSOUserCreate(GoogleSSOUserBase):
+    """
+    The Google SSO User class for when a user is to be created
+    """
+
+    user_id: UUID
+
+
+class GoogleSSOUser(GoogleSSOUserBase):
+    """
+    The Google SSO User class
+    """
+
+    google_sso_id: UUID
+    user_id: UUID
+
+
+class GoogleSSOUrlRequest(AbstractModel):
+    """
+    The request for the Google SSO URL
+
+    """
+
+    redirect_url: AnyUrl
+
+
+class GoogleSSORequest(AbstractModel):
+    """
+    The code gotten from the Google SSO
+    """
+
+    code: str

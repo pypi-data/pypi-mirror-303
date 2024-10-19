@@ -1,0 +1,19 @@
+import os
+import aiohttp
+import asyncio
+
+
+async def download_file(url: str, save_path: str, skip_if_present: bool = False):
+
+    if skip_if_present:
+        if os.path.exists(save_path):
+            return
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                with open(save_path, "wb") as f:
+                    f.write(await response.read())
+            else:
+                print(await response.text())
+                raise Exception(f"Failed to download attachment: {response.status}")

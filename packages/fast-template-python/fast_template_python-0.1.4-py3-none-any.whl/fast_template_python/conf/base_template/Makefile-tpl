@@ -1,0 +1,33 @@
+start:
+	uvicorn {{ project_name}}.root.app:app --reload --port 8004
+
+	
+install_requirements:
+	pip install -r requirements.txt
+
+freeze_requirements:
+	pip freeze > requirements.txt
+
+activate:
+	source venv/bin/activate
+
+check_format:
+	ruff check ./{{ project_name}} --ignore=E731,E712
+
+check_db:
+	alembic check
+
+arq:
+	arq {{ project_name}}.root.arq_worker.WorkerSettings
+
+arq_check:
+	arq --check {{ project_name}}.root.arq_worker.WorkerSettings
+
+
+migrate:
+	alembic upgrade head
+
+make_migrations:
+	python make_db_migrations.py
+
+

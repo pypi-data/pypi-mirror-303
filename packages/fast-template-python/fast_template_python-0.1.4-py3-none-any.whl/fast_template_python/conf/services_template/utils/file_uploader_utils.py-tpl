@@ -1,0 +1,57 @@
+import logging
+
+from fastapi import UploadFile
+import boto3
+
+from {{ project_name}}.root.settings import Settings
+from {{ project_name}}.schemas.auth_schemas import User
+from {{ project_name}}.schemas.file_upload_schema import UploadTarget
+
+settings = Settings()
+
+LOGGER = logging.getLogger(__name__)
+
+async def upload_file(file: UploadFile, upload_target: UploadTarget, user_id: str = None) -> (bool, str):
+    """
+
+    Handles Uploading the file to some blob storage and returns the link to the file and a status flag (tells if the file was uploaded successfully or not)
+
+    For example, an implementation is:
+
+    ```python
+        async def upload_file(file: UploadFile, upload_target: UploadTarget, user_id: str = None) -> (bool, str):
+            client = boto3.client(
+            "s3",
+            region_name=REGION,
+            aws_secret_access_key=SECRET_KEY,
+            aws_access_key_id=ACCESS_KEY,
+        )
+        if upload_target == UploadTarget.PROFILE_IMAGE && user_id:
+            file_key = f"{user_id}/{file.filename}"
+
+        elif upload_target == UploadTarget.COMPANY_LOGO:
+            file_key = f"/{file.filename}"
+
+        elif upload_target == UploadTarget.DOCUMENT:
+            file_key = f"DOCUMENT/{file.filename}"
+
+        else:
+            file_key = f"FILE/{file.filename}"
+
+        file_upload_response = client.put_object(Bucket=BUCKET, Key=file_key, Body=file.file)
+
+        if file_upload_response["ResponseMetadata"]["HTTPStatusCode"] == 200:
+            file_link = f"{CLOUD_FRONT_URL}{file_key}"
+
+            LOGGER.info(f"File uploaded path : {file_link}")
+            return (True, file_link)
+
+            return False, ""
+    ```
+
+
+    """
+
+    # Todo: Implement the file upload logic here
+
+    return False, ""
