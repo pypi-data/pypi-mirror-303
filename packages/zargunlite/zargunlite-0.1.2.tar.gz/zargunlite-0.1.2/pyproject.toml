@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zargunlite"
+authors = [{ name = "hzqmwne", email = "huangzhengqmwne@sina.cn" }]
+description = "a sigma rule detection engine based on sqlite"
+urls = {Homepage = "https://github.com/hzqmwne/zargunlite"}
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">= 3.10"
+classifiers = [
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Typing :: Typed",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["flake8", "Flake8-pyproject", "black", "isort", "mypy>=1.11", "pytest", "coverage"]
+
+
+[tool.setuptools_scm]
+write_to = "src/zargunlite/_version.py"
+
+
+[tool.flake8]
+max-line-length = 120
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.mypy]
+strict = true
+enable_incomplete_feature = ["NewGenericSyntax"]
