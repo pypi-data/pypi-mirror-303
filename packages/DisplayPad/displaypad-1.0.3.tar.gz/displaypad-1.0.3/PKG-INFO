@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: DisplayPad
+Version: 1.0.3
+Summary: This library allows you to customize your own Mountain DisplayPad by assigning each button its own custom function, image or color.
+Home-page: https://sytxlabs.eu
+Author: Sytxlabs
+Author-email: Sytxlabs <info@sytxlabs.eu>
+License: MIT license
+Project-URL: Homepage, https://sytxlabs.eu
+Project-URL: GitHub, https://github.com/SytxLabs/DisplayPad
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: hidapi==0.14.0.post2
+Requires-Dist: pyee==12.0.0
+Requires-Dist: Pillow==11.0.0
+
+# DisplayPad
+This library allows you to customize your own Mountain DisplayPad by assigning each button its own custom function, image or color.
+
+# Example
+
+```python
+import asyncio
+
+from displaypad import DisplayPad
+
+
+async def main():
+    # Create a new DisplayPad instance
+    pad = DisplayPad.DisplayPad()
+
+    # Define event handlers
+    @pad.on('down')
+    def on_key_down(key_index):
+        print(f"Key {key_index} has been pressed.")
+
+    # Define event handlers
+    @pad.on('up')
+    def on_key_down(key_index):
+        print(f"Key {key_index} has been released.")
+
+    # Define event handlers
+    @pad.on('error')
+    def on_error(error):
+        print(f"Error: {error}")
+
+    # Clear all keys
+    pad.clear_all_keys()
+
+    # Set the first three keys to red, green and blue
+    pad.set_key_color(0, 255, 0, 0)
+    pad.set_key_color(1, 0, 255, 0)
+    pad.set_key_color(2, 0, 0, 255)
+
+    # Keep the script running
+    while True:
+        await asyncio.sleep(1)
+
+if __name__ == "__main__":
+    # Run the main function
+    asyncio.run(main())
+```
