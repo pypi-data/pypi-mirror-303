@@ -1,0 +1,57 @@
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.2.2",
+    "tox-pdm>=0.6.1",
+    "black>=23.1.0",
+    "mypy>=1.1.1",
+    "pylint>=2.17.0",
+]
+
+[tool.pdm.scripts]
+format = "black ."
+lint = "pylint --rcfile=.pylintrc marchitect test"
+mypy = "mypy --strict marchitect"
+test = "py.test"
+
+[tool.pdm.build]
+includes = []
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0.0",
+    "Cython",
+]
+build-backend = "pdm.pep517.api"
+
+[project]
+name = "marchitect"
+version = "0.9"
+description = "Machine architect for software deployment."
+authors = [
+    { name = "Ken Elkabany", email = "ken@elkabany.com" },
+]
+dependencies = [
+    "jinja2>=2.10",
+    "schema>=0.7.0",
+    "ssh2-python312>=0.1.1",
+]
+requires-python = ">=3.9,<4.0"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Topic :: System :: Installation/Setup",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+repository = "https://www.github.com/braincore/marchitect"
