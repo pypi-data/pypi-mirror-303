@@ -1,0 +1,3 @@
+from ..__generics import ReturnT
+
+def identity(x: ReturnT) -> ReturnT: ...
