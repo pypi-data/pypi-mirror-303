@@ -1,0 +1,107 @@
+Metadata-Version: 2.3
+Name: noisepy-seis-io
+Version: 0.1.16
+Project-URL: Homepage, https://github.com/noisepy/noisepy-io
+Author-email: Marine Denolle <mdenolle@uw.edu>, Carlos Suarez <carlosg@uw.edu>, Ishika Khandelwal <ishikakhandelwal02@gmail.com>, Yiyu Ni <niyiyu@uw.edu>
+License: MIT License
+        
+        Copyright (c) 2023 Ishika Khandelwal
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Requires-Dist: datetimerange<3.0.0,>=2.0.0
+Requires-Dist: diskcache
+Requires-Dist: fsspec<2024.0.0,>=2023.4.0
+Requires-Dist: numpy<2.0.0,>=1.22.0
+Requires-Dist: pandas<2.0.0,>=1.5.3
+Requires-Dist: psutil<6.0.0,>=5.9.5
+Requires-Dist: pyasdf<1.0.0,>=0.7.5
+Requires-Dist: pydantic-yaml==1.0
+Requires-Dist: pydantic==2.3.0
+Requires-Dist: pyyaml==6.0
+Requires-Dist: s3fs<2024.0.0,==2023.4.0
+Requires-Dist: tqdm
+Requires-Dist: zarr==2.14.2
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: ipython; extra == 'dev'
+Requires-Dist: matplotlib; extra == 'dev'
+Requires-Dist: nbconvert; extra == 'dev'
+Requires-Dist: nbsphinx; extra == 'dev'
+Requires-Dist: numpy; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: sphinx; extra == 'dev'
+Requires-Dist: sphinx-autoapi; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# noisepy-seis-io
+[![PyPI](https://img.shields.io/pypi/v/noisepy-seis-io?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/noisepy-seis-io/)
+[![codecov](https://codecov.io/gh/noisepy/noisepy-io/graph/badge.svg?token=3YIRLLXVmE)](https://codecov.io/gh/noisepy/noisepy-io)
+
+This project was automatically generated using the LINCC-Frameworks [python-project-template](https://github.com/lincc-frameworks/python-project-template). For more information about the project template see the
+[documentation](https://lincc-ppt.readthedocs.io/en/latest/).
+
+## Development Guide
+
+Before installing any dependencies or writing code, it's a great idea to create a virtual environment. LINCC-Frameworks engineers primarily use `conda` to manage virtual environments. If you have conda installed locally, you can run the following to create and activate a new environment.
+
+```
+conda create env -n noisepy python=3.10
+conda activate noisepy
+```
+
+Once you have created a new environment, you can install this project for local development and below are the recommended steps for setting up your environment based on different installation scenarios:
+
+- Installing from PyPI:
+
+    ```
+    pip install noisepy-seis
+    ```
+
+    If you're using pip install noisepy-seis to install the package directly from PyPI, all sources and dependencies will be placed in the appropriate site-packages directory. This setup is suitable for production environments and does not require additional setup for development.
+
+- Installing in Editable mode:
+
+    If you're cloning the noisepy-seis repository and installing the development version in editable mode (`-e` flag), you can follow these steps:
+
+    - Clone the noisepy-seis repository from GitHub `git clone git@github.com:noisepy/noisepy-io.git`.
+    - Install the package in editable mode by running `pip install -e .[dev]`.
+
+- Installing without Editable Mode:
+
+    ```
+    pip install .[dev]
+    ```
+
+- Install pre-commit hook:
+
+    ```
+    pre-commit install
+    ```
+
+    Note that `pre-commit install` will initialize pre-commit for this local repository, so that a set of tests will be run prior to completing a local commit. For more information, see the Python Project Template documentation on [pre-commit](https://lincc-ppt.readthedocs.io/en/latest/practices/precommit.html).
