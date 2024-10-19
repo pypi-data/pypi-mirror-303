@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "no-exceptions"
+description = "Errors as values for Python."
+version = "0.1.0"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+authors = ["Vasiliy Spassky <spassky99@gmail.com>"]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/spassky99/no-exceptions"
+Issues = "https://github.com/spassky99/no-exceptions/issues"
+
+[[tool.poetry.source]]
+name = "pypi-public"
+url = "https://pypi.org/simple/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.12.0"
+ruff = "^0.6.9"
+pytest = "^8.3.3"
+build = "^1.2.2.post1"
+poethepoet = "^0.29.0"
+twine = "^5.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+
+[tool.poe.tasks]
+lint = "ruff check ."
+typecheck = "mypy ."
+test = "pytest ."
+build = "python3 -m build"
+check-all = ["lint", "typecheck", "test"]
