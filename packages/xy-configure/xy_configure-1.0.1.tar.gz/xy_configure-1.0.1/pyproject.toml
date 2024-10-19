@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+requires-python = ">=3.11.3"
+
+name = "xy_configure"
+
+authors = [{ name = "helios", email = "yuyang.0515@qq.com" }]
+description = "配置解析模块"
+
+dynamic = ["version"]
+
+classifiers = ["Programming Language :: Python :: 3"]
+
+dependencies = ["xy_file"]
+
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["xy_configure"] # alternatively: `exclude = ["additional*"]`
+namespaces = false
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
