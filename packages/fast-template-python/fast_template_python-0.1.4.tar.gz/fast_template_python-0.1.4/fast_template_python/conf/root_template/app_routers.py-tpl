@@ -1,0 +1,11 @@
+from fastapi import APIRouter
+
+from {{ project_name}}.routers.auth_router import auth_router
+from {{ project_name}}.routers.miscellenenous_router import miscellenenous_router
+
+
+api = APIRouter(prefix="/v1")
+
+
+api.include_router(auth_router)
+api.include_router(miscellenenous_router)

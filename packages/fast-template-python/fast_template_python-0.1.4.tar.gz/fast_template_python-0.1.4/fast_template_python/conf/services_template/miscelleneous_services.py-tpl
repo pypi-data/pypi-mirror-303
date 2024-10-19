@@ -1,0 +1,33 @@
+from fastapi import UploadFile, HTTPException, status
+
+from {{ project_name}}.schemas.auth_schemas import User
+from {{ project_name}}.schemas.file_upload_schema import FileUploadedResponse, UploadTarget
+
+from {{ project_name}}.services.utils import file_uploader_utils
+
+
+async def upload_file(file: UploadFile, upload_target: UploadTarget, user_id: str) -> FileUploadedResponse:
+
+    try:
+        # upload file to some storage
+        # get the file link
+        # return the file link
+        upload_status, file_link = await file_uploader_utils.upload_file(
+            file=file,
+            upload_target=upload_target,
+            user_id=user_id,
+        )
+
+        if not upload_status:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An error occurred while uploading the file"
+            )
+
+        return FileUploadedResponse(file_link=file_link)
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An error occurred while uploading the file"
+        )
+    pass

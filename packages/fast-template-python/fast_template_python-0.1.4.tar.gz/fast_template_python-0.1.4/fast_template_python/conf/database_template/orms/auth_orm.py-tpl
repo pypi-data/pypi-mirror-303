@@ -1,0 +1,41 @@
+from datetime import datetime
+from typing import Optional
+import uuid
+
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import UUID
+
+from {{ project_name}}.root.utils.abstract_base import AbstractBase
+
+
+class User(AbstractBase):
+    """
+    The User table
+    """
+
+    __tablename__ = "users"
+
+    user_id = Column(UUID(as_uuid=True), primary_key=True, unique=True, nullable=False, default=uuid.uuid4)
+    full_name: Mapped[str]
+    email: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str]
+    profile_image: Mapped[Optional[str]]
+    is_verified: Mapped[bool] = mapped_column(default=False)
+
+
+class GoogleSignInUser(AbstractBase):
+    """
+    The Google Sign In User table
+    """
+
+    __tablename__ = "google_sso_users"
+
+    google_sso_id = Column(UUID(as_uuid=True), primary_key=True, unique=True, nullable=False, default=uuid.uuid4)
+    email: Mapped[str] = mapped_column(unique=True)
+    full_name: Mapped[str]
+
+    user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("users.user_id", ondelete="CASCADE"),
+        nullable=False,
+    )

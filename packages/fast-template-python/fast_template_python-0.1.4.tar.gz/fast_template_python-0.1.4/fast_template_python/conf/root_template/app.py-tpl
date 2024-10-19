@@ -1,0 +1,66 @@
+import time
+from logging import getLogger
+from fastapi import FastAPI, Request
+from fastapi.concurrency import asynccontextmanager
+from fastapi.responses import JSONResponse, ORJSONResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+
+from {{ project_name}}.root.app_routers import api
+from {{ project_name}}.root.arq_worker import create_redis_pool
+from {{ project_name}}.root.settings import Settings
+
+
+LOGGER = getLogger(__file__)
+settings = Settings()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    pass
+
+
+def intialize() -> FastAPI:
+    app = FastAPI(default_response_class=ORJSONResponse)
+
+    ORIGINS = ["*"]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=ORIGINS,
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    app.include_router(router=api)
+
+    return app
+
+
+app = intialize()
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response
+
+
+@app.exception_handler(Exception)
+async def log_server_error_to_slack(request: Request, exc: Exception):
+    LOGGER.exception(exc)
+
+    return JSONResponse(
+        content={
+            "details": "An error occured on our end. We are working on getting it solved, thanks for your patience"
+        },
+        status_code=500,
+    )
+
+
+@app.get("/")
+def home():
+    return RedirectResponse(url="/docs")

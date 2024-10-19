@@ -1,0 +1,50 @@
+from arq import create_pool
+from arq.connections import RedisSettings
+
+from {{ project_name}}.job_manager.email.mailer import send_mail
+from {{ project_name}}.root.logging import get_logger
+from {{ project_name}}.root.settings import Settings
+
+
+from arq import cron
+
+
+settings = Settings()
+
+redis_settings = RedisSettings(host=settings.REDIS_HOST, port=settings.REDIS_PORT)
+
+redis_pool = None
+
+
+async def create_redis_pool():
+    redis_pool = await create_pool(redis_settings)
+    return redis_pool
+
+
+async def on_job_start(ctx, *args, **kwargs):
+
+    logger = get_logger(__name__)
+    logger.info(f"Starting job with args {args} and kwargs {kwargs} , ctx {ctx}")
+
+    return True
+
+
+async def on_job_end(ctx, *args, **kwargs):
+
+    logger = get_logger(__name__)
+    logger.info(f"Job complete with args {args} and kwargs {kwargs}, ctx {ctx}")
+
+    return True
+
+
+class WorkerSettings:
+    functions = [
+        send_mail,
+    ]
+    redis_settings = redis_settings
+
+    on_job_start = on_job_start
+    on_job_end = on_job_end
+
+    allow_abort_jobs = True
+    keep_result = 5  # 5 seconds, a newsletter job with same id cannot be added to be job queue

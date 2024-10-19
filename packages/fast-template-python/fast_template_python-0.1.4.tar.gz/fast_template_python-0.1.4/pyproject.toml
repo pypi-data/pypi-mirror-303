@@ -1,0 +1,22 @@
+[tool.black]
+line-length = 119
+
+[tool.poetry]
+name = "fast-template-python"
+version = "0.1.4"
+description = "Easily generate a template for your Fastapi applications, complete with JWT authentication and Google sign-in"
+authors = ["Peter Akande <akandepeter86@gmail.com>"]
+readme = "README.md"
+keywords = ["fastapi", "template", "python", "fast-template-python"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = "^0.12.5"
+
+[tool.poetry.scripts]
+fast-template = "fast_template_python.main:app"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
