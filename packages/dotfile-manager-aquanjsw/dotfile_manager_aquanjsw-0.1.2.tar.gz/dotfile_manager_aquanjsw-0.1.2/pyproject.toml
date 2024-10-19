@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dotfile_manager_aquanjsw"
+version = "0.1.2"
+authors = [{ name = 'aquanjsw', email = 'zhdlcc@gmail.com' }]
+description = 'Help manage your dotfiles'
+readme = 'README.md'
+requires-python = ">=3.8"
+dependencies = ['appdirs', 'tabulate', 'sqlmodel', 'pyyaml']
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+dotfile-manager = 'dotfile_manager_aquanjsw.main:main'
