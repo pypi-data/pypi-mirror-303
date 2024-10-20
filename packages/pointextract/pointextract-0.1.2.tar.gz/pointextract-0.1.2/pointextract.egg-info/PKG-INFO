@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: pointextract
+Version: 0.1.2
+Summary: Polar to cartesian transforms using annular point sampling.
+Author-email: Thomas Ciardi <thomas.ciardi@case.edu>, "Roger H. French" <rxf131@case.edu>
+License: BSD 3-Clause License
+        
+        Copyright (c) 2024, CWRU SDLE
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        1. Redistributions of source code must retain the above copyright notice, this
+           list of conditions and the following disclaimer.
+        
+        2. Redistributions in binary form must reproduce the above copyright notice,
+           this list of conditions and the following disclaimer in the documentation
+           and/or other materials provided with the distribution.
+        
+        3. Neither the name of the copyright holder nor the names of its
+           contributors may be used to endorse or promote products derived from
+           this software without specific prior written permission.
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+        AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+        IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+        SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+Project-URL: Source Code, https://github.com/cwru-sdle/pointextract
+Project-URL: Bug Tracker, https://github.com/cwru-sdle/pointextract/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scikit-image
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+
+# pointextract
+Polar to cartesian transforms using annular point sampling
+
+Designed to unwrap 2D cross section images of 3D X-ray computed tomography scans.
+The topological transformation enables the surface of a circular or elliptical object to be aligned for downsteam analysis.
+
+<img src="./docs/workflow.png" width="700">
+
+## Installation
+
+You can install the package with:
+```bash
+pip install pointextract
+```
+
+## Example
+
+Simple example:
+```python
+import pointextract
+from skimage import io, filters
+
+img_arr = io.imread('./data/sample.png')
+
+img_thresh = img_arr > filters.threshold_otsu(img_arr)
+ellipse = ellipse_detect(img_thresh)
+
+img_unwrap = unwrap_image(img_arr, ellipse, radial_distance=20, num_points=800)
+```
+
+## Questions
+This package is still in early development. Please feel free to post to the GitHub Issues page with questions.
+
+## Acknowledgements
+This material is based upon research in the Materials Data Science for Stockpile Stewardship Center of Excellence (MDS3-COE).
+
+<cite> [Case Western Reserve University, SDLElab] [1]</cite>
+
+[1]: http://sdle.case.edu

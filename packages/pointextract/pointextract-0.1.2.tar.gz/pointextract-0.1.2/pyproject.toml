@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'pointextract'
+dynamic = ["version"]
+authors = [
+  {name = "Thomas Ciardi", email = "thomas.ciardi@case.edu"},
+  {name = "Roger H. French", email = "rxf131@case.edu"},
+]
+description = "Polar to cartesian transforms using annular point sampling."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    'numpy',
+    'scikit-image',
+]
+license = {file = "LICENSE"}
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+"Source Code" = "https://github.com/cwru-sdle/pointextract"
+"Bug Tracker" = "https://github.com/cwru-sdle/pointextract/issues"
+
+[tool.setuptools.packages.find]
+include = ["pointextract*"]
+
+[tool.setuptools_scm]
