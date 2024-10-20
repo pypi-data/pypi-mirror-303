@@ -1,0 +1,211 @@
+import pytest
+from hypothesis import given, strategies as st, settings
+from rclib.utils.errors.decorators import (
+    enforce_type_hints_contracts,
+)
+from type_lens.callable_view import CallableView
+from type_lens.type_view import TypeView
+from typing import Any, Dict, List, Callable, Union, TypeVar
+from datetime import timedelta
+
+
+# Apply the decorator to the functions we want to enforce type contracts on
+@enforce_type_hints_contracts
+def process_data(data: list[int], multiplier: float):
+    print(f"process_data called with data: {data}, multiplier: {multiplier}")
+
+
+@enforce_type_hints_contracts
+def process_mapping(mapping: dict[str, int], flag: bool):
+    print(f"process_mapping called with mapping: {mapping}, flag: {flag}")
+
+
+@enforce_type_hints_contracts
+def process_optional_data(data: list[int] | None, multiplier: float | None):
+    print(f"process_optional_data called with data: {data}, multiplier: {multiplier}")
+
+
+@enforce_type_hints_contracts
+def process_complex_data(data: Dict[str, Dict[str, List[int]]]):
+    print(f"process_complex_data called with data: {data}")
+
+
+T = TypeVar("T", bound=int)
+
+
+@enforce_type_hints_contracts
+def process_typevars(data: List[T]) -> List[T]:
+    print(f"process_typevars called with data: {data}")
+    return data
+
+
+# Improved helper to generate Hypothesis strategies based on TypeView
+def generate_strategy_from_typeview(type_view: TypeView) -> Any:
+    """
+    Generate a Hypothesis strategy based on the TypeView object.
+    """
+    if type_view.is_literal:
+        # Handle Literal types
+        return st.sampled_from([arg for arg in type_view.args])
+    elif type_view.is_none_type:
+        # Handle None type
+        return st.none()
+    elif type_view.is_union:
+        # Handle Union types by generating strategies for each inner type
+        return st.one_of(
+            [
+                generate_strategy_from_typeview(inner_type)
+                for inner_type in type_view.inner_types
+            ]
+        )
+    elif type_view.is_optional:
+        # Optional types are Unions that include None
+        return st.one_of(
+            st.none(), generate_strategy_from_typeview(type_view.strip_optional())
+        )
+    elif type_view.origin is list:
+        if type_view.inner_types:
+            # Handle list types with inner types
+            return st.lists(
+                generate_strategy_from_typeview(type_view.inner_types[0]),
+                min_size=1,
+                max_size=100,
+            )
+        else:
+            # Default for collections with unknown inner types
+            return st.lists(
+                generate_strategy_from_typeview(TypeView(Any))
+            )  # Default to list of strings for general collections
+    elif type_view.origin is dict:
+        # Handle mapping types (e.g., Dict)
+        key_type, value_type = type_view.inner_types
+        return st.dictionaries(
+            generate_strategy_from_typeview(key_type),
+            generate_strategy_from_typeview(value_type),
+            min_size=1,
+            max_size=10,
+        )
+    elif type_view.is_subtype_of(float):
+        # Handle float type
+        return st.floats(allow_nan=False, allow_infinity=False)
+    elif type_view.is_subtype_of(bool):
+        # Handle boolean type
+        return st.booleans()
+    elif type_view.is_subtype_of(int):
+        # Handle integer type
+        return st.integers()
+    elif type_view.is_subtype_of(str):
+        # Handle string type
+        return st.text(min_size=1)
+    elif type_view.repr_type == "Any":
+        # Handle Any type
+        return (
+            st.integers()
+            | st.floats()
+            | st.ip_addresses()
+            | st.text()
+            | st.none()
+            | st.booleans()
+            | st.emails()
+            | st.dates()
+            | st.times()
+            | st.datetimes()
+            | st.uuids()
+            | st.binary()
+            | st.decimals()
+            | st.fractions()
+        )
+    elif type_view.is_type_var:
+        return generate_strategy_from_typeview(TypeView(type_view.raw.__bound__))
+    else:
+        raise NotImplementedError(
+            f"Unsupported type: {type_view}, with attributes {dir(type_view)}"
+        )
+
+
+# Use CallableView to generate Hypothesis strategies for a function's parameters
+def generate_strategies_from_function(func: Callable) -> Dict[str, Any]:
+    """
+    Generate a dictionary of Hypothesis strategies for each parameter of a function
+    using the CallableView and TypeView.
+    """
+    callable_view = CallableView.from_callable(func)
+    strategies = {}
+
+    for param in callable_view.parameters:
+        strategies[param.name] = generate_strategy_from_typeview(param.type_view)
+
+    return strategies
+
+
+# Test for process_data using Hypothesis with improved strategy generation
+@given(**generate_strategies_from_function(process_data))
+def test_process_data_hypothesis(data, multiplier):
+    process_data(data, multiplier)
+
+
+# Test for process_mapping using Hypothesis with improved strategy generation
+@given(**generate_strategies_from_function(process_mapping))
+def test_process_mapping_hypothesis(mapping, flag):
+    process_mapping(mapping, flag)
+
+
+# Test for process_optional_data using Hypothesis with improved strategy generation
+@given(**generate_strategies_from_function(process_optional_data))
+def test_process_optional_data_hypothesis(data, multiplier):
+    process_optional_data(data, multiplier)
+
+
+# Test for process_complex_data using Hypothesis with improved strategy generation
+@given(**generate_strategies_from_function(process_complex_data))
+def test_process_complex_data_hypothesis(data):
+    process_complex_data(data)
+
+
+# Invalid test cases for process_data
+@pytest.mark.parametrize(
+    "data, multiplier, expected_exception",
+    [
+        pytest.param([1, 2, "banana"], 2.5, TypeError, id="invalid_string_in_list"),
+        pytest.param([1, 2, 3], "string", TypeError, id="invalid_multiplier_string"),
+    ],
+)
+def test_process_data_invalid_cases(data, multiplier, expected_exception):
+    with pytest.raises(expected_exception):
+        process_data(data, multiplier)
+
+
+# Invalid test cases for process_mapping
+@pytest.mark.parametrize(
+    "mapping, flag, expected_exception",
+    [
+        pytest.param(
+            {"a": 1, "b": "banana"}, True, TypeError, id="invalid_string_in_dict"
+        ),
+        pytest.param({"a": 1, "b": 2}, "not_bool", TypeError, id="invalid_flag_string"),
+    ],
+)
+def test_process_mapping_invalid_cases(mapping, flag, expected_exception):
+    with pytest.raises(expected_exception):
+        process_mapping(mapping, flag)
+
+
+@enforce_type_hints_contracts
+def super_hard(
+    a: Dict[
+        Union[str, int], Union[Dict[str, List[Dict[str, Union[int, float]]]], List[int]]
+    ],
+):
+    print(f"super_hard called with a: {a}")
+
+
+@settings(deadline=timedelta(seconds=5))
+@given(**generate_strategies_from_function(super_hard))
+def test_super_hard(a):
+    super_hard(a)
+
+
+# Test for process_data using Hypothesis with improved strategy generation
+@given(**generate_strategies_from_function(process_typevars))
+def test_process_typevars(data):
+    process_typevars(data)
