@@ -1,0 +1,15 @@
+[build-system]
+requires = ['setuptools>=42.0', "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+packages = [{ include = "LLMOps", from = "src" }]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
+python_files = ["test_*.py", "*_test.py"]
+
+[tool.mypy]
+mypy_path = "src"
+ignore_missing_imports = true
