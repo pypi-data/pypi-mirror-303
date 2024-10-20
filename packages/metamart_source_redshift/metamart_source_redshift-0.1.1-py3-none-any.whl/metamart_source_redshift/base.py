@@ -1,0 +1,76 @@
+from functools import cache
+from typing import List, Optional, Tuple, Union
+
+from metamart_schemas.base import SourcedEdge, SourcedNode
+from metamart_schemas.integrations.base import MetamartIntegrationImplementation
+from metamart_schemas.v1.source import SourceV1
+
+from metamart_source_redshift.adapters import adapt_to_client
+from metamart_source_redshift.loader import RedshiftConnector
+
+
+class RedshiftIntegration(MetamartIntegrationImplementation):
+    """A class for extracting Metamart compliant metadata from Redshift
+
+    Attributes:
+        connector: The connector responsible for communicating with Redshift.
+
+    """
+
+    def __init__(
+        self,
+        namespace: str,
+        source: SourceV1,
+        version: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        database: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[Union[str, int]] = None,
+    ):
+        """Initializes the Redshift integration.
+
+        Args:
+           source: The Metamart data source to associate with output from the integration. More information about source objects is available in the `metamart_schemas` library.
+           version: The Metamart data version to associate with output from the integration
+           namespace: The Metamart namespace to associate with output from the integration
+           user: The username to use when connecting to Redshift.
+           password: The password to use when connecting to Redshift.
+           host: The Redshift host address.
+           port: The Redshift port.
+           database: The Redshift database to connect to.
+        """
+        super().__init__(source, version)
+
+        self.connector = RedshiftConnector(
+            user=user,
+            password=password,
+            database=database,
+            host=host,
+            port=port,
+            namespace=namespace,
+        )
+
+    @cache
+    def get_nodes_and_edges(self) -> Tuple[List[SourcedNode], List[SourcedEdge]]:
+        """Returns a tuple of lists of SourcedNode and SourcedEdge objects"""
+        with self.connector.connect() as conn:
+            nodes, edges = conn.get_nodes_and_edges()
+
+        nodes = adapt_to_client(nodes, self.source, self.version)
+        edges = adapt_to_client(edges, self.source, self.version)
+        return nodes, edges
+
+    def ready(self) -> bool:
+        """Returns True if the integration is ready to run"""
+        with self.connector.connect() as _:
+            pass
+        return True
+
+    def nodes(self) -> List[SourcedNode]:
+        """Returns a list of SourcedNode objects"""
+        return self.get_nodes_and_edges()[0]
+
+    def edges(self) -> List[SourcedEdge]:
+        """Returns a list of SourcedEdge objects"""
+        return self.get_nodes_and_edges()[1]
