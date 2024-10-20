@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: hoop-diagram
+Version: 0.0.3
+Summary: Visualize set intersections.
+Author-email: "Yannik T. H. Schelske" <yannik@yths.de>
+License: MIT License
+Project-URL: Homepage, https://github.com/yths/hoop-diagram
+Project-URL: Issues, https://github.com/yths/hoop-diagram/issues
+Keywords: Visualization,Set,Hoop Diagram,Linear Diagram,Set Visualization,SVG
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: pycairo ==1.27.0
+Requires-Dist: pillow ==11.0.0
+
+# Hoop Diagram
+Visualize set intersections.
+## Features
+* highlight elements or set, preserves provided set order
+* export diagram to resolution independent SVG file format
+* minimal dependencies, built on top of Python native set type
+* preview of diagram before exporting
+* released under the permissive MIT License
+## Installation
+To install, just run:
+```
+pip install hoop-diagram
+```
+## Usage
+```python
+import hoop_diagram
+diagram = hoop_diagram.visualize.Hoop(sets=[{1, 2}, {3, 4}, {1, 3, 5}, {1, 5}])
+```
+| | | |
+|---|---|---|
+| |`diagram.highlight_element(5)` | `diagram.highlight_set({1, 2})` |
+|`diagram.show()` |`diagram.show()` | `diagram.show()` |
+| ![Standard Visualization](assets/standard.svg) | ![Visualization with Highlighted Element](assets/highlighted_element.svg) | ![Visualization with Highlighted Set](assets/highlighted_set.svg) |
+## References
+* [Peter Rodgers, Peter Chapman, Andrew Blake, Martin Nöllenburg, Markus Wallinger, & Alexander Dobler. (2024). Hoop Diagrams: A Set Visualization Method.](https://arxiv.org/abs/2406.13260)
