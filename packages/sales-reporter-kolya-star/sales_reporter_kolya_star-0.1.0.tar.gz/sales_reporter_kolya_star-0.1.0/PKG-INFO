@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: sales_reporter_kolya_star
+Version: 0.1.0
+Summary: Пакет для отчета по продажам
+Author-email: Nikolai <kolaleuhin@gmail.com>
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+
+
+```markdown
+# Автоматизированный Анализ Продаж
+
+Автоматизированный Анализ Продаж — это Python-пакет, который загружает данные о продажах из CSV-файла, анализирует их и генерирует отчёт с метриками по категориям. Этот инструмент поможет упростить процесс анализа данных и сэкономить время.
+
+## Установка
+
+Для установки пакета используйте pip:
+
+```bash
+pip install sales_reporter_kolya_star
+```
+
+## Использование
+
+После установки пакета вы можете использовать его через командную строку. Вот основные команды и параметры:
+
+```bash
+sales_reporter --input-file путь_к_входному_файлу.csv --output-file путь_к_выходному_файлу.csv
+```
+
+### Параметры
+
+- `--input-file`: Укажите путь к входному CSV-файлу с данными о продажах.
+- `--output-file`: Укажите путь к выходному CSV-файлу, в который будет записан отчёт.
+
+### Пример
+
+Предположим, у вас есть файл `sales_data.csv` со следующими данными:
+
+```csv
+category,sales,quantity
+electronics,1300,7
+clothing,700,13
+electronics,200,3
+clothing,300,5
+```
+
+Запустите команду:
+
+```bash
+sales_reporter --input-file sales_data.csv --output-file report.csv
+```
+
+После выполнения команды в файле `report.csv` будет содержаться следующий отчёт:
+
+```csv
+category,sales,quantity
+electronics,1500,10
+clothing,1000,18
+```
+
+## Зависимости
+
+Этот пакет требует установку библиотеки `pandas`. Убедитесь, что она установлена:
+
+```bash
+pip install pandas
+```
+
+## Лицензия
+
+Этот проект лицензирован под MIT License - смотрите файл [LICENSE](LICENSE) для подробностей.
+```
+
