@@ -1,0 +1,41 @@
+[project]
+name = "yadd"
+dynamic = ["version"]
+description = "Yet Another dict Differ"
+long_description = {file = "README.md"}
+readme = "README.md"
+
+authors = [
+    { name = "James Abel", email = "j@abel.co" }
+]
+
+license = { text = "MIT License" }
+keywords = ["dict", "differ"]
+dependencies = [
+    "ismain", "tomli",
+]
+requires-python = ">=3.10"
+
+[tool.setuptools.dynamic]
+version = {attr = "yadd.__version__"}
+
+[project.urls]
+"Homepage" = "https://github.com/jamesabel/yadd"
+"Source" = "https://github.com/jamesabel/yadd"
+"Documentation" = "https://github.com/jamesabel/yadd"
+
+[options.entry_points]
+project.scripts = "yadd"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["yadd"]
+
+[tool.hatch.version]
+path = "yadd/__version__.py"
+
+[tool.black]
+line-length = 192
