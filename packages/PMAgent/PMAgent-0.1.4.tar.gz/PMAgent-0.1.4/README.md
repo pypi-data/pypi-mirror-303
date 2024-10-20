@@ -1,0 +1,33 @@
+# PMAgent
+
+PMAgent is a Python package that helps developers refactor and modify code using OpenAI. It reads code from files, interacts with an LLM to generate modifications, and saves changes back to the files.
+
+## Installation
+
+To install PMAgent:
+
+```bash
+pip install PMAgent
+
+export OPENAI_API_KEY="sk-"
+
+pmagent "Fix the code from playground folder" playground
+
+# pmagent <UserPrompt> <directorytoexecute>
+
+```
+#### Put API KEY ON ENV: OPENAI_API_KEY
+
+
+## Examples
+
+### Syntax
+```
+pmagent <UserPrompt> <directorytoexecute>
+```
+### Use Case:
+```
+pmagent "Create a webpage for a clothing store, put some random cloth images from online free images for products and add an add-to-cart button, i have create folder web-page" web-page
+
+pmagent "write a data analyis code on anaylis.ipynb file to do data analyiss on data from data-analysis folder" data-analysis
+```
