@@ -1,0 +1,19 @@
+from    testmc.mc6800  import Machine
+from    inspect  import currentframe
+
+def test_prchar(m, S, R, loadbios):
+    _, output = loadbios()
+    m.call(S.prchar, R(a=ord('_')))
+    m.call(S.prchar, R(a=ord('\r')))
+    assert b'_\r' == output.getvalue()
+
+def test_rdchar(m, S, R, loadbios):
+    loadbios(input=b'~\n')
+    for char in ('~', '\n'):
+        m.call(S.rdchar)
+        assert R(a=ord(char)) == m.regs
+
+def test_prnl(m, S, R, loadbios):
+    _, output = loadbios()
+    m.call(S.prnl)
+    assert b'\n' == output.getvalue()
