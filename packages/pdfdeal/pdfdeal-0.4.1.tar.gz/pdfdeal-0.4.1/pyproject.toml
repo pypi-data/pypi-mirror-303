@@ -1,0 +1,33 @@
+[project]
+name = "pdfdeal"
+version = "0.4.1"
+authors = [{ name = "Menghuan1918", email = "menghuan@menghuan1918.com" }]
+description = "A python wrapper for the Doc2X API and comes with native texts processing (to improve texts recall in RAG)."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["httpx", "pypdf"]
+
+[project.optional-dependencies]
+rag = ["emoji", "Pillow", "reportlab", "oss2", "boto3"]
+dev = ["pytest", "emoji", "Pillow", "reportlab", "oss2", "boto3"]
+
+[project.urls]
+Issues = "https://github.com/Menghuan1918/pdfdeal/issues"
+Documentation = "https://menghuan1918.github.io/pdfdeal-docs/"
+Source = "https://github.com/Menghuan1918/pdfdeal"
+Changelog = "https://menghuan1918.github.io/pdfdeal-docs/changes/"
+
+[project.scripts]
+doc2x = "pdfdeal.CLI.doc2x:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdfdeal"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
