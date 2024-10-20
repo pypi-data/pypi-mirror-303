@@ -1,0 +1,61 @@
+---
+name: Build And Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_DIR_PREFIX: test-build
+  OPTIMIZATION: 2
+  DEBUG: 'false'
+
+jobs:
+  unit-tests:
+    name: Unit tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        compiler: [gcc, clang]
+        USE_64BIT_EVENT_COUNTERS: [0, 1]
+        ENABLE_EXTENDED_API: [0, 1]
+        ENABLE_SERIALISE_TO_STRING_API: [0, 1]
+        MEMORY_ALLOCATION_TYPE: [
+          0, # Malloc/free
+          1  # Static
+        ]
+    steps:
+      - name: Install compiler
+        id: install_cc
+        uses: rlalik/setup-cpp-compiler@master
+        with:
+          compiler: ${{ matrix.compiler }}
+      - name: Install ninja and meson
+        run: pip install ninja meson
+      - name: Install Valgrind
+        if: runner.os == 'Linux'
+        run: sudo apt install -y valgrind
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Tests
+        env:
+          CC: ${{ steps.install_cc.outputs.cc }}
+        run: >-
+          meson setup --wipe --reconfigure
+          ${{ env.BUILD_DIR_PREFIX }}
+          -Doptimization=${{ env.OPTIMIZATION }}
+          -Ddebug=${{ env.DEBUG }}
+          -Dtests=true
+          -Dc_args="
+            -DITC_CONFIG_ENABLE_EXTENDED_API=${{ matrix.ENABLE_EXTENDED_API }}
+            -DITC_CONFIG_USE_64BIT_EVENT_COUNTERS=${{ matrix.USE_64BIT_EVENT_COUNTERS }}
+            -DITC_CONFIG_ENABLE_SERIALISE_TO_STRING_API=${{ matrix.ENABLE_SERIALISE_TO_STRING_API }}
+            -DITC_CONFIG_MEMORY_ALLOCATION_TYPE=${{ matrix.MEMORY_ALLOCATION_TYPE }}
+          "
+      - name: Build And Run Tests
+        env:
+          CC: ${{ steps.install_cc.outputs.cc }}
+        run: meson test -C ${{ env.BUILD_DIR_PREFIX }}
