@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: aztools
+Version: 0.3.6
+Author-email: Abdu Zoghbi <astrozoghbi@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 Abdu Zoghbi
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipykernel
+Requires-Dist: numpy >=1.24
+Requires-Dist: scipy
+Requires-Dist: astropy
+Requires-Dist: matplotlib
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinx-rtd-theme ; extra == 'dev'
+Requires-Dist: sphinx-autoapi ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: nbconvert ; extra == 'dev'
+Requires-Dist: nbsphinx ; extra == 'dev'
+Requires-Dist: ipython ; extra == 'dev'
+
+# aztools
+
+`aztools` is a collection of python tools that I have been using over the years in the analysis of X-ray data.
+
+## The aztools package
+The `aztools` folder contains the main python package, which contains three parts:
+- `lcurve.py` defines a light curve object (`LCurve`), which a holder of the observed time series, and associated functions that manipulate it.
+- `sim.py` defines the `SimLC` class for simulating light curves.
+- `misc.py` contains many additional tools for doing different things. See the file for more details
+- `data.py` contains many methods to process x-ray data from different missions and extract spectra and light curves
+
+Most of the functionality in `aztools.data`, and some `aztools.misc` depend on having `heasoftpy` installed (the high energy software package from NASA Goddard https://heasarc.gsfc.nasa.gov/docs/software/heasoft/).
+
+
+## Scripts
+The `src/scripts` folder contains useful `python` and `bash` scripts. If installing `aztools >= 0.2`, these scripts will be automatically installed when doing `pip install`. 
+
+
+## The `simulations` folder
+This contains codes for checking the functionality of the `aztools` package. It focuses on the statistics testing rather than the code tests.
+
+## `tests` folder:
+Simple unit tests for the `aztools` package
+
+
+# Installation
+- With `pip install aztools`
+
+The following python packages are needed to run `aztools`:
+- `numpy`
+- `scipy`
+- `astropy`
+
+and `heasoftpy` if using `aztools.data`
+
+# Documentation
+See [full documentation at readthedoc](https://aztools.readthedocs.io/).
+
