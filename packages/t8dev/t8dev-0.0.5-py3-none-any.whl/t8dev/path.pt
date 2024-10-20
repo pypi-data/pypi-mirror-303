@@ -1,0 +1,27 @@
+from    t8dev.path  import *
+from    os.path  import abspath
+import  pytest
+
+def test_relproj():
+    assert Path('foo/bar')   == relproj(proj('foo/bar'))
+    assert Path('/absolute') == relproj(proj('/absolute'))
+
+@pytest.mark.parametrize('input, expected', [
+    ('/ff/bar',         '/ff/bar'),
+    ('foo/bar',         'foo/bar'),
+    (proj('foo/bar'),   '…/foo/bar'),
+    (None,              'None'),
+    (3,                 '3'),
+])
+def test_pretty(input, expected):
+    assert expected == pretty(input)
+
+@pytest.mark.parametrize('expected, environ', [
+    ('/a/bin',              {}),
+    ('/a/bin',              { 'PATH': '' }),
+    ('/a/bin:/foo:/bar',    { 'PATH': '/foo:/bar' }),
+])
+def test_addbin(environ, expected):
+    environ = dict(environ)     # make a copy for addbin() to modify
+    addbin('/a', Path('bin'), environ=environ)
+    assert expected == environ['PATH']
