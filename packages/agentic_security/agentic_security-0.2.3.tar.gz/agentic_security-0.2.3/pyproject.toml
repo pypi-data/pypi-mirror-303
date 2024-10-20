@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "agentic_security"
+version = "0.2.3"
+description = "Agentic LLM vulnerability scanner"
+authors = ["Alexander Miasoiedov <msoedov@gmail.com>"]
+maintainers = ["Alexander Miasoiedov <msoedov@gmail.com>"]
+repository = "https://github.com/msoedov/agentic_security"
+license = "MIT"
+readme = "Readme.md"
+keywords = [
+    "LLM vulnerability scanner",
+    "llm security",
+    "llm adversarial attacks",
+    "prompt injection",
+    "prompt leakage",
+    "prompt injection attacks",
+    "prompt leakage prevention",
+    "llm vulnerabilities",
+    "owasp-llm-top-10",
+]
+packages = [{ include = "agentic_security", from = "." }]
+
+
+[tool.poetry.scripts]
+agentic_security = "agentic_security.__main__:entrypoint"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.2"
+uvicorn = "^0.32.0"
+fire = "0.7.0"
+loguru = "^0.7.2"
+httpx = ">=0.25.1,<0.28.0"
+cache-to-disk = "^2.0.0"
+pandas = ">=1.4,<3.0"
+datasets = ">=1.14,<4.0"
+tabulate = ">=0.8.9,<0.10.0"
+colorama = "^0.4.4"
+matplotlib = "^3.9.2"
+pydantic = "2.9.2"
+scikit-optimize = "^0.10.2"
+scikit-learn = "1.5.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+mypy = "^1.12.0"
+pytest = "^8.3.3"
+pre-commit = "^4.0.1"
+inline-snapshot = "^0.13.3"
+langchain-groq = "^0.2.0"
+huggingface-hub = "^0.25.1"
+# garak = "*"
+
+[tool.ruff]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
