@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="D:/Python/scripts/rc/mega_pack_pbf_parser/db/pbf.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1500"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainsongs"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="packs_pbf_type" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="119"/><column index="2" value="160"/><column index="3" value="53"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="songs" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="160"/><column index="2" value="194"/><column index="3" value="119"/><column index="4" value="92"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="Packs w/PBF">select pbf_name, product from packs_pbf_type
+where pbf_name IS NOT NULL;
+</sql><sql name="Songs">SELECT product_name, pbf_name, song_name FROM songs
+WHERE pbf_name NOT IN (
+'GM_Ballads_Brushes', 'GM_Ballads_Crashes',  
+'GM_Funk_HH_RB_DanceKit'
+);
+
+
+</sql><sql name="Songs Per PBF">SELECT product_name, pbf_name, COUNT(song_name)
+FROM songs
+GROUP BY pbf_name;</sql><sql name="OPP Only">SELECT product_name, song_name FROM songs
+WHERE pbf_name IN (
+'GM_Classic_Rock_OPP', 'GM_Country_Outlaws_OPP', 'GM_Garage_Rock_OPP',
+'GM_Police_OPP', 'GM_Southern_Rock_OPP', 'GM_Blues_OPP'
+);</sql><sql name="Songs by Product">WITH s1 AS (
+SELECT product_name, song_name FROM songs
+WHERE pbf_name NOT IN (
+'GM_Ballads_Brushes', 'GM_Ballads_Crashes',  
+ 'GM_Funk_HH_RB_DanceKit')
+)
+
+SELECT product_name as Product, COUNT(song_name) as Songs
+FROM s1
+GROUP BY product_name;
+
+
+
+
+
+</sql><sql name="Delete Songs Table Data">DELETE FROM songs;
+</sql><sql name="Total Song Count">SELECT count(song_name) as song_count
+FROM songs
+WHERE pbf_name NOT IN (
+'GM_Ballads_Brushes', 'GM_Ballads_Crashes', 'GM_Funk_HH_RB_DanceKit');
+
+</sql><sql name="songs_per_pbf_query_no_bonus">SELECT product_name, pbf_name, COUNT(song_name)
+FROM songs
+WHERE pbf_name not in (
+    'GM_Ballads_Brushes', 
+    'GM_Ballads_Crashes',
+    'GM_Funk_HH_RB_DanceKit'
+)
+GROUP BY pbf_name;</sql><current_tab id="5"/></tab_sql></sqlb_project>
