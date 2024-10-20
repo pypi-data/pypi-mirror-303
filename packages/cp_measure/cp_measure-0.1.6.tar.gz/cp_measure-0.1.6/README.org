@@ -1,0 +1,203 @@
+#+TITLE: Cell Profiler measurements
+
+Do you need to use [[https://github.com/CellProfiler][CellProfiler]] features, but you want to do it in a programmatic way? Look no more, this package was developed by and for the click-a-phobic scientists.
+
+* Quick overview
+** Installation
+#+begin_src bash
+  pip install cp-measure
+#+end_src
+*** Poetry
+If you want a development environment.
+#+begin_src bash
+  git clone git@github.com:afermg/cp_measure.git
+  cd cp_measure
+  poetry install 
+#+end_src
+
+** Usage
+Users usually want to calculate all the features. There are four type of measurements, based on their inputs:
+- Type 1: 1 image + 1 set of masks (e.g., intensity)
+- Type 2: 2 images + 1 set of masks (e.g., colocalization)
+- Type 3: 2 sets of masks (e.g., number of neighbors)
+- Type 4: 1 image + 2 sets of masks  (e.g., skeleton)
+  
+This shows the simplest way to use the first set (1 image, 1 mask set), which currently follows the style of the scikit-image syule (1 image, 1 matrix with non-overlapping labels).
+#+begin_src python
+import numpy as np
+
+from cp_measure.bulk import get_fast_measurements
+
+measurements = get_fast_measurements()
+print(measurements.keys())
+# dict_keys(['radial_distribution', 'radial_zernikes', 'intensity', 'sizeshape', 'zernike', 'ferret', 'texture', 'granularity'])
+
+size = 200
+rng = np.random.default_rng(42)
+pixels = rng.integers(low=0, high=10, size=(size, size))
+
+masks = np.zeros_like(pixels)
+masks[5:-6, 5:-6] = 1
+
+results = {}
+for name, v in measurements.items():
+    results = {**results, **v(masks, pixels)}
+
+"""
+{'RadialDistribution_FracAtD_1of4': array([0.0477544]),
+ 'RadialDistribution_MeanFrac_1of4': array([0.98888986]),
+ 'RadialDistribution_RadialCV_1of4': array([0.04705031]),
+ ...
+ 'RadialDistribution_ZernikeMagnitude_0_0': array([4.49027183]),
+ 'RadialDistribution_ZernikePhase_0_0': array([1.57079633]),
+ ..
+ 'RadialDistribution_ZernikeMagnitude_9_9': array([0.00250042]),
+ 'RadialDistribution_ZernikePhase_9_9': array([-2.81002186]),
+ 'Intensity_IntegratedIntensity': array([160425.]),
+ 'Intensity_MeanIntensity': array([4.49105568]),
+ 'Intensity_StdIntensity': array([2.8698785]),
+ 'Intensity_MinIntensity': array([0.]),
+ 'Intensity_MaxIntensity': array([9.]),
+ 'Intensity_IntegratedIntensityEdge': array([3253.]),
+ 'Intensity_MeanIntensityEdge': array([4.32579787]),
+ 'Intensity_StdIntensityEdge': array([2.87255435]),
+ 'Intensity_MinIntensityEdge': array([0.]),
+ 'Intensity_MaxIntensityEdge': array([9.]),
+ 'Intensity_MassDisplacement': array([0.36112335]),
+ 'Intensity_LowerQuartileIntensity': array([2.]),
+ 'Intensity_MedianIntensity': array([4.]),
+ 'Intensity_MADIntensity': array([2.]),
+ 'Intensity_UpperQuartileIntensity': array([7.]),
+ 'Location_CenterMassIntensity_X': array([98.79390369]),
+ 'Location_CenterMassIntensity_Y': array([99.29653732]),
+ 'Location_CenterMassIntensity_Z': array([0.]),
+ 'Location_MaxIntensity_X': array([5.]),
+ 'Location_MaxIntensity_Y': array([5.]),
+ 'Location_MaxIntensity_Z': array([0.]),
+ 'SpatialMoment_0_0': array([35721.]),
+ 'SpatialMoment_0_1': array([3357774.]),
+ ...
+ 'SpatialMoment_2_3': array([7.04675332e+14]),
+ 'CentralMoment_0_0': array([35721.]),
+ 'CentralMoment_0_1': array([0.]),
+ ...
+ 'CentralMoment_2_3': array([0.]),
+ 'NormalizedMoment_0_0': array([nan]),
+ 'NormalizedMoment_0_1': array([nan]),
+ 'NormalizedMoment_0_2': array([0.083331]),
+ ...
+ 'NormalizedMoment_3_3': array([0.]),
+ 'HuMoment_0': array([0.166662]),
+ ...
+ 'InertiaTensor_0_0': array([2976.66666667]),
+ 'InertiaTensor_0_1': array([-0.]),
+ 'InertiaTensor_1_0': array([-0.]),
+ 'InertiaTensor_1_1': array([2976.66666667]),
+ 'InertiaTensorEigenvalues_0': array([2976.66666667]),
+ 'InertiaTensorEigenvalues_1': array([2976.66666667]),
+ 'Zernike_0_0': array([0.64333829]),
+ ...
+ 'Zernike_9_9': array([3.9043712e-19]),
+ 'MinFeretDiameter': array([188.]),
+ 'MaxFeretDiameter': array([265.87214973]),
+ 'AngularSecondMoment_3_00_256': array([0.01237016]),
+ 'Contrast_3_00_256': array([13.32731615]),
+ 'Correlation_3_00_256': array([0.00052763]),
+ 'Variance_3_00_256': array([6.66717588]),
+ 'InverseDifferenceMoment_3_00_256': array([0.27445799]),
+ 'SumAverage_3_00_256': array([9.97394114]),
+ 'SumVariance_3_00_256': array([13.34138738]),
+ 'SumEntropy_3_00_256': array([3.87614681]),
+ 'Entropy_3_00_256': array([6.33842161]),
+ 'DifferenceVariance_3_00_256': array([0.00372448]),
+ 'DifferenceEntropy_3_00_256': array([2.98563863]),
+ 'InfoMeas1_3_00_256': array([-0.00035948]),
+ 'InfoMeas2_3_00_256': array([0.04771106]),
+ 'AngularSecondMoment_3_01_256': array([0.01237633]),
+ 'Contrast_3_01_256': array([13.34467007]),
+ 'Correlation_3_01_256': array([0.00074894]),
+ 'Variance_3_01_256': array([6.67733598]),
+ 'InverseDifferenceMoment_3_01_256': array([0.27467073]),
+ 'SumAverage_3_01_256': array([9.96441954]),
+ 'SumVariance_3_01_256': array([13.36467386]),
+ 'SumEntropy_3_01_256': array([3.87774892]),
+ 'Entropy_3_01_256': array([6.33805833]),
+ 'DifferenceVariance_3_01_256': array([0.00361481]),
+ 'DifferenceEntropy_3_01_256': array([2.9890093]),
+ 'InfoMeas1_3_01_256': array([-0.00041841]),
+ 'InfoMeas2_3_01_256': array([0.05146776]),
+ 'AngularSecondMoment_3_02_256': array([0.01237207]),
+ 'Contrast_3_02_256': array([13.36134306]),
+ 'Correlation_3_02_256': array([-0.0008637]),
+ 'Variance_3_02_256': array([6.67490643]),
+ 'InverseDifferenceMoment_3_02_256': array([0.27233695]),
+ 'SumAverage_3_02_256': array([9.95842397]),
+ 'SumVariance_3_02_256': array([13.33828266]),
+ 'SumEntropy_3_02_256': array([3.87581509]),
+ 'Entropy_3_02_256': array([6.33830874]),
+ 'DifferenceVariance_3_02_256': array([0.00369281]),
+ 'DifferenceEntropy_3_02_256': array([2.98609235]),
+ 'InfoMeas1_3_02_256': array([-0.00037672]),
+ 'InfoMeas2_3_02_256': array([0.04884048]),
+ 'AngularSecondMoment_3_03_256': array([0.0123648]),
+ 'Contrast_3_03_256': array([13.28753834]),
+ 'Correlation_3_03_256': array([0.00346848]),
+ 'Variance_3_03_256': array([6.66689316]),
+ 'InverseDifferenceMoment_3_03_256': array([0.27439131]),
+ 'SumAverage_3_03_256': array([9.97160996]),
+ 'SumVariance_3_03_256': array([13.38003429]),
+ 'SumEntropy_3_03_256': array([3.87790345]),
+ 'Entropy_3_03_256': array([6.33872973]),
+ 'DifferenceVariance_3_03_256': array([0.0036703]),
+ 'DifferenceEntropy_3_03_256': array([2.98626744]),
+ 'InfoMeas1_3_03_256': array([-0.0002397]),
+ 'InfoMeas2_3_03_256': array([0.03896704]),
+ 'Granularity_1': array([23.96446938]),
+ ...
+ 'Granularity_16': array([100.])}
+"""
+#+end_src
+
+*** Call specific measurements
+If you need a specific measurement/feature you can just import it. Note that measurements come in sets, so you have to fetch the one that you specifically require from the resultant dictionary. Any available measurement can be found using code as follows:
+#+begin_src python
+  import numpy as np
+
+  from cp_measure.minimal.measureobjectsizeshape import get_sizeshape
+  
+  mask = np.zeros((50, 50))
+  mask[5:-6, 5:-6] = 1
+  get_sizeshape(mask, None) # pixels, the second argument, is not necessary for this measurement
+#+end_src
+
+The other available functions are as follows:
+- measureobjectintensitydistribution.get_radial_zernikes,
+- measureobjectintensity.get_intensity,
+- measureobjectsizeshape.get_zernike,
+- measureobjectsizeshape.get_ferret,
+- measuregranularity.get_granularity,
+- measuretexture.get_texture,
+
+And for Type 2 functions:
+- measurecolocalization.get_correlation_pearson
+- measurecolocalization.get_correlation_manders_fold
+- measurecolocalization.get_correlation_rwc
+- measurecolocalization.get_correlation_costes
+- measurecolocalization.get_correlation_overlap  
+
+* Pending measurements 
+You can follow progress [[https://docs.google.com/spreadsheets/d/1_7jQ8EjPwOr2MUnO5Tw56iu4Y0udAzCJEny-LQMgRGE/edit?usp=sharing][here]].
+
+*** Done
+- Type 1 and 2 measurements in sklearn style (process multiple masks per image)
+*** Pending
+- Type 3 and 4 measurements
+  
+  
+*** Additional notes
+The Image-wide functions will not be implemented directly, they were originally implemented independently to the Object (mask) functions. We will adjust the existing functions assume that an image-wide measurement is the same as measuring an object with the same size as the intensity image.
+
+
+* Additional notes
+- This is not optimised for efficiency (yet). We aim to reproduce the 'vanilla' results of CellProfiler with minimal code changes. Optimisations will be implemented once we come up with a standard interface for functionally-focused CellProfiler components.
+- The functions exposed perform minimal checks. They will fail if provided with empty masks. Not all functions will fail if provided with masks only.
