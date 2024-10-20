@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: nonebot-plugin-lynchpined
+Version: 0.1.5
+Summary: A nonebot2 plugin to check Lynchpin progress.
+License: MIT
+Author: Nightsky
+Author-email: 050644zf@outlook.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: aiohttp (>=3.10.2,<4.0.0)
+Requires-Dist: nonebot-plugin-apscheduler (>=0.4.0,<0.5.0)
+Description-Content-Type: text/markdown
+
+<div align="center">
+  
+# nonebot-plugin-lynchpined
+
+*Getting lynchpined everyday!*
+
+</div>
+
+## Description
+
+`nonebot-plugin-lynchpined` is a [nonebot2](https://nonebot.dev/) plugin to help you track [lynchpin progress](https://ak.hypergryph.com/lynchpin) in QQ group.
+
+## Installation
+
+### By nb-cli (Recommended)
+
+Pending.
+
+```bash
+nb plugin install nonebot-plugin-lynchpined
+```
+
+### By pip
+
+```bash
+pip install nonebot-plugin-lynchpined
+```
+
+and then adding package name in the following field of `pyproject.toml`:
+
+```toml
+[tool.nonebot]
+plugins = [
+  ... # others
+  "nonebot-plugin-lynchpined",
+  ]
+```
+
+## Simple Usage
+
+Just call `lynchpin` anywhere bot can chat.
+
+```
+> Lynchpined
+Lynchpin: 24%
+Pattern Matched:
+ 0  4 12 15 [24] 33 34 35 35
+```
+
+## Subscribe to Lynchpin Progress
+
+By adding `lynchpined_user` or `lynchpined_group` in config, the plugin will send lynchpin progress to the lynchpined at 00:00 everyday.
+
+For example: 
+
+```Properties
+LYNCHPINED_GROUP = [4121524, 33343535]
+LYNCHPINED_USER = [11708102]
+```
+
+**Note:** Make sure the timezone on your machine is `UTC+8` or you have to manually modified the trigger in `__init__.py`.
+
