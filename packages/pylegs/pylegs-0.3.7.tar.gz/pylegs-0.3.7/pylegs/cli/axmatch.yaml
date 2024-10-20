@@ -1,0 +1,71 @@
+name: axmatch
+help: |
+  Crossmatch Archive Server
+args:
+  - flags: input
+    action: store
+    help: |
+      Input table to crossmatch against Legacy Archive Server
+
+  - flags: output
+    action: store
+    help: |
+      Output table path
+
+  - flags: --radius
+    action: store
+    default: 1 arcsec
+    help: |
+      Crossmatch radius, the unit must be specified. e.g. --radius 1.5 arcsec.
+      Default: 1 arcsec
+
+  - flags: --cache
+    action: store
+    default: legacy_bricks
+    help: |
+      The cache dir. This folder will store the partial tables.
+      Default: "legacy_bricks"
+  
+  - flags: --columns
+    action: store
+    nargs: +
+    help: |
+      The columns to get from service. Default: 
+    
+  - flags: --ra
+    action: store
+    help: |
+      The name of the RA column. Default: auto, the package will try to infer
+    
+  - flags: --dec
+    action: store
+    help: |
+      The name of the DEC column. Default: auto, the package will try to infer
+
+  - flags: ifmt
+    action: store
+    help: |
+      Input table format, e.g. csv, parquet, fits. Default: auto, the package
+      will try to infer from filename
+
+  - flags: --unit
+    action: store
+    default: deg
+    help: |
+      Unit of the coordinates columns (RA and DEC) in inpu table.
+      Default: deg
+
+  - flags: --overwrite
+    action: store_true
+    help: |
+      Set thi flag to overwrites the output table
+
+  - flags: --brickname
+    action: store_true
+    help: |
+      Set this flag to add brick name column in output table
+
+  - flags: --dr
+    action: store_true
+    help: |
+      Set this flag to add data release column in output table
