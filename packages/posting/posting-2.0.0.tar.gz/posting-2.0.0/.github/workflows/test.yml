@@ -1,0 +1,51 @@
+name: Continuous Integration
+
+on:
+    pull_request:
+    push:
+      branches:
+        - "main"
+
+env:
+    PYTEST_ADDOPTS: "--color=yes"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up uv
+        # Install a specific uv version using the installer
+        run: curl -LsSf https://astral.sh/uv/0.3.3/install.sh | sh
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+      - name: Install Dependencies
+        run: uv sync --all-extras --dev
+      - name: Run Tests
+        run: |
+            uv run make test-ci
+      - name: Attach Code Coverage
+        uses: py-cov-action/python-coverage-comment-action@v3.25
+        with:
+            GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Save Snapshot Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-report-posting
+          path: snapshot_report.html
+    
+      - name: Store Pull Request Comment
+        uses: actions/upload-artifact@v4
+        if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+            # If you use a different name, update COMMENT_ARTIFACT_NAME accordingly
+            name: python-coverage-comment-action
+            # If you use a different name, update COMMENT_FILENAME accordingly
+            path: python-coverage-comment-action.txt
