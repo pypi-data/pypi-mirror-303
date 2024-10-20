@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>masterpiece.core.masterpiece &#8212; juham  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/juham.css?v=7a3aeb84" />
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          juham</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html">Welcome to Juham™ - Juha’s Ultimate Home Automation Masterpiece</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to Juham™ - Juha’s Ultimate Home Automation Masterpiece</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../TODO.html">TODOs for Juham™</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../juham/index.html">Project Overview</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary">
+<form action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <h1>Source code for masterpiece.core.masterpiece</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    masterpiece.py</span>
+
+<span class="sd">    This module defines the foundational classes for the framework. These elementary</span>
+<span class="sd">    base classes form the core upon which all other classes in the framework are built.</span>
+
+<span class="sd">    Classes:</span>
+<span class="sd">        MasterPiece: A base class representing a fundamental component in the framework.</span>
+<span class="sd">        These objects can be copied, serialized, instantiated through class </span>
+<span class="sd">        id (factory method pattern).</span>
+
+<span class="sd">        Args: Base class for per-class startup arguments</span>
+
+<span class="sd">    The `MasterPiece` class can be described as a named object with a payload and parent object.</span>
+<span class="sd">    In other words, the object can be linked to any other &#39;MasterPiece&#39; object as a children,</span>
+<span class="sd">    and it can carry any other object with it. It is up to the sub classes define the payload</span>
+<span class="sd">    objects. </span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        from masterpiece import MasterPiece</span>
+
+<span class="sd">        obj = MasterPiece(name=&quot;livingroom&quot;, payload = TemperatureSensor(t))</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Ensure `from __future__ import annotations` is included at the top of this module</span>
+<span class="sd">        to avoid issues with forward references in type hints.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<span class="k">class</span> <span class="nc">Args</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines typing for ArgumentParser arguments.</span>
+<span class="sd">    Subclasses of `MasterPiece` can extend this base class to define</span>
+<span class="sd">    additional startup arguments.</span>
+
+<span class="sd">    .. todo:: Update the implementation to address Liskov&#39;s Substitution Principle warning.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;config&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">MasterPiece</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An object with a name. Base class of everything. Serves as the</span>
+<span class="sd">    foundational class offering key features needed by any robust</span>
+<span class="sd">    object-oriented software.</span>
+
+<span class="sd">    Logging</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    All objects have logging methods e.g. info() and error() at their fingertips, for</span>
+<span class="sd">    centralized logging.</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        if (err := self.do_good()) &lt; 0:</span>
+<span class="sd">            self.error(f&quot;Damn, did bad {err}&quot;)</span>
+
+<span class="sd">    Factory Method Pattern</span>
+<span class="sd">    ----------------------</span>
+
+<span class="sd">    Instantiation via class identifiers, adhering to the factory method pattern.</span>
+<span class="sd">    This allows for the dynamic creation of instances based on class identifiers,</span>
+<span class="sd">    promoting decoupled and extensible design required by plugin architecture.</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        # instead of fixed implementation car = Ferrari()</span>
+<span class="sd">        car = Object.instantiate(car_class_id)</span>
+
+
+<span class="sd">    Serialization</span>
+<span class="sd">    -------------</span>
+
+<span class="sd">    Serialization of both class and instance attributes serves as a means of configuration.</span>
+
+<span class="sd">    Class attributes should follow a consistent naming convention where an underscore prefix</span>
+<span class="sd">    (&#39;_&#39; or &#39;__&#39;) implies the attribute is private and transient, meaning it is not serialized.</span>
+<span class="sd">    Class attributes without an underscore prefix are initialized from configuration files named</span>
+<span class="sd">    &#39;~/.masterpiece/[appname]/[classname].json&#39;, if present. If the class-specific configuration</span>
+<span class="sd">    files do not already exist, they are automatically created upon the first run.</span>
+
+
+<span class="sd">    Instance attributes can be serialized and deserialized using the `serialize()`</span>
+<span class="sd">    and `deserialize()` methods:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        # serialize to json file</span>
+<span class="sd">        with open(&quot;foo.json&quot;, &quot;w&quot;) as f:</span>
+<span class="sd">            foo.serialize(f)</span>
+
+<span class="sd">        # deserialize</span>
+<span class="sd">        foo = F()</span>
+<span class="sd">        with open(&quot;foo.json&quot;, &quot;r&quot;) as f:</span>
+<span class="sd">            foo.deserialize(f)</span>
+
+<span class="sd">    Deserialization must restore the object&#39;s state to what it was when it was serialized.</span>
+<span class="sd">    As Python does not have &#39;transient&#39; keyword to tag attributes that should be serialized, all</span>
+<span class="sd">    classes must explicitely describe information for the serialization. This is done with</span>
+<span class="sd">    `to_dict()` and `from_dict()` methods:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        def to_dict(self):</span>
+<span class="sd">            data = super().to_dict()</span>
+<span class="sd">            data[&quot;_foo&quot;] = {</span>
+<span class="sd">                &quot;topic&quot;: self.topic,</span>
+<span class="sd">                &quot;temperature&quot;: self.temperature,</span>
+<span class="sd">            }</span>
+<span class="sd">            return data</span>
+
+<span class="sd">        def from_dict(self, data):</span>
+<span class="sd">            super().from_dict(data)</span>
+<span class="sd">            for key, value in data[&quot;_foo&quot;].items():</span>
+<span class="sd">                setattr(self, key, value)</span>
+
+
+<span class="sd">    Copying Objects</span>
+<span class="sd">    ---------------</span>
+
+<span class="sd">    Any object can be copied using the `copy()` method. This feature is based on serialization, so</span>
+<span class="sd">    typically, subclasses don&#39;t need to implement the `copy()` method; everything is taken care of</span>
+<span class="sd">    by the base class.</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        foo2 = foo.copy()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># non-serializable private class attributes</span>
+    <span class="n">_app_name</span> <span class="o">=</span> <span class="s2">&quot;masterpiece&quot;</span>
+    <span class="n">_config</span> <span class="o">=</span> <span class="s2">&quot;config&quot;</span>
+    <span class="n">_log</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_factory</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">_class_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when a new sub-class is created.</span>
+
+<span class="sd">        Automatically registers the sub class by calling its register()</span>
+<span class="sd">        method. For more information on this method consult Python</span>
+<span class="sd">        documentation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register the class.</span>
+
+<span class="sd">        Called immediately upon class initialization, right before the class attributes</span>
+<span class="sd">        are loaded from the class specific configuration files.</span>
+
+<span class="sd">        Subclasses can extend this with custom register functionality:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            class MyMasterPiece(MasterPiece):</span>
+
+<span class="sd">                @classmethod</span>
+<span class="sd">                def register(cls):</span>
+<span class="sd">                    super().register()  # Don&#39;t forget</span>
+<span class="sd">                    cls._custom_field = True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_class_id</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_abstract</span><span class="p">():</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">register_class</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_class_id</span><span class="p">(),</span> <span class="bp">cls</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">has_class_method_directly</span><span class="p">(</span><span class="s2">&quot;register_args&quot;</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">register_args</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_arg_parser</span><span class="p">)</span>
+
+        <span class="c1"># automatically create configuration file, if not created already</span>
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">app_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set application name</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): application name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_app_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get application name</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            name (str): application name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">initialize_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">load_class_attrs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the class for instantiation. Initializes the class identifier.</span>
+<span class="sd">        Initialize public class attributes from the class-specific configuration files,</span>
+<span class="sd">        unless disabled with the `load_class_attrs` parameter.</span>
+<span class="sd">        Call the `register()` method of the class to let each class do custom initializations.</span>
+<span class="sd">        Set up `atexit` callback to generate class-specific initialization files if they</span>
+<span class="sd">        don&#39;t exist already.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            load_class_attrs (bool, optional): If true, then attempts to initialize class attributes</span>
+<span class="sd">                from the class-specific configuration files. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Returns true if the class was initialized. False implies the class is already</span>
+<span class="sd">            initialized, in which case the method call has no effect.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_class_id</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_class_id</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">register_class</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">load_class_attrs</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">load_from_json</span><span class="p">()</span>
+                <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_abstract</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check whether the class is abstract or real. Override in the derived</span>
+<span class="sd">        sub-classes. The default is False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True (bool) if abstract</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">set_log</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set logger.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            l (logger): logger object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="n">l</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_class_id</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the class id of the class. Each class has an unique</span>
+<span class="sd">        identifier that can be used for instantiating the class via</span>
+<span class="sd">        :meth:`Object.instantiate` method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cls (class): class</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            id (int) unique class identifier through which the class can be</span>
+<span class="sd">            instantiated by factory method pattern.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;noname&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MasterPiece</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates object with the given name and  payload. The payload object</span>
+<span class="sd">        must be of type  `MasterPiece` as well.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            ```python</span>
+<span class="sd">            obj = MasterPiece(&#39;foo&#39;, Foo(&quot;downstairs&quot;))</span>
+<span class="sd">            obj.info(&#39;Yippee, object created&#39;)</span>
+<span class="sd">            ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="n">payload</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_initial_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse application name and configuration name  arguments. Note that argument parsing</span>
+<span class="sd">        is two stage process. This method must be</span>
+<span class="sd">        called  at very early on to know where to load class initialization  files.</span>
+<span class="sd">        See `register_args()` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">add_help</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--app&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Application name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--config&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Configuration&quot;</span><span class="p">)</span>
+
+        <span class="n">args</span><span class="p">,</span> <span class="n">remaining_argv</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">remaining_argv</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">config</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">app</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">app</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span><span class="si">}</span><span class="s2"> started with configuration ~.</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">_config</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs the given debug message to the application log.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (str): The information message to be logged.</span>
+<span class="sd">            details (str): Additional detailed information for the message to be logged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs the given information message to the application log.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (str): The information message to be logged.</span>
+<span class="sd">            details (str): Additional detailed information for the message to be logged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs the given warning message to the application log.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (str): The message to be logged.</span>
+<span class="sd">            details (str): Additional detailed information for the message to be logged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logs the given error message to the application log.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (str): The message to be logged.</span>
+<span class="sd">            details (str): Additional detailed information for the message to be logged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_json_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the JSON file name based on the class name.</span>
+
+<span class="sd">        The file is created into users home folder.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_app_name</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_config</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert instance attributes to a dictionary.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;_class&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_id</span><span class="p">(),</span>  <span class="c1"># the real class</span>
+            <span class="s2">&quot;_version:&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;_object&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update instance attributes from a dictionary.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_id</span><span class="p">()</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_class&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Class mismatch, expected:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_class_id</span><span class="p">()</span><span class="si">}</span><span class="s2">, actual:</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;_class&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_object&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="n">MasterPiece</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;_class&quot;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serialize_to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the object to given JSON file&quot;&quot;&quot;</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deserialize_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load  attributes from the given JSON file.&quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MasterPiece</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create and return a copy of the current object.</span>
+
+<span class="sd">        This method serializes the current object to a dictionary using the `to_dict` method,</span>
+<span class="sd">        creates a new instance of the object&#39;s class, and populates it with the serialized data</span>
+<span class="sd">        using the `from_dict` method.</span>
+
+<span class="sd">        This method uses class identifier based instantiation (see factory method pattern) to</span>
+<span class="sd">        create a new instance of the object, and &#39;to_dict&#39; and &#39;from_dict&#39;  methods to initialize</span>
+<span class="sd">        object&#39;s state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new instance of the object&#39;s class with the same state as the original object.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            clone_of_john = john.copy()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">copy_of_self</span> <span class="o">=</span> <span class="n">MasterPiece</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_class_id</span><span class="p">())</span>
+        <span class="n">copy_of_self</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">copy_of_self</span>
+
+    <span class="k">def</span> <span class="nf">quantize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quanta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Quantize the given value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            quanta (float): resolution for quantization</span>
+<span class="sd">            value (float): value to be quantized</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (float): quantized value</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            hour_of_a_day = self.quantize(3600, epoch_seconds)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">//</span> <span class="n">quanta</span><span class="p">)</span> <span class="o">*</span> <span class="n">quanta</span>
+
+    <span class="k">def</span> <span class="nf">epoc2utc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the given epoch time to UTC time string. All time</span>
+<span class="sd">        coordinates are represented in UTC time. This allows the time</span>
+<span class="sd">        coordinate to be mapped to any local time representation without</span>
+<span class="sd">        ambiguity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            epoch (float) : timestamp in UTC time</span>
+<span class="sd">            rc (str): time string describing date, time and time zone e.g 2024-07-08T12:10:22Z</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UTC time</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">utc_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="n">utc_timestr</span> <span class="o">=</span> <span class="n">utc_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;Z&quot;</span>
+        <span class="k">return</span> <span class="n">utc_timestr</span>
+
+    <span class="k">def</span> <span class="nf">timestampstr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the given timestamp to human readable string of format &#39;Y-m-d</span>
+<span class="sd">        H:M:S&#39;.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts (timestamp):  time stamp to be converted</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            rc (string):  human readable date-time string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current date-time in UTC.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            rc (datetime):  datetime in UTC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">timestamp_hour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the hour in 24h format in UTC.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts (float): timestamp</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            rc (int):  current hour in UTC 0 ...23</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+
+    <span class="k">def</span> <span class="nf">is_time_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">check_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the given time is within the given time line. All</span>
+<span class="sd">        timestamps must be in UTC time.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            begin_time (timestamp):  beginning of the timeline</span>
+<span class="sd">            end_time (timestamp):  end of the timeline</span>
+<span class="sd">            check_time (timestamp):  time to be checked</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            rc (bool):  True if within the timeline</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">check_time</span> <span class="o">=</span> <span class="n">check_time</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">begin_time</span> <span class="o">&lt;</span> <span class="n">end_time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">check_time</span> <span class="o">&gt;=</span> <span class="n">begin_time</span> <span class="ow">and</span> <span class="n">check_time</span> <span class="o">&lt;=</span> <span class="n">end_time</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># crosses midnight</span>
+            <span class="k">return</span> <span class="n">check_time</span> <span class="o">&gt;=</span> <span class="n">begin_time</span> <span class="ow">or</span> <span class="n">check_time</span> <span class="o">&lt;=</span> <span class="n">end_time</span>
+
+    <span class="k">def</span> <span class="nf">elapsed_seconds_in_hour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_utc</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given timestamp in UTC, Compute elapsed seconds within an hour</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts  (float) : seconds since UTC epoch</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            float: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts_utc</span><span class="p">)</span>
+        <span class="c1"># Define start time (for example 9:15:30)</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Compute the difference between the times</span>
+        <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">ts</span> <span class="o">-</span> <span class="n">start_time</span>
+
+        <span class="c1"># Convert the difference to seconds</span>
+        <span class="k">return</span> <span class="n">elapsed_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">elapsed_seconds_in_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_utc</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch the elapsed seconds since the be given time stamp &#39;ts_utc&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: elapsed second today</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Convert the float timestamp into a datetime object</span>
+        <span class="n">timestamp_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts_utc</span><span class="p">)</span>
+        <span class="c1"># Get the start of today (midnight)</span>
+        <span class="n">midnight</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">timestamp_datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(),</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="c1"># Calculate the elapsed seconds since midnight</span>
+        <span class="n">elapsed_seconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">timestamp_datetime</span> <span class="o">-</span> <span class="n">midnight</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">elapsed_seconds</span>
+
+    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">is_last</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the name of the object, decorated with prefix consisting of ├─, └─, and │.&quot;&quot;&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;└─ &quot;</span> <span class="k">if</span> <span class="n">is_last</span> <span class="k">else</span> <span class="s2">&quot;├─ &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the masterpiece.  Dispatches the call to `payload` object and</span>
+<span class="sd">        returns  the control to the caller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the masterpiece forever. This method will return only when violently</span>
+<span class="sd">        terminated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Newtorking loop exit without exception&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Networking loop terminated with exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shutdown the masterpiece. It is up to the sub classes to implement this method.</span>
+<span class="sd">        Dispatches the call to `payload` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">classattrs_to_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert class attributes to a dictionary.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;_&quot;</span><span class="p">))</span>
+        <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">classattrs_from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set class attributes from a dictionary.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">save_to_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create class configuration file, if the file does not exist yet.&quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_json_file</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_json_file</span><span class="p">(),</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">classattrs_to_dict</span><span class="p">(),</span> <span class="n">f</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> created&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load class attributes from a JSON file.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_json_file</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">classattrs_from_dict</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No configuration file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> found&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register the given class identifier for identifier based</span>
+<span class="sd">        instantiation . This, factory method pattern, as it is called,</span>
+<span class="sd">        decouples the actual implementation from the interface.  For more</span>
+<span class="sd">        information see :meth:`instantiate` method.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            class_id (str): class identifier</span>
+<span class="sd">            ctor  (function): constructor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">[</span><span class="n">class_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctor</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_registered_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the dictionary holding the registered class identifiers and</span>
+<span class="sd">        the corresponding classes.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: dictionary of class identifier - class pairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MasterPiece</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an instance of the class corresponding to the given class identifier.</span>
+<span class="sd">        This method implements the factory method pattern, which is essential for a</span>
+<span class="sd">        plugin architecture.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            class_id (int): Identifier of the class to instantiate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            obj: An instance of the class corresponding to the given class identifier.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">class_id</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">[</span><span class="n">class_id</span><span class="p">]()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to instantiate unregistered class </span><span class="si">{</span><span class="n">class_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">find_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given class identifier find the registered class. If no class with</span>
+<span class="sd">        the give identifier exists return None.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            class_id (int): class identifier</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            obj (obj): class or null if not registered</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">class_id</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">[</span><span class="n">class_id</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">instantiate_with_param</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">class_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MasterPiece</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given class identifier and one constructor argument create the</span>
+<span class="sd">        corresponding object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            class_id : class identifier</span>
+<span class="sd">            param : class specific constructor parameter</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            obj : instance of the given class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">[</span><span class="n">class_id</span><span class="p">](</span><span class="n">param</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">has_class_method_directly</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the method is in the class&#39;s own dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">method_name</span><span class="p">]</span>
+            <span class="c1"># Check if it&#39;s a method and if it&#39;s a class method</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register startup arguments to be parsed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parser (argparse.ArgumentParser): parser to add the startup arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse registered startup arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parser (argparse.ArgumentParser): parser to add the startup arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">args</span><span class="p">:</span> <span class="n">Args</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_arg_parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">namespace</span><span class="o">=</span><span class="n">Args</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_factory</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">configure_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">configure_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register startup arguments to be parsed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parser (argparse.ArgumentParser): parser to add the startup arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+<span class="c1"># Register MasterPiece manually since __init_subclass__() won&#39;t be called on it.</span>
+<span class="n">MasterPiece</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2024, juha meskanen.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

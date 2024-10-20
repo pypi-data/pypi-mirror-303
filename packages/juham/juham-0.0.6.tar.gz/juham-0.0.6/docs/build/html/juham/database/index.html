@@ -1,0 +1,1678 @@
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>juham.database &#8212; juham  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=4468db6d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/juham.css?v=7a3aeb84" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="juham.mqtt" href="../mqtt/index.html" />
+    <link rel="prev" title="juham.base" href="../base/index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          juham</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Welcome to Juham™ - Juha’s Ultimate Home Automation Masterpiece</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing to Juham™ - Juha’s Ultimate Home Automation Masterpiece</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TODO.html">TODOs for Juham™</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Project Overview</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">juham.database</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#juham.database.JConsole"><code class="docutils literal notranslate"><span class="pre">JConsole</span></code></a><ul>
+<li><a class="reference internal" href="#juham.database.JConsole.app_name"><code class="docutils literal notranslate"><span class="pre">JConsole.app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.classattrs_from_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.classattrs_from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.classattrs_to_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.classattrs_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.configure_args"><code class="docutils literal notranslate"><span class="pre">JConsole.configure_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.copy"><code class="docutils literal notranslate"><span class="pre">JConsole.copy()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.database"><code class="docutils literal notranslate"><span class="pre">JConsole.database</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.debug"><code class="docutils literal notranslate"><span class="pre">JConsole.debug()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.deserialize_from_json"><code class="docutils literal notranslate"><span class="pre">JConsole.deserialize_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.elapsed_seconds_in_day"><code class="docutils literal notranslate"><span class="pre">JConsole.elapsed_seconds_in_day()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.elapsed_seconds_in_hour"><code class="docutils literal notranslate"><span class="pre">JConsole.elapsed_seconds_in_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.epoc2utc"><code class="docutils literal notranslate"><span class="pre">JConsole.epoc2utc()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.error"><code class="docutils literal notranslate"><span class="pre">JConsole.error()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.find_class"><code class="docutils literal notranslate"><span class="pre">JConsole.find_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.from_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_app_name"><code class="docutils literal notranslate"><span class="pre">JConsole.get_app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_class_id"><code class="docutils literal notranslate"><span class="pre">JConsole.get_class_id()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_json_file"><code class="docutils literal notranslate"><span class="pre">JConsole.get_json_file()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_registered_classes"><code class="docutils literal notranslate"><span class="pre">JConsole.get_registered_classes()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.has_class_method_directly"><code class="docutils literal notranslate"><span class="pre">JConsole.has_class_method_directly()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.host"><code class="docutils literal notranslate"><span class="pre">JConsole.host</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.info"><code class="docutils literal notranslate"><span class="pre">JConsole.info()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.initialize_class"><code class="docutils literal notranslate"><span class="pre">JConsole.initialize_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.instantiate"><code class="docutils literal notranslate"><span class="pre">JConsole.instantiate()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.instantiate_with_param"><code class="docutils literal notranslate"><span class="pre">JConsole.instantiate_with_param()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.is_abstract"><code class="docutils literal notranslate"><span class="pre">JConsole.is_abstract()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.is_time_between"><code class="docutils literal notranslate"><span class="pre">JConsole.is_time_between()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.load_from_json"><code class="docutils literal notranslate"><span class="pre">JConsole.load_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.org"><code class="docutils literal notranslate"><span class="pre">JConsole.org</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.parse_args"><code class="docutils literal notranslate"><span class="pre">JConsole.parse_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.parse_initial_args"><code class="docutils literal notranslate"><span class="pre">JConsole.parse_initial_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.print"><code class="docutils literal notranslate"><span class="pre">JConsole.print()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.quantize"><code class="docutils literal notranslate"><span class="pre">JConsole.quantize()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register"><code class="docutils literal notranslate"><span class="pre">JConsole.register()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register_args"><code class="docutils literal notranslate"><span class="pre">JConsole.register_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register_class"><code class="docutils literal notranslate"><span class="pre">JConsole.register_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.run"><code class="docutils literal notranslate"><span class="pre">JConsole.run()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.run_forever"><code class="docutils literal notranslate"><span class="pre">JConsole.run_forever()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.save_to_json"><code class="docutils literal notranslate"><span class="pre">JConsole.save_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.serialize_to_json"><code class="docutils literal notranslate"><span class="pre">JConsole.serialize_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.set_log"><code class="docutils literal notranslate"><span class="pre">JConsole.set_log()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.shutdown"><code class="docutils literal notranslate"><span class="pre">JConsole.shutdown()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestamp"><code class="docutils literal notranslate"><span class="pre">JConsole.timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestamp_hour"><code class="docutils literal notranslate"><span class="pre">JConsole.timestamp_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestampstr"><code class="docutils literal notranslate"><span class="pre">JConsole.timestampstr()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.to_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.token"><code class="docutils literal notranslate"><span class="pre">JConsole.token</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.warning"><code class="docutils literal notranslate"><span class="pre">JConsole.warning()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.write"><code class="docutils literal notranslate"><span class="pre">JConsole.write()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#juham.database.JInflux"><code class="docutils literal notranslate"><span class="pre">JInflux</span></code></a><ul>
+<li><a class="reference internal" href="#juham.database.JInflux.app_name"><code class="docutils literal notranslate"><span class="pre">JInflux.app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.classattrs_from_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.classattrs_from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.classattrs_to_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.classattrs_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.configure_args"><code class="docutils literal notranslate"><span class="pre">JInflux.configure_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.copy"><code class="docutils literal notranslate"><span class="pre">JInflux.copy()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.database"><code class="docutils literal notranslate"><span class="pre">JInflux.database</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.debug"><code class="docutils literal notranslate"><span class="pre">JInflux.debug()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.deserialize_from_json"><code class="docutils literal notranslate"><span class="pre">JInflux.deserialize_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.elapsed_seconds_in_day"><code class="docutils literal notranslate"><span class="pre">JInflux.elapsed_seconds_in_day()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.elapsed_seconds_in_hour"><code class="docutils literal notranslate"><span class="pre">JInflux.elapsed_seconds_in_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.epoc2utc"><code class="docutils literal notranslate"><span class="pre">JInflux.epoc2utc()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.error"><code class="docutils literal notranslate"><span class="pre">JInflux.error()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.find_class"><code class="docutils literal notranslate"><span class="pre">JInflux.find_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.from_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_app_name"><code class="docutils literal notranslate"><span class="pre">JInflux.get_app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_class_id"><code class="docutils literal notranslate"><span class="pre">JInflux.get_class_id()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_json_file"><code class="docutils literal notranslate"><span class="pre">JInflux.get_json_file()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_registered_classes"><code class="docutils literal notranslate"><span class="pre">JInflux.get_registered_classes()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.has_class_method_directly"><code class="docutils literal notranslate"><span class="pre">JInflux.has_class_method_directly()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.host"><code class="docutils literal notranslate"><span class="pre">JInflux.host</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.info"><code class="docutils literal notranslate"><span class="pre">JInflux.info()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.initialize_class"><code class="docutils literal notranslate"><span class="pre">JInflux.initialize_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.instantiate"><code class="docutils literal notranslate"><span class="pre">JInflux.instantiate()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.instantiate_with_param"><code class="docutils literal notranslate"><span class="pre">JInflux.instantiate_with_param()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.is_abstract"><code class="docutils literal notranslate"><span class="pre">JInflux.is_abstract()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.is_time_between"><code class="docutils literal notranslate"><span class="pre">JInflux.is_time_between()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.load_from_json"><code class="docutils literal notranslate"><span class="pre">JInflux.load_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.org"><code class="docutils literal notranslate"><span class="pre">JInflux.org</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.parse_args"><code class="docutils literal notranslate"><span class="pre">JInflux.parse_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.parse_initial_args"><code class="docutils literal notranslate"><span class="pre">JInflux.parse_initial_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.print"><code class="docutils literal notranslate"><span class="pre">JInflux.print()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.quantize"><code class="docutils literal notranslate"><span class="pre">JInflux.quantize()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register"><code class="docutils literal notranslate"><span class="pre">JInflux.register()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register_args"><code class="docutils literal notranslate"><span class="pre">JInflux.register_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register_class"><code class="docutils literal notranslate"><span class="pre">JInflux.register_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.run"><code class="docutils literal notranslate"><span class="pre">JInflux.run()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.run_forever"><code class="docutils literal notranslate"><span class="pre">JInflux.run_forever()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.save_to_json"><code class="docutils literal notranslate"><span class="pre">JInflux.save_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.serialize_to_json"><code class="docutils literal notranslate"><span class="pre">JInflux.serialize_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.set_log"><code class="docutils literal notranslate"><span class="pre">JInflux.set_log()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.shutdown"><code class="docutils literal notranslate"><span class="pre">JInflux.shutdown()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestamp"><code class="docutils literal notranslate"><span class="pre">JInflux.timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestamp_hour"><code class="docutils literal notranslate"><span class="pre">JInflux.timestamp_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestampstr"><code class="docutils literal notranslate"><span class="pre">JInflux.timestampstr()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.to_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.token"><code class="docutils literal notranslate"><span class="pre">JInflux.token</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.warning"><code class="docutils literal notranslate"><span class="pre">JInflux.warning()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.write"><code class="docutils literal notranslate"><span class="pre">JInflux.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../base/index.html" title="Previous Chapter: juham.base"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; juham.base</span>
+    </a>
+  </li>
+  <li>
+    <a href="../mqtt/index.html" title="Next Chapter: juham.mqtt"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">juham.mqtt &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../../_sources/juham/database/index.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-3">
+        <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
+<li><a class="reference internal" href="#">juham.database</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#juham.database.JConsole"><code class="docutils literal notranslate"><span class="pre">JConsole</span></code></a><ul>
+<li><a class="reference internal" href="#juham.database.JConsole.app_name"><code class="docutils literal notranslate"><span class="pre">JConsole.app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.classattrs_from_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.classattrs_from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.classattrs_to_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.classattrs_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.configure_args"><code class="docutils literal notranslate"><span class="pre">JConsole.configure_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.copy"><code class="docutils literal notranslate"><span class="pre">JConsole.copy()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.database"><code class="docutils literal notranslate"><span class="pre">JConsole.database</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.debug"><code class="docutils literal notranslate"><span class="pre">JConsole.debug()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.deserialize_from_json"><code class="docutils literal notranslate"><span class="pre">JConsole.deserialize_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.elapsed_seconds_in_day"><code class="docutils literal notranslate"><span class="pre">JConsole.elapsed_seconds_in_day()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.elapsed_seconds_in_hour"><code class="docutils literal notranslate"><span class="pre">JConsole.elapsed_seconds_in_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.epoc2utc"><code class="docutils literal notranslate"><span class="pre">JConsole.epoc2utc()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.error"><code class="docutils literal notranslate"><span class="pre">JConsole.error()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.find_class"><code class="docutils literal notranslate"><span class="pre">JConsole.find_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.from_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_app_name"><code class="docutils literal notranslate"><span class="pre">JConsole.get_app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_class_id"><code class="docutils literal notranslate"><span class="pre">JConsole.get_class_id()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_json_file"><code class="docutils literal notranslate"><span class="pre">JConsole.get_json_file()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.get_registered_classes"><code class="docutils literal notranslate"><span class="pre">JConsole.get_registered_classes()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.has_class_method_directly"><code class="docutils literal notranslate"><span class="pre">JConsole.has_class_method_directly()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.host"><code class="docutils literal notranslate"><span class="pre">JConsole.host</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.info"><code class="docutils literal notranslate"><span class="pre">JConsole.info()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.initialize_class"><code class="docutils literal notranslate"><span class="pre">JConsole.initialize_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.instantiate"><code class="docutils literal notranslate"><span class="pre">JConsole.instantiate()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.instantiate_with_param"><code class="docutils literal notranslate"><span class="pre">JConsole.instantiate_with_param()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.is_abstract"><code class="docutils literal notranslate"><span class="pre">JConsole.is_abstract()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.is_time_between"><code class="docutils literal notranslate"><span class="pre">JConsole.is_time_between()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.load_from_json"><code class="docutils literal notranslate"><span class="pre">JConsole.load_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.org"><code class="docutils literal notranslate"><span class="pre">JConsole.org</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.parse_args"><code class="docutils literal notranslate"><span class="pre">JConsole.parse_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.parse_initial_args"><code class="docutils literal notranslate"><span class="pre">JConsole.parse_initial_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.print"><code class="docutils literal notranslate"><span class="pre">JConsole.print()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.quantize"><code class="docutils literal notranslate"><span class="pre">JConsole.quantize()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register"><code class="docutils literal notranslate"><span class="pre">JConsole.register()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register_args"><code class="docutils literal notranslate"><span class="pre">JConsole.register_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.register_class"><code class="docutils literal notranslate"><span class="pre">JConsole.register_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.run"><code class="docutils literal notranslate"><span class="pre">JConsole.run()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.run_forever"><code class="docutils literal notranslate"><span class="pre">JConsole.run_forever()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.save_to_json"><code class="docutils literal notranslate"><span class="pre">JConsole.save_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.serialize_to_json"><code class="docutils literal notranslate"><span class="pre">JConsole.serialize_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.set_log"><code class="docutils literal notranslate"><span class="pre">JConsole.set_log()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.shutdown"><code class="docutils literal notranslate"><span class="pre">JConsole.shutdown()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestamp"><code class="docutils literal notranslate"><span class="pre">JConsole.timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestamp_hour"><code class="docutils literal notranslate"><span class="pre">JConsole.timestamp_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.timestampstr"><code class="docutils literal notranslate"><span class="pre">JConsole.timestampstr()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.to_dict"><code class="docutils literal notranslate"><span class="pre">JConsole.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.token"><code class="docutils literal notranslate"><span class="pre">JConsole.token</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.warning"><code class="docutils literal notranslate"><span class="pre">JConsole.warning()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JConsole.write"><code class="docutils literal notranslate"><span class="pre">JConsole.write()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#juham.database.JInflux"><code class="docutils literal notranslate"><span class="pre">JInflux</span></code></a><ul>
+<li><a class="reference internal" href="#juham.database.JInflux.app_name"><code class="docutils literal notranslate"><span class="pre">JInflux.app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.classattrs_from_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.classattrs_from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.classattrs_to_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.classattrs_to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.configure_args"><code class="docutils literal notranslate"><span class="pre">JInflux.configure_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.copy"><code class="docutils literal notranslate"><span class="pre">JInflux.copy()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.database"><code class="docutils literal notranslate"><span class="pre">JInflux.database</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.debug"><code class="docutils literal notranslate"><span class="pre">JInflux.debug()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.deserialize_from_json"><code class="docutils literal notranslate"><span class="pre">JInflux.deserialize_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.elapsed_seconds_in_day"><code class="docutils literal notranslate"><span class="pre">JInflux.elapsed_seconds_in_day()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.elapsed_seconds_in_hour"><code class="docutils literal notranslate"><span class="pre">JInflux.elapsed_seconds_in_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.epoc2utc"><code class="docutils literal notranslate"><span class="pre">JInflux.epoc2utc()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.error"><code class="docutils literal notranslate"><span class="pre">JInflux.error()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.find_class"><code class="docutils literal notranslate"><span class="pre">JInflux.find_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.from_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.from_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_app_name"><code class="docutils literal notranslate"><span class="pre">JInflux.get_app_name()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_class_id"><code class="docutils literal notranslate"><span class="pre">JInflux.get_class_id()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_json_file"><code class="docutils literal notranslate"><span class="pre">JInflux.get_json_file()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.get_registered_classes"><code class="docutils literal notranslate"><span class="pre">JInflux.get_registered_classes()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.has_class_method_directly"><code class="docutils literal notranslate"><span class="pre">JInflux.has_class_method_directly()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.host"><code class="docutils literal notranslate"><span class="pre">JInflux.host</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.info"><code class="docutils literal notranslate"><span class="pre">JInflux.info()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.initialize_class"><code class="docutils literal notranslate"><span class="pre">JInflux.initialize_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.instantiate"><code class="docutils literal notranslate"><span class="pre">JInflux.instantiate()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.instantiate_with_param"><code class="docutils literal notranslate"><span class="pre">JInflux.instantiate_with_param()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.is_abstract"><code class="docutils literal notranslate"><span class="pre">JInflux.is_abstract()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.is_time_between"><code class="docutils literal notranslate"><span class="pre">JInflux.is_time_between()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.load_from_json"><code class="docutils literal notranslate"><span class="pre">JInflux.load_from_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.org"><code class="docutils literal notranslate"><span class="pre">JInflux.org</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.parse_args"><code class="docutils literal notranslate"><span class="pre">JInflux.parse_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.parse_initial_args"><code class="docutils literal notranslate"><span class="pre">JInflux.parse_initial_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.print"><code class="docutils literal notranslate"><span class="pre">JInflux.print()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.quantize"><code class="docutils literal notranslate"><span class="pre">JInflux.quantize()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register"><code class="docutils literal notranslate"><span class="pre">JInflux.register()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register_args"><code class="docutils literal notranslate"><span class="pre">JInflux.register_args()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.register_class"><code class="docutils literal notranslate"><span class="pre">JInflux.register_class()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.run"><code class="docutils literal notranslate"><span class="pre">JInflux.run()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.run_forever"><code class="docutils literal notranslate"><span class="pre">JInflux.run_forever()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.save_to_json"><code class="docutils literal notranslate"><span class="pre">JInflux.save_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.serialize_to_json"><code class="docutils literal notranslate"><span class="pre">JInflux.serialize_to_json()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.set_log"><code class="docutils literal notranslate"><span class="pre">JInflux.set_log()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.shutdown"><code class="docutils literal notranslate"><span class="pre">JInflux.shutdown()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestamp"><code class="docutils literal notranslate"><span class="pre">JInflux.timestamp()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestamp_hour"><code class="docutils literal notranslate"><span class="pre">JInflux.timestamp_hour()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.timestampstr"><code class="docutils literal notranslate"><span class="pre">JInflux.timestampstr()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.to_dict"><code class="docutils literal notranslate"><span class="pre">JInflux.to_dict()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.token"><code class="docutils literal notranslate"><span class="pre">JInflux.token</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.warning"><code class="docutils literal notranslate"><span class="pre">JInflux.warning()</span></code></a></li>
+<li><a class="reference internal" href="#juham.database.JInflux.write"><code class="docutils literal notranslate"><span class="pre">JInflux.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <li>
+    <a href="../base/index.html" title="Previous Chapter: juham.base"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; juham.base</span>
+    </a>
+  </li>
+  <li>
+    <a href="../mqtt/index.html" title="Next Chapter: juham.mqtt"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">juham.mqtt &raquo;</span>
+    </a>
+  </li>
+<div id="sourcelink">
+  <a href="../../_sources/juham/database/index.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+<form action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+        </div>
+      </div>
+    <div class="body col-md-9 content" role="main">
+      
+  <section id="module-juham.database">
+<span id="juham-database"></span><h1>juham.database<a class="headerlink" href="#module-juham.database" title="Link to this heading">¶</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
+<p>Classes implementing MQTT pub-sub networks used for data transmission between IoT nodes.
+These classes must be derived trom base.MQtt base class.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="juham.database.JConsole">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">juham.database.</span></span><span class="sig-name descname"><span class="pre">JConsole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jconsole'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/juham/database/jconsole.html#JConsole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#juham.database.JConsole" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../base/index.html#juham.base.JDatabase" title="juham.base.jdatabase.JDatabase"><code class="xref py py-class docutils literal notranslate"><span class="pre">JDatabase</span></code></a></p>
+<p>Database interface that simply dumps the written records to stdout
+solely for testing and debugging purposes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.app_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.app_name" title="Link to this definition">¶</a></dt>
+<dd><p>Set application name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – application name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.classattrs_from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">classattrs_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.classattrs_from_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Set class attributes from a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.classattrs_to_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">classattrs_to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.classattrs_to_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Convert class attributes to a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.configure_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.configure_args" title="Link to this definition">¶</a></dt>
+<dd><p>Register startup arguments to be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Create and return a copy of the current object.</p>
+<p>This method serializes the current object to a dictionary using the <cite>to_dict</cite> method,
+creates a new instance of the object’s class, and populates it with the serialized data
+using the <cite>from_dict</cite> method.</p>
+<p>This method uses class identifier based instantiation (see factory method pattern) to
+create a new instance of the object, and ‘to_dict’ and ‘from_dict’  methods to initialize
+object’s state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterPiece</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new instance of the object’s class with the same state as the original object.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clone_of_john</span> <span class="o">=</span> <span class="n">john</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JConsole.database">
+<span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'home'</span></em><a class="headerlink" href="#juham.database.JConsole.database" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.debug" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given debug message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The information message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.deserialize_from_json">
+<span class="sig-name descname"><span class="pre">deserialize_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.deserialize_from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Load  attributes from the given JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.elapsed_seconds_in_day">
+<span class="sig-name descname"><span class="pre">elapsed_seconds_in_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_utc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.elapsed_seconds_in_day" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch the elapsed seconds since the be given time stamp ‘ts_utc’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>elapsed second today</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.elapsed_seconds_in_hour">
+<span class="sig-name descname"><span class="pre">elapsed_seconds_in_hour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_utc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.elapsed_seconds_in_hour" title="Link to this definition">¶</a></dt>
+<dd><p>Given timestamp in UTC, Compute elapsed seconds within an hour</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>float</em>) – seconds since UTC epoch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.epoc2utc">
+<span class="sig-name descname"><span class="pre">epoc2utc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.epoc2utc" title="Link to this definition">¶</a></dt>
+<dd><p>Converts the given epoch time to UTC time string. All time
+coordinates are represented in UTC time. This allows the time
+coordinate to be mapped to any local time representation without
+ambiguity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epoch</strong> (<em>float</em>) – timestamp in UTC time</p></li>
+<li><p><strong>rc</strong> (<em>str</em>) – time string describing date, time and time zone e.g 2024-07-08T12:10:22Z</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UTC time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.error">
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.error" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given error message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.find_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.find_class" title="Link to this definition">¶</a></dt>
+<dd><p>Given class identifier find the registered class. If no class with
+the give identifier exists return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>class_id</strong> (<em>int</em>) – class identifier</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>class or null if not registered</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj (obj)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.from_dict">
+<span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.from_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Update instance attributes from a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.get_app_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_app_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.get_app_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get application name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>application name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>name (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.get_class_id">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_class_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.get_class_id" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class id of the class. Each class has an unique
+identifier that can be used for instantiating the class via
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Object.instantiate()</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (<em>class</em>) – class</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>id (int) unique class identifier through which the class can be
+instantiated by factory method pattern.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.get_json_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_json_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.get_json_file" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the JSON file name based on the class name.</p>
+<p>The file is created into users home folder.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.get_registered_classes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_registered_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.get_registered_classes" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dictionary holding the registered class identifiers and
+the corresponding classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary of class identifier - class pairs</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.has_class_method_directly">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_class_method_directly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.has_class_method_directly" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the method is in the class’s own dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JConsole.host">
+<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#juham.database.JConsole.host" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.info" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given information message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The information message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.initialize_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initialize_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_class_attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.initialize_class" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the class for instantiation. Initializes the class identifier.
+Initialize public class attributes from the class-specific configuration files,
+unless disabled with the <cite>load_class_attrs</cite> parameter.
+Call the <cite>register()</cite> method of the class to let each class do custom initializations.
+Set up <cite>atexit</cite> callback to generate class-specific initialization files if they
+don’t exist already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>load_class_attrs</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, then attempts to initialize class attributes
+from the class-specific configuration files. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if the class was initialized. False implies the class is already
+initialized, in which case the method call has no effect.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.instantiate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.instantiate" title="Link to this definition">¶</a></dt>
+<dd><p>Create an instance of the class corresponding to the given class identifier.
+This method implements the factory method pattern, which is essential for a
+plugin architecture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>class_id</strong> (<em>int</em>) – Identifier of the class to instantiate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the class corresponding to the given class identifier.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.instantiate_with_param">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_with_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.instantiate_with_param" title="Link to this definition">¶</a></dt>
+<dd><p>Given class identifier and one constructor argument create the
+corresponding object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_id</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – class identifier</p></li>
+<li><p><strong>param</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – class specific constructor parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instance of the given class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.is_abstract">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_abstract</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.is_abstract" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the class is abstract or real. Override in the derived
+sub-classes. The default is False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True (bool) if abstract</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.is_time_between">
+<span class="sig-name descname"><span class="pre">is_time_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">begin_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.is_time_between" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the given time is within the given time line. All
+timestamps must be in UTC time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>begin_time</strong> (<em>timestamp</em>) – beginning of the timeline</p></li>
+<li><p><strong>end_time</strong> (<em>timestamp</em>) – end of the timeline</p></li>
+<li><p><strong>check_time</strong> (<em>timestamp</em>) – time to be checked</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if within the timeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.load_from_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.load_from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Load class attributes from a JSON file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JConsole.org">
+<span class="sig-name descname"><span class="pre">org</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'juham'</span></em><a class="headerlink" href="#juham.database.JConsole.org" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.parse_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.parse_args" title="Link to this definition">¶</a></dt>
+<dd><p>Parse registered startup arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.parse_initial_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_initial_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.parse_initial_args" title="Link to this definition">¶</a></dt>
+<dd><p>Parse application name and configuration name  arguments. Note that argument parsing
+is two stage process. This method must be
+called  at very early on to know where to load class initialization  files.
+See <cite>register_args()</cite> method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.print" title="Link to this definition">¶</a></dt>
+<dd><p>Print the name of the object, decorated with prefix consisting of ├─, └─, and │.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.quantize">
+<span class="sig-name descname"><span class="pre">quantize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quanta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.quantize" title="Link to this definition">¶</a></dt>
+<dd><p>Quantize the given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quanta</strong> (<em>float</em>) – resolution for quantization</p></li>
+<li><p><strong>value</strong> (<em>float</em>) – value to be quantized</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>quantized value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(float)</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hour_of_a_day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="mi">3600</span><span class="p">,</span> <span class="n">epoch_seconds</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.register">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.register" title="Link to this definition">¶</a></dt>
+<dd><p>Register the class.</p>
+<p>Called immediately upon class initialization, right before the class attributes
+are loaded from the class specific configuration files.</p>
+<p>Subclasses can extend this with custom register functionality:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMasterPiece</span><span class="p">(</span><span class="n">MasterPiece</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>  <span class="c1"># Don&#39;t forget</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_custom_field</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.register_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.register_args" title="Link to this definition">¶</a></dt>
+<dd><p>Register startup arguments to be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.register_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.register_class" title="Link to this definition">¶</a></dt>
+<dd><p>Register the given class identifier for identifier based
+instantiation . This, factory method pattern, as it is called,
+decouples the actual implementation from the interface.  For more
+information see <a class="reference internal" href="#juham.database.JConsole.instantiate" title="juham.database.JConsole.instantiate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">instantiate()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_id</strong> (<em>str</em>) – class identifier</p></li>
+<li><p><strong>ctor</strong> (<em>function</em>) – constructor</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.run" title="Link to this definition">¶</a></dt>
+<dd><p>Run the masterpiece.  Dispatches the call to <cite>payload</cite> object and
+returns  the control to the caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.run_forever">
+<span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.run_forever" title="Link to this definition">¶</a></dt>
+<dd><p>Run the masterpiece forever. This method will return only when violently
+terminated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.save_to_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.save_to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Create class configuration file, if the file does not exist yet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.serialize_to_json">
+<span class="sig-name descname"><span class="pre">serialize_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.serialize_to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the object to given JSON file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.set_log">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.set_log" title="Link to this definition">¶</a></dt>
+<dd><p>Set logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> (<em>logger</em>) – logger object</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.shutdown">
+<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.shutdown" title="Link to this definition">¶</a></dt>
+<dd><p>Shutdown the masterpiece. It is up to the sub classes to implement this method.
+Dispatches the call to <cite>payload</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the current date-time in UTC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime in UTC.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>rc (datetime)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.timestamp_hour">
+<span class="sig-name descname"><span class="pre">timestamp_hour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.timestamp_hour" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the hour in 24h format in UTC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>float</em>) – timestamp</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>current hour in UTC 0 …23</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.timestampstr">
+<span class="sig-name descname"><span class="pre">timestampstr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.timestampstr" title="Link to this definition">¶</a></dt>
+<dd><p>Converts the given timestamp to human readable string of format ‘Y-m-d
+H:M:S’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>timestamp</em>) – time stamp to be converted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>human readable date-time string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.to_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Convert instance attributes to a dictionary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JConsole.token">
+<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#juham.database.JConsole.token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.warning">
+<span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JConsole.warning" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given warning message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JConsole.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/juham/database/jconsole.html#JConsole.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#juham.database.JConsole.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write record to database table.</p>
+<p>&#64;param point point to be written</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="juham.database.JInflux">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">juham.database.</span></span><span class="sig-name descname"><span class="pre">JInflux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'influx'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/juham/database/jinflux.html#JInflux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#juham.database.JInflux" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../base/index.html#juham.base.JDatabase" title="juham.base.jdatabase.JDatabase"><code class="xref py py-class docutils literal notranslate"><span class="pre">JDatabase</span></code></a></p>
+<p>Influx time series database version 3.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.app_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.app_name" title="Link to this definition">¶</a></dt>
+<dd><p>Set application name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – application name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.classattrs_from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">classattrs_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.classattrs_from_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Set class attributes from a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.classattrs_to_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">classattrs_to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.classattrs_to_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Convert class attributes to a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.configure_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.configure_args" title="Link to this definition">¶</a></dt>
+<dd><p>Register startup arguments to be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Create and return a copy of the current object.</p>
+<p>This method serializes the current object to a dictionary using the <cite>to_dict</cite> method,
+creates a new instance of the object’s class, and populates it with the serialized data
+using the <cite>from_dict</cite> method.</p>
+<p>This method uses class identifier based instantiation (see factory method pattern) to
+create a new instance of the object, and ‘to_dict’ and ‘from_dict’  methods to initialize
+object’s state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">MasterPiece</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new instance of the object’s class with the same state as the original object.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clone_of_john</span> <span class="o">=</span> <span class="n">john</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JInflux.database">
+<span class="sig-name descname"><span class="pre">database</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'home'</span></em><a class="headerlink" href="#juham.database.JInflux.database" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.debug">
+<span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.debug" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given debug message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The information message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.deserialize_from_json">
+<span class="sig-name descname"><span class="pre">deserialize_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.deserialize_from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Load  attributes from the given JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.elapsed_seconds_in_day">
+<span class="sig-name descname"><span class="pre">elapsed_seconds_in_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_utc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.elapsed_seconds_in_day" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch the elapsed seconds since the be given time stamp ‘ts_utc’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>elapsed second today</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.elapsed_seconds_in_hour">
+<span class="sig-name descname"><span class="pre">elapsed_seconds_in_hour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_utc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.elapsed_seconds_in_hour" title="Link to this definition">¶</a></dt>
+<dd><p>Given timestamp in UTC, Compute elapsed seconds within an hour</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>float</em>) – seconds since UTC epoch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.epoc2utc">
+<span class="sig-name descname"><span class="pre">epoc2utc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.epoc2utc" title="Link to this definition">¶</a></dt>
+<dd><p>Converts the given epoch time to UTC time string. All time
+coordinates are represented in UTC time. This allows the time
+coordinate to be mapped to any local time representation without
+ambiguity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epoch</strong> (<em>float</em>) – timestamp in UTC time</p></li>
+<li><p><strong>rc</strong> (<em>str</em>) – time string describing date, time and time zone e.g 2024-07-08T12:10:22Z</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UTC time</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.error">
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.error" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given error message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.find_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.find_class" title="Link to this definition">¶</a></dt>
+<dd><p>Given class identifier find the registered class. If no class with
+the give identifier exists return None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>class_id</strong> (<em>int</em>) – class identifier</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>class or null if not registered</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj (obj)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.from_dict">
+<span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.from_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Update instance attributes from a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.get_app_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_app_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.get_app_name" title="Link to this definition">¶</a></dt>
+<dd><p>Get application name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>application name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>name (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.get_class_id">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_class_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.get_class_id" title="Link to this definition">¶</a></dt>
+<dd><p>Return the class id of the class. Each class has an unique
+identifier that can be used for instantiating the class via
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Object.instantiate()</span></code> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (<em>class</em>) – class</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>id (int) unique class identifier through which the class can be
+instantiated by factory method pattern.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.get_json_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_json_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.get_json_file" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the JSON file name based on the class name.</p>
+<p>The file is created into users home folder.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.get_registered_classes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_registered_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.get_registered_classes" title="Link to this definition">¶</a></dt>
+<dd><p>Get the dictionary holding the registered class identifiers and
+the corresponding classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary of class identifier - class pairs</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.has_class_method_directly">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_class_method_directly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.has_class_method_directly" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the method is in the class’s own dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JInflux.host">
+<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#juham.database.JInflux.host" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.info" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given information message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The information message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.initialize_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initialize_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_class_attrs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.initialize_class" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize the class for instantiation. Initializes the class identifier.
+Initialize public class attributes from the class-specific configuration files,
+unless disabled with the <cite>load_class_attrs</cite> parameter.
+Call the <cite>register()</cite> method of the class to let each class do custom initializations.
+Set up <cite>atexit</cite> callback to generate class-specific initialization files if they
+don’t exist already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>load_class_attrs</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, then attempts to initialize class attributes
+from the class-specific configuration files. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if the class was initialized. False implies the class is already
+initialized, in which case the method call has no effect.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.instantiate">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.instantiate" title="Link to this definition">¶</a></dt>
+<dd><p>Create an instance of the class corresponding to the given class identifier.
+This method implements the factory method pattern, which is essential for a
+plugin architecture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>class_id</strong> (<em>int</em>) – Identifier of the class to instantiate.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the class corresponding to the given class identifier.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.instantiate_with_param">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_with_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.instantiate_with_param" title="Link to this definition">¶</a></dt>
+<dd><p>Given class identifier and one constructor argument create the
+corresponding object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_id</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – class identifier</p></li>
+<li><p><strong>param</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – class specific constructor parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>instance of the given class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>obj</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.is_abstract">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_abstract</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.is_abstract" title="Link to this definition">¶</a></dt>
+<dd><p>Check whether the class is abstract or real. Override in the derived
+sub-classes. The default is False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True (bool) if abstract</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.is_time_between">
+<span class="sig-name descname"><span class="pre">is_time_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">begin_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.is_time_between" title="Link to this definition">¶</a></dt>
+<dd><p>Check if the given time is within the given time line. All
+timestamps must be in UTC time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>begin_time</strong> (<em>timestamp</em>) – beginning of the timeline</p></li>
+<li><p><strong>end_time</strong> (<em>timestamp</em>) – end of the timeline</p></li>
+<li><p><strong>check_time</strong> (<em>timestamp</em>) – time to be checked</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if within the timeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.load_from_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.load_from_json" title="Link to this definition">¶</a></dt>
+<dd><p>Load class attributes from a JSON file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JInflux.org">
+<span class="sig-name descname"><span class="pre">org</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'juham'</span></em><a class="headerlink" href="#juham.database.JInflux.org" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.parse_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.parse_args" title="Link to this definition">¶</a></dt>
+<dd><p>Parse registered startup arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.parse_initial_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_initial_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.parse_initial_args" title="Link to this definition">¶</a></dt>
+<dd><p>Parse application name and configuration name  arguments. Note that argument parsing
+is two stage process. This method must be
+called  at very early on to know where to load class initialization  files.
+See <cite>register_args()</cite> method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.print" title="Link to this definition">¶</a></dt>
+<dd><p>Print the name of the object, decorated with prefix consisting of ├─, └─, and │.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.quantize">
+<span class="sig-name descname"><span class="pre">quantize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quanta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.quantize" title="Link to this definition">¶</a></dt>
+<dd><p>Quantize the given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quanta</strong> (<em>float</em>) – resolution for quantization</p></li>
+<li><p><strong>value</strong> (<em>float</em>) – value to be quantized</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>quantized value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(float)</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hour_of_a_day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="mi">3600</span><span class="p">,</span> <span class="n">epoch_seconds</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.register">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.register" title="Link to this definition">¶</a></dt>
+<dd><p>Register the class.</p>
+<p>Called immediately upon class initialization, right before the class attributes
+are loaded from the class specific configuration files.</p>
+<p>Subclasses can extend this with custom register functionality:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMasterPiece</span><span class="p">(</span><span class="n">MasterPiece</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>  <span class="c1"># Don&#39;t forget</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_custom_field</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.register_args">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.register_args" title="Link to this definition">¶</a></dt>
+<dd><p>Register startup arguments to be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>argparse.ArgumentParser</em>) – parser to add the startup arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.register_class">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.register_class" title="Link to this definition">¶</a></dt>
+<dd><p>Register the given class identifier for identifier based
+instantiation . This, factory method pattern, as it is called,
+decouples the actual implementation from the interface.  For more
+information see <a class="reference internal" href="#juham.database.JInflux.instantiate" title="juham.database.JInflux.instantiate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">instantiate()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>class_id</strong> (<em>str</em>) – class identifier</p></li>
+<li><p><strong>ctor</strong> (<em>function</em>) – constructor</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.run" title="Link to this definition">¶</a></dt>
+<dd><p>Run the masterpiece.  Dispatches the call to <cite>payload</cite> object and
+returns  the control to the caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.run_forever">
+<span class="sig-name descname"><span class="pre">run_forever</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.run_forever" title="Link to this definition">¶</a></dt>
+<dd><p>Run the masterpiece forever. This method will return only when violently
+terminated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.save_to_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.save_to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Create class configuration file, if the file does not exist yet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.serialize_to_json">
+<span class="sig-name descname"><span class="pre">serialize_to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.serialize_to_json" title="Link to this definition">¶</a></dt>
+<dd><p>Serialize the object to given JSON file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.set_log">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.set_log" title="Link to this definition">¶</a></dt>
+<dd><p>Set logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> (<em>logger</em>) – logger object</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.shutdown">
+<span class="sig-name descname"><span class="pre">shutdown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.shutdown" title="Link to this definition">¶</a></dt>
+<dd><p>Shutdown the masterpiece. It is up to the sub classes to implement this method.
+Dispatches the call to <cite>payload</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.timestamp" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the current date-time in UTC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>datetime in UTC.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>rc (datetime)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.timestamp_hour">
+<span class="sig-name descname"><span class="pre">timestamp_hour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.timestamp_hour" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the hour in 24h format in UTC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>float</em>) – timestamp</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>current hour in UTC 0 …23</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.timestampstr">
+<span class="sig-name descname"><span class="pre">timestampstr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.timestampstr" title="Link to this definition">¶</a></dt>
+<dd><p>Converts the given timestamp to human readable string of format ‘Y-m-d
+H:M:S’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ts</strong> (<em>timestamp</em>) – time stamp to be converted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>human readable date-time string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rc (string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.to_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Convert instance attributes to a dictionary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="juham.database.JInflux.token">
+<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#juham.database.JInflux.token" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.warning">
+<span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#juham.database.JInflux.warning" title="Link to this definition">¶</a></dt>
+<dd><p>Logs the given warning message to the application log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – The message to be logged.</p></li>
+<li><p><strong>details</strong> (<em>str</em>) – Additional detailed information for the message to be logged</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="juham.database.JInflux.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/juham/database/jinflux.html#JInflux.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#juham.database.JInflux.write" title="Link to this definition">¶</a></dt>
+<dd><p>Write record to database table.</p>
+<p>&#64;param point point to be written</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2024, juha meskanen.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
