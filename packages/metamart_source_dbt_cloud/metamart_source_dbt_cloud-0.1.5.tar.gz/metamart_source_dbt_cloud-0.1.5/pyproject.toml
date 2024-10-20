@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "metamart_source_dbt_cloud"
+version = "0.1.5"
+description = ""
+authors = ["Metamart <dev@metamart.io>"]
+license = "Elastic-2.0"
+packages = [
+    { include = "metamart_source_dbt_cloud", from = "src" },
+]
+readme = "README.md"
+homepage = "https://www.metamart.io/"
+repository = "https://github.com/meta-mart/metamart-core/tree/master/metamart-integrations/source-dbt-cloud"
+documentation = "https://docs.metamart.io/"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^1.9.1"
+metamart-client = "^0.3.0"
+metamart-schemas = "^0.2.6"
+metamart-source-dbt = "^0.3.5"
+dbtc = "^0.4.2"
+multimethod = "^1.8, !=1.11"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.10.1"
+pytest = "^7.2.0"
+mypy = "^0.991"
+black = ">=22.12,<25.0"
+devtools = "^0.10.0"
+types-setuptools = "^67.3.0.1"
+
+[tool.isort]
+profile = "black"
+known_first_party = "metamart_source_dbt"
+
+[tool.black]
+line-length = 120
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."src/metamart_source_dbt_cloud/__init__.py"]
