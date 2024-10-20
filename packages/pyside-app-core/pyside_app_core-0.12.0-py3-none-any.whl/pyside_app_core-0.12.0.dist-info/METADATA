@@ -1,0 +1,86 @@
+Metadata-Version: 2.3
+Name: pyside-app-core
+Version: 0.12.0
+Summary: Framework for PySide6 Applications
+Project-URL: Source, https://github.com/leocov-dev/pyside-app-core
+Project-URL: Issues, https://github.com/leocov-dev/pyside-app-core/issues
+Project-URL: Releases, https://github.com/leocov-dev/pyside-app-core/releases
+Author-email: Leo Covarrubias <leo@leocov.com>
+License-File: LICENSE
+Keywords: framework,pyside,pyside6,qt,qt6
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Desktop Environment
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.12
+Requires-Dist: hatchling
+Requires-Dist: jinja2==3.*
+Requires-Dist: loguru
+Requires-Dist: pyside6==6.7.*
+Requires-Dist: typing-extensions
+Description-Content-Type: text/markdown
+
+# pyside-app-core
+
+Custom style, widgets, and utilities for cross-platform PySide6 applications.
+
+> [!WARNING]
+>
+> This project should be considered experimental and subject to breaking changes 
+> AT ANY TIME until a v1.0.0 release.
+
+
+![GitHub Release](https://img.shields.io/github/v/release/leocov-dev/pyside-app-core)
+![GitHub License](https://img.shields.io/github/license/leocov-dev/pyside-app-core)
+[![CI](https://github.com/leocov-dev/pyside-app-core/actions/workflows/ci.yml/badge.svg)](https://github.com/leocov-dev/pyside-app-core/actions/workflows/ci.yml)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/pyside-app-core)
+
+
+### Install
+
+To use `pyside-app-core` as a library in your own projects install the 
+[wheel distribution](https://pypi.org/project/pyside-app-core/) from PyPi
+
+```shell
+$ pip install pyside-app-core
+```
+
+
+## Local Development
+
+Requirements:
+- Hatch ([installation instructions](https://hatch.pypa.io/latest/install/))
+
+```shell
+hatch env create
+```
+
+### Run example application
+
+An example project/application is included
+
+```shell
+# switch to the example project dir
+cd examples/toolbar-app-project
+# build the project
+hatch build -t pyside-app --clean
+# list the build artifacts
+ls dist
+```
+
+### Run tests
+
+Hatch can run tests across multiple versions of python.
+
+```shell
+hatch test -a -p
+```
+
+### Hatch Build Plugin
+
+This library exposes a `hatch` build plugin that will generate Qt resources and
+package a standalone executable. See the example project for details.
