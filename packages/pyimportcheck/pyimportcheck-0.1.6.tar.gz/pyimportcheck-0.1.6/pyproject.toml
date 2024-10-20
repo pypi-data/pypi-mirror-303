@@ -1,0 +1,38 @@
+[tool.poetry]
+name        = 'pyimportcheck'
+version     = '0.1.6'
+description = 'Python import checker'
+readme      = 'README.md'
+authors     = [
+    'Yann MAGNIN <yann.magnin@protonmail.com>',
+]
+packages    = [
+    { from = 'PyImportCheck', include = 'pyimportcheck' },
+]
+
+
+[tool.poetry.scripts]
+pyimportcheck = 'pyimportcheck._cli:pyimportcheck_cli_entry'
+
+
+[tool.poetry.dependencies]
+python  = '>=3.9.*'
+click   = '8.*'
+
+[tool.poetry.dev-dependencies]
+pynvim  = '*'
+pylint  = '*'
+mypy    = '*'
+pytest  = '*'
+
+
+[tool.pytest.ini_options]
+log_level = 'INFO'
+addopts = '--ignore=PyImportCheck/tests/_data'
+python_functions = [
+    'test_*',
+]
+python_files = '*.py'
+testpaths = [
+    'PyImportCheck/tests',
+]
