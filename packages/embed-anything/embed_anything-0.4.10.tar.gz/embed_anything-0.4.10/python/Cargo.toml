@@ -1,0 +1,21 @@
+[package]
+name = "embed_anything_python"
+version = "0.4.10"
+edition = "2021"
+
+[lib]
+name = "_embed_anything"
+crate-type = ["cdylib"]
+
+[dependencies]
+embed_anything = {path = "../rust", features = ["load-dynamic"]}
+pyo3 = { version = "0.22.3"}
+tokio = { version = "1.39.0", features = ["rt-multi-thread"]}
+
+[features]
+extension-module = ["pyo3/extension-module"]
+mkl = ["embed_anything/mkl"]
+accelerate = ["embed_anything/accelerate"]
+cuda = ["embed_anything/cuda"]
+cudnn = ["embed_anything/cudnn"]
+
