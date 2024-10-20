@@ -1,0 +1,288 @@
+{
+  "id": "audio_to_image",
+  "access": "private",
+  "created_at": "2024-07-06T20:13:38.331865",
+  "updated_at": "2024-07-06T20:23:13.098945",
+  "name": "Audio To Image",
+  "tags": [
+    "multimodal",
+    "start"
+  ],
+  "description": "Convert any audio speech into an image",
+  "thumbnail": "",
+  "thumbnail_url": "/examples/audio_to_image.jpg",
+  "graph": {
+    "edges": [
+      {
+        "id": "05c9cd53-cd41-4211-b852-e3afe84defea",
+        "source": "12",
+        "sourceHandle": "output",
+        "target": "13",
+        "targetHandle": "prompt",
+        "ui_properties": {
+          "className": "str"
+        }
+      },
+      {
+        "id": "909f3c44-2cf8-4c75-959e-8c4b4cc176e6",
+        "source": "15",
+        "sourceHandle": "output",
+        "target": "14",
+        "targetHandle": "audio",
+        "ui_properties": {
+          "className": "audio"
+        }
+      },
+      {
+        "id": "92a6a72a-681d-4398-9655-7ed37c6f38fe",
+        "source": "14",
+        "sourceHandle": "output",
+        "target": "10",
+        "targetHandle": "values",
+        "ui_properties": {
+          "className": "str"
+        }
+      },
+      {
+        "id": "39781355-f211-4883-bde4-859973f7731d",
+        "source": "13",
+        "sourceHandle": "output",
+        "target": "6",
+        "targetHandle": "value",
+        "ui_properties": {
+          "className": "image"
+        }
+      },
+      {
+        "id": "00f1542f-84cf-4bc2-885c-286b87c78bf2",
+        "source": "10",
+        "sourceHandle": "output",
+        "target": "12",
+        "targetHandle": "prompt",
+        "ui_properties": {
+          "className": "union"
+        }
+      },
+      {
+        "id": "087bbcab-541a-4348-a0dd-b6e4df24d64e",
+        "source": "14",
+        "sourceHandle": "output",
+        "target": "4",
+        "targetHandle": "value",
+        "ui_properties": {
+          "className": "str"
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "4",
+        "type": "nodetool.workflows.base_node.Preview",
+        "data": {},
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 641,
+            "y": 34
+          },
+          "zIndex": 0,
+          "width": 487,
+          "height": 150,
+          "selectable": true
+        }
+      },
+      {
+        "id": "6",
+        "type": "nodetool.workflows.base_node.Preview",
+        "data": {},
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 827,
+            "y": 196
+          },
+          "zIndex": 0,
+          "width": 297,
+          "height": 268,
+          "selectable": true
+        }
+      },
+      {
+        "id": "10",
+        "type": "nodetool.text.Template",
+        "data": {
+          "string": "interpret this text as an image, describe vividly as if giving painting instructions: {0}"
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 457,
+            "y": 128
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "11",
+        "type": "nodetool.workflows.base_node.Comment",
+        "data": {
+          "headline": "Audio to Image",
+          "comment": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "* Convert any audio speech into an image"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "* Record your speech into the Audio node using the Record feature"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "* Run the workflow"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "* Look at the preview result"
+                }
+              ]
+            }
+          ]
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 30,
+            "y": 20
+          },
+          "zIndex": 0,
+          "width": 390,
+          "height": 104,
+          "selectable": true
+        }
+      },
+      {
+        "id": "12",
+        "type": "ollama.text.Ollama",
+        "data": {
+          "model": {
+            "type": "llama_model",
+            "repo_id": "qwen2.5:1.5b"
+          },
+          "system_prompt": "You are a painter.",
+          "image": {
+            "type": "image",
+            "uri": "",
+            "asset_id": null,
+            "data": null
+          },
+          "temperature": 0.7,
+          "top_k": 50,
+          "top_p": 0.95,
+          "keep_alive": "300"
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 466,
+            "y": 272
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "13",
+        "type": "huggingface.text_to_image.StableDiffusion",
+        "data": {
+          "model": {
+            "type": "hf.stable_diffusion",
+            "repo_id": "SG161222/Realistic_Vision_V5.1_noVAE",
+            "path": "Realistic_Vision_V5.1_fp16-no-ema.safetensors"
+          },
+          "negative_prompt": "",
+          "seed": -1,
+          "num_inference_steps": 50,
+          "guidance_scale": 7.5,
+          "scheduler": "HeunDiscreteScheduler",
+          "loras": [],
+          "lora_scale": 0.5,
+          "ip_adapter_model": "",
+          "ip_adapter_image": {
+            "type": "image",
+            "uri": "",
+            "asset_id": null,
+            "data": null
+          },
+          "ip_adapter_scale": 0.5,
+          "hires": true,
+          "enable_tiling": false,
+          "width": 512,
+          "height": 512,
+          "detail_level": 0.6
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 641,
+            "y": 195
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "14",
+        "type": "huggingface.automatic_speech_recognition.Whisper",
+        "data": {
+          "model": {
+            "type": "hf.automatic_speech_recognition",
+            "repo_id": "openai/whisper-large-v3"
+          }
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 224,
+            "y": 158
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "15",
+        "type": "nodetool.constant.Audio",
+        "data": {
+          "value": {
+            "uri": "https://upload.wikimedia.org/wikipedia/commons/transcoded/4/4f/An_address_by_Opposition_Leader_Anthony_Albanese.ogg/An_address_by_Opposition_Leader_Anthony_Albanese.ogg.mp3?download",
+            "type": "audio"
+          }
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 38,
+            "y": 141
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      }
+    ]
+  }
+}

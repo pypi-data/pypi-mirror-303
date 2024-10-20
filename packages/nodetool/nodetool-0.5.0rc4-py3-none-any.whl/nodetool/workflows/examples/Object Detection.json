@@ -1,0 +1,142 @@
+{
+  "id": "object_detection",
+  "access": "private",
+  "created_at": "2024-08-08T20:28:10.491364",
+  "updated_at": "2024-08-09T18:00:14.672164",
+  "name": "Object Detection",
+  "description": "Detect objects in an image and visualize the detections",
+  "tags": [
+    "huggingface",
+    "start"
+  ],
+  "thumbnail": "",
+  "thumbnail_url": "/examples/object_detection.jpg",
+  "graph": {
+    "edges": [
+      {
+        "id": "988815f2-b051-4e5a-aab4-e6b246a08207",
+        "source": "3",
+        "sourceHandle": "output",
+        "target": "4",
+        "targetHandle": "inputs",
+        "ui_properties": {
+          "className": "image"
+        }
+      },
+      {
+        "id": "2e0676a6-ee69-4397-bac7-2273f9a5edac",
+        "source": "3",
+        "sourceHandle": "output",
+        "target": "4",
+        "targetHandle": "image",
+        "ui_properties": {
+          "className": "image"
+        }
+      },
+      {
+        "id": "b978dc9d-a6ad-4e08-81aa-1038a397d3b1",
+        "source": "4",
+        "sourceHandle": "output",
+        "target": "5",
+        "targetHandle": "objects",
+        "ui_properties": {
+          "className": "list"
+        }
+      },
+      {
+        "id": "888cbd63-d235-42f4-8968-da52084429db",
+        "source": "3",
+        "sourceHandle": "output",
+        "target": "5",
+        "targetHandle": "image",
+        "ui_properties": {
+          "className": "image"
+        }
+      },
+      {
+        "id": "4a0a0913-c240-4e62-9f6b-1d6d5e881091",
+        "source": "5",
+        "sourceHandle": "output",
+        "target": "2",
+        "targetHandle": "value",
+        "ui_properties": {
+          "className": "image"
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "2",
+        "type": "nodetool.workflows.base_node.Preview",
+        "data": {
+          "name": "image_output_2024-08-09"
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 636,
+            "y": 13
+          },
+          "zIndex": 0,
+          "width": 240,
+          "height": 262,
+          "selectable": true
+        }
+      },
+      {
+        "id": "3",
+        "type": "nodetool.constant.Image",
+        "data": {
+          "value": {
+            "uri": "https://app.nodetool.ai/examples/flux_schnell_example.jpg",
+            "type": "image"
+          }
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 20,
+            "y": 10
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "4",
+        "type": "huggingface.object_detection.ObjectDetection",
+        "data": {
+          "model": {
+            "type": "hf.object_detection",
+            "repo_id": "facebook/detr-resnet-50"
+          },
+          "threshold": 0.9,
+          "top_k": 5
+        },
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 224,
+            "y": 25
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      },
+      {
+        "id": "5",
+        "type": "huggingface.object_detection.VisualizeObjectDetection",
+        "data": {},
+        "ui_properties": {
+          "selected": false,
+          "position": {
+            "x": 417,
+            "y": 49
+          },
+          "zIndex": 0,
+          "selectable": true
+        }
+      }
+    ]
+  }
+}
