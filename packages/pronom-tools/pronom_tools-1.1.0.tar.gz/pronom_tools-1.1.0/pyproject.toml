@@ -1,0 +1,37 @@
+[project]
+
+name = "pronom-tools"
+
+dynamic = ["version", "dependencies"]
+
+description = "Tools for working with PRONOM releases"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE.txt"}
+keywords = ["pronom", "digipres", "file-formats"]
+authors = [
+  {name = "R. Spencer", email = "all.along.the.watchtower2001+github@gmail.com" },
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements/requirements.txt"]}
+
+[project.urls]
+
+"Homepage" = "https://ffdev.info/"
+"Bug Reports" = "https://github.com/ffdev-info/pronom-release-tools/issues/"
+"Source" = "https://github.com/ffdev-info/pronom-release-tools/"
+
+[project.scripts]
+
+pronom-tools = "pronom_tools.pronom_tools:main"
+pronom-stats = "pronom_stats.pronom_stats:main"
+pronom-cron = "pronom_cron.pronom_cron:main"
+pronom-export = "pronom_export.pronom_export:main"
+
+[build-system]
+
+requires = ["setuptools>=74.0.0", "wheel>=0.44.0", "setuptools_scm[toml]>=8.1.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
