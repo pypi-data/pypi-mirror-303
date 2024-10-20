@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: i2s-ecg
+Version: 0.1.7
+Summary: the package for ECG signal processing
+Author: zou linzhuang
+Author-email: zoulinzhuang2204@hnu.edu.cn
+License: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: scikit-learn==1.2.2
+Requires-Dist: scikit-image
+Requires-Dist: unzip
+Requires-Dist: joblib
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: natsort
+Requires-Dist: streamlit==1.37.0
+Requires-Dist: streamlit_cropper
+Requires-Dist: scipy
+Requires-Dist: numpy==1.25.2
+Requires-Dist: pillow
+Requires-Dist: natsort
+
+# ecg_i2s
+
+Transform ECG Images to Signals
+
+You can use this code to transform ECG images into 1D signals. Follow the instructions below to get started.
+
+We recommend you to use the newest version of the code.
+
+## Setup Instructions
+
+### 1.**Create a Conda Environment**
+
+We recommend using Python version 3.9.19.
+
+   ```
+conda create -n ecg python=3.9.19
+   ```
+
+Then you should activate the environment using:
+
+   ```
+conda activate ecg
+   ```
+
+### 2.**Install Required Packages**
+
+Install the necessary packages using the following:
+
+   - `scikit-learn==1.2.2`
+   - `scikit-image`
+   - `unzip`
+   - `joblib`
+   - `pandas`
+   - `matplotlib`
+   - `natsort`
+   - `streamlit_cropper`
+   - `scipy`
+   - `numpy==1.25.2`
+   - `pillow`
+   - `natsort`
+
+   Alternatively, you can use the `requirements.txt` file to install the required packages by running:
+
+   ```bash
+pip install -r requirements.txt
+   ```
+
+### 3.**Run the Code**
+
+1. you can run the code by:
+
+```
+python -m i2s_ecg.run
+```
+
+2. you can also write your own program, for example:
+
+```main.py
+from i2s_ecg import run_app
+run_app()
+```
+
+### 4.**use the streamlit app**
+
+![i2s_ecg](i2s_ecg/i2s_ecg.gif)
