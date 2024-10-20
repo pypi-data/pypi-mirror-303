@@ -1,0 +1,1 @@
+This is a simple gorilla tag player tracker using larsons old src. You input your session ticket and then put in the code and it checks the code.
