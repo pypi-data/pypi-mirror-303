@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: bitcoin-nostr-chat
+Version: 0.4.0
+Summary: A Nostr Chat with participant discovery
+Home-page: https://github.com/andreasgriffin/bitcoin-nostr-chat
+License: GPL-3.0
+Author: andreasgriffin
+Author-email: andreasgriffin@proton.me
+Requires-Python: >=3.9,<3.13
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: bitcoin-qr-tools (>=0.14.6)
+Requires-Dist: cbor2 (>=5.6.3,<6.0.0)
+Requires-Dist: nostr-sdk (>=0.32.1,<0.33.0)
+Requires-Dist: pyqt6 (>=6.6.1,<7.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+# A Nostr Chat with participant discovery
+
+All users know a shared secret (like a bitcoin wallet descriptor). This allows them to find each other. 
+  * Even if this shared secret leaks, the attacker can only spam the discovery option, the actual chats stay secure
+
+The actual single and group chats are based on a newly generated secret keys for each participant.
+  * Each participant has to be manually accepted to be added to the group chat
+  * Chats with participants use NIP17 and group messages are simply NIP17 messages to each participant 
+
+Export and restoring of the nsec and with it restoration of all messages of the relays
+
+
+
