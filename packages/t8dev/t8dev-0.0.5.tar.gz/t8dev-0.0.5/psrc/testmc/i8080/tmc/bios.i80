@@ -1,0 +1,17 @@
+;   Public interface for testmc/i8080/tmc/bioscode, which is loaded separately.
+
+prchar      equ     $0080       ;    ♡* send char in A to output
+rdchar      equ     $0088       ; ♠A ♡* blocking read of char from input
+prnl        equ     $0090       ; ♣A ♡* print platform-appropriate newline
+errbeep     equ     $0098       ; ♣A ♡* sound the console bell
+
+;   These are not used by the programs themselves, but the symbols are
+;   required here so that the test and run frameworks can find out where to
+;   hook in their side of the I/O routines.
+charoutport equ $00FF               ; character output port
+charinport  equ $00FF               ; blocking input char read
+
+;   This is used by the command line simulator `tmc`. Writing value
+;   `exitportcmd` to location `exitport` will cause the simulator to exit.
+exitport    equ $00FE
+exitportcmd equ $EF
