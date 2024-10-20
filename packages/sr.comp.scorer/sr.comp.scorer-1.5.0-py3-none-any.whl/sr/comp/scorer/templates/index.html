@@ -1,0 +1,62 @@
+{% extends "_base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='styles/match-choice.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block hint %}
+    <p>Select a match to enter scores.</p>
+{% endblock %}
+
+{% macro match_cell(match, colspan=1, current_match=False) %}
+    <td colspan="{{ colspan }}">
+        {% if match is not none %}
+            <a href="{{ url_for('.update', arena=match['arena'], num=match['num']) }}" class="{{ 'done' if is_match_done(match) else '' }}">
+                {% if current_match %}
+                    Current Match {{ match['num'] }} — <em>{{ match['teams'] | join(', ') }}</em>
+                {% else %}
+                    {{ '{0:03d}'.format(match['num']) }}
+                {% endif %}
+            </a>
+        {% endif %}
+    </td>
+{% endmacro %}
+
+{% macro arena_table(arena, matches, width=8) %}
+    <table class="match-choice"
+    {% if arena.colour %}
+        {% set r, g, b = parse_hex_colour(arena.colour) %}
+        style="background: rgba({{ r }}, {{ g }}, {{ b }}, 0.05)"
+    {% endif %}
+    >
+        <tr>
+            <th colspan="{{ width }}">Arena {{ arena.display_name }}</th>
+        </tr>
+
+        <tr>
+            {% if arena in current_matches %}
+                {{ match_cell(current_matches[arena], colspan=width, current_match=True) }}
+            {% else %}
+                <td colspan="{{ width }}"></td>
+            {% endif %}
+        </tr>
+
+        {% for match_group in grouper(matches, width) %}
+            <tr>
+                {% for match_key in range(width) %}
+                    {% if (match_group | length) > match_key %}
+                        {{ match_cell(match_group[match_key]) }}
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% block main %}
+    {% for arena in arenas %}
+        {{ arena_table(arena, all_matches[arena.name]) }}
+    {% endfor %}
+{% endblock %}

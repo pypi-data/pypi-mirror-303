@@ -1,0 +1,224 @@
+{% extends "_base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='styles/score-sheet.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block hint %}
+    <p>
+        <a href="{{ url_for('.index') }}">Return to match selection</a>
+        <a href="{{ url_for('.update', arena=match.arena, num=match.num - 1) }}">Previous match</a>
+        <a href="{{ url_for('.update', arena=match.arena, num=match.num + 1) }}">Next match</a>
+
+        {% for name, arena in arenas.items() %}
+            {% if name != match['arena'] %}
+                <a href="{{ url_for('.update', arena=name, num=match.num) }}">Arena {{ arena.display_name }}</a>
+            {% endif %}
+        {% endfor %}
+    </p>
+{% endblock %}
+
+{% macro input_tla(x, y, corner) %}
+    {% set current = request.form.get('tla_{}'.format(corner)) %}
+    <foreignObject x="{{ x }}" y="{{ y }}" width="40" height="30">
+        <label for="tla_{{ corner }}">TLA</label>
+    </foreignObject>
+    <foreignObject x="{{ x + 45 }}" y="{{ y }}" width="100" height="30">
+        <select id="tla_{{ corner }}" name="tla_{{ corner }}">
+            <option value=""></option>
+            {% for tla, team in teams | dictsort %}
+                <option value="{{ tla }}" {{ 'selected' if current == tla else '' }}>{{ tla }}</option>
+            {% endfor %}
+        </select>
+    </foreignObject>
+{% endmacro %}
+
+{% macro input_tokens(x, y, corner) %}
+    <foreignObject x="{{ x }}" y="{{ y }}" width="70" height="30">
+        <label for="tokens_{{ corner }}">Tokens</label>
+    </foreignObject>
+    <foreignObject x="{{ x + 75 }}" y="{{ y }}" width="120" height="30">
+        <input class="tokens" type="text" id="tokens_{{ corner }}" name="tokens_{{ corner }}" value="{{ request.form.get('tokens_{}'.format(corner)) | empty_if_none }}" onkeyup="token_input_change(this);" />
+    </foreignObject>
+{% endmacro %}
+
+{% macro input_checkbox(x, y, width, corner, slug, display) %}
+    <foreignObject x="{{ x }}" y="{{ y }}" width="{{ width }}" height="30">
+        <label for="{{ slug }}_{{ corner }}">{{ display }}</label>
+    </foreignObject>
+    <foreignObject x="{{ x + width + 5 }}" y="{{ y }}" width="30" height="30">
+        <input type="checkbox" id="{{ slug }}_{{ corner }}" name="{{ slug }}_{{ corner }}" value="on" {{ 'checked' if request.form.get('{}_{}'.format(slug, corner)) else '' }} />
+    </foreignObject>
+{% endmacro %}
+
+{% macro input_present(x, y, corner) %}
+    {{ input_checkbox(x, y, 80, corner, "present", "Present") }}
+{% endmacro %}
+
+{% macro input_disqualified(x, y, corner) %}
+    {{ input_checkbox(x, y, 120, corner, "disqualified", "Disqualified") }}
+{% endmacro %}
+
+{% block main %}
+    <div class="score-sheet"
+    {% set arena_colour_raw = arenas[match['arena']].colour %}
+    {% if arena_colour_raw %}
+        {% set r, g, b = parse_hex_colour(arena_colour_raw) %}
+        style="background: rgba({{ r }}, {{ g }}, {{ b }}, 0.15)"
+    {% endif %}
+    >
+        <h1>
+            {{ match['type'].value | title }}
+            scores for
+            {{ match['display_name'] }}
+            {% if arenas|length > 1 %}
+                in Arena
+                {{ arenas[match['arena']].display_name }}
+            {% endif %}
+        </h1>
+
+        <form method="POST" autocomplete="off">
+            {% block form_content %}
+                <svg xmlns="http://www.w3.org/2000/svg" {% block svg_size %}height="600" width="600"{% endblock %} version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    {% block background %}
+                        <rect height="600" width="600" stroke="#000" y="0" x="0" stroke-width="2" fill="#f4f3ff"/>
+                        <path d="M300 0 V 600" stroke="#000" stroke-width="1"/>
+                        <path d="M0 300 H 600" stroke="#000" stroke-width="1"/>
+                        {% block zone_other_outline %}
+                            <rect height="200" width="200" stroke="#000" y="200" x="200" stroke-width="1" fill="#f4f3ff" transform="rotate(45,300,300)"/>
+                        {% endblock %}
+                    {% endblock %}
+
+                    <g font-size="2.5em" fill="#4d4d4d" transform="scale(0.75 0.75)">
+                        {% block zone_labels %}
+                            <text><tspan y="50" x="225" stroke="{{ corners[0].colour }}">Zone 0</tspan></text>
+                            <text><tspan y="50" x="455" stroke="{{ corners[1].colour }}">Zone 1</tspan></text>
+                            <text><tspan y="775" x="455" stroke="{{ corners[2].colour }}">Zone 2</tspan></text>
+                            <text><tspan y="775" x="225" stroke="{{ corners[3].colour }}">Zone 3</tspan></text>
+                        {% endblock %}
+                    </g>
+
+                    {% block zone_0 %}
+                        {{ input_tla(110, 70, 0) }}
+                        {{ input_tokens(60, 120, 0) }}
+                        {{ input_present(80, 170, 0) }}
+                        {{ input_disqualified(35, 220, 0) }}
+                    {% endblock %}
+
+                    {% block zone_1 %}
+                        {{ input_tla(345, 70, 1) }}
+                        {{ input_tokens(355, 120, 1) }}
+                        {{ input_present(405, 170, 1) }}
+                        {{ input_disqualified(410, 220, 1) }}
+                    {% endblock %}
+
+                    {% block zone_2 %}
+                        {{ input_tla(425, 350, 2) }}
+                        {{ input_tokens(370, 400, 2) }}
+                        {{ input_present(385, 450, 2) }}
+                        {{ input_disqualified(335, 500, 2) }}
+                    {% endblock %}
+
+                    {% block zone_3 %}
+                        {{ input_tla(30, 350, 3) }}
+                        {{ input_tokens(45, 400, 3) }}
+                        {{ input_present(100, 450, 3) }}
+                        {{ input_disqualified(110, 500, 3) }}
+                    {% endblock %}
+
+                    {% block zone_other %}
+                        {{ input_tokens(200, 285, 'other') }}
+                    {% endblock %}
+                </svg>
+            {% endblock %}
+
+            <input type="hidden" name="force" />
+            <input type="submit" value="Enter Scores" />
+        </form>
+    </div>
+
+    {% if error %}
+        <aside class="dialogue fail">
+            <div>
+                <h1>Validation Error!</h1>
+                <pre>{{ error }}</pre>
+                <button data-action="hide">Correct problems</button>
+                <button data-action="force">Save anyway</button>
+            </div>
+        </aside>
+    {% elif done %}
+        <aside class="dialogue success">
+            <div>
+                <h1>Success!</h1>
+                <p>The scores have been updated successfully.</p>
+
+                <button data-action="url" data-url="{{ url_for('.index') }}">Select another match</button>
+                <button data-action="url" data-url="{{ url_for('.update', arena=match.arena, num=match.num - 1) }}">Previous match</button>
+                <button data-action="url" data-url="{{ url_for('.update', arena=match.arena, num=match.num + 1) }}">Next match</button>
+
+                {% for name, arena in arenas.items() %}
+                    {% if name != match['arena'] %}
+                        <button data-action="url" data-url="{{ url_for('.update', arena=name, num=match.num) }}">Arena {{ arena.display_name }}</button>
+                    {% endif %}
+                {% endfor %}
+
+                <button data-action="hide">Amend scores</button>
+            </div>
+        </aside>
+    {% endif %}
+
+    {% if error or done %}
+        <script>
+            var dialogue = document.querySelector('aside.dialogue');
+
+            var hideBtns = document.querySelectorAll('[data-action=hide]');
+            for (var i = 0; i < hideBtns.length; i++) {
+                hideBtns[i].addEventListener('click', function() {
+                    dialogue.hidden = true;
+                });
+            }
+
+            var urlBtns = document.querySelectorAll('[data-action=url]');
+            for (var i = 0; i < urlBtns.length; i++) {
+                (function(btn) {
+                    btn.addEventListener('click', function() {
+                        window.location = btn.dataset.url;
+                    });
+                }(urlBtns[i]));
+            }
+
+            var forceBtns = document.querySelectorAll('[data-action=force]');
+            for (var i = 0; i < forceBtns.length; i++) {
+                forceBtns[i].addEventListener('click', function() {
+                    document.querySelector('input[name=force]').value = 'on';
+                    document.querySelector('form').submit();
+                });
+            }
+        </script>
+    {% endif %}
+
+    {% block script %}
+        <script type="text/javascript">
+            {% block valid_token_regex %}
+                var valid_token_regex = /^[GOPWY]*$/;
+            {% endblock %}
+
+            var token_input_change = function(input) {
+                input.value = input.value.toUpperCase();
+                validate_token_input(input);
+            };
+            var validate_token_input = function(input) {
+                if (input.value.match(valid_token_regex)) {
+                    input.className = '';
+                } else {
+                    input.className = 'invalid';
+                }
+            };
+
+            var tokenInputs = document.querySelectorAll('input[type=text].tokens');
+            for (var i = 0; i < tokenInputs.length; i++) {
+                validate_token_input(tokenInputs[i]);
+            }
+        </script>
+    {% endblock %}
+{% endblock %}

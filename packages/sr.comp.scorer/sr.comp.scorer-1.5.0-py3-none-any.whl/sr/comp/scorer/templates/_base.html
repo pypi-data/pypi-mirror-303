@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+
+        <title>Student Robotics Competition Scorer</title>
+
+        <link href="{{ url_for('static', filename='images/icon.png') }}" type="image/png" rel="icon" />
+
+        <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Open+Sans:300,400,700" />
+
+        <link href="{{ url_for('static', filename='styles/main.css') }}" type="text/css" rel="stylesheet" />
+        <link href="{{ url_for('static', filename='styles/dialogue.css') }}" type="text/css" rel="stylesheet" />
+
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <header>
+            <a href="{{ url_for('.index') }}">
+                <h1>
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" />
+                    Student Robotics Competition Scorer
+                </h1>
+            </a>
+        </header>
+
+        <aside class="hint">
+            {% block hint %}
+            {% endblock %}
+        </aside>
+
+        <main>
+            {% block main %}
+            {% endblock %}
+        </main>
+    </body>
+
+</html>
