@@ -1,0 +1,40 @@
+[project]
+name = "pycatcher"
+version = "0.0.7"
+authors = [
+    {name="Aseem Anand", email="aseemanand@gmail.com"},
+]
+maintainers = [
+    {name="Jagadish Pamarthi", email="jagadish.vrsec@gmail.com"},
+]
+description = "This package identifies the day-level time-series outliers for a given dataset"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pandas==2.2.3",
+    "statsmodels==0.14.4",
+    "pyod==2.0.2",
+    "seaborn==0.13.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pip>=24.2",
+    "build>=1.2.2",
+    "twine>=5.1.1",
+    "poetry>=1.8.3",
+    "setuptools>=75.1.0",
+    "pytest>=8.3.3",
+    "pytest-mock>=3.14.0",
+    "coverage>=7.6.1"
+]
+
+test = [
+    "pytest-cov>=5.0.0",
+]
