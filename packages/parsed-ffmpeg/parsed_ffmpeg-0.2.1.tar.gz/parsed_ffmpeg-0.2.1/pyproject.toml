@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "parsed_ffmpeg"
+version = "0.2.1"
+description = "Run ffmpeg commands with nicely parsed output."
+authors = ["Ruurd Bijlsma <ruurd@bijlsma.dev>"]
+repository = "https://github.com/RuurdBijlsma/parsed_ffmpeg"
+documentation = "https://github.com/RuurdBijlsma/parsed_ffmpeg/blob/master/README.md"
+homepage = "https://github.com/RuurdBijlsma/parsed_ffmpeg"
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+tqdm = { version = "^4.66.5", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+mypy = "^1.12.0"
+pytest-asyncio = "^0.24.0"
+pytest = "^8.3.3"
+types-tqdm = { version = "^4.66.0.20240417", optional = true }
+
+[tool.poetry.extras]
+tqdm = ["tqdm", "types-tqdm"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
