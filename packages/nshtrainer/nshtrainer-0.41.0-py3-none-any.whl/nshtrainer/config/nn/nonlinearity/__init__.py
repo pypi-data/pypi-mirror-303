@@ -1,0 +1,27 @@
+# fmt: off
+# ruff: noqa
+# type: ignore
+
+__codegen__ = True
+
+# Config classes
+from nshtrainer.nn.nonlinearity import TanhNonlinearityConfig as TanhNonlinearityConfig
+from nshtrainer.nn.nonlinearity import ReLUNonlinearityConfig as ReLUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import PReLUConfig as PReLUConfig
+from nshtrainer.nn.nonlinearity import SiLUNonlinearityConfig as SiLUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import LeakyReLUNonlinearityConfig as LeakyReLUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SoftsignNonlinearityConfig as SoftsignNonlinearityConfig
+from nshtrainer.nn.nonlinearity import MishNonlinearityConfig as MishNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SigmoidNonlinearityConfig as SigmoidNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SoftplusNonlinearityConfig as SoftplusNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SwiGLUNonlinearityConfig as SwiGLUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import ELUNonlinearityConfig as ELUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import BaseNonlinearityConfig as BaseNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SoftmaxNonlinearityConfig as SoftmaxNonlinearityConfig
+from nshtrainer.nn.nonlinearity import GELUNonlinearityConfig as GELUNonlinearityConfig
+from nshtrainer.nn.nonlinearity import SwishNonlinearityConfig as SwishNonlinearityConfig
+
+# Type aliases
+from nshtrainer.nn.nonlinearity import NonlinearityConfig as NonlinearityConfig
+
+# Submodule exports
