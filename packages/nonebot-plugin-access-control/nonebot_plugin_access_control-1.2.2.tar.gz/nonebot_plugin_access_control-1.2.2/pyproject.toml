@@ -1,0 +1,87 @@
+[tool.poetry]
+name = "nonebot-plugin-access-control"
+version = "1.2.2"
+description = ""
+authors = ["ssttkkl <huang.wen.long@hotmail.com>"]
+license = "MIT"
+readme = "README.MD"
+repository = "https://github.com/bot-ssttkkl/nonebot-plugin-access-control"
+packages = [
+    { include = "nonebot_plugin_access_control", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+nonebot2 = ">=2.3.0, <3.0.0"
+nonebot-plugin-access-control-api = "^1.2.0"
+nonebot-plugin-apscheduler = ">=0.3.0"
+nonebot-plugin-session = "^0.3.0"
+nonebot-plugin-orm = ">=0.7.0, <1.0.0"
+arclet-alconna = "^1.7.24"
+shortuuid = "^1.0.11"
+pytimeparser = "^0.2.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.275"
+isort = "^5.10.1"
+black = "^23.1.0"
+pre-commit = "^3.1.0"
+
+setuptools = "^68.1.2"
+nb-cli = "*"
+nonebot-plugin-orm = { extras = ["default"], version = "*" }
+
+nonebot2 = { extras = ["fastapi"], version = "*" }
+nonebot-adapter-onebot = "*"
+nonebot-adapter-kaiheila = "*"
+nonebot-adapter-qq = "*"
+nonebot-adapter-telegram = "*"
+nonebot-adapter-console = "*"
+nonebot-adapter-feishu = "*"
+
+nonebug = "^0.3.5"
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+length_sort = true
+skip_gitignore = true
+force_sort_within_sections = true
+extra_standard_library = ["typing_extensions"]
+
+[tool.ruff]
+select = ["E", "W", "F", "UP", "C", "T", "PYI", "PT", "Q"]
+ignore = ["C901", "E402", "F403", "T201"]
+
+line-length = 160
+target-version = "py39"
+
+[tool.ruff.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.poetry.extras]
+cli = ["nb-cli"]
+migrate = ["nonebot-plugin-datastore"]
+
+[tool.poetry.plugins.nb_scripts]
+accctrl = "nonebot_plugin_access_control.script:install"
+
+[tool.nonebot]
+plugins = ["nonebot_plugin_access_control"]
+plugin_dirs = []
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
