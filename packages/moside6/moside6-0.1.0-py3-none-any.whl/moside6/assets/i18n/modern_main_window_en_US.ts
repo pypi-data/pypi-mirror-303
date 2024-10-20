@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en_US">
+<context>
+    <name>ModernNavBar</name>
+    <message>
+        <source>Hide</source>
+        <translation>Hide</translation>
+    </message>
+    <message>
+        <source>Preference</source>
+        <translation>Preference</translation>
+    </message>
+</context>
+<context>
+    <name>ModernPreference</name>
+    <message>
+        <source>Appearance</source>
+        <translation>Appearance</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>Language</translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation>Auto</translation>
+    </message>
+    <message>
+        <source>en_US</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <source>zh_CN</source>
+        <translation>简体中文</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>Style</translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation>Theme</translation>
+    </message>
+    <message>
+        <source>Effect</source>
+        <translation>Effect</translation>
+    </message>
+    <message>
+        <source>Colorful</source>
+        <translation>Enable colorful title bar effect</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <source>Expand</source>
+        <translation>Expand navbar on startup</translation>
+    </message>
+</context>
+</TS>

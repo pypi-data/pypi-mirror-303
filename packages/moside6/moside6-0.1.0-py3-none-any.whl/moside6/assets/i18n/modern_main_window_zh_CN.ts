@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_CN">
+<context>
+    <name>ModernNavBar</name>
+    <message>
+        <source>Hide</source>
+        <translation>收起</translation>
+    </message>
+    <message>
+        <source>Preference</source>
+        <translation>偏好设置</translation>
+    </message>
+</context>
+<context>
+    <name>ModernPreference</name>
+    <message>
+        <source>Appearance</source>
+        <translation>外观</translation>
+    </message>
+    <message>
+        <source>Language</source>
+        <translation>语言</translation>
+    </message>
+    <message>
+        <source>Auto</source>
+        <translation>Auto</translation>
+    </message>
+    <message>
+        <source>en_US</source>
+        <translation>English</translation>
+    </message>
+    <message>
+        <source>zh_CN</source>
+        <translation>简体中文</translation>
+    </message>
+    <message>
+        <source>Style</source>
+        <translation>风格</translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation>主题</translation>
+    </message>
+    <message>
+        <source>Effect</source>
+        <translation>特效</translation>
+    </message>
+    <message>
+        <source>Colorful</source>
+        <translation>启用标题栏呼吸特效</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>导航</translation>
+    </message>
+    <message>
+        <source>Expand</source>
+        <translation>启动时展开导航栏</translation>
+    </message>
+</context>
+</TS>

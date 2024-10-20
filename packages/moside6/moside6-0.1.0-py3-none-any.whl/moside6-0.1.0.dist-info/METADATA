@@ -1,0 +1,124 @@
+Metadata-Version: 2.1
+Name: moside6
+Version: 0.1.0
+Summary: Modern Pyside6！！！无学习成本，傻瓜化使用，快速为您的PySide6项目添加现代UI和实用的功能。
+Author-Email: =?utf-8?b?5rGf55m95rKz?= <baiheqiuhan@qq.com>
+License: GPL-3.0
+Requires-Python: <3.12,>=3.8
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: pydantic>=2.9.2
+Requires-Dist: pywin32; sys_platform == "win32"
+Description-Content-Type: text/markdown
+
+# MoSide6
+
+无学习成本，傻瓜化使用，快速为您的PySide6项目添加现代UI和实用的功能。
+
+No learning cost, fool-like use, quickly add modern UI and practical functions to your PySide6 project.
+
+## 前言 | Preface
+
+做桌面开发的时候经常用到Qt for python（PySide6），发现大多项目需要一个框架来解决一些常见的问题、实现一些通用功能、以及美化项目UI。
+
+When developing desktop applications, Qt for Python (PySide6) is often used. I found that most projects require a
+framework to address common issues, implement universal functionalities, and enhance the project's UI.
+
+在尝试了不同的框架后，发现各个框架都有一些不尽如人意的地方，于是萌生了自己写一套框架的想法。
+
+After trying different frameworks, I found that each one has its own shortcomings. This led me to the idea of creating
+my own framework.
+
+## 特性与待办 | Features and Todo
+
+- [x] 基于PDM的开发环境和包管理 | Development environment and package management based on PDM
+- [x] 基于PySide6的基本UI框架 | Basic UI framework based on PySide6.
+- [x] 基于Pydantic的可持久化配置项 | Persistent configuration items based on Pydantic
+- [x] 基于Loguru的日志模块 | Logging module based on Loguru
+- [x] 动态创建导航菜单 | Dynamically create navigation menus
+- [x] 自动、动态的多国语言翻译机制 | Automatic and dynamic multi-language translation mechanism
+- [ ] 支持亮暗主题 | Supports light and dark themes
+- [ ] 编写更多皮肤 | Write more skins
+
+## 需求 | Requirements
+
+- Python 3.8+
+- PDM
+- PySide6
+- Pydantic
+- Loguru
+- pywin32
+
+## 快速开始 | Quick Start
+
+### 安装 | Installation
+
+```shell
+pip install moside6
+```
+
+### 应用 | Usage
+
+TODO
+
+### 导航栏 | Navigation Bar
+
+根据配置动态生成导航栏，具有跳转页面功能，且可自定义按钮功能。
+
+Dynamically generate a navigation bar based on the configuration, with page navigation functionality and
+customizable button features.
+
+该导航栏只在现代风格中自动创建，有漂亮的按钮和动画效果。
+
+The navigation bar is automatically created only in the modern style, with beautiful buttons and animation effects.
+
+#### 动态创建导航菜单 | Dynamically Create Navigation Menu
+
+TODO
+
+#### 配置导航目标页 | Configure Navigation Target Page
+
+## 开发 | Development
+
+### 环境 | Environment
+
+```shell
+git clone xxx
+cd moside6
+pdm install
+```
+
+### 构建 | Build
+
+```shell
+pdm build --no-sdist -v
+```
+
+### 发布 | Publish
+```shell
+pdm publish --no-build -u __token__
+```
+
+
+## 已知的问题 | Known Issues
+
+以下是已知存在的问题，猪脑过载，请求帮助！
+
+Here are some known issues. My pig's brain is overloaded, need help！
+
+- [ ] frameless窗体恢复windows动画特效后，将于窗体底层重绘原生窗体，在dark主题下调整窗体大小会有明显的白边。  
+  After restoring the Windows animation effects for a frameless window, the native window will be redrawn at the bottom
+  layer.
+  In the dark theme, resizing the window will result in noticeable white borders.
+- [ ] 菜单栏在大于2级时，会出现显示不全的问题。  
+  When the menu bar is more than 2 levels deep, there will be a problem with incomplete display.
+- [ ] Pydantic相关的子类不能由Cython进行编译，会出现错误。  
+  Pydantic-related subclasses cannot be compiled by Cython, which will result in errors.
+
+## 参考 | References
+
+这是我参考的一些项目，它们非常棒，值得一看。感谢这些项目的作者。
+
+Here are some projects that I have referenced. They are great and worth a look. Thanks to the authors of these projects.
+
+- [Modern_GUI_PyDracula_PySide6_or_PyQt6](https://github.com/Wanderson-Magalhaes/Modern_GUI_PyDracula_PySide6_or_PyQt6)
+- https://github.com/zhiyiYo/PyQt-Frameless-Window
