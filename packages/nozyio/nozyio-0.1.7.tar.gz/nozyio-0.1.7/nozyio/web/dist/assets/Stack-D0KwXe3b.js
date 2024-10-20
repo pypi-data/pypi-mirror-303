@@ -1,0 +1,1 @@
+import{j as e}from"./reactflow-vendor-DVEEOIVt.js";import{r as s}from"./react-vendor-4ldeB94U.js";const a=s.forwardRef((t,r)=>e.jsx("div",{ref:r,style:{display:"flex",flexDirection:"column",...t.style},...t}));a.displayName="Stack";export{a as S};
