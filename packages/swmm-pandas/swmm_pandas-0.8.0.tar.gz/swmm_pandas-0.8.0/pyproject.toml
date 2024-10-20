@@ -1,0 +1,84 @@
+[project]
+name = "swmm-pandas"
+dynamic = ["version"]
+description = "SWMM binary outputfile reader and API"
+authors = [
+    {name = "Constantine Karos", email = "ckaros@outlook.com"},
+    {name = "See README.md"},
+]
+dependencies = [
+    "julian",
+    "pandas>=2.1",
+    "swmm-toolkit>=0.8.1",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "CC BY 4.0"}
+keywords = ["swmm5", "swmm", "stormwater", "hydraulics", "hydrology", ""]
+maintainers = [
+    {email = "ckaros@outlook.com"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: Other/Proprietary License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/karosc/swmm-pandas"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/swmm/pandas/__init__.py"
+
+[tool.hatch.metadata]
+allow-dynamic = ["version"]
+readme = "README.md"
+license = {text = "CC BY 4.0"}
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/scripts",
+  "/tests",
+  "/docs",
+]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swmm"]
+
+[project.optional-dependencies]
+dev = [
+    "sphinx",
+    "nbsphinx",
+    "sphinx-autobuild",
+    "matplotlib",
+    "myst-parser",
+    "furo",
+    "numpydoc",
+    "ipython",
+    "ruff",
+    "mypy",
+    "pytest",
+    "coverage",
+]
+
+[tool.mypy]
+allow_redefinition = true
+pretty = true
+warn_no_return = false
+ignore_missing_imports = true
+disallow_any_decorated = false
+explicit_package_bases = true
+mypy_path = "src"
