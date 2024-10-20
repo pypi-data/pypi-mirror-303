@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: kolhalashon
+Version: 0.1.1
+Summary: Python wrapper for Kol Halashon API
+Home-page: https://github.com/ZviCode/KolHalashonApi
+Author: ZVI SHTEINMAN
+Author-email: T7647986@GMAIL.COM
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: requests ==2.32.3
+Requires-Dist: python-dotenv ==1.0.1
+
+# Kol Halashon API
+
+Python wrapper for Kol Halashon website API.
+
+## Installation
+```bash
+pip install kolhalashon
+```
+
+## Usage
+```python
+from kolhalashon import KolHalashonAPI
+from dotenv import load_dotenv
+load_dotenv()
+
+
+api = KolHalashonAPI(
+    use_session=True,
+    session_file='session.pkl'
+)
+category = api.search_items("אברהם")
+
+if not (category.rabanim or category.books or category.shiurim or category.others):
+    print("No items found.")
+    exit()
+
+print("Rabanim:")
+for rabbi in category.rabanim:
+    print(rabbi)
+
+print("\nBooks:")
+for book in category.books:
+    print(book)
+
+print("\nShiurim:")
+for shiur in category.shiurim:
+    print(shiur)
+
+print("\nOthers:")
+for other in category.others:
+    print(other)
+
+```
+
+## Features
+- Search shiurim
+- Download audio/video content
+- Browse by Rabbi
