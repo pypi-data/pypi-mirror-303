@@ -1,0 +1,46 @@
+Metadata-Version: 2.3
+Name: euclidean_hausdorff
+Version: 1.2.3
+Dynamic: Requires-Dist
+Summary: quick approximation of the Gromov–Hausdorff distance restricted to Euclidean isometries
+Project-URL: Homepage, https://github.com/bcecil2/euclidean_hausdorff
+Project-URL: Issues, https://github.com/bcecil2/euclidean_hausdorff/issues
+Author: Blake Cecil
+Author-email: Vladyslav Oles <vlad.oles@proton.me>
+License: The MIT License (MIT)
+        
+        Copyright (c) 2023 Vladyslav Oles (vlad.oles@proton.me), Blake Cecil
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+# euclidean-hausdorff
+
+Given the coordinates of 2- or 3-dimensional point clouds $A, B \subset \mathbb{R}^k$ (where $k \in \{2, 3\}$), estimates their Euclidean–Hausdorff distance (which itself is a relaxation and an upper bound of the Gromov–Hausdorff distance)
+
+$$d_\text{EH}(X, Y) = \inf_{T:E(k)} d_\text{H}(T(A), B),$$
+
+where the infimum is taken over all $k$-dimensional Euclidean isometries and $d_\text{H}$ is the Hausdorff distance in $\mathbb{R}^k$.
+
+The distance is estimated from above by discretizing the compact feasible region (of the above minimization) into a search grid, whose vertices each represent a combination of some translation, rotation, and reflection.
