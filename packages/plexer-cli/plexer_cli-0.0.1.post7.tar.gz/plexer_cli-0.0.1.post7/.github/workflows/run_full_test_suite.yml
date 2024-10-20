@@ -1,0 +1,48 @@
+name: Run Full Suite of Checks and Tests
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-test:
+    name: Run unit tests with version ${{ matrix.py }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        py:
+          - "3.12"
+          - "3.11"
+          - "3.10"
+          - "3.9"
+        os:
+          - ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938  # v4.2.0
+        with:
+          fetch-depth: 0
+
+      - name: Setup python for test - ${{ matrix.py }}
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3  # v5.2.0
+        with:
+          python-version: ${{ matrix.py }}
+      
+      - name: Setup ffmpeg for unit tests (moviepy)
+        uses: federicocarboni/setup-ffmpeg@37062fbf7149fc5578d6c57e08aed62458b375d6  # v3.1
+
+      - name: Install tox
+        run: python -m pip install tox-gh>=1.2
+
+      - name: Setup test suite
+        run: tox -vv --notest -e test
+
+      - name: Run test suite
+        run: tox --skip-pkg-install -e test
