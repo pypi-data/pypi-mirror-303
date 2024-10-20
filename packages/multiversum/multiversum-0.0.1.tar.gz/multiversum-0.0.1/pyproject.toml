@@ -1,0 +1,31 @@
+[project]
+name = "multiversum"
+version = "0.0.1"
+description = "A helper package to conduct multiverse analyses in Python"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{name = "Jan Simson"}]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = [
+    "pandas",
+    "tqdm",
+    "papermill",
+    "joblib"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/jansim/multiverse"
+Changelog = "https://github.com/jansim/multiverse/releases"
+Issues = "https://github.com/jansim/multiverse/issues"
+CI = "https://github.com/jansim/multiverse/actions"
+
+
+[project.optional-dependencies]
+test = ["pytest", "ruff"]
