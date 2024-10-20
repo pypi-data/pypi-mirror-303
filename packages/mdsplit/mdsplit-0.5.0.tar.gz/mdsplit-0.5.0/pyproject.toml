@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "mdsplit"
+version = "0.5.0"
+description = "Split Markdown files at headings"
+readme = "README.md"
+authors = ["Markus Straub"]
+license = "MIT"
+repository = "https://github.com/markusstraub/mdsplit"
+
+[tool.poetry.scripts]
+mdsplit = "mdsplit:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8"
+pytest-console-scripts = "^1.3"
+tox = "^4"
+black = "*"
+flake8 = "*"
+ipykernel = "*"
+
+[tool.pytest.ini_options]
+addopts = ["-ra", "-W error"]
+testpaths = ["tests"]
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
