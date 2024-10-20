@@ -1,0 +1,16 @@
+[Unit]
+Description=Home Automation service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kerttula --log_name /var/log/kerttula.log
+User=pi
+Group=pi
+Restart=on-failure 
+SyslogIdentifier=/home/pi/kerttula/kerttula.log
+RestartSec=5
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target
