@@ -1,0 +1,85 @@
+Metadata-Version: 2.1
+Name: aio-fluid
+Version: 1.1.0
+Summary: Tools for backend python services
+License: BSD
+Author: Luca
+Author-email: luca@quantmind.com
+Requires-Python: >=3.11
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: cli
+Provides-Extra: db
+Provides-Extra: full
+Provides-Extra: http
+Provides-Extra: log
+Requires-Dist: aioconsole (==0.8.0)
+Requires-Dist: aiohttp (==3.10.10) ; extra == "http"
+Requires-Dist: alembic (>=1.13.2,<2.0.0) ; extra == "db"
+Requires-Dist: async-timeout (>=4.0.3,<5.0.0)
+Requires-Dist: asyncpg (>=0.29.0,<0.30.0) ; extra == "db"
+Requires-Dist: click (>=8.1.7,<9.0.0) ; extra == "cli"
+Requires-Dist: fastapi (==0.115.2)
+Requires-Dist: httpx (>=0.27.2,<0.28.0) ; extra == "http"
+Requires-Dist: inflection (>=0.5.1,<0.6.0)
+Requires-Dist: prometheus-client (>=0.21.0,<0.22.0) ; extra == "http"
+Requires-Dist: psycopg2-binary (>=2.9.9,<3.0.0) ; extra == "db"
+Requires-Dist: pydantic (>=2.9.2,<3.0.0)
+Requires-Dist: python-dateutil (==2.9.0) ; extra == "db"
+Requires-Dist: python-json-logger (>=2.0.7,<3.0.0) ; extra == "log"
+Requires-Dist: redis[hiredis] (>=5.0.1,<6.0.0)
+Requires-Dist: rich (>=13.7.1,<14.0.0) ; extra == "cli"
+Requires-Dist: sqlalchemy (>=2.0.23,<3.0.0) ; extra == "db"
+Requires-Dist: sqlalchemy-utils (>=0.41.2,<0.42.0) ; extra == "db"
+Requires-Dist: uvicorn (==0.32.0)
+Requires-Dist: yarl (>=1.15.5,<2.0.0)
+Project-URL: Issues, https://github.com/quantmind/aio-fluid/issues
+Project-URL: Repository, https://github.com/quantmind/aio-fluid
+Description-Content-Type: text/markdown
+
+Aio Fluid
+
+Async utilities for backend python services
+
+[![PyPI version](https://badge.fury.io/py/aio-fluid.svg)](https://badge.fury.io/py/aio-fluid)
+[![Python versions](https://img.shields.io/pypi/pyversions/aio-fluid.svg)](https://pypi.org/project/aio-fluid)
+[![build](https://github.com/quantmind/fluid/workflows/build/badge.svg)](https://github.com/quantmind/aio-fluid/actions?query=workflow%3Abuild)
+[![codecov](https://codecov.io/gh/quantmind/aio-fluid/graph/badge.svg?token=81oWUoyEVp)](https://codecov.io/gh/quantmind/aio-fluid)
+
+**Documentation**: [https://quantmind.github.io/aio-fluid](https://quantmind.github.io/aio-fluid)
+
+**Source Code**: [https://github.com/quantmind/aio-fluid](https://github.com/quantmind/aio-fluid)
+
+
+## Installation
+
+This is a simple python package you can install via pip:
+
+```
+pip install aio-fluid
+```
+
+To install all the dependencies, you can use the `full` extra:
+
+```
+pip install aio-fluid[full]
+```
+this includes the following extra dependencies:
+
+- `cli` for the command line interface
+- `db` for database support
+- `http` for http client support
+- `log` for JSON logging support
+
+
+## Development
+
+You can run the examples via
+
+```
+poetry run python -m examples.main
+```
+
