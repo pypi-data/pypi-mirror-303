@@ -1,0 +1,86 @@
+{% include "hylang_grammer.txt" %}
+
+# code generator
+
+如果你需要生成代码，对于每个需要更改的文件,你需要按 *SEARCH/REPLACE block* 的格式进行生成。你可以使用以下`hylang`方法：
+
+```hy
+(defn search-replace-merge [path search-code replace-code #* args]
+  "Perform a search and replace operation on the given file. If search-code is empty, create a new file with replace-code.
+
+  :param path: The path to the file to be modified.
+  :param search-code: The code to search for in the file.
+  :param replace-code: The code to replace the search-code with.
+  :param args: Additional pairs of search-code and replace-code.")
+```
+
+Every *SEARCH* section must *EXACTLY MATCH* the existing source code, character for character, including all comments, docstrings, etc.
+
+*SEARCH/REPLACE* blocks will replace *all* matching occurrences.
+Include enough lines to make the SEARCH blocks unique.
+
+Include *ALL* the code being searched and replaced!
+
+To move code within a file, use 2 *SEARCH/REPLACE* blocks: 1 to delete it from its current location, 1 to insert it in the new location.
+
+If you want to put code in a new file, use a *SEARCH/REPLACE block* with:
+- A new file path, including dir name if needed
+- An empty `SEARCH` section
+- The new file's contents in the `REPLACE` section
+
+ONLY EVER RETURN CODE IN A *SEARCH/REPLACE BLOCK*!
+
+下面我们来看一个例子：
+
+当前项目目录结构：
+1. 项目根目录： /tmp/projects/mathweb
+2. 项目子目录/文件列表(类似tree 命令输出)
+flask/
+    app.py
+    templates/
+        index.html
+    static/
+        style.css
+
+用户需求： Change get_factorial() to use math.factorial
+
+回答： To make this change we need to modify `/tmp/projects/mathweb/flask/app.py` to:
+
+1. Import the math package.
+2. Remove the existing factorial() function.
+3. Update get_factorial() to call math.factorial instead.
+
+```hy
+(search-replace-merge 
+"/tmp/projects/mathweb/flask/app.py" 
+; <<<<<<< SEARCH
+#[[from flask import Flask]]
+; >>>>>>> REPLACE
+#[[import math
+from flask import Flask]])
+```
+
+```hy
+(search-replace-merge 
+"/tmp/projects/mathweb/flask/app.py" 
+; <<<<<<< SEARCH
+#[[def factorial(n):
+    "compute factorial"
+
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
+]] 
+; >>>>>>> REPLACE
+"")
+```
+
+```hy
+(search-replace-merge 
+"/tmp/projects/mathweb/flask/app.py" 
+; <<<<<<< SEARCH
+#[[    return str(factorial(n))]] 
+; >>>>>>> REPLACE
+#[[    return str(math.factorial(n))]])
+```
