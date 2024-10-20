@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: PyTOA5
+Version: 0.9.1
+Summary: Utilities for TOA5 Files
+Author-email: Hauke D <haukex@zero-g.net>
+Project-URL: Documentation, https://haukex.github.io/pytoa5
+Project-URL: Repository, https://github.com/haukex/pytoa5
+Project-URL: Bug Tracker, https://github.com/haukex/pytoa5/issues
+Project-URL: Changelog, https://haukex.github.io/pytoa5#changelog
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Topic :: File Formats
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: igbpyutils>=0.8.0
+Provides-Extra: test
+Requires-Dist: pandas>=2.2.3; extra == "test"
+
+PyTOA5: Utilities for TOA5 Files
+================================
+
+This library contains routines for the processing of data files in the TOA5 format.
+Since this format is basically a CSV file with a specific header, this library primarily
+provides functions to handle the header; the rest of the file can be read with Python's
+`csv <https://docs.python.org/3/library/csv.html>`_ module. A function to read a TOA5
+file into a `Pandas <https://pandas.pydata.org/>`_ DataFrame is also provided.
+
+**The documentation is available at** https://haukex.github.io/pytoa5/
+
+Author, Copyright, and License
+------------------------------
+
+Copyright (c) 2023-2024 Hauke Dämpfling (haukex@zero-g.net)
+at the Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB),
+Berlin, Germany, https://www.igb-berlin.de/
+
+This library is free software: you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This library is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see https://www.gnu.org/licenses/
