@@ -1,0 +1,44 @@
+[project]
+name = "zaim-sqlite"
+version = "0.2.5"
+description = "ZaimのデータをSQLite DBに格納するPythonパッケージ"
+authors = [
+    { name = "ryohidaka", email = "39184410+ryohidaka@users.noreply.github.com" }
+]
+dependencies = [
+    "pyzaim>=1.1.0",
+    "sqlalchemy>=2.0.31",
+    "tqdm>=4.66.2",
+    "pandas>=2.2.2",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+license = {file = "LICENSE"}
+keywords = ["zaim","sqlite","japanese","japan"]
+
+[project.urls]
+Homepage = "https://github.com/ryohidaka/zaim-sqlite"
+Repository = "https://github.com/ryohidaka/zaim-sqlite"
+Issues = "https://github.com/ryohidaka/zaim-sqlite/issues"
+Changelog = "https://github.com/ryohidaka/blob/main/zaim-sqlite/CHANGELOG.md"
+
+[project.scripts]
+"zaim-sqlite" = "zaim_sqlite:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.4.4",
+    "pytest>=8.2.0",
+    "pre-commit>=3.7.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zaim_sqlite"]
