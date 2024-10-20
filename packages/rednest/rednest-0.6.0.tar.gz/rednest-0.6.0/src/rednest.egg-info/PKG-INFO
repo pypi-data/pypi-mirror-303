@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: rednest
+Version: 0.6.0
+Summary: Redis dictionary & list nesting for Python objects
+Maintainer-email: Nadav Tasher <hey@nadav.app>
+License: MIT License
+        
+        Copyright (c) 2024 Nadav Tasher
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/NadavTasher/RedNest
+Keywords: redis,rejson,database,dict
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# RedNest
+Redis dictionary & list nesting for Python objects using `redis-py` and Redis `Hash`es and `List`s
+
+## Usage example
+```python
+import redis
+
+from rednest import Dictionary, List
+
+# Initialize redis connection
+redis = redis.Redis(...)
+
+# Create your dictionary
+my_dict = Dictionary(redis, "test-dict")
+my_dict.test_value = "Hello World"
+my_dict.numbers = [10, 20, 30]
+my_dict.ages = {
+	"User 1": 10,
+	"User 2": 20,
+	"User 3": 30,
+}
+
+# Change a user age
+my_dict.ages["User 3"] = 40
+
+# Show the variable types
+print(type(my_dict.ages), type(my_dict.numbers))
+
+# Show the entire dictionary
+print(my_dict)
+```
+
+## Starting a test server locally
+To run a test server, you can use the following command to run a Redis server locally:
+```bash
+docker run --rm -it -p 6379:6379 redis/redis-stack-server
+```
