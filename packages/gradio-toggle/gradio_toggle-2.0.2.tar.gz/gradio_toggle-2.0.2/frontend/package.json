@@ -1,0 +1,44 @@
+{
+  "name": "gradio_toggle",
+  "version": "0.4.1",
+  "description": "Gradio UI packages",
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "private": false,
+  "main_changeset": true,
+  "main": "./Index.svelte",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "gradio": "./Index.svelte",
+      "svelte": "./dist/Index.svelte",
+      "types": "./dist/Index.svelte.d.ts"
+    },
+    "./example": {
+      "gradio": "./Example.svelte",
+      "svelte": "./dist/Example.svelte",
+      "types": "./dist/Example.svelte.d.ts"
+    }
+  },
+  "dependencies": {
+    "@gradio/atoms": "^0.9.2",
+    "@gradio/checkbox": "^0.4.3",
+    "@gradio/markdown": "^0.10.3",
+    "@gradio/statustracker": "^0.9.1",
+    "@gradio/utils": "0.7.0",
+    "glob": "^11.0.0",
+    "rimraf": "^6.0.1"
+  },
+  "devDependencies": {
+    "@gradio/preview": "0.12.0"
+  },
+  "peerDependencies": {
+    "svelte": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gradio-app/gradio.git",
+    "directory": "js/checkbox"
+  }
+}
