@@ -1,0 +1,107 @@
+[package]
+name = "stac"
+description = "Rust library for the SpatioTemporal Asset Catalog (STAC) specification"
+version = "0.10.2"
+keywords = ["geospatial", "stac", "metadata", "geo"]
+authors.workspace = true
+categories.workspace = true
+edition.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "README.md"
+
+[features]
+geo = ["dep:geo"]
+geoarrow = [
+    "dep:geoarrow",
+    "dep:arrow-array",
+    "dep:arrow-cast",
+    "dep:arrow-json",
+    "dep:arrow-schema",
+    "dep:geo-types",
+]
+geoparquet = ["geoarrow", "geoarrow/parquet", "dep:parquet"]
+geoparquet-compression = [
+    "geoparquet",
+    "geoarrow/parquet_compression",
+    "parquet/snap",
+    "parquet/brotli",
+    "parquet/flate2",
+    "parquet/lz4",
+    "parquet/zstd",
+]
+object-store = ["dep:object_store"]
+object-store-aws = ["object-store", "object_store/aws"]
+object-store-azure = ["object-store", "object_store/azure"]
+object-store-gcp = ["object-store", "object_store/gcp"]
+object-store-http = ["object-store", "object_store/http"]
+object-store-all = [
+    "object-store-aws",
+    "object-store-azure",
+    "object-store-gcp",
+    "object-store-http",
+]
+reqwest = ["dep:reqwest"]
+reqwest-rustls = ["reqwest/rustls-tls"]
+validate = ["dep:jsonschema", "dep:reqwest", "dep:tokio", "dep:fluent-uri"]
+validate-blocking = ["validate", "tokio/rt"]
+
+[dependencies]
+arrow-array = { workspace = true, optional = true }
+arrow-cast = { workspace = true, optional = true }
+arrow-json = { workspace = true, optional = true }
+arrow-schema = { workspace = true, optional = true }
+bytes.workspace = true
+chrono = { workspace = true, features = ["serde"] }
+fluent-uri = { workspace = true, optional = true }
+geo = { workspace = true, optional = true }
+geo-types = { workspace = true, optional = true }
+geoarrow = { workspace = true, optional = true }
+geojson.workspace = true
+jsonschema = { workspace = true, optional = true }
+log.workspace = true
+mime.workspace = true
+object_store = { workspace = true, optional = true }
+parquet = { workspace = true, optional = true }
+reqwest = { workspace = true, features = ["json", "blocking"], optional = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true, features = ["preserve_order"] }
+thiserror.workspace = true
+tokio = { workspace = true, optional = true }
+tracing.workspace = true
+url.workspace = true
+
+[dev-dependencies]
+assert-json-diff.workspace = true
+bytes.workspace = true
+rstest.workspace = true
+tempfile.workspace = true
+tokio = { workspace = true, features = ["macros"] }
+tokio-test.workspace = true
+
+[[test]]
+name = "examples"
+required-features = ["validate-blocking"]
+
+[[test]]
+name = "migrate"
+required-features = ["validate-blocking"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata.cargo-all-features]
+max_combination_size = 2
+denylist = [
+    "geoparquet-compression",
+    "object-store-all",
+    "object-store-aws",
+    "object-store-azure",
+    "object-store-gcp",
+    "object-store-http",
+    "reqwest-rustls",
+    "validate-blocking",
+]
