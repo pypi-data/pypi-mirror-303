@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: nodeocc
+Version: 1.0.16
+Summary: TUI application for viewing the status of GPU allocations on a Slurm cluster
+Author: Matteo Boschini
+Maintainer: Lorenzo Bonicelli, Aniello Panariello
+License: MIT
+Project-URL: Repository, https://github.com/apanariello4/slurm_nodeocc
+Keywords: Slurm,GPU,TUI,CLI,HPC,cluster,allocations,nodeocc
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console :: Curses
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: psutil
+
+# Slurm NodeOCC
+![[screenshot](https://github.com/apanariello4/slurm_nodeocc/blob/master/sshot.jpg?raw=true)](sshot.jpg)
+
+TUI application for viewing the status of GPU allocations on a Slurm cluster
+
+Contents:
+
++ `model/`: folder containing the fundamental classes definitions to model the Slurm cluster, its jobs and their portions;
++ `readers/`: folder containing the functions to parse Slurm infrastructure and jobs status from standard unix commands;
++ `view/slurm_list.py`: a simple list-based viewer of queued and allocated jobs;
++ `view/slurm_viz.py`: a graphic-based viewer of allocated jobs across Slurm topology;
++ `controller/controller.py`: the main entrypoint for the curses-based interactive TUI application.
+
+Run it with: `python controller/controller.py`
+
+Requirements: pandas, pycurses.
