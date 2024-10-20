@@ -1,0 +1,108 @@
+# SPDX-FileCopyrightText: 2024 Philip Zerull
+#
+# SPDX-License-Identifier: MIT
+
+[tool.poetry]
+name = "philz-pg-backup"
+version = "0.1.0"
+description = "A backup script for postgres databases"
+authors = ["Philip Zerull <git@philzerull.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+    pg_backup = "philz_pg_backup.main:main"
+
+[tool.poetry.dependencies]
+    python = "^3.12"
+    python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+    poethepoet = "^0.18.1"
+    pylint = ">2.17.4"
+    ruff = "^0.5.5"
+    reuse = "^4.0.3"
+
+[build-system]
+    requires = ["poetry-core"]
+    build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks.check_ruff]
+    shell = "ruff check"
+    help = "Perform ruff lint check"
+
+[tool.poe.tasks.check_format]
+    shell = "ruff format --check ."
+    help = "Perform code formatting check"
+
+[tool.poe.tasks.check_poetry]
+    shell = "poetry check"
+    help = "Perform poetry check"
+
+[tool.poe.tasks.check_license]
+    shell = "reuse lint"
+    help = "Perform license check via reuse"
+
+[tool.poe.tasks.check_pylint]
+    shell = "pylint philz_pg_backup"
+    help = "Perform pylint check for package"
+
+[tool.poe.tasks.license]
+    cmd = "reuse annotate --copyright 'Philip Zerull' --year 2024 --license MIT"
+    help = "quickly apply license header to file"
+
+[tool.poe.tasks.docs]
+    shell = "mkdocs build"
+    help = "build the documentation"
+
+[tool.poe.tasks.static]
+    sequence = [
+        "check_poetry",
+        "check_license",
+        "check_format",
+        "check_ruff",
+        "check_pylint",
+    ]
+    ignore_fail = "return_non_zero"
+    help = "Run all static code analysis checks"
+
+[tool.poe.tasks.test]
+    sequence = [
+        "static",
+    ]
+    ignore_fail = "return_non_zero"
+    help = "Run all checks"
+
+[tool.poe.tasks.format]
+    shell = "ruff format"
+    help = "Automatically format the code"
+
+[tool.poe.tasks.clean]
+    cmd = "git clean -idx -e .env"
+    help = "Remove files not tracked by git"
+
+[tool.ruff]
+    line-length=80
+    lint.select = ["ALL"]
+    target-version="py312"
+    lint.ignore = [
+        "COM812", # This check deals with missing-trailing-comma
+                  # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
+                  # This check directly conflicts with ruff format, so
+                  # we'll continue to ignore missing-trailing-comma - PhilZ
+        "ANN",
+        "DTZ005",
+        "D",
+    ]
+
+[tool.pylint]
+    recursive="y"
+    "messages control".disable = [
+        "missing-function-docstring",
+        "missing-module-docstring",
+        "missing-class-docstring",
+    ]
+    ignore-paths=[
+        "build",
+        "dist",
+    ]
