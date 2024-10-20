@@ -1,0 +1,6 @@
+from .entity import RokuEntity as RokuEntity
+from collections.abc import Callable
+from homeassistant.exceptions import HomeAssistantError as HomeAssistantError
+
+def format_channel_name(channel_number: str, channel_name: str | None = None) -> str: ...
+def roku_exception_handler(ignore_timeout: bool = False) -> Callable[[_FuncType[_RokuEntityT, _P]], _ReturnFuncType[_RokuEntityT, _P]]: ...
