@@ -1,0 +1,324 @@
+{
+  "src/lib/components/DashJsonGrid.react.js": {
+    "description": "DashJsonGrid is a Dash porting version for the React component:\n`react-json-grid/JSONGrid`\n\nThis component provides a JSON Grid viewer used for viewing complicated and\nunstructured serializable JSON data.",
+    "displayName": "DashJsonGrid",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks."
+      },
+      "class_name": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Often used with CSS to style elements with common properties."
+      },
+      "style": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "Defines CSS styles which will override styles previously set."
+      },
+      "data": {
+        "type": {
+          "name": "union",
+          "value": [
+            {
+              "name": "object"
+            },
+            {
+              "name": "array"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "string"
+            },
+            {
+              "name": "bool"
+            }
+          ]
+        },
+        "required": true,
+        "description": "The JSON object or array to be transformed into a grid table."
+      },
+      "default_expand_depth": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "The depth to which the grid is expanded by default.",
+        "defaultValue": {
+          "value": "0",
+          "computed": false
+        }
+      },
+      "default_expand_key_tree": {
+        "type": {
+          "name": "object"
+        },
+        "required": false,
+        "description": "Tree-like structure with all keys that needs to be expanded. This structure needs\nto be a dictionary mimicing the structure of the data."
+      },
+      "selected_path": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "keyPath captured by the onSelect method of the grid viewer. This value is a\nsequence of indicies used for locating the element of the selected data.\n\nDue to the limitation of the exported functionalities, this value cannot be\nreset by the callback. In other words, using it with callbacks.Output will\nnot take effects.",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "highlight_selected": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Whether to highlight the selected item or not.",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "search_text": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The text that needs to be searched in the JSON data."
+      },
+      "theme": {
+        "type": {
+          "name": "union",
+          "value": [
+            {
+              "name": "enum",
+              "value": [
+                {
+                  "value": "\"default\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"dracula\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"monokai\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"oceanicPark\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"panda\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"gruvboxMaterial\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"tokyoNight\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"remedy\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"atlanticNight\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"defaultLight\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"defaultLight2\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"slime\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"spacegray\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"blueberryDark\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"nord\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"nightOwl\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"oneMonokai\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"cobaltNext\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"shadesOfPurple\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"codeBlue\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"softEra\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"atomMaterial\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"evaDark\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"moonLight\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"inherit\"",
+                  "computed": false
+                },
+                {
+                  "value": "\"unset\"",
+                  "computed": false
+                }
+              ]
+            },
+            {
+              "name": "exact",
+              "value": {
+                "bgColor": {
+                  "name": "string",
+                  "description": "Background color.",
+                  "required": false
+                },
+                "tableBorderColor": {
+                  "name": "string",
+                  "description": "Border color of the whole table.",
+                  "required": false
+                },
+                "highlightBgColor": {
+                  "name": "string",
+                  "description": "Background color when this part is highlighted.",
+                  "required": false
+                },
+                "cellBorderColor": {
+                  "name": "string",
+                  "description": "Background color of table cells.",
+                  "required": false
+                },
+                "keyNameColor": {
+                  "name": "string",
+                  "description": "Text color of JSON keys.",
+                  "required": false
+                },
+                "indexColor": {
+                  "name": "string",
+                  "description": "Text color of array indicies.",
+                  "required": false
+                },
+                "numberColor": {
+                  "name": "string",
+                  "description": "Text color of numeric values.",
+                  "required": false
+                },
+                "booleanColor": {
+                  "name": "string",
+                  "description": "Text color of boolean variables.",
+                  "required": false
+                },
+                "stringColor": {
+                  "name": "string",
+                  "description": "Text color of strings.",
+                  "required": false
+                },
+                "objectColor": {
+                  "name": "string",
+                  "description": "Text color of unrecognized objects.",
+                  "required": false
+                },
+                "tableHeaderBgColor": {
+                  "name": "string",
+                  "description": "Background color of the table header.",
+                  "required": false
+                },
+                "tableHeaderColor": {
+                  "name": "string",
+                  "description": "Text color of the table header.",
+                  "required": false
+                },
+                "searchHighlightBgColor": {
+                  "name": "string",
+                  "description": "Background color of the part highlighted by the search.",
+                  "required": false
+                }
+              }
+            }
+          ]
+        },
+        "required": false,
+        "description": "The theme (name) that needs to be applied. If a dictionary is specified, will\ncustomize the color code of each part of grid viewer.",
+        "defaultValue": {
+          "value": "\"default\"",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      },
+      "loading_state": {
+        "type": {
+          "name": "shape",
+          "value": {
+            "is_loading": {
+              "name": "bool",
+              "description": "Determines if the component is loading or not",
+              "required": false
+            },
+            "prop_name": {
+              "name": "string",
+              "description": "Holds which property is loading",
+              "required": false
+            },
+            "component_name": {
+              "name": "string",
+              "description": "Holds the name of the component that is loading",
+              "required": false
+            }
+          }
+        },
+        "required": false,
+        "description": "Object that holds the loading state object coming from dash-renderer"
+      }
+    }
+  }
+}
