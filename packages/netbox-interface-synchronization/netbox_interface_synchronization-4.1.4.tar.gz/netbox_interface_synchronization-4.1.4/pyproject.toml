@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netbox_interface_synchronization"
+version = "4.1.4"
+authors = [
+  { name="Keith Knowles", email="mkknowles@outlook.com" },
+]
+description = "Syncing existing interfaces with the interfaces from a device type template in NetBox 4.X"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.html"]
+
+[project.urls]
+Homepage = "https://github.com/NetTech2001/netbox-interface-synchronization"
+Issues = "https://github.com/NetTech2001/netbox-interface-synchronization/issues"
