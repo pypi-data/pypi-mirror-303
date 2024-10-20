@@ -1,0 +1,28 @@
+Metadata-Version: 2.3
+Name: comradewolf
+Version: 0.0.2b1
+Summary: Core to make OLAP-like engine. Creates SQL queries based on imported meta-data
+Project-URL: Homepage, https://github.com/konstantin-suspitsyn/comradewolf
+Project-URL: Issues, https://github.com/konstantin-suspitsyn/comradewolf/issues
+Author-email: Konstantin Suspitsyn <konstantin.suspitsyn@xmail.ru>
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Code Generators
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+
+# Comradewolf
+## Что делает проект
+Comradewolf — часть бо́льшего проекта, который должен позволить людям осуществлять быстрые выгрузки из таблиц 
+с данными, не увеличивая количество агрегированных срезов (отдельных таблиц) в базе
+
+База данных должна содержать главную таблицу без срезов, и несколько подготовленных таблиц со срезами из главной таблицы.
+
+В зависимости от необходимых полей, модуль отсеет неподходящие таблицы и предложит простой ```SELECT``` без ```GROUP BY```
+для готовых срезов, либо сформирует запрос с ```GROUP BY```, причем не только из главной таблицы, но и из таблиц
+со срезами, если это возможно
