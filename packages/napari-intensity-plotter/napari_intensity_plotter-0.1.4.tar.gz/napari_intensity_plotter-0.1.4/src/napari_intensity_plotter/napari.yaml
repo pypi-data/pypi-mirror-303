@@ -1,0 +1,19 @@
+name: napari-intensity-plotter
+display_name: Intensity Plotter
+# use 'hidden' to remove plugin from napari hub search results
+visibility: public
+# see https://napari.org/stable/plugins/manifest.html for valid categories
+categories: ["Annotation", "Segmentation", "Acquisition"]
+contributions:
+  commands:
+    - id: napari-intensity-plotter.IntensityPlotWidget
+      python_name: napari_hello._widget:IntensityPlotWidget
+      title: Intensity Plot
+    - id: napari-intensity-plotter.IntensityPlotControlWidget
+      python_name: napari_hello._widget:IntensityPlotControlWidget
+      title: Intensity Plot Control
+  widgets:
+    - command: napari-intensity-plotter.IntensityPlotWidget
+      display_name: Intensity Plot
+    - command: napari-intensity-plotter.IntensityPlotControlWidget
+      display_name: Intensity Plot Control
