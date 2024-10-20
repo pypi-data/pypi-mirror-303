@@ -1,0 +1,7 @@
+def gcd(a:int,b:int) -> int:
+    """
+    Return the greatest common divisor of two integers a and b.
+    """
+    while b != 0:
+        a, b = b, a % b
+    return a
