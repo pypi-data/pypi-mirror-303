@@ -1,0 +1,74 @@
+[project]
+name = "kawaiired"
+version = "1.0.1"
+description = "A Python wrapper for the kawaii.red API."
+authors = [
+    { name = "Keksi", email = "contact@keksi.me" }
+]
+dependencies = [
+    "httpx>=0.27.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.7.0",
+]
+
+[tool.ruff]
+fix = true
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "F",    # pyflakes
+    "E",    # pycodestyle
+    "W",    # pycodestyle
+    "S",    # bandit
+    "B",    # flake8-bugbear
+    "C",    # flake8-comprehensions
+    "D",    # flake8-docstrings
+    "Q",    # flake8-quotes
+    # "G",    # flake8-logging-format
+    "UP",   # pyupgrade
+    "ANN",  # flake8-annotations
+    "DTZ",  # flake8-datetimez
+    "TID",  # flake8-tidy-imports
+    "RUF",  # ruff specific rules
+    "T20",  # flake8-print
+    "PLC",  # pylint convention
+    "PLE",  # pylint errors
+    # "PLR",  # pylint refactor
+    "PLW",  # pylint warnings
+    "I",    # isort
+]
+ignore = [
+    # Missing Docstrings
+    "D100","D101","D103","D104","D105","D106","D107",
+    # Docstring Whitespace
+    "D203","D212","D214","D215",
+    # Docstring Content
+    "D400","D402","D404","D405","D406","D407","D408","D409","D410","D411","D412","D413","D414","D416","D417",
+
+    # Type Annotations
+    "ANN002","ANN003","ANN101","ANN102","ANN204","ANN206","ANN401",
+
+    # pseudo-random generators
+    "S311",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["kawaiired"]
+lines-after-imports = 2
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["kawaiired"]
