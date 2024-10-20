@@ -1,0 +1,397 @@
+#!python
+
+import http.server
+import socketserver
+import urllib.parse
+import os
+import argparse
+import base64
+import ssl
+import logging
+from markdown_it import MarkdownIt
+import time
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
+# Default port and directory
+PORT = 8000
+DIRECTORY = os.getcwd()
+
+# Initialize MarkdownIt with GitHub-like extensions
+md = MarkdownIt("commonmark", {
+    'html': True,
+    'linkify': True,
+    'typographer': True
+}).enable('table')
+
+class DirectoryTraversalError(Exception):
+    pass
+
+def safe_join(base, *paths):
+    final_path = os.path.realpath(os.path.join(base, *paths))
+    if os.path.commonpath([final_path, base]) != base:
+        raise DirectoryTraversalError("Attempted Directory Traversal Attack")
+    return final_path
+
+class MarkdownHandler(http.server.SimpleHTTPRequestHandler):
+
+    def __init__(self, *args, directory=None, username=None, password=None, **kwargs):
+        self.directory = os.path.abspath(directory or DIRECTORY)
+        self.username = username
+        self.password = password
+        super().__init__(*args, directory=self.directory, **kwargs)
+
+    def do_AUTHHEAD(self):
+        self.send_response(401)
+        self.send_header('WWW-Authenticate', 'Basic realm="Secure Markdown Server"')
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'Unauthorized')
+
+    def check_auth(self):
+        auth_header = self.headers.get('Authorization')
+        if auth_header is None:
+            return False
+
+        try:
+            auth_type, encoded_credentials = auth_header.split(' ', 1)
+            if auth_type.lower() != 'basic':
+                return False
+
+            decoded_credentials = base64.b64decode(encoded_credentials).decode('utf-8')
+            provided_username, provided_password = decoded_credentials.split(':', 1)
+            return provided_username == self.username and provided_password == self.password
+        except Exception as e:
+            logging.error(f"Authentication error: {e}")
+            return False
+
+    def do_GET(self):
+        if self.username and self.password and not self.check_auth():
+            self.do_AUTHHEAD()
+            return
+
+        parsed_path = urllib.parse.urlparse(self.path)
+        query_params = urllib.parse.parse_qs(parsed_path.query)
+
+        try:
+            file_path = safe_join(self.directory, urllib.parse.unquote(parsed_path.path.lstrip("/")))
+        except DirectoryTraversalError:
+            self.send_error(403, "Forbidden")
+            return
+
+        if os.path.isdir(file_path):
+            index_file = os.path.join(file_path, 'index.html')
+            if os.path.exists(index_file):
+                self.path = os.path.join(parsed_path.path, 'index.html')
+                return super().do_GET()
+            return self.render_directory_listing(file_path, query_params)
+
+        allowed_themes = self.get_allowed_themes()
+        allowed_code_themes = self.get_allowed_code_themes()
+
+        page_theme = query_params.get("page_theme", [allowed_themes[0]['url']])[0]
+        code_theme = query_params.get("code_theme", [allowed_code_themes[0]['url']])[0]
+
+        if page_theme not in [theme['url'] for theme in allowed_themes]:
+            page_theme = allowed_themes[0]['url']
+
+        if code_theme not in [theme['url'] for theme in allowed_code_themes]:
+            code_theme = allowed_code_themes[0]['url']
+
+        if "raw" in query_params:
+            self.send_raw(file_path)
+        elif "dl" in query_params:
+            self.send_download(file_path)
+        else:
+            self.render_markdown(file_path, page_theme, code_theme, allowed_themes, allowed_code_themes)
+
+    def send_raw(self, file_path):
+        try:
+            if os.path.exists(file_path) and file_path.endswith(".md"):
+                self.send_response(200)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                with open(file_path, "r", encoding="utf-8") as f:
+                    self.wfile.write(f.read().encode("utf-8"))
+            else:
+                self.send_error(404, "File not found")
+        except Exception as e:
+            logging.error(f"Error sending raw file: {e}")
+            self.send_error(500, "Internal Server Error")
+
+    def send_download(self, file_path):
+        try:
+            if os.path.exists(file_path):
+                self.send_response(200)
+                self.send_header("Content-Disposition", f"attachment; filename={os.path.basename(file_path)}")
+                self.send_header("Content-type", "application/octet-stream")
+                self.end_headers()
+                with open(file_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_error(404, "File not found")
+        except Exception as e:
+            logging.error(f"Error sending download: {e}")
+            self.send_error(500, "Internal Server Error")
+
+    def render_markdown(self, file_path, page_theme, code_theme, allowed_themes, allowed_code_themes):
+        try:
+            if os.path.exists(file_path):
+                with open(file_path, "r", encoding="utf-8") as f:
+                    markdown_content = f.read()
+
+                rendered_html = md.render(markdown_content)
+                toolbar_html = self.render_full_toolbar(allowed_themes, allowed_code_themes, page_theme, code_theme)
+
+                timestamp = int(time.time())
+                full_html = f"""
+                <html>
+                <head>
+                    <link id="theme-stylesheet" rel="stylesheet" href="{page_theme}?ts={timestamp}">
+                    <link id="highlight-theme-stylesheet" rel="stylesheet" href="{code_theme}?ts={timestamp}">
+                    <style>
+                        #toolbar label, #toolbar select {{
+                            color: #333 !important;  /* Ensure the toolbar text remains visible */
+                        }}
+                    </style>
+                </head>
+                <body>
+                    {toolbar_html}
+                    <div id="content" class="container mt-4">
+                        {rendered_html}
+                    </div>
+                </body>
+                </html>
+                """
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                self.wfile.write(full_html.encode("utf-8"))
+            else:
+                self.send_error(404, "File not found")
+        except Exception as e:
+            logging.error(f"Error rendering markdown: {e}")
+            self.send_error(500, "Internal Server Error")
+
+    def render_directory_listing(self, directory_path, query_params):
+        try:
+            items = os.listdir(directory_path)
+            listing_html = '<ul>'
+            page_theme = query_params.get("page_theme", [self.get_allowed_themes()[0]['url']])[0]
+
+            for item in items:
+                item_path = os.path.join(directory_path, item)
+                if os.path.isdir(item_path):
+                    listing_html += f'<li><a href="{item}/?page_theme={urllib.parse.quote(page_theme)}">{item}/</a></li>'
+                else:
+                    listing_html += f'<li><a href="{item}?page_theme={urllib.parse.quote(page_theme)}">{item}</a></li>'
+            listing_html += '</ul>'
+
+            allowed_themes = self.get_allowed_themes()
+            toolbar_html = self.render_directory_toolbar(allowed_themes, page_theme)
+
+            full_html = f"""
+            <html>
+            <head>
+                <link id="theme-stylesheet" rel="stylesheet" href="{page_theme}">
+                <style>
+                    #toolbar label, #toolbar select {{
+                        color: #333 !important;  /* Ensure the toolbar text remains visible */
+                    }}
+                </style>
+            </head>
+            <body>
+                {toolbar_html}
+                <h1>Directory listing for {os.path.basename(directory_path)}</h1>
+                {listing_html}
+            </body>
+            </html>
+            """
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(full_html.encode("utf-8"))
+
+        except Exception as e:
+            logging.error(f"Error rendering directory listing: {e}")
+            self.send_error(500, "Internal Server Error")
+
+    def render_directory_toolbar(self, allowed_themes, page_theme):
+        return f"""
+        <div id="toolbar" style="background-color: #f5f5f5; padding: 10px;">
+            <label for="theme-select">Page Theme: </label>
+            <input type="checkbox" id="enable-page-theme" checked onchange="togglePageTheme()"> 
+            <select id="theme-select" onchange="changeTheme()">
+                {"".join([f'<option value="{theme["url"]}" {"selected" if theme["url"] == page_theme else ""}>{theme["name"]}</option>' for theme in allowed_themes])}
+            </select>
+        </div>
+        <script>
+            function changeTheme() {{
+                let theme = document.getElementById("theme-select").value;
+                let timestamp = new Date().getTime();
+                document.getElementById("theme-stylesheet").setAttribute("href", theme + "?ts=" + timestamp);
+                updateLinksWithTheme(theme);
+            }}
+
+            function togglePageTheme() {{
+                const checkbox = document.getElementById('enable-page-theme');
+                const themeStylesheet = document.getElementById('theme-stylesheet');
+                if (checkbox.checked) {{
+                    themeStylesheet.disabled = false;
+                }} else {{
+                    themeStylesheet.disabled = true;
+                }}
+            }}
+
+            function updateLinksWithTheme(theme) {{
+                let links = document.querySelectorAll('a');
+                links.forEach(link => {{
+                    let url = new URL(link.href);
+                    url.searchParams.set('page_theme', theme);
+                    link.href = url.toString();
+                }});
+            }}
+
+            window.onload = function() {{
+                let currentTheme = document.getElementById('theme-select').value;
+                updateLinksWithTheme(currentTheme);
+            }};
+        </script>
+        """
+
+    def render_full_toolbar(self, allowed_themes, allowed_code_themes, page_theme, code_theme):
+        return f"""
+        <div id="toolbar" style="background-color: #f5f5f5; padding: 10px;">
+            <label for="theme-select">Page Theme: </label>
+            <input type="checkbox" id="enable-page-theme" checked onchange="togglePageTheme()"> 
+            <select id="theme-select" onchange="changeTheme()">
+                {"".join([f'<option value="{theme["url"]}" {"selected" if theme["url"] == page_theme else ""}>{theme["name"]}</option>' for theme in allowed_themes])}
+            </select>
+
+            <label for="highlight-theme-select">Code Theme: </label>
+            <input type="checkbox" id="enable-code-theme" checked onchange="toggleCodeTheme()">
+            <select id="highlight-theme-select" onchange="changeHighlightTheme()">
+                {"".join([f'<option value="{theme["url"]}" {"selected" if theme["url"] == code_theme else ""}>{theme["name"]}</option>' for theme in allowed_code_themes])}
+            </select>
+        </div>
+        <script>
+            function changeTheme() {{
+                let theme = document.getElementById("theme-select").value;
+                let timestamp = new Date().getTime();
+                document.getElementById("theme-stylesheet").setAttribute("href", theme + "?ts=" + timestamp);
+                updateLinksWithTheme(theme);
+            }}
+
+            function changeHighlightTheme() {{
+                let highlightTheme = document.getElementById("highlight-theme-select").value;
+                let timestamp = new Date().getTime();
+                document.getElementById("highlight-theme-stylesheet").setAttribute("href", highlightTheme + "?ts=" + timestamp);
+            }}
+
+            function togglePageTheme() {{
+                const checkbox = document.getElementById('enable-page-theme');
+                const themeStylesheet = document.getElementById('theme-stylesheet');
+                if (checkbox.checked) {{
+                    themeStylesheet.disabled = false;
+                }} else {{
+                    themeStylesheet.disabled = true;
+                }}
+            }}
+
+            function toggleCodeTheme() {{
+                const checkbox = document.getElementById('enable-code-theme');
+                const codeStylesheet = document.getElementById('highlight-theme-stylesheet');
+                if (checkbox.checked) {{
+                    codeStylesheet.disabled = false;
+                }} else {{
+                    codeStylesheet.disabled = true;
+                }}
+            }}
+
+            function updateLinksWithTheme(theme) {{
+                let links = document.querySelectorAll('a');
+                links.forEach(link => {{
+                    let url = new URL(link.href);
+                    url.searchParams.set('page_theme', theme);
+                    link.href = url.toString();
+                }});
+            }}
+
+            window.onload = function() {{
+                let currentTheme = document.getElementById('theme-select').value;
+                updateLinksWithTheme(currentTheme);
+            }};
+        </script>
+        """
+
+    def get_allowed_themes(self):
+        return [
+            {"name": "Cerulean", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/cerulean/bootstrap.min.css"},
+            {"name": "Cosmo", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/cosmo/bootstrap.min.css"},
+            {"name": "Cyborg", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/cyborg/bootstrap.min.css"},
+            {"name": "Darkly", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/darkly/bootstrap.min.css"},
+            {"name": "Flatly", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/flatly/bootstrap.min.css"},
+            {"name": "Journal", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/journal/bootstrap.min.css"},
+            {"name": "Litera", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/litera/bootstrap.min.css"},
+            {"name": "Lumen", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lumen/bootstrap.min.css"},
+            {"name": "Lux", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/lux/bootstrap.min.css"},
+            {"name": "Minty", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/minty/bootstrap.min.css"},
+            {"name": "Sketchy", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/sketchy/bootstrap.min.css"},
+            {"name": "Vapor", "url": "https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/vapor/bootstrap.min.css"},
+        ]
+
+    def get_allowed_code_themes(self):
+        return [
+            {"name": "Default", "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css"},
+            {"name": "GitHub", "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css"},
+            {"name": "Monokai", "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css"},
+            {"name": "Solarized Light", "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/solarized-light.min.css"},
+            {"name": "Solarized Dark", "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/solarized-dark.min.css"},
+        ]
+
+def run(server_class=http.server.HTTPServer, handler_class=MarkdownHandler, port=8000, bind="", cert_file=None, key_file=None, username=None, password=None):
+    socketserver.TCPServer.allow_reuse_address = True
+    httpd = server_class((bind, port), handler_class)
+
+    if cert_file and key_file:
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.options |= ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1
+        context.set_ciphers('ECDHE+AESGCM')
+        context.load_cert_chain(certfile=cert_file, keyfile=key_file)
+        httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+        logging.info(f"Serving HTTPS at port {port}")
+    else:
+        logging.info(f"Serving HTTP at port {port}")
+
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        logging.info("Shutting down the server gracefully...")
+        httpd.shutdown()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Secure Markdown HTTP server with GitHub-style rendering, authentication, and HTTPS support.")
+    parser.add_argument('-p', '--port', type=int, default=8000, help='Specify alternate port [default: 8000]')
+    parser.add_argument('-b', '--bind', metavar='ADDRESS', help='Specify alternate bind address [default: all interfaces]')
+    parser.add_argument('--directory', default=os.getcwd(), help='Specify alternate directory [default: current directory]')
+    parser.add_argument('-u', '--user', metavar='USERNAME', help='Set a username for basic authentication')
+    parser.add_argument('-P', '--password', metavar='PASSWORD', help='Set a password for basic authentication')
+    parser.add_argument('-c', '--cert', metavar='CERTFILE', help='Path to the SSL certificate file (for HTTPS)')
+    parser.add_argument('-k', '--key', metavar='KEYFILE', help='Path to the SSL key file (for HTTPS)')
+    args = parser.parse_args()
+
+    username = args.user or os.environ.get('DARKDOWN_USER')
+    password = args.password or os.environ.get('DARKDOWN_PASS')
+
+    run(
+        handler_class=lambda *handler_args, **handler_kwargs: MarkdownHandler(
+            *handler_args, directory=args.directory, username=username, password=password, **handler_kwargs
+        ),
+        port=args.port,
+        bind=args.bind or "",
+        cert_file=args.cert,
+        key_file=args.key,
+        username=username,
+        password=password
+    )
