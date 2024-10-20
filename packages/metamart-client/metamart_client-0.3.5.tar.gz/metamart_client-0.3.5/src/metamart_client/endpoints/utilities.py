@@ -1,0 +1,267 @@
+import datetime
+import json
+import pathlib
+import pprint
+import sys
+import urllib
+import uuid
+import warnings
+from functools import wraps
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+)
+from uuid import UUID
+
+from furl import furl
+from metamart_schemas.generics import MalformedMetadata
+from metamart_schemas.serializers import dump_json, load_json
+from httpx import Response
+from pydantic import ValidationError
+from requests import RequestException
+
+from metamart_client.errors import InvalidResponseError, ObjectNotFoundError
+
+if sys.version_info < (3, 10):
+    from typing_extensions import ParamSpec
+else:
+    from typing import ParamSpec
+
+if TYPE_CHECKING:
+    from metamart_client.endpoints.client import BaseClient, ClientOptions
+
+
+P = ParamSpec("P")
+T = TypeVar("T")
+
+
+def validated_uuid(val: Union[str, UUID]):
+    """
+
+    Args:
+        val (Union[str, UUID]):
+
+    Returns:
+
+    Raises:
+
+    """
+    if isinstance(val, UUID):
+        return val
+
+    try:
+        return uuid.UUID(str(val))
+    except ValueError:
+        return None
+
+
+def is_valid_uuid(val: Union[str, UUID]):
+    """
+
+    Args:
+        val (Union[str, UUID]):
+
+    Returns:
+
+    Raises:
+
+    """
+    if isinstance(val, UUID):
+        return True
+
+    try:
+        uuid.UUID(str(val))
+        return True
+    except ValueError:
+        return False
+
+
+def response_status_check(resp: Response) -> Response:
+    """
+
+    Args:
+        resp (Response):
+
+    Returns:
+
+    Raises:
+
+    """
+    if resp.status_code in {200, 201, 204}:
+        return resp
+    elif resp.status_code == 404:
+        raise ObjectNotFoundError(f"Object not found: {resp.url}")
+    else:
+        message = f"Error: {resp.status_code}. {resp.reason_phrase}. {resp.content.decode()}"
+
+    if resp.status_code == 500:
+        message = (
+            f"{message}"
+            "If you think this should not be the case it might be a bug, you can "
+            "submit a bug report at https://github.com/meta-mart/metamart-core/issues"
+        )
+
+    raise RequestException(message)
+
+
+def serialize_obj(obj: Dict) -> bytes:
+    """
+
+    Args:
+        obj (Dict):
+
+    Returns:
+
+    Raises:
+
+    """
+    return dump_json(obj)
+
+
+def add_query_params(url: str, params: dict) -> str:
+    """
+
+    Args:
+        url (str):
+        params (dict):
+
+    Returns:
+
+    Raises:
+
+    """
+    url_parts = urllib.parse.urlparse(url)
+    query = dict(urllib.parse.parse_qsl(url_parts.query))
+    query.update(params)
+    return url_parts._replace(query=urllib.parse.urlencode(query)).geturl()
+
+
+def paginated(
+    fn: Callable[["BaseClient", str, "ClientOptions"], Response]
+) -> Callable[["BaseClient", str, "ClientOptions"], List[Dict]]:
+    @wraps(fn)
+    def inner(client: "BaseClient", url: str, options: "ClientOptions") -> List[Dict]:
+        """
+
+        Args:
+            client:
+            url:
+            options:
+        """
+
+        if page := options.pagination.get("page", False):
+            return fn(client, page, options).json()["results"]
+
+        # Temporary fix for pagination to deal with poorly configured proxy headers
+
+        results = []
+        page = url
+        secure = url.startswith("https")
+        while page:
+            resp = fn(client, page, options).json()
+
+            results.extend(resp["results"])
+
+            f = furl(resp["next"])
+            # Handles bad proxy headers
+            if secure:
+                f.scheme = "https"
+
+            page = f.url
+
+        return results
+
+    return inner
+
+
+def handles_bad_metadata(
+    fallback_meta: Type[MalformedMetadata],
+) -> Callable[[Callable[[Dict], T]], Callable[[Dict], T]]:
+    """
+
+    Args:
+        fallback_meta:
+
+    Returns:
+
+    Raises:
+
+    """
+
+    def decorator(fn: Callable[[Dict], T]) -> Callable[[Dict], T]:
+        """ """
+
+        @wraps(fn)
+        def wrapped(arg: Dict) -> T:
+            """
+
+            Args:
+                arg:
+
+            Returns:
+
+            Raises:
+
+            """
+            try:
+                return fn(arg)
+            except ValidationError as e:
+                new_arg = {**arg}
+                metadata = fallback_meta(**new_arg.pop("metadata", {}))
+                new_arg["metadata"] = metadata
+                try:
+                    result = fn(new_arg)
+                except Exception:
+                    message = (
+                        f"Received an invalid object. "
+                        f"Normally this is associated with malformed metadata, "
+                        f"however, the fallback metadata also failed to parse. This is likely a bug, please "
+                        f"submit a bug report at https://github.com/meta-mart/metamart-core/issues/new. "
+                        f"The original object was: \n\n{pprint.pformat(arg)}"
+                    )
+                    raise Exception(message) from e
+                message = (
+                    f"Malformed metadata detected in a Metamart object Fallback metadata was used but this should be "
+                    f"corrected. The problem record was: \n\n{pprint.pformat(arg)}"
+                )
+
+                warnings.warn(message)
+                return result
+
+        return wrapped
+
+    return decorator
+
+
+def expects_unique_query(fn) -> Callable[..., T]:
+    """"""
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs) -> T:
+        result = fn(*args, **kwargs)
+        if (num_results := len(result)) == 0:
+            missing_message = (
+                f"A request to `{fn.__name__}{tuple(args)}` was marked as expecting a single unique response. "
+                f"However, no results were returned by the server"
+            )
+            raise ObjectNotFoundError(missing_message)
+        elif num_results == 1:
+            return result[0]
+        else:
+            invalid_message = (
+                f"A request to `{fn.__name__}{tuple(args)}` was marked as expecting a single unique response ."
+                f"However, more than one response was returned."
+                f"This is a defensive error which should not be triggered. If you encounter it "
+                "please open an issue at www.github.com/meta-mart/metamart-core/issues"
+            )
+            raise InvalidResponseError(invalid_message)
+
+    return wrapper
