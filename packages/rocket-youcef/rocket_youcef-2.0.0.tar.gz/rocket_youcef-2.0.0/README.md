@@ -1,0 +1,53 @@
+# package_name
+
+`rocket_youcef` is a Python library for simulating and manipulating rocket objects, including their movement and different properties.
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install `rocket`.
+
+```bash
+pip install rocket_youcef
+```
+
+## Usage
+
+```python
+import rocket_youcef
+
+# creates a Rocket instance, has 2 parameters X and Y
+# default is position (0,0) if no parameters given
+
+rocket1=rocket_youcef.Rocket(4,5)
+
+# creates a Shuttle Rocket instance, has 3 parameters X and Y and flights_completed
+# default is postition (0,0) and 0 flights completed if no parameters given
+rocket2=rocket_youcef.Shuttle(3,6,10)
+
+# creates a Circular Rocket instance, has 3 paramateres: X and Y and Radius 
+# default is postition (0,0) and radius=1
+rocket3=rocket_youcef.CircleRocket(3,3,5)
+
+
+## Shared Methods:
+
+# Calculates the distance from this rocket to another rocket,
+# and returns that value.
+get_distance(rocket1,rocket2)
+
+# Move the rocket according to the paremeters given.
+#  Default behavior is to move the rocket up one unit.
+move_rocket(rocket1,10,5)
+
+## Class specific Methods:
+
+## CircleRocket
+
+# returns Rocket Area
+rocket3.get_area()
+
+# returns Rocket Circumference
+rocket3.get_circumference()
+```
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
