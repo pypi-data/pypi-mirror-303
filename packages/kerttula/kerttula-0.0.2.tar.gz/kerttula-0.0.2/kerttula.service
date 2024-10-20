@@ -1,0 +1,21 @@
+# for running the service on Raspberry PI under the pi:pi user and group.
+
+[Unit]
+Description=Home Automation service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/.local/bin/kerttula --log_name /home/pi/kerttula.log
+User=pi
+Group=pi
+Restart=on-failure 
+SyslogIdentifier=kerttula_service
+RestartSec=5
+TimeoutStartSec=infinity
+# Redirect logs to a file
+StandardOutput=append:/home/pi/kerttula.log
+StandardError=append:/home/pi/kerttula.log
+
+[Install]
+WantedBy=multi-user.target
