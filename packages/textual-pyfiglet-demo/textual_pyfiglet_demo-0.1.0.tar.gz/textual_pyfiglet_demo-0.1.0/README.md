@@ -1,0 +1,44 @@
+A very simple demo of integrating PyFiglet into Textual
+
+This demo was heavily inspired by https://patorjk.com/software/taag/
+
+The key feature is to showcase how the text can actually change size with the terminal dynamically. Despite being ASCII art, the text will re-size and word-wrap with the terminal, just like normal text. It is also possible to change the font while the program is running.
+
+Thanks to the great design of both Textual and PyFiglet, this was actually quite easy to implement.
+
+The trick to this is that:
+1) It uses the `Static` widget as a base, and integrates the PyFiglet class
+2) It adds a `change_width` method to the widget
+3) It over-rides the `render` method
+
+First, use Textual's `on_resize` event to set the width:
+```python
+async def on_resize(self, event):
+    """Handle the terminal being resized."""
+    width, height = event.size
+    self.figlet_static.change_width(width-4)   # the minus 4 is for padding
+```
+
+Connects to the `change_width` method in the widget:
+```python
+def change_width(self, width: int) -> None:
+    self.figlet.width = width
+```
+
+Then finally, here is the `render` over-ride:
+```python
+def render(self):
+    text = str(self.renderable)   
+    self.set_styles("width: auto;")
+    return self.figlet.renderText(text)
+```
+
+Note that although there's only 11 fonts in the program (simple ones I hand picked), There's actually hundreds built in. FIGlet fonts have existed for a long time. Check out https://patorjk.com/software/taag/ for a more full-featured, browser-based Demo.
+
+Thanks to:
+
+https://github.com/pwaller/pyfiglet
+https://patorjk.com/ (https://github.com/patorjk)
+
+And of course, Textual
+https://github.com/Textualize/textual
