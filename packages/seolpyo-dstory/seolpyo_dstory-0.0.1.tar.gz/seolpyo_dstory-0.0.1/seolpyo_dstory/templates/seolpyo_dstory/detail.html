@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div>{{ object.author }} | {{ object.date_pub }}</div>
+<div class="d-flex justify-content-center mt-2">
+    {% if request.user.is_staff %}
+    <a href="{% url 'seolpyo_dstory:edit' object.pk %}" target="_blank" class="btn btn-sm btn-outline-primary me-2 ps-4 pe-4">글 수정</a>
+    <form action="{% url 'seolpyo_dstory:delete' object.pk %}" method="post" onsubmit="return confirm('글을 삭제하시겠습니까?');">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-outline-danger btn-sm ms-2 ps-4 pe-4" value="글 삭제">
+    </form>
+    {% endif %}
+</div>
+<hr>
+<style>
+    #article-view * { max-width: 100%; }
+    * { word-break: break-all; }
+</style>
+<div id="article-view" class="article-view main" style="min-height: 80vh;">
+    {{ object.content|safe }}
+</div>
+<hr>
+
+<div>
+    {% if object_list and 1 < object_list|length %}
+    <h3 class="fs-5 mt-5">'{{ object.category }}' 관련글</h3>
+    <div class="list-group mb-5">
+        {% for obj in object_list %}
+        <a href="{{ obj.get_absolute_url }}" class="list-group-item list-group-item-action{% if obj.pk == object.pk %}  active disabled{% endif %}">{% if obj.password %}[비밀] {% endif %}{{ obj }}</a>
+        {% endfor %}
+    </div>
+    <hr>
+    {% endif %}
+</div>
+
+<div class="mb-3">{% for tag in object.tags.all %}{% if not forloop.first%} {% endif %}<a class="me-2" href="{{ tag.get_absolute_url }}">#{{ tag }}</a>{% endfor %}</div>
+
+<script>
+    var list_img = document.querySelectorAll('#article-view img');
+    for ( var i=0;i<list_img.length;i++ ) {
+        var img = list_img[i].cloneNode();
+        var a = document.createElement('a');
+        a.setAttribute('href', img['src']);
+        a.setAttribute('data-lightbox', 'img');
+        a.append(img);
+        list_img[i].replaceWith(a);
+    }
+</script>
+{% endblock %}

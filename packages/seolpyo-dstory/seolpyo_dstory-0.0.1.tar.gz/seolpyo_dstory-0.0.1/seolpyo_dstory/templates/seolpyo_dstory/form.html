@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{{ form.media }}
+
+{% block form_head %}{% endblock %}
+
+{% endblock %}
+
+{% block main %}
+
+<div id="form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="btn btn-primary mb-3">
+    </form>
+</div>
+
+{% block form_main %}{% endblock %}
+
+<script>
+var divs = document.querySelectorAll('#form form > div');
+for (var i=0;i<divs.length;i++) {
+    var d = divs[i];
+    d.setAttribute('class', 'mb-3');
+}
+var labels = document.querySelectorAll('#form form > div > label');
+for (var i=0;i<labels.length;i++) {
+    var l = labels[i];
+    l.setAttribute('class', 'form-label');
+}
+
+var inputs = document.querySelectorAll('#form form > div > input[name=title]');
+for (var i=0;i<inputs.length;i++) {
+    var ip = inputs[i];
+    ip.setAttribute('class', 'form-control form-control-lg');
+}
+
+var inputs = document.querySelectorAll('#form form > div > *:is(input[type=text]:not([name=title]), textarea:not([name=content]), input[type=password], input[type=datetime-local])');
+for (var i=0;i<inputs.length;i++) {
+    var ip = inputs[i];
+    ip.setAttribute('class', 'form-control');
+}
+
+var inputs = document.querySelectorAll('#form form > div > select:not([name=tags])');
+for (var i=0;i<inputs.length;i++) {
+    var ip = inputs[i];
+    ip.setAttribute('class', 'form-select');
+}
+
+var labels = document.querySelectorAll('#form form > div > label:has(+ input[type=checkbox])');
+for (var i=0;i<labels.length;i++) {
+    var l = labels[i];
+    l.setAttribute('class', 'form-check-label');
+}
+var inputs = document.querySelectorAll('#form form > div > input[type=checkbox]');
+for (var i=0;i<inputs.length;i++) {
+    var ip = inputs[i];
+    ip.setAttribute('class', 'form-check-input');
+}
+</script>
+
+{% endblock %}

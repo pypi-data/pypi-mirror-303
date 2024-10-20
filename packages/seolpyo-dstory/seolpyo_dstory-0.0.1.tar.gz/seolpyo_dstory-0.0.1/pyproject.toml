@@ -1,0 +1,62 @@
+[build-system]
+requires = [
+  "setuptools>=65.0",
+  "tqdm >= 4.66.5",
+  "beautifulsoup4 >= 4.12.3",
+  "requests >= 2.32.3",
+  "selenium >= 4.25.0",
+  "django >= 5.1.2",
+  "django-summernote >= 0.8.20.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seolpyo-dstory"
+version = "0.0.1"
+dependencies  = [
+  "tqdm >= 4.66.5",
+  "beautifulsoup4 >= 4.12.3",
+  "requests >= 2.32.3",
+  "selenium >= 4.25.0",
+  "django >= 5.1.2",
+  "django-summernote >= 0.8.20.0",
+]
+
+description = "설표의 장고 디스토리, 티스토리 백업파일을 이용해 장고 사이트로 이사하기 위한 패키지입니다."
+readme = "README.md"
+requires-python = ">= 3.10"
+authors = [
+  {name="white-seolpyo", email="white-seolpyo@naver.com"},
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+
+    "Framework :: Django",
+    "Framework :: Django :: 5.1",
+
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+]
+keywords = ["티스토리", "블로그", "설표", "하얀설표", "이사", "장고",]
+
+[project.urls]
+Homepage = "https://github.com/white-seolpyo/seolpyo_dstory"
+Issues = "https://github.com/white-seolpyo/seolpyo_dstory/issues"
+Documentation = "https://django.seolpyo.com/"
+
+[tool.setuptools]
+packages = [
+  "seolpyo_dstory",
+  "seolpyo_dstory.migrations",
+  "seolpyo_dstory.models",
+  "seolpyo_dstory.utils",
+  "seolpyo_dstory.views",
+]
+
