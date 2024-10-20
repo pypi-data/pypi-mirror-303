@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: streamlit-msal-2
+Version: 0.1.0
+Summary: yet another msal Single-Sign-On module of streamlit applications also for ConfidentialClientApplication by checking required App roles of signed-in users in the enterprise setup
+Author-email: xiepei1 <cn_xiepei@163.com>
+License: MIT License
+        
+        Copyright (c) 2024 Pei Xie
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Repository, https://github.com/xiepei1/streamlit-msal-2
+Project-URL: Homepage, https://github.com/xiepei1/streamlit-msal-2
+Project-URL: Issues, https://github.com/xiepei1/streamlit-msal-2/issues
+Project-URL: Documentation, https://github.com/xiepei1/streamlit-msal-2
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit
+Requires-Dist: streamlit-msal
+
+# Streamlit-MSAL-2: Yet Another MSAL for Streamlit
+
+![ci](https://github.com/xiepei1/streamlit-msal-2/actions/workflows/ci.yml/badge.svg)
+![cd](https://github.com/xiepei1/streamlit-msal-2/actions/workflows/cd.yml/badge.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+This is a workaround of streamlit to use msal authentication process in an enterprise environment for ConfidentialClientApplication.
+
+## How to install and use
+
+* run pip install
+
+```bash
+pip install streamlit-msal-2
+```
+
+* integrate the package in your streamlit code
+
+```python
+import streamlit as st
+from streamlit_msal_2 import init_auth
+
+
+st.title("Streamlit MSAL Example")
+
+client_id = "your_client_id"
+tenant_id = "your_tenant_id"
+user_roles = {
+    "ExampleApp.Admin": "ExampleApp.Admin",
+    "ExampleApp.User": "ExampleApp.User",
+}
+
+init_auth(user_roles, tenant_id, client_id)
+
+st.write(f"Welcome, {st.session_state.username}")
+```
+
+The user sign information is stored in `st.session_state.auth_data`, the user name is stored in `st.session_state.username`, and the user roles are stored in `st.session_state.roles`.
+
+## How it works?
+
+* this package is using streamlit-msal in the background for the authentication.
+    * however, streamlit-msal does not specially integrate msal ConfidentialClientApplication, while this is usually mandatorily required by enterprise use cases
+* to simplify enterprise use cases, this package adds some additional role checking after streamlit-msal sign in
+    * these required roles can be directly configured in the Microsoft Azure App registration.
+    * by assigning user roles in App registration enterprise configuration, the authentication
+process can automatically check the signed in user's App roles, if it fulfills the predefined user roles, users can go further in streamlit
+
+More to see [documentation site](https://xiepei1.github.io/streamlit-msal-2/).
