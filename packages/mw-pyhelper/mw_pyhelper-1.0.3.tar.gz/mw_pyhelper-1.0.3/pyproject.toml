@@ -1,0 +1,45 @@
+[project]
+name = "mw_pyhelper"
+dynamic = ["version"]
+description = "A set of python helper classes / utilities from MicWan"
+readme = "README.md"
+authors = [{ name = "Michael Wan", email = "hkmicmic@gmail.com" }]
+license = { file = "LICENSE" }
+dependencies = [
+    "requests",
+    "jproperties",
+    "pyyaml"
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+# here are for webbot package
+webbot = [
+    "selenium"
+]
+# also, selenium-wire required additional dependency
+# setuptools, blinker 1.7.0 and cffi
+wirebot = [
+    "selenium",
+    "selenium-wire",
+    "blinker == 1.7.0",
+    "setuptools",
+    "cffi"
+]
+# here are for playwright webbot
+pw-bot = [
+    "playwright"
+]
+
+[project.urls]
+Homepage = "https://github.com/micwan88/mw_pyhelper"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mw_pyhelper.__version__"}
