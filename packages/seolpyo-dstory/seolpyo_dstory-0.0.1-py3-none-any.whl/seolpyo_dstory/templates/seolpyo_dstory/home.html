@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="container">
+  <article id="content">
+    <div class="cover-slider">
+      <button type="button" class="prev">이전</button>
+      <button type="button" class="next">다음</button>
+      <ul style="height: 460px;">
+        {% for obj in object_list %}
+          {% if forloop.counter0 < num_main|default:5 %}
+          <li style="{% if obj.thumbnail %}background-image: url({{ obj.thumbnail }}); {% endif %}position: absolute; top: 0px;">
+            <a href="{{ obj.get_absolute_url }}" class="text-box">
+              <span class="title">{{ obj }}</span>
+              <span class="btn view">더보기</span>
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="cover-thumbnail-list">
+      <div class="inner">
+        <h2></h2>
+        <ul>
+          {% for obj in object_list %}
+            {% if forloop.counter0 < num_main|default:4 %}
+            <li>
+              <a href="{{ obj.get_absolute_url }}">
+                <span class="thum">
+                  {% if obj.thumbnail %}<img src="{{ obj.thumbnail }}" alt="">{% endif %}
+                </span>
+                <span class="category">{{ obj.category }}</span>
+                <span class="title">{{ obj }}</span>
+              </a>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="cover-list">
+      <div class="inner">
+        <h2></h2>
+        <ul>
+          {% for obj in object_list %}
+          <li>
+            <a href="{{ obj.get_absolute_url }}">
+              <figure>
+                {% if obj.thumbnail %}<img src="{{ obj.thumbnail }}" alt="">{% endif %}
+              </figure>
+              <span class="category">{{ obj.category }}</span>
+              <span class="title">{{ obj }}</span>
+              <span class="excerpt">{{ obj.description }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="cover-footer">
+      <div class="image" style="background-image:url(https://tistory2.daumcdn.net/tistory/2882984/skin/images/img_cover_footer.png);"></div>
+      <div class="social-link"></div>
+      <nav class="menu">
+        <ul>
+          <li class="t_menu_link_1 first">
+            <a href="http://www.tistory.com/forum/" target="_black">포럼</a>
+          </li>
+          <li class="t_menu_link_2">
+            <a href="http://cs.daum.net/faq/173.html" target="_black">FAQ</a>
+          </li>
+          <li class="t_menu_link_3 last">
+            <a href="http://cs.daum.net/daumfaq/top.jsp?SITE_ID=173" target="_black">고객센터</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="inner"></div>
+  </article>
+</section>
+{% endblock %}

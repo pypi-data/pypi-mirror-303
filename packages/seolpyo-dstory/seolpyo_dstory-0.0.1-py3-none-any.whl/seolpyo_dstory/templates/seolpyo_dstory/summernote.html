@@ -1,0 +1,43 @@
+{% extends "seolpyo_dstory/form.html" %}
+
+{% block form_head %}
+
+{# jquery #}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+
+{# summernote editor #}
+{# https://summernote.org/ #}
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" integrity="sha256-IKhQVXDfwbVELwiR0ke6dX+pJt0RSmWky3WB2pNx9Hg=" crossorigin="anonymous"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js" integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js" integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script> -->
+
+{# SELECT2 #}
+{# https://select2.org/ #}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+{% endblock %}
+
+
+{% block form_main %}
+
+{# summernote editor #}
+<!-- <script>
+    $('[name=content]').summernote({
+      placeholder: 'Summernote for Bootstrap 5',
+      tabsize: 2,
+      height: 400,
+      lang: 'ko-KR',
+    });
+</script> -->
+
+{# SELECT2 #}
+<script>
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2({
+        tags: true
+    });
+});
+</script>
+
+{% endblock %}
