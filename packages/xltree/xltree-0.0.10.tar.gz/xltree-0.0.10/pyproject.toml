@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "xltree"
+version = "0.0.10"
+authors = [
+  { name="Takahashi Satoshi", email="muzudho1@gmail.com" },
+]
+description = "Render tree structure diagram using border on Excel."
+readme = "README.md"
+dependencies = [
+  "numpy==1.26.4",
+  "openpyxl==3.1.5",
+  "pandas==2.2.2",
+]
+maintainers = [
+  { name="Takahashi Satoshi", email="muzudho1@gmail.com" },
+]
+license = {file = "LICENSE"}
+keywords = ["tree structure diagram", "excel", "border"]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+[project.urls]
+Repository = "https://github.com/muzudho/pyxltree.git"
+
+# ビルドツールの設定
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/docs_dev",      # Documents exclude package. It for developer.
+  "/examples",      # README.md で紹介されているスクリプト
+  "/tests",         # 設定しなくても最初から機能するという話しもある
+  "*.log",          # Logging
+  "*.bak",          # WinMerge
+  "*- コピー*",     # Copy file
+]
