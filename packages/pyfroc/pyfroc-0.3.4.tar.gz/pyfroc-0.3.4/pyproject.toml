@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyfroc"
+dynamic = ["version"]
+authors = [{ name = "Satoshi Funayama", email = "akchan.acts@gmail.com" }]
+description = "python framework for FROC/AFROC analysis"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "bidict>=0.23.1",
+  "matching>=1.4.3",
+  "MiniballCpp>=0.2.3",
+  "numpy<2.0.0,>=1.2.0",
+  "openpyxl>=3.1.4",
+  "pandas>=2.2.2",
+  "pydicom>=2.4.4",
+  "pynrrd>=1.0.0",
+  "pytypedstream>=0.1.0",
+  "scikit-image>=0.23.2",
+  "tcia_utils",
+  "tqdm>=4.66.4",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+pyfroc = "pyfroc:main"
+
+[project.urls]
+Homepage = "https://github.com/akchan/pyfroc"
+Issues = "https://github.com/akchan/pyfroc/issues"
+
+[tool.hatch.envs.default]
+path = "hatch_env"
+
+[tool.hatch.envs.dev]
+dependencies = ["pytest", "jupyter", "ipython", "ipykernel", "matplotlib"]
+post-install-commands = ["ipython kernel install --user --name=pyfroc_dev"]
+
+[tool.hatch.version]
+path = "src/pyfroc/__about__.py"
