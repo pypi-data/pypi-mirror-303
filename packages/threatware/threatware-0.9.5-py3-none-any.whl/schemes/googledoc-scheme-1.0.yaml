@@ -1,0 +1,737 @@
+---
+scheme:
+  version: 1.0
+  document-storage: googledoc
+  preprocess:
+    #############################################################################
+    # To be get backward compatibility with 0.9.2 copy this preprocess section to 
+    # the 0.9.2 scheme file and follow the comment instructions in this section
+    #############################################################################
+    # This removes all 
+    #   <span> tags (but not their contents).  
+    #   <meta> and <style> elements (and their contents)
+    #   style= attributes (and their contents)
+    # from the whole document.  Removing styling makes the document, 
+    # much smaller.
+    - selector: "/*"                  # Comment out this for 0.9.2 compat
+      strip-tags: "span"              # Comment out this for 0.9.2 compat
+    - selector: "/*"                  # Comment out this for 0.9.2 compat
+      strip-elements: "meta"          # Comment out this for 0.9.2 compat
+    - selector: "/*"                  # Comment out this for 0.9.2 compat
+      strip-elements: "style"         # Comment out this for 0.9.2 compat
+    - selector: "//*[@style]"         # Comment out this for 0.9.2 compat
+      strip-attributes: "style"       # Comment out this for 0.9.2 compat
+    # This removes all tags (but not their contents) from heading elements.  
+    # Since our queries match on heading text, we need to strip any tags in headings
+    - selector: "//h1|//h2|//h3|//h4|//h5|//h6"   # Comment out this for 0.9.2 compat
+      strip-elements: "sup"                       # Comment out this for 0.9.2 compat
+      strip-tags: "*"                             # Comment out this for 0.9.2 compat
+     
+    # This removes all <span> tags (but not their contents) from table elements.
+    #- selector: "//table"            # Un-comment out this for 0.9.2 compat
+    #  strip-tags: "span"             # Un-comment out this for 0.9.2 compat
+    #############################################################################
+
+    # This removes all <sup> elements (and their contents) from table elements.
+    # <sup> is used by Google Docs for inline comments when exported to HTML, 
+    # and they make writing queries more difficult
+    - selector: "//table"
+      strip-elements: "sup"
+    # This removes all <a> tags (but not their contents) from table elements.
+    # When <table> is converted to a dict, <a> are replaced with a '\n' separator
+    # character, but this messes up text formatting.  Can remove links because
+    # they are lost anyway
+    - selector: "//table"
+      strip-tags: "a"
+  verifiers:
+    disable:
+
+  map:
+    output-data:
+      type: dict
+    map-data:
+      - key: 
+          name: document_details
+          section: Document Details Table
+          tags:
+            - document-details-data
+        value: 
+          get-data:
+            - query:
+                type: "html-table"
+                xpath: "//html/body/h1[text()='Details']/following::table[1]"
+            - query:
+                type: "html-table-transpose"
+          map-data:
+            - key: 
+                name: "document-ID"
+                tags:
+                  - document-id
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 0
+            - key: 
+                name: "document-name"
+                tags:
+                  - document-title
+                  - version-meta
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 1
+            - key: 
+                name: "current-version"
+                tags:
+                  - "current-version"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 2
+            - key: 
+                name: "approved-version"
+                tags:
+                  - "approved-version"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 3
+          output-data:
+            type: dict
+            post-processor:
+              remove-header-row:
+      - key: 
+          name: version_history
+          section: Version History Table
+          tags:
+            - version-history-data
+            - version-meta/document-details-data/approved-version
+        value: 
+          get-data:
+            - query:
+                type: "html-table"
+                xpath: "//html/body/h1[text()='Version History']/following::table[1]"
+          map-data:
+            - key: 
+                name: "version"
+                tags:
+                  - row-identifier
+                  - validate-as-version
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 0
+            - key: 
+                name: "author"
+                tags:
+                  - "version-author"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 1
+            - key: 
+                name: "author-role"
+                tags:
+                  - "version-author-role"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 2
+            - key: 
+                name: "version-date"
+                tags:
+                  - "version-date"
+                  - "validate-as-date"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 3
+            - key: 
+                name: "change-log"
+                tags:
+                  - version-changelog
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 4
+            - key: 
+                name: "version-status"
+                tags:
+                  - "version-status"
+                  - validate-as-status
+                  - validate-as-single-entry
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 5
+            - key: 
+                name: "approver-name"
+                tags:
+                  - not-mandatory
+                  - "version-approver"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 6
+            - key: 
+                name: "approved-date"
+                tags:
+                  - not-mandatory
+                  - validate-as-date
+                  - "version-approved-date"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 7
+          output-data:
+            post-processor:
+              remove-header-row:
+              remove-empty-rows:
+      - key: 
+          name: scope
+          section: Scope Table
+          tags:
+            - version-meta
+        value:
+          get-data:
+            - query:
+                type: html-table
+                xpath: "//html/body/h1[text()='Scope']/following::table[1]"
+            - query:
+                type: "html-table-transpose"
+          map-data:
+            - key: org
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 0
+            - key: team
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 1
+            - key: "repos"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 2
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - ","
+                          - "\n"
+                map-data:
+                  - key: "repo"
+                    value:
+            - key: "3rd Parties"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 3
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - ","
+                          - "\n"
+                map-data:
+                  - key: "3rd Party"
+                    value:
+          output-data:
+            type: dict
+            post-processor:
+              remove-header-row:
+      - key: 
+          name: system-overview
+          section: System Overview
+        value: 
+          get-data:
+            query:
+              type: html-text-section
+              xpath: "//html/body/h1[text()='Description']/following-sibling::*[following::h2[1][text()='References']]"
+      - key: 
+          name: references
+          section: References
+        value:
+          get-data:
+            query:
+              type: html-ul
+              xpath: "//html/body/h2[text()='References']/following::ul[following::h1[1][text()='Components']]/li"
+          map-data:
+            - key: 
+                name: "description"
+                tags:
+                  - url-description
+                  - row-identifier
+              value:
+                get-data:
+                  query:
+                    type: html-element-text
+                    xpath: "."
+            - key: 
+                name: "URL"
+                tags:
+                  - url
+                  - not-mandatory   # We have a separate if-then validation for URL so the error message is more specific
+              value:
+                get-data:
+                  - query:
+                      type: html-element-attribute
+                      attribute-name: "href"
+                      xpath: ".//a"
+                  # href in a google doc gets converted to a Google link, so we remove that
+                  - query:
+                      type: value-extract
+                      regex: "^https\\:\\/\\/www\\.google\\.com\\/url\\?q\\=([^&]*)&.*$"
+                  - query:
+                      type: value-urldecode
+      - key: components
+        value:
+          map-data:
+            - key: 
+                name: details
+                section: Components Detail Table
+                tags:
+                  - components-details-data
+              value:
+                get-data:
+                  query:
+                    type: html-table
+                    xpath: "//html/body/h1[text()='Components']/following::h2[text()='Details']/following::table[1]"
+                    remove-rows-if-empty:
+                map-data:
+                  - key: 
+                      name: "name"
+                      tags:
+                        - row-identifier
+                        - measure/from-this/tuple-extra-3rdparty
+                        - measure/from-this/tuple-extra-internalsvc
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 0
+                  - key: 
+                      name: "hosting-stack"
+                      tags:
+                        - measure/from-this/tuple-extra-3rdparty/3rd-parties
+                        - measure/from-this/tuple-extra-internalsvc/internal-service
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 1
+                  - key: "purpose"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 2
+                  - key: "in-scope"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 3
+                  - key: "tech-stack"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 4
+                output-data:
+                  post-processor:
+                    remove-header-row:
+            - key: 
+                name: access-control
+                section: "Component AuthN and AuthZ Table"
+                tags:
+                  - components-access-control-data
+              value:
+                get-data:
+                  query:
+                    type: html-table
+                    xpath: "//html/body/h1[text()='Components']/following::h2[text()='AuthN and AuthZ']/following::table[1]"
+                    remove-rows-if-empty:
+                map-data:
+                  - key: 
+                      name: "component"
+                      tags:
+                        - row-identifier
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 0
+                  - key: "identity"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 1
+                  - key: 
+                      name: "authentication-method"
+                      tags:
+                        - "authentication"
+                        - "measure/from-this/tuple-extra"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 2
+                  - key: 
+                      name: "authorisation-method"
+                      tags:
+                        - "authorisation"
+                        - "measure/from-this/tuple-extra"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 3
+                output-data:
+                  post-processor:
+                    inherit-row-above-if-empty:
+                      key: component
+                    remove-header-row:
+      - key: assets
+        value:
+          map-data:
+            - key: 
+                name: functional
+                section: Functional Assets Table
+                tags:
+                  - functional-asset-data
+              value:
+                get-data:
+                  query:
+                    type: html-table
+                    xpath: "//html/body/h1[text()='Assets']/following::h2[text()='Functional Assets']/following::table[1]"
+                map-data:
+                  - key: "category"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 0
+                  - key: "name"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 1
+                  - key: "description"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 2
+                  - key: "security-impacts"
+                    value:
+                      get-data:
+                        - query:
+                            type: html-table-row
+                            column-num: 3
+                        - query:
+                            type: text-split
+                            split-by:
+                              char-separators: 
+                                - "\n"
+                      map-data:
+                        - key: "impact-type"
+                          value:
+                            get-data:
+                              - query:
+                                  type: value-extract
+                                  regex: "^(\\w+):(.*)"
+                                  # group: 0 matches the whole string if it matches at all, so group: 1 is the first group i the regex
+                                  group: 1
+                              - query:
+                                  type: value-replace
+                                  match: "C"
+                                  replacement: "Confidentiality"
+                              - query:
+                                  type: value-replace
+                                  match: "I"
+                                  replacement: "Integrity"
+                              - query:
+                                  type: value-replace
+                                  match: "A"
+                                  replacement: "Availability"
+                        - key: "description"
+                          value:
+                            get-data:
+                              query:
+                                type: value-extract
+                                regex: "^(\\w+):(.*)"
+                                group: 2
+                  - key: storage-locations
+                    value: 
+                      get-data:
+                        - query:
+                            type: html-table-row
+                            column-num: 4
+                        - query:
+                            type: text-split
+                            split-by:
+                              char-separators: 
+                                - ","
+                                - "\n"
+                      map-data:
+                        - key: storage-location
+                          value:
+                output-data:
+                  post-processor:
+                    inherit-row-above-if-empty:
+                      key: category
+                    remove-empty-rows:
+                      ignore-keys: 
+                        - category
+                    remove-header-row:
+            - key: 
+                name: technical
+                section: Technical Assets Table
+                tags:
+                  - technical-asset-data
+              value:
+                get-data:
+                  query:
+                    type: html-table
+                    xpath: "//html/body/h1[text()='Assets']/following::h2[text()='Technical Assets']/following::table[1]"
+                    #remove-rows-if-empty:
+                    #  ignore-cols: 
+                    #    - 0
+                map-data:
+                  - key: "category"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 0
+                  - key: "name"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 1
+                  - key: "description"
+                    value: 
+                      get-data:
+                        query:
+                          type: html-table-row
+                          column-num: 2
+                  - key: "security-impacts"
+                    value:
+                      get-data:
+                        - query:
+                            type: html-table-row
+                            column-num: 3
+                        - query:
+                            type: text-split
+                            split-by:
+                              char-separators: 
+                                - "\n"
+                      map-data:
+                        - key: "impact-type"
+                          value:
+                            get-data:
+                              - query:
+                                  type: value-extract
+                                  regex: "^(\\w+):(.*)"
+                                  # group: 0 matches the whole string if it matches at all, so group: 1 is the first group in the regex
+                                  group: 1
+                            output-data:
+                              post-processor:
+                                value-replace:
+                                  - match: "C"
+                                    replacement: "Confidentiality"
+                                  - match: "I"
+                                    replacement: "Integrity"
+                                  - match: "A"
+                                    replacement: "Availability"
+                        - key: "description"
+                          value:
+                            get-data:
+                              query:
+                                type: value-extract
+                                regex: "^(\\w+):(.*)"
+                                group: 2
+                  - key: storage-locations
+                    value: 
+                      get-data:
+                        - query:
+                            type: html-table-row
+                            column-num: 4
+                        - query:
+                            type: text-split
+                            split-by:
+                              char-separators: 
+                                - ","
+                                - "\n"
+                      map-data:
+                        - key: storage-location
+                          value:
+                  - key: "functional-assets-affected"
+                    value: 
+                      get-data:
+                        - query:
+                            type: html-table-row
+                            column-num: 5
+                        - query:
+                            type: text-split
+                            split-by:
+                              char-separators: 
+                                - ","
+                                - "\n"
+                      map-data:
+                        - key: functional-asset-affected
+                          value:
+                output-data:
+                  post-processor:
+                    inherit-row-above-if-empty:
+                      key: category
+                    remove-empty-rows:
+                      ignore-keys: 
+                        - category                    
+                    remove-header-row:
+      #- key: diagrams
+      #  value:
+      - key: 
+          name: "operational-security"
+          section: Operational Security Table
+        value:
+          get-data:
+            - query:
+                type: "html-table"
+                xpath: "//html/body/h1[text()='Operational Security']/following::table[1]"
+                remove-header-row: True
+            - query:
+                type: "html-split-table"
+                split-type: "distribute-header-col"
+                header-col-num: 0
+          map-data:
+            - key: "operational-activity"
+              value:
+                map-data:
+                  - key: 
+                      name: "question"
+                      tags:
+                        - row-identifier
+                    value: 
+                      get-data:
+                        query:
+                          type: "html-table-row"
+                          column-num: 0
+                  - key: "answer"
+                    value:
+                      get-data: 
+                        query:
+                          type: "html-table-row"
+                          column-num: 1
+      - key: 
+          name: threats-and-controls
+          section: Threats and Controls Table
+          tags:
+            - threats-and-controls-data
+        value:
+          get-data:
+            query:
+              type: html-table
+              xpath: "//html/body/h1[text()='Threats and Controls']/following::table[1]"
+              remove-rows-if-empty:
+          map-data:
+            - key: "components"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 0
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - ","
+                          - "\n"
+                map-data:
+                  - key: "component"
+                    value:
+            - key: "assets"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 1
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - ","
+                          - "\n"
+                map-data:
+                  - key: "asset"
+                    value:
+            - key: 
+                name: "threat-description"
+                tags:
+                  - row-identifier
+                  - "threat-description"
+                  - "measure/from-other/tuple-extra"
+                  - "check/from-this/extra-threats"
+              value: 
+                get-data:
+                  query:
+                    type: html-table-row
+                    column-num: 2
+            - key: "existing-controls"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 3
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - "\n"
+                map-data:
+                  - key: 
+                      name: "control"
+                      tags:
+                        - "threat-control"
+                        - "measure/from-other/tuple-extra"
+                        - "check/from-this/extra-controls"
+                    value:
+            - key: "tickets"
+              value: 
+                get-data:
+                  - query:
+                      type: html-table-row
+                      column-num: 4
+                  - query:
+                      type: text-split
+                      split-by:
+                        char-separators: 
+                          - "\n"
+                map-data:
+                  - key: "ticket"
+                    value:
+          output-data:
+            post-processor:
+              remove-header-row:
