@@ -1,0 +1,44 @@
+[package]
+name = "japanese-address-parser"
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+repository.workspace = true
+authors.workspace = true
+license.workspace = true
+readme = "README.md"
+keywords.workspace = true
+categories.workspace = true
+rust-version = "1.73.0"
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+bench = false
+
+[features]
+default = ["city-name-correction"]
+blocking = ["reqwest/blocking"]
+city-name-correction = []
+format-house-number = []
+eliminate-whitespaces = []
+
+[[bench]]
+name = "core_benchmark"
+harness = false
+
+[dependencies]
+itertools = "0.13.0"
+rapidfuzz = "0.5.0"
+regex = { version = "1.10.6", default-features = false, features = ["std", "unicode-perl"] }
+serde.workspace = true
+reqwest = { version = "0.12.5", default-features = false, features = ["json", "rustls-tls"] }
+js-sys = "0.3.67"
+jisx0401 = "0.1.0-beta.3"
+
+[dev-dependencies]
+criterion = { version = "0.5.1", default-features = false, features = ["html_reports"] }
+tokio.workspace = true
+wasm-bindgen-test = { workspace = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+mockito = "1.4.0" # mockitoがwasm32に対応していないため
