@@ -1,0 +1,50 @@
+# reissvd_imgcompress
+
+A Python package for image compression using the **REIS-SVD** algorithm. This package helps in reducing the size of images while preserving quality, and also provides various metrics for evaluating compression quality, including **MSE**, **PSNR**, and **SSIM**.
+
+## Update
+- Remove the limitation on k: The code allows k to exceed the total number of singular values and sets k to the maximum available value if necessary to avoid errors.
+- Improve the precision of the Sylvester equation: Increase `max_iter` to **50** iterations and reduce `tol` to **1e-6**, which allows for a more accurate solution of the equation.
+
+## Features
+- Compress grayscale images using REIS-SVD.
+- Compute compression metrics: 
+  - Compression Ratio (CR) 
+  - Mean Squared Error (MSE)
+  - Peak Signal-to-Noise Ratio (PSNR)
+  - Structural Similarity Index (SSIM)
+- Visualize compressed images with different singular values.
+
+## Installation
+
+To install the package, first clone the repository or download the code, then navigate to the package directory and run:
+
+```bash
+pip install .
+```
+
+## Usage
+```python
+from reissvd_imgcompress import (
+    rgb2gray, reis_svd, compute_metrics, plot_compressed_images
+)
+import numpy as np
+from PIL import Image
+
+# Load an image and convert it to grayscale
+image = np.array(Image.open('sample_image.png'))
+gray_image = rgb2gray(image) # If grayscale conversion is not needed, you can skip this step.
+
+
+# Define singular value counts for testing
+k_values = [1, 2, 5, 10, 20, 50, 100, 200, 500]
+
+# Iterate over k_values, compress images, and compute metrics
+for k in k_values:
+    compressed = reis_svd(gray_image, k)
+    CR, mse, psnr, ssim_index = compute_metrics(gray_image, compressed, k)
+    print(f"k={k}: CR={CR:.2f}, MSE={mse:.2f}, PSNR={psnr:.2f} dB, SSIM={ssim_index:.4f}")
+
+# Plot compressed images for visual comparison
+plot_compressed_images(gray_image, k_values)
+```
