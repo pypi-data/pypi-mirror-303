@@ -1,0 +1,58 @@
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "juham_priceforecast"
+version = "0.0.1"
+description = "Energy price forecast plugin for `juham` home automation applications"
+readme = {file = "docs/source/README.rst", content-type = "text/markdown"}
+requires-python = ">=3.8"
+license = {file = "docs/source/LICENSE.rst", content-type = "text/markdown"}
+keywords = ["object-oriented", "plugin", "framework"]
+authors = [
+  {name = "J Meskanen", email = "juham.api@gmail.com" }
+]
+maintainers = [
+  {name = "J. Meskanen", email = "juham.api@gmail.com" }
+]
+
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.8",
+]
+
+dependencies = [
+  "juham >= 0.0.7",
+  "pytz >= 2024.1",
+  "importlib-metadata",
+  "pvlib >= 0.11"
+]
+
+
+[project.optional-dependencies]
+dev = ["check-manifest"]
+
+
+[project.entry-points."juham.plugins"]
+priceforecast_plugin = "juham_priceforecast:PriceForecast"
+
+
+
+[project.urls]
+"Homepage" = "https://meskanen.com"
+"Bug Reports" = "https://meskanen.com"
+"Funding" = "https://meskanen.com"
+"Say Thanks!" = "http://meskanen.com"
+"Source" = "https://meskanen.com"
+
+
+
+[tool.mypy]
+files = ["juham_priceforecast"]
+ignore_missing_imports = true
