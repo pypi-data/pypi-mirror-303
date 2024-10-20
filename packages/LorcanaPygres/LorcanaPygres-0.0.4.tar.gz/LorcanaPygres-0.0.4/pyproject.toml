@@ -1,0 +1,39 @@
+[build-system]
+requires      = ["setuptools>=69.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "LorcanaPygres"
+version = "0.0.4"
+description = "A collection of Python tools to use with a Postgres Database"
+readme = "README.md"
+authors = [{ name = "Huth S0lo", email = "john@beyondvoip.net" }]
+license = { file = "LICENSE" }
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["python", "password", "security", "key server"]
+
+dependencies = [
+  "Fortuna==5.5.8",
+  "httpx==0.27.2",
+  "pandas==2.2.3",
+  "pillow==10.2.0",
+  "python-dotenv==1.0.1",
+  "psycopg2==2.9.9",
+  "SQLAlchemy==2.0.35",
+  "ua-generator==1.0.5"
+]
+
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/Lorcana-tools/LorcanaPygress"
+
+[project.scripts]
+realpython = "reader.__main__:main"
