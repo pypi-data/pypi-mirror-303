@@ -1,0 +1,9 @@
+# Introduction
+# Requirements
+- python==3.10.2
+- torch==1.12.0
+- torch-geometric==2.2.0
+- torch-scatter==2.0.9
+- torch-sparse==0.6.14
+- numpy==1.22.3
+- matplotlib==3.5.2
