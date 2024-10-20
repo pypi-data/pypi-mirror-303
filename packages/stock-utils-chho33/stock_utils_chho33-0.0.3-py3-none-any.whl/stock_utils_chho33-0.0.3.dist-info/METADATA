@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: stock_utils_chho33
+Version: 0.0.3
+Summary: Some useful utils for investment
+Author-email: chho33 <jojotenya@gmail.com>
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: yfinance
+Requires-Dist: matplotlib
+Requires-Dist: pydantic >=2.7
+
+## Packaging
+Please refer to:
+- https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#package-discovery
+- https://packaging.python.org/en/latest/tutorials/packaging-projects/#
+
+## Upload
+python3 -m build
+edit version in pyproject.toml
+python3 -m twine upload --repository testpypi dist/*
+python3 -m twine upload dist/*
