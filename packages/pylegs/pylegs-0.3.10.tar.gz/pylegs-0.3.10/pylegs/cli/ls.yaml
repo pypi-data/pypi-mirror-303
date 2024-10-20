@@ -1,0 +1,17 @@
+name: ls
+help: |
+  List all tables from AstroDataLab MyDB
+args:
+  - flags: [--username, -u]
+    action: store
+    help: |
+      AstroDataLab username. If this parameter is not specified, this program
+      will search for DATALAB_USERNAME environment variable, and, if is not set,
+      the program will, finally, ask the username in terminal
+  
+  - flags: [--password, -p]
+    action: store
+    help: |
+      AstroDataLab password. If this parameter is not specified, this program
+      will search for DATALAB_PASSWORD environment variable, and, if is not set,
+      the program will, finally, ask the password in terminal
