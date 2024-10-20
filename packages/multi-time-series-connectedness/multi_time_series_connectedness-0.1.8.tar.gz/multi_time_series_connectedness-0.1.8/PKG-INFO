@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: multi-time-series-connectedness
+Version: 0.1.8
+Summary: 
+License: MIT
+Author: Victor Chen
+Author-email: victor.yccchen1@gmail.com
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: coverage (==7.6.1)
+Requires-Dist: pandas (==2.2.3)
+Requires-Dist: scikit-learn (==1.5.2)
+Project-URL: repository, https://github.com/YCChenVictor/multi_time_series_connectedness
+Description-Content-Type: text/markdown
+
+## Project title
+Multi Time Series Connectedness
+
+## Motivation
+This project is motivated by Financial and Macroeconomics Connectedness created by Diebold and Ylimaz. I want to use this algorithm not only in finance and macroeconomics area but other area, so I start to build this project.
+
+## Installation
+```
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+## Feature & Example Code
+* calculate volatility
+  ```
+  python3 volatilities.py --path docs/market_prices --start_at 2024-09-06T00:00:00+01:00 --end_at 2024-09-06T22:27:00+01:00
+  ```
+* calculate connectedness of all volatility
+  ```
+  python3 conn.py
+  ```
+* calculate rolling connectedness
+  ```
+  python3 rolling_connectedness.py
+  ```
+
+## How to use?
+* Put a folder with multiple Panel data into docs folder
+* Run the commands in feature section
+
+## Credits
+http://financialconnectedness.org/
+
+## License
+MIT License
