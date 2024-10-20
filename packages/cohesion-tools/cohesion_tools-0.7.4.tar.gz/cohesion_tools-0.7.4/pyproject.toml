@@ -1,0 +1,92 @@
+[project]
+name = "cohesion-tools"
+version = "0.7.4"
+description = "A preprocessing and evaluation tools for Japanese cohesion analysis"
+license = "MIT"
+authors = [
+  {name = "Nobuhiro Ueda", email = "ueda-n127@hotmail.co.jp"},
+]
+maintainers = [
+  {name = "Nobuhiro Ueda", email = "ueda-n127@hotmail.co.jp"},
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "rhoknp>=1.5.1",
+]
+
+[project.optional-dependencies]
+eval = [
+    'pandas>=2.1.0',
+]
+
+[tool.uv]
+package = true
+dev-dependencies = [
+    'ipython>=8.13.1,<8.19.0; python_version == "3.9"',
+    'ipython>=8.19.0; python_version >= "3.10"',
+    "ipdb>=0.13.13",
+    "pytest>=8.0.0",
+    "pip>=24.2",
+    "setuptools>=69.0",  # https://stackoverflow.com/questions/75307814/error-python-packaging-tool-setuptools-not-found
+]
+
+[tool.black]
+line-length = 120
+target-version = ["py39", "py310", "py311", "py312", "py313"]
+
+[tool.mypy]
+python_version = 3.9
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+src = ["src"]
+target-version = "py39"  # The minimum Python version to target
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "PLR0912",  # Too many branches
+    "PLR0913",  # Too many arguments in function definition
+    "PLR0915",  # Too many statements
+    "E501",  # Line too long
+    "RUF001",  # String contains ambiguous `ノ` (KATAKANA LETTER NO). Did you mean `/` (SOLIDUS)?
+    "RUF002",  # Docstring contains ambiguous `，` (FULLWIDTH COMMA). Did you mean `,` (COMMA)?
+    "COM812",  # Trailing comma missing
+    "ANN002",  # Missing type annotation for `*args`
+    "ANN003",  # Missing type annotation for `**kwargs`
+    "ANN101",  # Missing type annotation for `self` in method
+    "ANN102",  # Missing type annotation for `cls` in classmethod
+    "FA100",  # Missing `from __future__ import annotations`, but uses `...`
+    "S101",  # Use of `assert` detected
+    "G004",  # Logging statement uses f-string
+    "FBT001",  # Boolean-typed positional argument in function definition
+    "FBT002",  # Boolean default positional argument in function definition
+    "EM101",  # Exception must not use a string literal, assign to variable first
+    "EM102",  # Exception must not use an f-string literal, assign to variable first
+    "TRY003",  # Avoid specifying long messages outside the exception class
+    "D",  # pydocstyle
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "D104"  # Missing docstring in public package
+]
+"tests/*" = [
+    "D",  # pydocstyle
+    "INP001",  # File `...` is part of an implicit namespace package. Add an `__init__.py`
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 20  # default: 10
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
