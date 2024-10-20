@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: tinyagent
+Version: 0.2.1
+Summary: A minimalistic agent framework
+Home-page: https://github.com/y-lan/tinyagent
+Author: y-lan
+Author-email: lanyuyang@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic>=2.7.1
+Requires-Dist: requests>=2.31.0
+
+# tinyagent
+
+**A tiny LLVM-based agent with minimal dependencies, written in Python**
+
+- *Currently only pydantic and requests are necessary*
+
+## Quick Install
+```bash
+pip install tinyagent
+```
+
+## Get Started
+```python
+# export OPENAI_API_KEY=sk-...
+
+from tinyagent import get_agent
+agent = get_agent('gpt-4o')
+
+agent.chat('translate tinyagent to Japanese')
+
+agent.chat('explain this image',
+  image='https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Doll_face_silver_Persian_2.jpg/1280px-Doll_face_silver_Persian_2.jpg')
+```
+
+## Supports
+
+| LLM    | text | image | too call  | streaming |
+|:-------:|:----:|:-----:|:--------:|:--------------:|
+| OpenAI | ○    | ○     | ○        | ○              |
+| Claude | ○    | ○     | ○        | ○              |
+
+
