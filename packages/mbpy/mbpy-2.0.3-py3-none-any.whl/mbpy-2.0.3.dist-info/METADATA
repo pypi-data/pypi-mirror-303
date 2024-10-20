@@ -1,0 +1,133 @@
+Metadata-Version: 2.3
+Name: mbpy
+Version: 2.0.3
+Author: mbodiai
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Requires-Dist: einops>=0.8.0
+Requires-Dist: minspect>=0.0.8
+Requires-Dist: mkdocs-material>=9.5.42
+Requires-Dist: mkdocs>=1.6.1
+Requires-Dist: mkdocstrings>=0.26.2
+Requires-Dist: mrender>=1.0.3
+Requires-Dist: pexpect>=4.9.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: rich-click>=1.8.3
+Requires-Dist: tomlkit>=0.13.2
+Requires-Dist: toolz>=1.0.0
+Provides-Extra: ai
+Requires-Dist: mbodied>=1.2.2; extra == 'ai'
+Provides-Extra: all
+Requires-Dist: aiohttp>=3.10.10; extra == 'all'
+Provides-Extra: docs
+Requires-Dist: fastui>=0.7.0; extra == 'docs'
+Requires-Dist: markdown-it-py>=2.2.0; extra == 'docs'
+Requires-Dist: myst-parser>=0.15.1; extra == 'docs'
+Requires-Dist: recommonmark>=0.7.1; extra == 'docs'
+Requires-Dist: rst-to-myst>=0.4.0; extra == 'docs'
+Requires-Dist: rst-to-myst[sphinx]>=0.4.0; extra == 'docs'
+Requires-Dist: sphinx-autodoc2>=0.5.0; extra == 'docs'
+Requires-Dist: sphinx-tippy>=0.4.3; extra == 'docs'
+Requires-Dist: sphinx>=6.2.1; extra == 'docs'
+Provides-Extra: mkdocs
+Requires-Dist: mkdocs>=1.6.1; extra == 'mkdocs'
+Provides-Extra: notion
+Requires-Dist: notion-client>=2.2.1; extra == 'notion'
+Description-Content-Type: text/markdown
+
+# mbpy - Manage Python Projects with Ease
+
+[![PyPI - Version](https://img.shields.io/pypi/v/mbpy.svg)](https://pypi.org/project/mbpy)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mbpy.svg)](https://pypi.org/project/mbpy)
+
+-----
+
+`mbpy` is a powerful tool for creating, managing, and documenting Python projects. It simplifies the process of setting up project structures, managing dependencies, and generating documentation.
+
+## Features
+
+- Create new Python projects with customizable structures
+- Manage project dependencies using pyproject.toml
+- Set up documentation using Sphinx or MkDocs
+- Generate GitHub Actions workflows for CI/CD
+- Simplify package installation and management with pip-like commands
+
+## Table of Contents
+
+- [mbpy - Manage Python Projects with Ease](#mbpy---manage-python-projects-with-ease)
+  - [Features](#features)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Documentation](#documentation)
+    - [Sphinx](#sphinx)
+    - [MkDocs](#mkdocs)
+  - [License](#license)
+
+## Installation
+
+```console
+pip install mbpy
+```
+
+## Usage
+
+To create a new project:
+
+```console
+mbpip create <project_name> --author "<Your Name>" --description "<Project Description>"
+```
+
+To manage dependencies:
+
+```console
+mpip install <package_name>
+mpip uninstall <package_name>
+mpip show
+```
+
+For more detailed usage instructions, run:
+
+```console
+mbpy --help
+```
+
+or
+
+```console
+mpip --help
+```
+
+## Documentation
+
+To view the full documentation, you have two options:
+
+### Sphinx
+
+1. Build the docs:
+   ```
+   hatch run docs
+   ```
+2. Open `docs/_build/html/index.html` in your web browser.
+
+### MkDocs
+
+1. Install MkDocs if you haven't already:
+   ```
+   pip install mkdocs
+   ```
+2. Build and serve the docs:
+   ```
+   mkdocs serve
+   ```
+3. Open your web browser and go to `http://127.0.0.1:8000/`
+
+## License
+
+`mbpy` is distributed under the terms of the [MIT License](LICENSE).
