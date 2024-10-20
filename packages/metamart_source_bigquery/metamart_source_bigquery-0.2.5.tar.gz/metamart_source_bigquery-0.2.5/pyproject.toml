@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "metamart_source_bigquery"
+version = "0.2.5"
+description = ""
+authors = ["Edward Louth <edward@metamart.io>"]
+license = "Elastic-2.0"
+packages = [
+    { include = "metamart_source_bigquery", from = "src" },
+]
+readme = "README.md"
+homepage = "https://www.metamart.io/"
+repository = "https://github.com/meta-mart/metamart-core/tree/master/metamart-integrations/source-bigquery"
+documentation = "https://docs.metamart.io/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = "^1.9.1"
+metamart-schemas = "^0.2.6"
+multimethod = "^1.8, !=1.11"
+google-cloud-bigquery = "^3.5.0"
+setuptools = "^67.1.0"
+google-cloud-logging = "^3.5.0"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=22.6,<25.0"
+mypy = "^0.971"
+isort = "^5.10.1"
+pytest = "^7.2.0"
+python-dotenv = "^0.21.1"
+
+[tool.isort]
+profile = "black"
+known_first_party = "metamart_source_bigquery"
+
+[tool.black]
+line-length = 120
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:google.*",
+    "ignore::DeprecationWarning:pkg_resources.*",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."src/metamart_source_bigquery/__init__.py"]
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
