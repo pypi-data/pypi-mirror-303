@@ -1,0 +1,98 @@
+[tool.poetry]
+name = "django-bulk-copy"
+version = "0.2.0"
+authors = ["Ahmet Burak Ozyurt <ahmetbozyurtt@gmail.com>"]
+maintainers = [
+    "Ahmet Burak Ozyurt <ahmetbozyurtt@gmail.com>",
+    "Onuralp SEZER <thunderbirdtr@gmail.com>",
+]
+packages = [{include = "bulk_copy"}]
+description = "Faster way to create your models in Django"
+keywords = ["django","postgres","django-bulk-copy","bulk","t-sql"]
+exclude = ["tests/"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+
+[tool.poetry.urls]
+#"Bug Tracker" = "https://github.com/ahmetveburak/django-bulk-copy/issues"
+homepage = "https://github.com/ahmetveburak/django-bulk-copy"
+repository = "https://github.com/ahmetveburak/django-bulk-copy"
+documentation = "https://github.com/ahmetveburak/django-bulk-copy/blob/main/README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+django = ">=3"
+psycopg2 = { version = "^2.9", optional = true }
+
+[tool.poetry.extras]
+postgres = ["psycopg2"]
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11"
+pre-commit = "^4.0.1"
+ruff = "^0.6.9"
+tox = "^4.22.0"
+pytest-django = "^4.9.0"
+pytest-cov = "^5.0.0"
+psycopg2-binary = "^2.9.10"
+pytest-mock = "^3.14.0"
+django-stubs = {extras = ["compatible-mypy"], version = "^5.1.0"}
+
+[tool.pytest.ini_options]
+addopts = "--cov=bulk_copy --cov-report=term-missing"
+DJANGO_SETTINGS_MODULE = "tests.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "pass",
+    "NotImplementedError",
+    "if typing.TYPE_CHECKING:",
+]
+
+[tool.ruff]
+target-version = "py312"
+# Exclude a variety of commonly ignored directories.
+extend-exclude = []
+# Same as Black.
+line-length = 119
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+per-file-ignores = { }
+
+[tool.bandit]
+target = ["bulk_copy"]
+exclude_dirs = ["tests/"]
+skips = ["B101", "B311"]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "tests.settings"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
