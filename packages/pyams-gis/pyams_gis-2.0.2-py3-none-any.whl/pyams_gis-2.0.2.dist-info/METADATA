@@ -1,0 +1,87 @@
+Metadata-Version: 2.1
+Name: pyams-gis
+Version: 2.0.2
+Summary: PyAMS GIS extension package
+Home-page: https://pyams.readthedocs.io
+Author: Thierry Florac
+Author-email: tflorac@ulthar.net
+License: ZPL
+Keywords: Pyramid PyAMS
+Classifier: License :: OSI Approved :: Zope Public License
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Framework :: Pyramid
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+License-File: LICENSE
+Requires-Dist: setuptools
+Requires-Dist: colander
+Requires-Dist: cornice
+Requires-Dist: fanstatic
+Requires-Dist: GDAL
+Requires-Dist: persistent
+Requires-Dist: pyams-form
+Requires-Dist: pyams-i18n
+Requires-Dist: pyams-layer
+Requires-Dist: pyams-pagelet
+Requires-Dist: pyams-security
+Requires-Dist: pyams-site
+Requires-Dist: pyams-skin
+Requires-Dist: pyams-table
+Requires-Dist: pyams-utils
+Requires-Dist: pyams-viewlet
+Requires-Dist: pyramid >=2.0.0
+Requires-Dist: zope.annotation
+Requires-Dist: zope.container
+Requires-Dist: zope.interface
+Requires-Dist: zope.location
+Requires-Dist: zope.schema
+Provides-Extra: test
+Requires-Dist: pyams-zmi ; extra == 'test'
+Requires-Dist: pyramid-zcml ; extra == 'test'
+Requires-Dist: zope.exceptions ; extra == 'test'
+
+=================
+PyAMS GIS package
+=================
+
+.. contents::
+
+
+What is PyAMS?
+==============
+
+PyAMS (Pyramid Application Management Suite) is a small suite of packages written for applications
+and content management with the Pyramid framework.
+
+**PyAMS** is actually mainly used to manage web sites through content management applications (CMS,
+see PyAMS_content package), but many features are generic and can be used inside any kind of web
+application.
+
+All PyAMS documentation is available on `ReadTheDocs <https://pyams.readthedocs.io>`_; source code
+is available on `Gitlab <https://gitlab.com/pyams>`_ and pushed to `Github
+<https://github.com/py-ams>`_. Doctests are available in the *doctests* source folder.
+
+
+What is PyAMS GIS?
+==================
+
+PyAMS_gis is an extension package for PyAMS which provides GIS features. These features allows you
+to define several types of map layers (including WMS, WFS and others) which can be displayed easily
+in web maps using the Leaflet framework.
+
+
+Changelog
+=========
+
+2.0.2
+-----
+ - corrected doctest and Gitlab-CI configuration
+
+2.0.1
+-----
+ - updated Gitlab-CI configuration
+
+2.0.0
+-----
+ - initial release

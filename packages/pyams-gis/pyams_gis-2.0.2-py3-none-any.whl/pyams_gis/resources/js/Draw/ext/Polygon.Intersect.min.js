@@ -1,0 +1,1 @@
+L.Polygon.include({intersects:function(){var t,e,n,s,i=this._getProjectedPoints();return!this._tooFewPointsForIntersection()&&(!!L.Polyline.prototype.intersects.call(this)||(t=i.length,e=i[0],n=i[t-1],s=t-2,this._lineSegmentsIntersectsRange(n,e,s,1)))}});
