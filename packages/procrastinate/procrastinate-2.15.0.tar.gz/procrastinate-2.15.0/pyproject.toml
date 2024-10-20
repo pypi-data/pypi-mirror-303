@@ -1,0 +1,178 @@
+[build-system]
+requires = ["poetry-core", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry]
+name = "procrastinate"
+version = "2.15.0"
+description = "Postgres-based distributed task processing library"
+authors = ["Joachim Jablon", "Eric Lemoine", "Kai Schlamp"]
+license = "MIT License"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+]
+readme = "README.md"
+keywords = ["postgres", "task-queue"]
+homepage = "https://procrastinate.readthedocs.io/"
+repository = "https://github.com/procrastinate-org/procrastinate/"
+documentation = "https://procrastinate.readthedocs.io/"
+
+[tool.poetry.scripts]
+procrastinate = 'procrastinate.cli:main'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiopg = { version = "*", optional = true }
+anyio = "*"
+asgiref = "*"
+attrs = "*"
+contextlib2 = { version = "*", python = "<3.10" }
+croniter = "*"
+django = { version = ">=2.2", optional = true }
+importlib-resources = { version = ">=1.4", python = "<3.9" }
+psycopg = { extras = ["pool"], version = "*" }
+psycopg2-binary = { version = "*", optional = true }
+python-dateutil = "*"
+sqlalchemy = { version = "^2.0", optional = true }
+typing-extensions = { version = "*", python = "<3.8" }
+sphinx = { version = "*", optional = true }
+
+[tool.poetry.extras]
+django = ["django"]
+sqlalchemy = ["sqlalchemy"]
+aiopg = ["aiopg", "psycopg2-binary"]
+psycopg2 = ["psycopg2-binary"]
+sphinx = ["sphinx"]
+
+[tool.poetry.group.types]
+optional = true
+
+[tool.poetry.group.types.dependencies]
+django-stubs = "*"
+
+[tool.poetry.group.release.dependencies]
+dunamai = "*"
+
+[tool.poetry.group.lint_format.dependencies]
+ruff = "*"
+
+[tool.poetry.group.pg_implem.dependencies]
+aiopg = "*"
+sqlalchemy = { extras = ["mypy"], version = "*" }
+psycopg2-binary = "*"
+psycopg = [
+    { version = "*", extras = [
+        "binary",
+        "pool",
+    ], markers = "sys_platform != 'darwin' or platform_machine != 'arm64'" },
+    { version = "*", extras = [
+        "binary",
+        "pool",
+    ], markers = "sys_platform == 'darwin' and platform_machine == 'arm64'", python = ">=3.10" },
+    { version = "*", extras = [
+        "pool",
+    ], markers = "sys_platform == 'darwin' and platform_machine == 'arm64'", python = "<3.10" },
+]
+
+[tool.poetry.group.django.dependencies]
+django = [
+    { version = "4.2.*", python = "<3.10" },
+    { version = "*", python = "^3.10" },
+]
+
+[tool.poetry.group.test.dependencies]
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-mock = "*"
+migra = "*"
+# migra depends on schemainspect, which has an implicit dependency on setuptools
+# (pkg_resources).
+setuptools = { version = "*" }
+
+[tool.poetry.group.docs.dependencies]
+django = ">=2.2"
+furo = "*"
+Sphinx = "*"
+sphinx-copybutton = "*"
+sphinx-github-changelog = "*"
+sphinxcontrib-programoutput = "*"
+myst-parser = "*"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+pattern = '(?P<base>\d+(\.\d+)*)([-._]?((?P<stage>[a-zA-Z]+)[-._]?(?P<revision>\d+)?))?$'
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-branch",
+    "--cov=procrastinate",
+    "-vv",
+    "--strict-markers",
+    "-rfE",
+    "--reuse-db",
+]
+testpaths = [
+    "tests/unit",
+    "tests/integration",
+    "tests/acceptance",
+    "tests/migration",
+]
+filterwarnings = """
+    error
+    ignore:unclosed.+:ResourceWarning
+"""
+asyncio_mode = "auto"
+DJANGO_SETTINGS_MODULE = "tests.acceptance.django_settings"
+
+
+[tool.coverage.run]
+relative_files = true
+omit = [
+    "procrastinate/contrib/django/migrations/*",
+    # It really wouldn't make sense to test the admin config, I guess ?
+    "procrastinate/contrib/django/admin.py",
+
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "raise NotImplementedError",
+    "coverage: exclude",
+    "if TYPE_CHECKING:",
+    "[ ]+\\.\\.\\.$",
+]
+
+
+[tool.pyright]
+exclude = ["tests", ".venv"]
+
+[tool.ruff]
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+extend-select = [
+    "UP",  # pyupgrade
+    "I",   # isort
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "RUF", # ruff
+]
+fixable = ["ALL"]
+extend-ignore = [
+    "E501", # line too long
+    # It's not exactly false but it's not supported enough by our dependencies,
+    # so ruff is fighting with Pyright on this.
+    "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.doc8]
+max-line-length = 88
+ignore-path = "docs/_build,.venv"
