@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[project]
+name = "audio-libs-tlk"
+version = "1.1.16"
+authors = [
+  { name="Benoît Gaston", email="benoitgaston59@gmail.com" },
+]
+
+description = "A package to extract and manipulate data contained in a music library such as playlists or album cover artwork."
+
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/BenoitGaston/audio-libraries-tlk"
+Issues = "https://github.com/BenoitGaston/audio-libraries-tlk/issues"
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+
+[tool.setuptools.packages.find]
+where = ["./src/",]
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+[project.scripts]
+audio-libs-tlk-minidisc = "main_minidisc_cli:main"
