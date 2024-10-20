@@ -1,0 +1,53 @@
+[build-system]
+requires = [
+    "setuptools>=64",
+    "setuptools_scm>=8",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sphinx-gha"
+description = "Sphinx Extension for Documenting GitHub Actions"
+readme = "README.md"
+authors = [{ name = "Andrew Cassidy", email = "drewcassidy@me.com" }]
+keywords = ["sphinx", "github-actions"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Topic :: Utilities",
+    "Topic :: Documentation",
+    "Topic :: Documentation :: Sphinx",
+    "Framework :: Sphinx"
+]
+
+requires-python = ">= 3.10"
+dependencies = [
+    "Sphinx >= 7.4",
+    "pyyaml >= 6.0",
+    "myst-parser >= 3.0",
+    "gitpython ~= 3.1.0"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+docs = [
+    "sphinx-rtd-theme",
+    "sphinx-examples",
+    "sphinx-copybutton",
+]
+
+[project.urls]
+Source = "https://github.com/drewcassidy/sphinx-gha"
+Changelog = "https://github.com/drewcassidy/sphinx-gha/blob/main/CHANGELOG.md"
+Docs = "https://sphinx-gha.readthedocs.io/"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
+
+[tool.setuptools.packages.find]
+include = ["sphinx_gha*"]
