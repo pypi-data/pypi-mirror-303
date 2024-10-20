@@ -1,0 +1,122 @@
+Metadata-Version: 2.1
+Name: pymcnp
+Version: 0.1.2
+Summary: Python-based MCNP tools.
+Author-email: Mauricio Ayllon Unzueta <mauri.ayllon12@gmail.com>, Arun Persaud <apersaud@lbl.gov>, Devin Pease <dmpease@lbl.gov>
+License: pymcnp Copyright (c) 2024, The Regents of the University of California,
+        through Lawrence Berkeley National Laboratory (subject to receipt of any
+        required approvals from the U.S. Dept. of Energy). All rights reserved.
+        
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+        
+        (1) Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+        
+        (2) Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+        
+        (3) Neither the name of the University of California, Lawrence Berkeley
+        National Laboratory, U.S. Dept. of Energy nor the names of its contributors
+        may be used to endorse or promote products derived from this software
+        without specific prior written permission.
+        
+        
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+        "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+        LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+        A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+        OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+        DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+        THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        
+        You are under no obligation whatsoever to provide any bug fixes, patches,
+        or upgrades to the features, functionality or performance of the source
+        code ("Enhancements") to anyone; however, if you choose to make your
+        Enhancements available either publicly, or directly to Lawrence Berkeley
+        National Laboratory, without imposing a separate written license agreement
+        for such Enhancements, then you hereby grant the following license: a
+        non-exclusive, royalty-free perpetual license to install, use, modify,
+        prepare derivative works, incorporate into other computer software,
+        distribute, and sublicense such enhancements or derivative works thereof,
+        in binary and source code form.
+        
+        
+        
+        
+Project-URL: documentation, https://pymcnp.readthedocs.io/en/latest/
+Project-URL: homepage, https://github.com/mauricioAyllon/PyMCNP
+Project-URL: issues, https://github.com/mauricioAyllon/PyMCNP/issues
+Project-URL: changelog, https://github.com/mauricioAyllon/PyMCNP/blob/master/CHANGELOG.md
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: hypothesis
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: pytest
+Requires-Dist: scipy
+Requires-Dist: Sphinx
+Requires-Dist: sphinx-rtd-theme
+Requires-Dist: docopt
+
+[![Documentation Status](https://readthedocs.org/projects/pymcnp/badge/?version=latest)](https://pymcnp.readthedocs.io/en/latest/?badge=latest)
+
+# PyMCNP
+
+PyMCNP enables research with Monte Carlo N-Particle (MCNP) simulations. It parses MCNP files, creates MCNP geometry visualization, and runs MCNP in parallel. PyMCNP provides a Python API for MCNP input and output files and a command line interface for interacting with MCNP and MCNP files.
+
+Find more information on [ReadTheDocs](https://pymcnp.readthedocs.io).
+
+## Installation
+
+PyMCNP requires [Python](https://www.python.org>) (≥ 3.10) and [Numpy](https://numpy.org>) (≥ 2.0).
+
+PyMCNP is distributed through the [Python Package Index](https://pypi.org/project/pymcnp/>) (PyPi) with the ``pip`` command. The following command installs both ``pymcnp`` and its depenencies:
+
+```
+pip install numpy pymcnp
+```
+
+PyMCNP source code is accessable for contributions, suggestions, and bug reports on [GitHub](https://github.com/FSIBT/PyMCNP) with the ``git`` command. The following command downloads PyMCNP source code and installs ``pymcnp`` and its dependencies in editable mode:
+
+```
+git clone https://github.com/FSIBT/PyMCNP
+cd PyMCNP
+pip install -e .
+```
+
+## Testings
+
+To run the PyMCNP testing suite, after clone the PyMCNP GitHub repository, use the following commands to install Hypothesis ([ReadTheDocs](https://hypothesis.readthedocs.io/en/latest/quickstart.html#installing])) and Pytest ([Docs](https://docs.pytest.org/en/stable/)) inside the PyMCNP directory:
+
+```
+cd PyMCNP
+pip install pytest hypothesis
+```
+
+After instaling `pytest` and `hypothesis`, test the `pymcnp` package by calling the following commands inside the PyMCNP directory:
+
+```
+cd PyMCNP
+pytest --verbose
+```
+
+## Copyright and License
+
+For copyright and license infromation, see the `COPYRIGHT` and `LICENSE` files in the top level directory.
