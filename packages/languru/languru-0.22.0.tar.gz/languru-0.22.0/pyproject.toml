@@ -1,0 +1,101 @@
+[tool.poetry]
+authors = ["Allen Chou <f1470891079@gmail.com>"]
+description = "The general purpose LLM app stacks."
+documentation = "https://dockhardman.github.io/languru/"
+homepage = "https://github.com/dockhardman/languru"
+license = "Apache-2.0 license"
+name = "languru"
+readme = "README.md"
+repository = "https://github.com/dockhardman/languru"
+version = "0.22.0"
+
+[tool.poetry.dependencies]
+aiohttp = "^3"
+anthropic = "<1,>0.27"
+click = "^8"
+colorama = "<1,>=0.4.6"
+coloredlogs = "*"
+cyksuid = ">=2"
+diskcache = "^5"
+duckdb = ">=1"
+email-validator = "^2"
+fastapi = { extras = ["all"], version = "<1,>=0.109.0" }
+flashrank = { version = "^0", extras = ["listwise"], optional = true }
+google-cloud-aiplatform = "^1.38"
+google-generativeai = "<1,>=0.3.2,!=0.7.1"
+googlesearch-python = { version = "*", optional = true }
+groq = "<1,>=0.4.2"
+openai = "^1.10.0"
+packaging = ">=23"
+pandas = ">2"
+pathvalidate = "*"
+pillow = "^10.0.0"
+playwright = { version = "*", optional = true }
+playwright-stealth = { version = "*", optional = true }
+pyarrow = "*"
+pyassorted = "<1,>=0.10.0"
+pydantic = "^2"
+pydantic-settings = "^2"
+pyjson5 = "^1.6"
+python = ">=3.10,<4.0"
+python-dotenv = "^1"
+pytz = ">=2024.1"
+rich = "^13"
+sentence-transformers = { version = "^3", optional = true }
+sentencepiece = { version = "<1,>=0.1.99" }
+sqlalchemy = "^2"
+tiktoken = { version = ">=0.3,<1" }
+typing-extensions = "^4"
+uuid-utils = "*"
+voyageai = "^0"
+
+[tool.poetry.scripts]
+languru = "languru.cli.main:languru_cli"
+
+[tool.poetry.extras]
+all = [
+  "fastapi",
+  "flashrank",
+  "googlesearch-python",
+  "playwright",
+  "playwright-stealth",
+  "sentence-transformers",
+  "sentencepiece",
+  "tiktoken",
+]
+clawler = ["googlesearch-python", "playwright"]
+server = ["fastapi"]
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-git-authors-plugin = "*"
+mkdocs-git-committers-plugin-2 = "*"
+mkdocs-git-revision-date-localized-plugin = "*"
+mkdocs-material = "^9"
+mkdocs-minify-plugin = "*"
+mkdocs-nav-weight = "*"
+mkdocs-redirects = "*"
+mkdocs-render-swagger-plugin = "*"
+neoteroi-mkdocs = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+isort = "*"
+kaggle = "*"
+poetry-plugin-export = "^1.6.0"
+pytest = "^8"
+pytest-asyncio = "*"
+pytest-cov = "^4"
+pytest-xdist = "^3"
+setuptools = ">=69"
+
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+ignore = ["E203", "E704", "W503"]
+max-line-length = 88
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]

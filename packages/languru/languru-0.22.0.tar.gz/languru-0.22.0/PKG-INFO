@@ -1,0 +1,166 @@
+Metadata-Version: 2.1
+Name: languru
+Version: 0.22.0
+Summary: The general purpose LLM app stacks.
+Home-page: https://github.com/dockhardman/languru
+License: Apache-2.0 license
+Author: Allen Chou
+Author-email: f1470891079@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: all
+Provides-Extra: clawler
+Provides-Extra: server
+Requires-Dist: aiohttp (>=3,<4)
+Requires-Dist: anthropic (>0.27,<1)
+Requires-Dist: click (>=8,<9)
+Requires-Dist: colorama (>=0.4.6,<1)
+Requires-Dist: coloredlogs
+Requires-Dist: cyksuid (>=2)
+Requires-Dist: diskcache (>=5,<6)
+Requires-Dist: duckdb (>=1)
+Requires-Dist: email-validator (>=2,<3)
+Requires-Dist: fastapi[all] (>=0.109.0,<1) ; extra == "all" or extra == "server"
+Requires-Dist: flashrank[listwise] (>=0,<1) ; extra == "all"
+Requires-Dist: google-cloud-aiplatform (>=1.38,<2.0)
+Requires-Dist: google-generativeai (<1,>=0.3.2,!=0.7.1)
+Requires-Dist: googlesearch-python ; extra == "all" or extra == "clawler"
+Requires-Dist: groq (>=0.4.2,<1)
+Requires-Dist: openai (>=1.10.0,<2.0.0)
+Requires-Dist: packaging (>=23)
+Requires-Dist: pandas (>2)
+Requires-Dist: pathvalidate
+Requires-Dist: pillow (>=10.0.0,<11.0.0)
+Requires-Dist: playwright ; extra == "all" or extra == "clawler"
+Requires-Dist: playwright-stealth ; extra == "all"
+Requires-Dist: pyarrow
+Requires-Dist: pyassorted (>=0.10.0,<1)
+Requires-Dist: pydantic (>=2,<3)
+Requires-Dist: pydantic-settings (>=2,<3)
+Requires-Dist: pyjson5 (>=1.6,<2.0)
+Requires-Dist: python-dotenv (>=1,<2)
+Requires-Dist: pytz (>=2024.1)
+Requires-Dist: rich (>=13,<14)
+Requires-Dist: sentence-transformers (>=3,<4) ; extra == "all"
+Requires-Dist: sentencepiece (>=0.1.99,<1) ; extra == "all"
+Requires-Dist: sqlalchemy (>=2,<3)
+Requires-Dist: tiktoken (>=0.3,<1) ; extra == "all"
+Requires-Dist: typing-extensions (>=4,<5)
+Requires-Dist: uuid-utils
+Requires-Dist: voyageai (>=0,<1)
+Project-URL: Documentation, https://dockhardman.github.io/languru/
+Project-URL: Repository, https://github.com/dockhardman/languru
+Description-Content-Type: text/markdown
+
+# Languru
+
+The general-purpose LLM app stacks deploy AI services quickly and (stupidly) simply.
+
+```txt
+ _
+| |    __ _ _ __   __ _ _   _ _ __ _   _
+| |   / _` | '_ \ / _` | | | | '__| | | |
+| |__| (_| | | | | (_| | |_| | |  | |_| |
+|_____\__,_|_| |_|\__, |\__,_|_|   \__,_|
+                  |___/
+```
+
+[![image](https://img.shields.io/pypi/v/languru.svg)](https://pypi.python.org/pypi/languru)
+[![image](https://img.shields.io/pypi/l/languru.svg)](https://pypi.python.org/pypi/languru)
+[![image](https://img.shields.io/pypi/pyversions/languru.svg)](https://pypi.python.org/pypi/languru)
+[![PytestCI](https://github.com/dockhardman/languru/actions/workflows/python-pytest.yml/badge.svg)](https://github.com/dockhardman/languru/actions/workflows/python-pytest.yml)
+[![codecov](https://codecov.io/gh/dockhardman/languru/graph/badge.svg?token=OFX6C8Z31C)](https://codecov.io/gh/dockhardman/languru)
+
+Documentation: [Github Pages](https://dockhardman.github.io/languru/)
+
+## Install `Languru`
+
+```shell
+pip install languru
+
+# Install For LLM deployment.
+pip install languru[all]
+
+# Install development dependencies.
+poetry install -E <extras> --with dev
+
+# Or just install all dependencies.
+poetry install -E all --with dev --with docs
+```
+
+## OpenAI Clients
+
+Supported OpenAI clients:
+
+- `openai.OpenAI`
+- `openai.AzureOpenAI`
+- `languru.openai_plugins.clients.anthropic.AnthropicOpenAI`
+- `languru.openai_plugins.clients.google.GoogleOpenAI`
+- `languru.openai_plugins.clients.groq.GroqOpenAI`
+- `languru.openai_plugins.clients.pplx.PerplexityOpenAI`
+- `languru.openai_plugins.clients.voyage.VoyageOpenAI`
+
+## OpenAI Server
+
+```shell
+languru server run  # Remember set all needed `api-key` for OpenAI clients.
+```
+
+Query LLM service, which is fully compatible with OpenAI APIs.
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:8682/v1")
+res = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+    ],
+)
+for choice in res.choices:
+    print(f"{choice.message.role}: {choice.message.content}")
+# assistant: Hello! How can I assist you today?
+```
+
+Chat streaming:
+
+```python
+client = OpenAI(base_url="http://localhost:8682/v1")
+res = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+    ],
+    stream=True,
+)
+for chunk in res:
+    for choice in chunk.choices:
+        if choice.delta.content:
+            print(choice.delta.content, end="", flush=True)
+            # Hello! How can I assist you today?
+```
+
+OpenAI plugins clients:
+
+```python
+client = OpenAI(base_url="http://localhost:8682/v1")
+res = client.chat.completions.create(
+    model="google/gemini-1.5-flash",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+    ],
+    stream=True,
+)
+for choice in res.choices:
+    print(f"{choice.message.role}: {choice.message.content}")
+```
+
