@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esdateutil"
+authors = [{name="Matthew Murr", email="matt@murr.dev"}]
+description = "Elasticsearch datemath and dateformat parsing library. Zero dependencies"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["elasticsearch", "elastic", "es", "datemath", "parser", "date", "format"]
+
+requires-python = ">=3.3"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries"
+]
+
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://git.sr.ht/~murr/esdateutil"
+Repository = "https://git.sr.ht/~murr/esdateutil"
+Documentation = "https://git.sr.ht/~murr/esdateutil/tree/master/item/README.md"
+
+[tool.setuptools]
+packages = ["esdateutil"]
+
+[tool.setuptools.dynamic]
+version = {attr = "esdateutil.__version__"}
