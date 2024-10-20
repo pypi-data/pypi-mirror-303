@@ -1,0 +1,174 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "thztools"
+dynamic = ["version"]
+description = """
+Data analysis software tools for terahertz time-domain spectroscopy (THz-TDS)
+"""
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = ["terahertz", "THz", "time-domain spectroscopy", "data analysis"]
+authors = [
+    { name="Jonathan Posada Loaiza", email="jonathan.posada1@udea.edu.co" },
+    { name="Santiago Higuera-Quintero", email="santiago.higuera@itp3.uni-stuttgart.de" },
+    { name="Alireza Noori", email="alireza_noori@sfu.ca" },
+    { name="Laleh Mohtashemi", email="lalehmo@gmail.com" },
+    { name="R. P. Hall", email="rph4@sfu.ca" },
+    { name="Naod Ayalew Yimam", email="nayimam@gmail.com"},
+    { name="J. Steven Dodge", email="jsdodge@sfu.ca" },
+]
+maintainers = [
+    { name="Steve Dodge", email="jsdodge@sfu.ca" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+  	"Programming Language :: Python",
+  	"Programming Language :: Python :: 3.9",
+  	"Programming Language :: Python :: 3.10",
+  	"Programming Language :: Python :: 3.11",
+  	"Programming Language :: Python :: 3.12",
+  	"Programming Language :: Python :: 3.13",
+  	"Programming Language :: Python :: Implementation :: CPython",
+  	"Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[project.urls]
+Documentation = "https://dodge-research-group.github.io/thztools/"
+Issues = "https://github.com/dodge-research-group/thztools/issues"
+Discussion = "https://github.com/dodge-research-group/thztools/discussions"
+Source = "https://github.com/dodge-research-group/thztools"
+
+[tool.hatch.version]
+path = "src/thztools/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+    "coverage[toml]>=6.5",
+    "grayskull",
+    "jupyter",
+    "matplotlib",
+    "numdifftools",
+    "numpy",
+    "pytest",
+    "pytest-cov",
+    "scipy",
+    "scipy-doctest",
+    "scipy-doctest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+    "- coverage combine",
+    "coverage report",
+    "coverage html",
+]
+cov = [
+    "test-cov",
+    "cov-report",
+]
+doctest = "pytest -v --doctest-modules {args:src/thztools}"
+make-logo = ["python logo/make_logo.py; mv thztools_logo.svg docs/source/_static/;mv thztools_logo_dark.svg docs/source/_static/"]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12", "3.13", ]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 79
+exclude = ["examples/figgen/**"]
+
+[tool.ruff.lint.per-file-ignores]
+"docs/source/**" = ["INP001"]
+"tests/**" = ["INP001"]
+"test_thztools.py" = ["S101"]
+
+[tool.ruff.lint.flake8-pytest-style]
+parametrize-names-type = "csv"
+
+[tool.coverage.run]
+source_pkgs = ["thztools", "tests"]
+branch = true
+parallel = true
+omit = [
+    "src/thztools/__about__.py",
+    "src/thztools/conftest.py"
+]
+
+[tool.coverage.paths]
+thztools = ["src/thztools", "*/thztools/src/thztools"]
+tests = ["tests", "*/thztools/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "ipykernel",
+    "IPython",
+    "matplotlib",
+    "nbsphinx",
+    "numpydoc",
+    "pydata-sphinx-theme",
+    "sphinx",
+    "sphinx-design",
+    "sphinx-gallery",
+    "sphinx-tabs",
+    "tomli",
+]
+[tool.hatch.envs.docs.scripts]
+build = "sphinx-build -v -b html docs/source docs/build/html"
+
+[tool.mypy]
+plugins = "numpy.typing.mypy_plugin"
+
+[[tool.mypy.overrides]]
+module = [
+    "pytest",
+    "scipy",
+    "scipy.linalg",
+    "scipy.optimize",
+]
+ignore_missing_imports = true
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+    "mypy>=1.0.0",
+    "numpy",
+]
+[tool.hatch.envs.lint.scripts]
+typing = "mypy --install-types --non-interactive {args:src/thztools tests}"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github",
+    "/docs",
+    "/envs",
+    "/examples",
+    "/tests",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/thztools"]
