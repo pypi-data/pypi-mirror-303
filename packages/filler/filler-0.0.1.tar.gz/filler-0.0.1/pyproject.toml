@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "filler"
+version = "0.0.1"
+description = "A Python library for batch filling docx templates"
+
+authors = [
+{ name = "sencher", email = "sencher@163.com" },
+]
+dependencies = [
+    "docxtpl>=0.18.0",
+    "pandas>=2.2.3",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/filler"]
