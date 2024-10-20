@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "piprm"
+version = "0.3.0"
+description = "pip registry manager"
+authors = ["wxnacy <wxnacy@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.scripts]
+piprm = "piprm.cmd.main:app"
+prm = "piprm.cmd.main:app"
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = "^0.12.5"
+requests = "^2.32.3"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
