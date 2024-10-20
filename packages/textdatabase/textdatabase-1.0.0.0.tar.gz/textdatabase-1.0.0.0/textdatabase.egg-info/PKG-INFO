@@ -1,0 +1,149 @@
+Metadata-Version: 2.1
+Name: textdatabase
+Version: 1.0.0.0
+Summary: A little text database for developers
+Home-page: https://github.com/BinaryGuo/Bullet_Roulette
+Author: GQX
+Author-email: kill114514251@outlook.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.1
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Text DataBase 说明
+
+## 特别说明
+- 此项目目前只支持Linux,Mac等Unix操作系统,后续会添加Windows支持
+- 此项目只支持shell脚本调用，不支持Python导入
+
+## 协议
+- MIT License
+
+## 项目名称
+- Text_DataBase
+
+## 项目信息
+- 此项目旨在为文本管理提供更好的平台
+- github：https://github.com/BinaryGuo/Text_DataBase/
+- 问题反馈：https://github.com/BinaryGuo/Text_DataBase/issues/
+- 联系邮箱（GQX）：kill114514251@outlook.com
+
+## 版本
+- 1.0.0.0
+
+## 开发环境
+- Ubuntu Linux 22.04
+- Python 3.12.3
+
+## 使用语言
+- Python
+- Shell
+
+## 改动说明
+- 这是此项目第一个版本
+
+## 项目说明
+### 安装方法
+- 第一步
+> python3 -m pip install textdatabase
+
+或（前者更为保险）
+> pip3 install textdatabase
+
+- 第二步  
+进入Python IDLE
+> \>>> from tdb.dev import install  
+> \>>> install()
+
+### 运行方法
+##### 注意：文件名均不添加如.txt/.bak这样的后缀（数据库自动加）
+以下命令均在shell中输入：
+#### 新建文件
+> tdb new <文件名>
+
+#### 备份文件
+> tdb backup <文件名>
+
+#### 写文件
+> tdb write <文件名>
+
+#### 读文件
+> tdb <文件名>
+或
+> tdb read <文件名>
+
+#### 用备份恢复
+> tdb recover <文件名>
+
+#### 列出数据库文件列表
+> tdb
+
+#### 删除文件
+> tdb remove <文件名>
+
+#### 删除文件备份
+> tdb removebak <文件名>
+
+#### 读文件备份
+> tdb readbak <文件名>
+
+#### 删除数据库
+> tdb rmdb
+
+#### 备份整个数据库
+> tdb dumpdb
+
+## 问题解决
+- 运行过程中出错：
+> Error:File not exist!
+
+原因：无此文件（或无此备份）
+解决方法：使用new命令创建文件，或使用backup命令创建备份
+
+> Warning: The File is Already Exist!(Press [ENTER] to Stop Create New File,Enter Any Character to Skip)
+
+原因：当您使用new命令尝试创建文件是时，文件已存在
+解决方法：如您坚持继续创建（输入一个字符后按回车），那么原文件将会被覆盖成空文件（并且不会有备份！）。如您放弃创建，直接按回车即可
+
+> Warning: Direct Access TDB in Python IDLE is Deprecated,Please Read Readme to Get More Information.
+
+原因：您使用了Python IDLE访问TDB，这是不赞成的访问方法
+解决办法：使用shell访问
+
+> If TDB Has Any Issue,Please Upload it to My Email:kill114514251@outlook.com.If You Really Want to Remove TDB,Enter \"isiwrmdb\"(This Operation Will Also Remove This Package With the PIP):
+
+原因：您正在使用rmdb
+解决办法：如您真的想卸载TDB，输入：isiwrmdb。如您放弃卸载，按回车即可退出此卸载程序
+
+> Error: Please Upload the Error Message to https://github.com/BinaryGuo/Text_DataBase/issues/ or kill114514251@outlook.com
+
+原因：安装时的shell错误
+解决办法：将此信息前的所有错误信息反馈给https://github.com/BinaryGuo/Text_DataBase/issues/ 或 kill114514251@outlook.com
+## 鸣谢
+- 无
+
+## 格式规范
+- GQXstd-readme 1.0 Independent
+
