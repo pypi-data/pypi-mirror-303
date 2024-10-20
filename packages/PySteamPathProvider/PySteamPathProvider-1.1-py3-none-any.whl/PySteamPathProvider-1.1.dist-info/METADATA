@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: PySteamPathProvider
+Version: 1.1
+Summary: Library used for accessing the installation directories (and app names) given Steam app-ids.
+Author: Enderek
+License: MIT
+Project-URL: source, https://github.com/TheEnderek0/PySteamPathProvider/
+Keywords: Steam,Valve,Source Engine
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Games/Entertainment
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: srctools >=2.4.0
+
+# PySteamPathProvider
+A library for providing steam paths and app names, given a Steam AppID (integer).
+
+### GetSteamInstallPath()
+Retrieve the installation path of Steam.
+### GetInstallationDirs()
+Get every directory that Steam can install games to.
+### GetAppsDictionary()
+Retrieve installation directories of every app the user has currently installed. **SLOW!**
+
+### GetApp(appid)
+Retrieve information only about this app in the form of a tuple (name, installpath).
+Significantly faster than GetAppsDictionary().
+### GetAppName(appid)
+Retrieve only the name of this specific app.
+### GetAppInstallPath(appid)
+Retrieve only the installation path of this specific app.
