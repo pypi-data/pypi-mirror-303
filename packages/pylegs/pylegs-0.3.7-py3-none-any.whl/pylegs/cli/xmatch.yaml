@@ -1,0 +1,141 @@
+name: xmatch
+help: |
+  Crossmatch AstroDataLab TAP Server
+args:
+  - flags: --input
+    action: store
+    help: |
+      Input table to crossmatch against Legacy TAP Server
+
+  - flags: --output
+    action: store
+    help: |
+      Output table path
+
+  - flags: --radius
+    action: store
+    default: 1 arcsec
+    help: |
+      Crossmatch radius, the unit must be specified. e.g. --radius 1.5 arcsec.
+      Default: 1 arcsec
+
+  - flags: --tabcols
+    action: store
+    nargs: +
+    default: null
+    help: |
+      The columns of the input that will be included in the crossmatched table.
+      E.g. --tabcols ra dec. Default: None - all columns will be returned
+
+  - flags: --tabra
+    action: store
+    help: |
+      The name of the RA column in the given.
+      Default: auto, the package will try to infer
+  
+  - flags: --tabdec
+    action: store
+    help: |
+      The name of the DEC column.
+      Default: auto, the package will try to infer
+
+  - flags: --cat
+    action: store
+    default: ls_dr10.tractor
+    help: |
+      Fully qualified table name following the format: <schema_name>.<table_name>.
+      Default: ls_dr10.tractor
+
+  - flags: --catcols
+    action: store
+    nargs: +
+    default: null
+    help: |
+      The columns of the catalog table that will be included in the crossmatched
+      table. E.g. --catcols mag_r mag_i mag_g.
+  
+  - flags: --catra
+    action: store
+    help: |
+      The name of the RA column in the catalog table. Default: "ra"
+
+  - flags: --catdec
+    action: store
+    help: |
+      The name of the DEC column in the catalog table. Default: "dec"
+
+  - flags: --join
+    action: store
+    choices: ['left', 'inner']
+    default: inner
+    help: |
+      Join type. "left" means all object of the given table will be returned
+      even if they do not match with other; "inner" means the intersection
+      will be returned, that is, only object in both tables
+  
+  - flags: --ramin
+    action: store
+    type: float
+    help: |
+      Set the lower limit to filter the input table RA by a specified 
+      range in degrees. Valid interval: [0, 360], e.g. --ramin 180. 
+      Default: None - no filter
+
+  - flags: --ramax
+    action: store
+    type: float
+    help: |
+      Set the upper limit to filter the input table RA by a specified 
+      range in degrees. Valid interval: [0, 360], e.g. --ramax 210. 
+      Default: None - no filter
+
+  - flags: --decmin
+    action: store
+    type: float
+    help: |
+      Set the lower limit to filter the input table DEC by a specified 
+      range in degrees. Valid interval: [-90, 90], e.g. --decmax -30. 
+      Default: None - no filter
+
+  - flags: --decmax
+    action: store
+    type: float
+    help: |
+      Set the upper limit to filter the input table DEC by a specified 
+      range in degrees. Valid interval: [-90, 90], e.g. --decmax 50. 
+      Default: None - no filter
+
+  - flags: --cache
+    action: store
+    help: |
+      Cache dir - folder to store partial tables. Default: None - the folder
+      will be created in temp dir
+  
+  # - flags: --overwritecache
+  #   action: store_true
+  #   help: |
+  #     Set this flag to overwrite partial tables in cache dir
+  
+  - flags: --overwrite
+    action: store_true
+    help: |
+      Set this flag to overwrite the output table
+  
+  - flags: --workers
+    action: store
+    help: |
+      Number of parallel queries that will be sent to server. Default: 5
+
+  - flags: [--username, -u]
+    action: store
+    help: |
+      AstroDataLab username. If this parameter is not specified, this program
+      will search for DATALAB_USERNAME environment variable, and, if is not set,
+      the program will, finally, ask the username in terminal
+  
+  - flags: [--password, -p]
+    action: store
+    help: |
+      AstroDataLab password. If this parameter is not specified, this program
+      will search for DATALAB_PASSWORD environment variable, and, if is not set,
+      the program will, finally, ask the password in terminal
