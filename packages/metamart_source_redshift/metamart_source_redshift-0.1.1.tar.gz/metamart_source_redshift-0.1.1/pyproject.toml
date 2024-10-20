@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "metamart_source_redshift"
+version = "0.1.1"
+description = ""
+authors = ["Ian Eaves <ian@metamart.io>"]
+license = "Elastic-2.0"
+packages = [
+    { include = "metamart_source_redshift", from = "src" },
+]
+readme = "README.md"
+homepage = "https://www.metamart.io/"
+repository = "https://github.com/meta-mart/metamart-core/tree/master/metamart-integrations/source-redshift"
+documentation = "https://docs.metamart.io/"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+metamart-schemas = "^0.2.7-alpha1"
+multimethod = "^1.8, !=1.11"
+pydantic = {extras = ["dotenv"], version = "^1.10.7"}
+redshift-connector = "^2.0.911"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=22.6,<25.0"
+mypy = "^0.971"
+isort = "^5.10.1"
+types-PyYAML = "^6.0.11"
+types-psycopg2 = "^2.9.18"
+pytest = "^7.2.0"
+metamart-client = "^0.3.0"
+pre-commit = "^3.8.0"
+
+    [tool.isort]
+profile = "black"
+known_first_party = "metamart_source_redshift"
+
+    [tool.black]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."src/metamart_source_redshift/__init__.py"]
