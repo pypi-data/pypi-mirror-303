@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: pdf-preview
+Version: 0.3.3
+Summary: PDF Previewer for Excel / Word document.
+Home-page: https://github.com/kkzk/pdf-preview
+Author: kkzk
+Author-email: shohachi.kakizaki@gmail.com
+Requires-Python: >=3.12,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: openpyxl (>=3.1.2,<4.0.0)
+Requires-Dist: pypdf (>=4.0.2,<5.0.0)
+Requires-Dist: pyside6 (>=6.6.2,<7.0.0)
+Requires-Dist: pywin32 (>=306,<307)
+Requires-Dist: pyyaml (>=6.0.2,<7.0.0)
+Description-Content-Type: text/x-rst
+
+pdf-preview
+===========
+
+Preview Excel/Word documents via PDF.
+
+Install
+-------
+::
+
+  py -m pip install pdf-preview
+  py -m pdf_preview -i
+
+This command adds a registry KEY
+``HKEY_CLASSES_ROOT\Directory\shell\pdf_Preview.convert\command``
+and default VALUE ``<python executable> -m pdf_preview "%1"``.
+You will see context menu for directory. Select it for execute PDF Preview application.
+When you select a Word / Excel document in the tree, the result converted to pdf is displayed.
+
+Dependencies
+------------
+
+- pywin32
+- pypdf
+- PySide6
+- openpyxl
+
+and their requirement packages.
+
+Uses
+----
+
+- PDFjs(included)
+
