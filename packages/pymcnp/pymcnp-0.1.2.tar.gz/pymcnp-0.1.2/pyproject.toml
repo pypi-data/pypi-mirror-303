@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymcnp"
+authors = [
+   { name = "Mauricio Ayllon Unzueta", email = "mauri.ayllon12@gmail.com" },
+   { name = "Arun Persaud", email = "apersaud@lbl.gov" },
+   { name = "Devin Pease", email = "dmpease@lbl.gov" },
+]
+description = "Python-based MCNP tools."
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "hypothesis",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pytest",
+    "scipy",
+    "Sphinx",
+    "sphinx_rtd_theme",
+    "docopt",
+]
+
+[project.urls]
+documentation = "https://pymcnp.readthedocs.io/en/latest/"
+homepage = "https://github.com/mauricioAyllon/PyMCNP"
+issues = "https://github.com/mauricioAyllon/PyMCNP/issues"
+changelog = "https://github.com/mauricioAyllon/PyMCNP/blob/master/CHANGELOG.md"
+
+[project.scripts]
+pymcnp = "pymcnp.main:main"
+demo = "demo.main:main"
+
+[tool.setuptools.packages.find]
+where = ["./src"]
+
+[tool.setuptools_scm]
+write_to = "./src/pymcnp/version.py"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 80
