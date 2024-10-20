@@ -1,0 +1,1 @@
+function blockQuote(a,b,c){var d=a.querySelector('div');d.innerHTML='';b.text.split("\\n").forEach(function(b){var a=document.createElement("p");a.style.margin=0;a.style.padding=0;a.innerHTML=getHtmlData(b,c);d.appendChild(a);});if(b.author!=null){a.querySelector('div:last-child').innerHTML='<small>by '+b.author+'<cite></cite></small>';};setCss(a,c);}

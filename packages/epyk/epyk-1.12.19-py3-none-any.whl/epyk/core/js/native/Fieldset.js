@@ -1,0 +1,1 @@
+function fieldset(c,a,b){a=getDataFromTemplate(a,b);c.firstChild.innerHTML=a;setCss(c.firstChild,b,true);}

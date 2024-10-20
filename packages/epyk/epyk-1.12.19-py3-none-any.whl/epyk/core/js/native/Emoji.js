@@ -1,0 +1,1 @@
+function emoji(a,c,b){a.innerHTML=c;setCss(a,b,true);}

@@ -1,0 +1,1 @@
+function stars(c,b,a){if(a.templateMode=='loading'){b=a.templateLoading(b);}else if(a.templateMode=='error'){b=a.templateError(b);}c.dataset.level=b;c.querySelectorAll("span").forEach(function(d,c){if(a.tail&&(c<b)){d.style.color=a.colors[c];}else if(!a.tail&&(c==(b-1))){d.style.color=a.colors[c];}else{d.style.color='';}});}

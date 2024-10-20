@@ -1,0 +1,1 @@
+function iFrame(b,c,a){b.setAttribute(a.srcFunc,c);}

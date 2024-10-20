@@ -1,0 +1,1 @@
+function htmlIcon(a,b,c){if(typeof b!=='undefined'){a.classList=[];b.split(' ').forEach(function(b){a.classList.add(b);});setCss(a,c,true);}}

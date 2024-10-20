@@ -1,0 +1,1 @@
+function genericTag(a,b,c){if(typeof(setCss)=="function"){setCss(a,c,true);};if(typeof(getDataFromTemplate)=="function"){b=getDataFromTemplate(b,c);};if(a){a.innerHTML=b;}}

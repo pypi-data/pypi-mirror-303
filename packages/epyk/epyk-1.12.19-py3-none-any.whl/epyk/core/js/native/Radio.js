@@ -1,0 +1,1 @@
+function radio(a,b,c){a.checked=b.value;if(b.text!==null){a.parentNode.insertBefore(document.createTextNode(b.text),a.nextSibling);};setCss(a,c);}

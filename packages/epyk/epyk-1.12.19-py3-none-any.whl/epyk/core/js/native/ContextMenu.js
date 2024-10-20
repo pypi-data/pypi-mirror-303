@@ -1,0 +1,1 @@
+function contextMenu(b,d,c){setCss(b,c,true);var a=b.querySelector('ul');a.innerHTML='';d.forEach(function(b){var c=document.createElement("li");var a=document.createElement("DIV");a.innerHTML=b;c.appendChild(a);});a.appendChild(li);}
