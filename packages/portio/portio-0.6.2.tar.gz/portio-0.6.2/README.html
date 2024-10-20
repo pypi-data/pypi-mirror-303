@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PortIO, python low level port I/O for Linux x86 &#8212; PortIO 0.6.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="portio-python-low-level-port-i-o-for-linux-x86">
+<h1>PortIO, python low level port I/O for Linux x86<a class="headerlink" href="#portio-python-low-level-port-i-o-for-linux-x86" title="Link to this heading">¶</a></h1>
+<section id="what-is">
+<h2>What is<a class="headerlink" href="#what-is" title="Link to this heading">¶</a></h2>
+<p>PortIO is a Python wrapper for the port I/O macros like <strong>outb, inb</strong>, etc.
+provided by the C library on Linux x86 platforms. Both python 2 and 3 are
+supported. This module is useful when a general pourpose port I/O at the low
+level is needed. Programmers that want to perform I/O on the parallel port
+at an higher level, will be better satisfied by the
+<a class="reference external" href="https://github.com/pyparallel/pyparallel">pyParallel</a> module.
+A similar module Ioport has inspired the writing of PortIO.</p>
+<p>PortIO is released under the <a class="reference external" href="http://www.gnu.org/licenses/gpl.txt">GNU General Public License</a>.</p>
+<p><em>At present, version 0.5, PortIO is in beta status. Any debugging aid is
+welcome.</em></p>
+<p>For any question, suggestion, contribution contact the author
+<cite>Fabrizio Pollastri</cite> &lt;mxgbot_a_t_gmail.com&gt;.</p>
+<p>The PortIO web site is hosted at <a class="reference external" href="http://portio.inrim.it/">http://portio.inrim.it/</a>.</p>
+</section>
+<section id="usage-example">
+<h2>Usage example<a class="headerlink" href="#usage-example" title="Link to this heading">¶</a></h2>
+<p>This sample program toggle on and off all the data lines of the parallel port
+lp0 with a 6 seconds period. Note the check for root privileges before
+the call to <strong>ioperm</strong> to acquire the proper I/O permissions for the involved
+ports.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">portio</span>
+
+<span class="c1"># check for root privileges</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">():</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;You need to be root! Exiting.&#39;</span><span class="p">)</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+<span class="c1"># acquire permission for I/O on lp0</span>
+<span class="n">status</span> <span class="o">=</span> <span class="n">portio</span><span class="o">.</span><span class="n">ioperm</span><span class="p">(</span><span class="mh">0x378</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ioperm:&#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+  <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+<span class="c1"># toggle forever the data lines of lp0</span>
+<span class="n">data</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">lp0in</span> <span class="o">=</span> <span class="n">portio</span><span class="o">.</span><span class="n">inb</span><span class="p">(</span><span class="mh">0x378</span><span class="p">)</span>
+  <span class="n">portio</span><span class="o">.</span><span class="n">outb</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="mh">0x378</span><span class="p">)</span> 
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;read </span><span class="si">%x</span><span class="s1"> from lp0, written </span><span class="si">%x</span><span class="s1"> to lp0&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lp0in</span><span class="p">,</span><span class="n">data</span><span class="p">))</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="o">~</span><span class="n">data</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+  <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Download the sample program <a class="reference external" href="./toggle.py">toggle.py</a></p>
+</section>
+<section id="module-reference">
+<h2>Module reference<a class="headerlink" href="#module-reference" title="Link to this heading">¶</a></h2>
+<p>PortIO is a Python front end to the low level functions provided by the
+C library on Linux 386 platforms for the hardware input and output ports:
+<strong>outb, outw, outl, outsb, outsw, outsl, outb_p, outw_p, outl_p, inb, inw,
+inl, insb, insw, insl, inb_p, inw_p, inl_p, ioperm, iopl</strong>.</p>
+<p>Before doing port I/O, it is mandatory to acquire proper privileges by
+calling <strong>ioperm</strong> or <strong>iopl</strong>. Otherwise you will get a segmentation fault.</p>
+<dl>
+<dt><strong>outb (data,port)</strong></dt><dd><p>Output the byte <strong>data</strong> to the I/O address <strong>port</strong>.</p>
+</dd>
+<dt><strong>outb_p (data,port)</strong></dt><dd><p>The same as <strong>outb</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>outw (data,port)</strong></dt><dd><p>Output the 16 bit word <strong>data</strong> to the I/O address <strong>port</strong>.</p>
+</dd>
+<dt><strong>outw_p (data,port)</strong></dt><dd><p>The same as <strong>outw</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>outl (data,port)</strong></dt><dd><p>Output the 32 bit word <strong>data</strong> to the I/O address <strong>port</strong>.</p>
+</dd>
+<dt><strong>outl_p (data,port)</strong></dt><dd><p>The same as <strong>outl</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>outsb (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the output of a byte to the I/O address <strong>port</strong>,
+reading it from buffer of bytes starting at <strong>data</strong> and with length
+<strong>count</strong>.</p>
+</dd>
+<dt><strong>outsw (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the output of a 16 bit word to the I/O address
+<strong>port</strong>, reading it from buffer of 16 bit words starting at <strong>data</strong> and
+with length <strong>count</strong> x 2.</p>
+</dd>
+<dt><strong>outsl (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the output of a 32 bit word to the I/O address
+<strong>port</strong>, reading it from buffer of 32 bit words starting at <strong>data</strong> and
+with length <strong>count</strong> x 4.</p>
+</dd>
+<dt><strong>inb (port)</strong></dt><dd><p>Input a byte from the I/O address <strong>port</strong> and return it as integer.</p>
+</dd>
+<dt><strong>inb_p (port)</strong></dt><dd><p>The same as <strong>inb</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>inw (port)</strong></dt><dd><p>Input a 16 bit word from the I/O address <strong>port</strong> and return it as integer.</p>
+</dd>
+<dt><strong>inw_p (port)</strong></dt><dd><p>The same as <strong>inw</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>inl (port)</strong></dt><dd><p>Input a 32 bit word from the I/O address <strong>port</strong> and return it as integer.</p>
+</dd>
+<dt><strong>inl_p (port)</strong></dt><dd><p>The same as <strong>inl</strong>, but waits for I/O completion.</p>
+</dd>
+<dt><strong>insb (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the input of a byte from the I/O address <strong>port</strong>
+and write it to a buffer of bytes starting at <strong>data</strong> and with length
+<strong>count</strong> bytes.</p>
+</dd>
+<dt><strong>insw (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the input of a 16 bit word from the I/O address
+<strong>port</strong> and write it to a buffer of 16 bit words starting at <strong>data</strong>
+and with length <strong>count</strong> x 2 bytes.</p>
+</dd>
+<dt><strong>insl (port,data,count)</strong></dt><dd><p>Repeat <strong>count</strong> times the input of a 32 bit word from the I/O address
+<strong>port</strong> and write it to a buffer of 32 bit words starting at <strong>data</strong>
+and with length <strong>count</strong> x 4 bytes.</p>
+</dd>
+<dt><strong>ioperm (from,extent,enable)</strong></dt><dd><p>Set port access permission starting from address <strong>from</strong> for <strong>extent</strong>
+bytes. If the <strong>enable</strong> is True, access is enabled, otherwise is disabled.
+On success, zero is returned. On error, the errno code is returned.
+The use of ioperm requires root privileges.</p>
+<p>Only the first 0x3ff I/O ports can be specified in this manner. To gain
+access to any I/O port in the whole (0x0000-0xffff) address range, use
+the iopl function.</p>
+</dd>
+<dt><strong>iopl (level)</strong></dt><dd><p>Set the I/O privilege level of the current process. When <strong>level</strong> is 3
+access is granted to any I/O port.
+On success, zero is returned. On error, the errno code is returned.
+The use of iopl requires root privileges.</p>
+</dd>
+</dl>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<p>A <strong>linux on an X86 architecture</strong>.</p>
+<p>To run the code, <strong>Python 2.6 or later</strong> or <strong>Python 3.0 or later</strong> must
+already be installed.  The latest release is recommended.  Python is
+available from <a class="reference external" href="http://www.python.org/">http://www.python.org/</a>.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<section id="with-easy-install">
+<h3>With easy_install<a class="headerlink" href="#with-easy-install" title="Link to this heading">¶</a></h3>
+<ol class="arabic">
+<li><p>Open a shell.</p></li>
+<li><p>Get root privileges and install the package. Command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easy_install</span> <span class="n">portio</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="from-tarball">
+<h3>From tarball<a class="headerlink" href="#from-tarball" title="Link to this heading">¶</a></h3>
+<p>Download PortIO tarball from <a class="reference external" href="http://portio.inrim.it/portio-0.6.0.tar.gz">http://portio.inrim.it/portio-0.6.0.tar.gz</a> .</p>
+<p>The first step is to expand the <code class="docutils literal notranslate"><span class="pre">.tgz</span></code> archive in a temporary
+directory (<strong>not</strong> directly in Python’s <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>).  It
+contains a distutils setup file “setup.py”.</p>
+<ol class="arabic">
+<li><p>Open a shell.</p></li>
+<li><p>Unpack the tarball in a temporary directory (<strong>not</strong> directly in
+Python’s <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>). Command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">zxf</span> <span class="n">portio</span><span class="o">-</span><span class="n">X</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>X and Y are the major and minor version numbers of the tarball.</p>
+</li>
+</ol>
+<ol class="arabic" start="2">
+<li><p>Go to the directory created by expanding the tarball. Command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">portio</span><span class="o">-</span><span class="n">X</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Z</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get root privileges and install the package. Command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">su</span>
+<span class="p">(</span><span class="n">enter</span> <span class="n">root</span> <span class="n">password</span><span class="p">)</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>If the python executable isn’t on your path, you’ll have to specify
+the complete path, such as /usr/local/bin/python.</p>
+</li>
+</ol>
+</section>
+</section>
+<section id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h2>
+<p><strong>Portio 0.6.0 released 14-Jul-2024</strong></p>
+<ul class="simple">
+<li><p>Use Py_buffer instead of C strings, contributed by Stephen Horvath
+&lt;me_a_t_stevetech.au&gt;</p></li>
+<li><p>Add pyproject.toml file</p></li>
+</ul>
+<p><strong>Portio 0.5 released 25-Oct-2012</strong></p>
+<ul class="simple">
+<li><p>Porting to python 3 also contributed by Stjepan Henc &lt;sthenc_a_t_gmail.com&gt;.</p></li>
+</ul>
+<p><strong>Portio 0.4 released 25-Aug-2009</strong></p>
+<ul class="simple">
+<li><p>Fixed some argument type mismatch in I/O macros.</p></li>
+<li><p>Upgraded PyArg_ParseTuple format strings with the new “unsigned” formats
+available from python 2.3 . So portio now requires python version =&gt; 2.3 .</p></li>
+</ul>
+<p><strong>Portio 0.3 released 21-May-2009</strong></p>
+<ul class="simple">
+<li><p>Fixed missing documentation files.</p></li>
+</ul>
+<p><strong>Portio 0.2 released 11-Nov-2008</strong></p>
+<ul class="simple">
+<li><p>Added return of status code for <strong>ioperm</strong> and <strong>iopl</strong>.</p></li>
+<li><p>Fixed invalid argument type for <strong>ioperm</strong>.</p></li>
+<li><p>Updated <strong>toggle.py</strong> example with <strong>ioperm</strong> error check.</p></li>
+<li><p>Generated documentation with Sphinx.</p></li>
+</ul>
+<p><strong>Portio 0.1 released 23-Feb-2006</strong></p>
+<ul class="simple">
+<li><p>First release.</p></li>
+</ul>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Thanks to Stjepan Henc &lt;sthenc_a_t_gmail.com&gt; for his contribution to python 3 porting.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Copyright 2006-2024 by <cite>Fabrizio Pollastri</cite> &lt;mxgbot_a_t_gmail.com&gt;</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PortIO</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2006-2024, Fabrizio Pollastri.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/README.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
