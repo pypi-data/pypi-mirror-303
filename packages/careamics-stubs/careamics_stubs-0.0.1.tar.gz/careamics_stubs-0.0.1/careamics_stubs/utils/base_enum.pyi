@@ -1,0 +1,9 @@
+from enum import Enum, EnumMeta
+from typing import Any
+
+class _ContainerEnum(EnumMeta):
+    def __contains__(cls, item: Any) -> bool: ...
+    @classmethod
+    def has_value(cls, value: Any) -> bool: ...
+
+class BaseEnum(Enum, metaclass=_ContainerEnum): ...

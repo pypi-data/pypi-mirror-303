@@ -1,0 +1,6 @@
+import numpy as np
+from careamics.config.tile_information import TileInformation as TileInformation
+from numpy.typing import NDArray as NDArray
+
+def stitch_prediction(tiles: list[np.ndarray], tile_infos: list[TileInformation]) -> list[np.ndarray]: ...
+def stitch_prediction_single(tiles: list[NDArray], tile_infos: list[TileInformation]) -> NDArray: ...

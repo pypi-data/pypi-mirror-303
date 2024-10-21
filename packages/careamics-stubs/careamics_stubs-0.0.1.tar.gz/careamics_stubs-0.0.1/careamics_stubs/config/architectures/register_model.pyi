@@ -1,0 +1,9 @@
+from _typeshed import Incomplete
+from torch.nn import Module as Module
+from typing import Callable
+
+CUSTOM_MODELS: Incomplete
+
+def register_model(name: str) -> Callable: ...
+def get_custom_model(name: str) -> Module: ...
+def clear_custom_models() -> None: ...

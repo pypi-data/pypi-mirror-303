@@ -1,0 +1,3 @@
+from pathlib import Path
+
+def check_path_exists(path: str | Path) -> Path: ...
