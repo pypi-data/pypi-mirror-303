@@ -1,0 +1,320 @@
+Metadata-Version: 2.1
+Name: hyo2.ssm2
+Version: 2024.2.1
+Summary: A library and an application to manage sound speed profiles.
+Home-page: https://github.com/hydroffice/hyo2_soundspeed
+Author: Giuseppe Masetti(UNH,JHC-CCOM); Barry Gallagher(NOAA,OCS); Chen Zhang(NOAA,OCS)
+Author-email: gmasetti@ccom.unh.edu, barry.gallagher@noaa.gov, chen.zhang@noaa.gov
+License: LGPLv2.1 or CCOM-UNH Industrial Associate license
+Keywords: hydrography ocean mapping survey sound speed profiles
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Office/Business :: Office Suites
+Requires-Python: >=3.11
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: hyo2.abc2 >=2.3.10
+Requires-Dist: appdirs
+Requires-Dist: cartopy
+Requires-Dist: gsw
+Requires-Dist: matplotlib
+Requires-Dist: netCDF4
+Requires-Dist: numpy <2.0.0
+Requires-Dist: pillow
+Requires-Dist: pyserial
+Requires-Dist: PySide6
+Requires-Dist: requests
+Requires-Dist: scipy
+
+HydrOffice Sound Speed Manager
+==============================
+
+.. image:: https://github.com/hydroffice/hyo2_soundspeed/raw/master/hyo2/ssm2/app/gui/soundspeedmanager/media/app_icon.png
+    :alt: logo
+
+|
+
+.. image:: https://img.shields.io/pypi/v/hyo2.ssm2.svg
+    :target: https://pypi.python.org/pypi/hyo2.ssm2
+    :alt: PyPi version
+
+.. image:: https://img.shields.io/badge/docs-latest-brightgreen.svg
+    :target: https://www.hydroffice.org/manuals/ssm2/index.html
+    :alt: Latest Documentation
+
+.. image:: https://github.com/hydroffice/hyo2_soundspeed/actions/workflows/ssm_on_windows.yml/badge.svg?branch=master
+    :target: https://github.com/hydroffice/hyo2_soundspeed/actions/workflows/ssm_on_windows.yml
+    :alt: Windows
+
+.. image:: https://github.com/hydroffice/hyo2_soundspeed/actions/workflows/ssm_on_linux.yml/badge.svg?branch=master
+    :target: https://github.com/hydroffice/hyo2_soundspeed/actions/workflows/ssm_on_linux.yml
+    :alt: Linux
+
+.. image:: https://app.codacy.com/project/badge/Grade/c1eccd9e15a7408fb05aab06034e005e
+    :target: https://www.codacy.com/gh/hydroffice/hyo2_soundspeed/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hydroffice/hyo2_soundspeed&amp;utm_campaign=Badge_Grade
+    :alt: codacy
+
+.. image:: https://coveralls.io/repos/github/hydroffice/hyo2_soundspeed/badge.svg?branch=master
+    :target: https://coveralls.io/github/hydroffice/hyo2_soundspeed?branch=master
+    :alt: coverall
+
+.. image:: https://zenodo.org/badge/54854024.svg
+   :target: https://zenodo.org/badge/latestdoi/54854024
+   :alt: Zenodo DOI
+
+|
+
+* Code: `GitHub repo <https://github.com/hydroffice/hyo2_soundspeed>`_
+* Project page: `url <https://www.hydroffice.org/soundspeed/>`_, `download <https://bitbucket.org/hydroffice/hyo_sound_speed_manager/downloads/>`_
+* License: LGPLv2.1 or IA license (See `Dual license <https://www.hydroffice.org/license_lgpl21/>`_)
+
+|
+
+General Info
+------------
+
+The HydrOffice's Sound Speed package provides a library and tools to manage sound speed profiles.
+The package is part of HydrOffice, a research development framework for ocean mapping.  HydrOffice aims to provide
+a collection of hydro-packages to deal with specific issues in the field, speeding up both algorithms testing and
+research-to-operation (R2O).
+
+Among the tools developed in the package, Sound Speed Manager (SSM) is a software application that provides the user
+with a streamlined workflow to perform accurate processing and management of sound speed profiles
+for underwater acoustic systems.
+
+SSM has been designed to ease integration into existing data acquisition workflows.
+The liberal open source license used by the project (specifically, GNU LGPL) provides for understanding
+of the chosen processing solutions through ready inspection of the source code, as well as the ability
+to adapt the application to specific organization needs.
+
+This adaptation is eased by the modular design of the application, with the NOAA-specific
+functionalities organized so that they can be easily deactivated for non-NOAA users.
+
+The main functionalities include:
+
+* Wide support of commonly-used sound speed profile formats
+* Compatibility with various data sources
+* Integration with common data acquisition/integration applications (e.g., Kongsberg SIS)
+* Profile enhancement based on real-time and climatologic models
+* Database management of the collected data with built-in functionalities for analysis and visualization.
+
+With a long-term support and development plan, Sound Speed Manager is a turnkey application ready
+to be used (and extended) by professionals and institutions in the hydrographic community.
+
+The package is jointly developed by the `Center for Coastal and Ocean Mapping, UNH <https://ccom.unh.edu/>`_ and
+`NOAA Coast Survey Development Laboratory (CSDL) <https://www.nauticalcharts.noaa.gov/>`_.
+
+.. image:: https://www.hydroffice.org/static/app_soundspeed/img/noaa_ccom.png
+    :alt: joint efforts
+
+For further information, visit the `manual <https://www.hydroffice.org/manuals/ssm2/index.html>`_.
+
+.. note::
+   If you want to help improving SSM, this is the recommended
+   `starting point <https://www.hydroffice.org/manuals/ssm2/stable/developer_guide_how_to_contribute.html>`_.
+
+
+"""""""
+
+History
+-------
+
+2024.0.0
+~~~~~~~~
+
+2024-01-26
+
+- Started migration from PySide2 to PySide6
+
+
+2020.0.0
+~~~~~~~~
+
+2020-04-09
+
+- Started migration from Basemap to Cartopy
+
+
+2019.0.0
+~~~~~~~~
+
+2018-11-30
+
+- Started migration to PySide2 and hyo.abc
+
+
+2018.0.5
+~~~~~~~~
+
+2018-01-10
+
+- Added automated processing setup and other improvements
+
+
+2017.3.0
+~~~~~~~~
+
+2017-07-31
+
+- Added Survey Data monitor
+
+
+2017.0.0
+~~~~~~~~
+
+2017-03-18
+
+- First stable release.
+
+2016-03-27
+
+- Initial commit.
+
+
+"""""""
+
+Credits
+-------
+
+Authors
+~~~~~~~
+
+The package developers and maintainers are:
+
+- `Giuseppe Masetti <mailto:gmasetti@ccom.unh.edu>`_
+
+- `Barry Gallagher <mailto:barry.gallagher@noaa.gov>`_
+
+- `Chen Zhang <mailto:chen.zhang@noaa.gov>`_
+
+
+Contributors
+~~~~~~~~~~~~
+
+Other past and present contributors are:
+
+- `Roland Arsenault <roland.arsenault@unh.edu>`_
+
+- `Hugh Barker <mailto:hugh.barker@csiro.au>`_
+
+- `Jonathan Beaudoin <mailto:beaudoin@qps.nl>`_
+
+- `Brian R. Calder <mailto:brc@ccom.unh.edu>`_
+
+- `Lindsay Gee <mailto:lindsayjgee@gmail.com>`_
+
+- `Sam Greenaway <mailto:samuel.greenaway@noaa.gov>`_
+
+- `Kevin Jerram <mailto:kjerram@ccom.unh.edu>`_
+
+- `Paul Johnson <mailto:pjohnson@ccom.unh.edu>`_
+
+- `Damian Manda <mailto:damian.manda@noaa.gov>`_
+
+- `Jean-Guy Nistad <mailto:jean-guy.nistad@bsh.de>`_
+
+- `Collen Peters <mailto:colleen.peters@kd.kongsberg.com>`_
+
+- `Patrice Ponchant <mailto:patrice.ponchant@fugro.com>`_
+
+- `Glen Rice <mailto:glen.rice@noaa.gov>`_
+
+- `Jack Riley <mailto:jack.riley@noaa.gov>`_
+
+- `Val Schmidt <val.schmidt@unh.edu>`_
+
+- `Matthew Sharr <mailto:matthew.sharr@noaa.gov>`_
+
+- `Michael Smith <mailto:msmith@ccom.unh.edu>`_
+
+- `Matthew J. Wilson <mailto:matthew.wilson@noaa.gov>`_
+
+Please add yourself here when you submit your first pull request.
+
+
+"""""""
+
+.. _how-to-contribute-label:
+
+How to contribute
+-----------------
+
+Every open source project lives from the generous help by contributors that sacrifice their time and this is no different.
+
+Public Repositories
+===================
+
+The source code is available on `GitHub`_.
+
+To propose changes to Sound Speed Manager, you can follow the common Fork & Pull Request workflow.
+If you are not familiar with such a workflow, a good starting point may be this `short tutorial`_.
+
+
+Coding Style
+============
+
+To make participation as pleasant as possible, this project adheres to the `Code of Conduct`_ by the Python Software Foundation.
+
+Here are a few hints and rules to get you started:
+
+* Add yourself to the AUTHORS.txt_ file in an alphabetical fashion. Every contribution is valuable and shall be credited.
+* If your change is noteworthy, add an entry to the changelog_.
+* No contribution is too small; please submit as many fixes for typos and grammar bloopers as you can!
+* Don't *ever* break backward compatibility.
+* *Always* add tests and docs for your code. This is a hard rule; patches with missing tests or documentation won't be merged.
+  If a feature is not tested or documented, it does not exist.
+* Obey `PEP 8`_ and `PEP 257`_.
+* Write `good commit messages`_.
+* Ideally, `collapse`_ your commits, i.e. make your pull requests just one commit.
+
+.. note::
+   If you have something great but are not sure whether it adheres -- or even can adhere -- to the rules
+   above: **please submit a pull request anyway**!
+   In the best case, we can mold it into something, in the worst case the pull request gets politely closed.
+   There's absolutely nothing to fear.
+
+Thank you for considering to contribute! If you have any question or concerns, feel free to reach out to us.
+
+Development Quick-start
+=======================
+
+Clone and install (in development mode) the `GitHub` repo:
+
+* `git clone https://github.com/hydroffice/hyo2_soundspeed.git`
+* `pip install -e hyo2_soundspeed`
+
+The previous steps will also install all the required dependencies.
+
+If you have issues installing `hyo2.abc2`_, you may want to:
+
+* `git clone https://github.com/hydroffice/hyo2_abc2.git`
+* `pip install -e hyo2_abc2`
+
+For other issues installing dependencies (e.g., `GDAL`_), you may want to use `Anaconda`_.
+
+Good references for a working dev env are:
+
+* Windows: https://github.com/hydroffice/hyo2_soundspeed/raw/refs/heads/master/.github/workflows/ssm_on_windows.yml
+* Linux: https://github.com/hydroffice/hyo2_soundspeed/raw/refs/heads/master/.github/workflows/ssm_on_linux.yml
+
+
+.. _`short tutorial`: https://gist.github.com/giumas/67abeffcbf49d00703a57cbafac8b118
+.. _`GitHub`: https://github.com/hydroffice/hyo2_soundspeed
+.. _`Code of Conduct`: http://www.python.org/psf/codeofconduct/
+.. _AUTHORS.txt: https://bitbucket.org/ccomjhc/hyo_soundspeed/raw/master/AUTHORS.rst
+.. _changelog: https://bitbucket.org/ccomjhc/hyo_soundspeed/raw/master/HISTORY.rst
+.. _`PEP 8`: http://www.python.org/dev/peps/pep-0008/
+.. _`PEP 257`: http://www.python.org/dev/peps/pep-0257/
+.. _collapse: https://www.mercurial-scm.org/wiki/RebaseExtension
+.. _`good commit messages`: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+.. _`hyo2.abc2`: https://github.com/hydroffice/hyo2_abc2
+.. _`GDAL`: https://github.com/OSGeo/gdal
+.. _`Anaconda`: https://docs.anaconda.com/anaconda/install/
