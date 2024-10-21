@@ -1,0 +1,48 @@
+query GetFirewallEventsAdaptive(
+  $zoneTag: string
+  $limit: int
+  $filter: FirewallEventsAdaptiveFilter_InputObject
+) {
+  viewer {
+    zones(filter: { zoneTag: $zoneTag }) {
+      firewallEventsAdaptive(
+        filter: $filter
+        limit: $limit # max value 10000
+        orderBy: [datetime_ASC]
+      ) {
+        action
+        clientASNDescription
+        clientAsn
+        clientCountryName
+        clientIP
+        clientIPClass
+        clientRefererHost
+        clientRefererPath
+        clientRefererQuery
+        clientRefererScheme
+        clientRequestHTTPHost
+        clientRequestHTTPMethodName
+        clientRequestHTTPProtocol
+        clientRequestPath
+        clientRequestQuery
+        clientRequestScheme
+        contentScanHasFailed
+        contentScanNumMaliciousObj
+        contentScanObjResults
+        datetime
+        description
+        edgeColoName
+        edgeResponseStatus
+        leakedCredentialCheckResult
+        originResponseStatus
+        originatorRayName
+        rayName
+        ruleId
+        rulesetId
+        source
+        userAgent
+        zoneVersion
+      }
+    }
+  }
+}
