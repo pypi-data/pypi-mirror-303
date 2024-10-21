@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ndmanager"
+readme = "README.md"
+authors = [{ name="Nicolas Linden", email="linden.nicolas@orange.fr"}]
+description = "Managing you nuclear data collection"
+classifiers = ["Programming Language :: Python :: 3.11"]
+requires-python = ">=3.11"
+dependencies = [
+    'tabulate',
+    'h5py',
+    'pyyaml',
+    'requests',
+    'beautifulsoup4',
+    'tqdm',
+]
+dynamic = ["version"]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "ndmanager.__version__"}
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-env", "pytest-cov"]
+build = ["build", "twine"]
+
+[project.urls]
+Homepage = "https://github.com/nplinden/ndmanager"
+
+[project.scripts]
+ndf = "ndmanager.CLI.fetcher.main:main"
+ndo = "ndmanager.CLI.omcer.main:main"
+ndc = "ndmanager.CLI.chainer.main:main"
+
+[tool.setuptools]
+packages = ['ndmanager',
+    'ndmanager.API',
+    'ndmanager.API.iaea',
+    'ndmanager.API.process',
+    'ndmanager.SHA1',
+    'ndmanager.CLI.fetcher',
+    'ndmanager.CLI.omcer',
+    'ndmanager.CLI.chainer',
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+env = [
+    "NDMANAGER_ENDF6=pytest-artifacts/endf6",
+    "NDMANAGER_HDF5=pytest-artifacts/hdf5",
+    "NDMANAGER_CONFIG=pytest-artifacts"
+]
+
+[tool.pylint."messages control"]
+disable=["invalid-name"]
