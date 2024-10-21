@@ -1,0 +1,22 @@
+[tool.ruff]
+select = ["E"]
+
+# Never enforce `E501` (line length violations).
+ignore = ["E501","E402", "E741"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-s -v --durations=0"
+cache_dir = ".cache/pytest_cache"
+
+[tool.coverage.run]
+branch = true
+source = ["datatoolbox"]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
