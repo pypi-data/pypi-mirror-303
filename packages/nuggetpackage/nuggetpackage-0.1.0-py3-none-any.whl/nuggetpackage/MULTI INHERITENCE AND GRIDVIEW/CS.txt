@@ -1,0 +1,39 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+namespace YourNamespace
+{
+public partial class StudentRecords : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+}
+protected void ShowButton_Click(object sender, EventArgs e)
+{
+// Define your connection string (adjust as necessary)
+string connectionString = @"Data Source=YOUR_SERVER_NAME;Initial
+Catalog=SchoolDB;Integrated Security=True";
+using (SqlConnection connection = new SqlConnection(connectionString))
+{
+try
+{
+connection.Open();
+string query = "SELECT * FROM Students";
+// Use SqlDataAdapter for disconnected data access
+using (SqlDataAdapter adapter = new SqlDataAdapter(query, connection))
+{
+DataTable dataTable = new DataTable();
+adapter.Fill(dataTable); // Fill the DataTable with data from the database
+StudentsGridView.DataSource = dataTable; // Bind the DataTable to GridView
+StudentsGridView.DataBind(); // Refresh the GridView
+}
+MessageLabel.Text = "Records retrieved successfully.";
+}
+catch (Exception ex)
+{
+MessageLabel.Text = $"An error occurred: {ex.Message}";
+}
+}
+}
+}
+}

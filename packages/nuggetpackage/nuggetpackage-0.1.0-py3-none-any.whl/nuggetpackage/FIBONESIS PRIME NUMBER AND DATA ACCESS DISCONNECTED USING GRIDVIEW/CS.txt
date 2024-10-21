@@ -1,0 +1,24 @@
+1]Change the Connection String And Query according to
+tables
+using System;
+using System.Data;
+using System.Data.SqlClient;
+namespace WebApplication13
+{
+public partial class WebForm3 : System.Web.UI.Page
+{
+SqlConnection con = new SqlConnection(@"Data Source=King;Initial
+Catalog=Employee;Integrated Security=True");
+protected void Page_Load(object sender, EventArgs e)
+{
+}
+protected void Button1_Click(object sender, EventArgs e)
+{
+SqlDataAdapter data = new SqlDataAdapter("Select *from Employee", con);
+DataTable dt = new DataTable();
+data.Fill(dt);
+GridView1.DataSource = dt;
+GridView1.DataBind();
+}
+}
+}
