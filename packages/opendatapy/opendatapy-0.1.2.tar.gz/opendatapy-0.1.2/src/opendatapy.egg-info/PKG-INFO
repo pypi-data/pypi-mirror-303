@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: opendatapy
+Version: 0.1.2
+Summary: opendata.studio datakit helper library
+Author-email: echus <varvara@echus.co>
+Project-URL: Homepage, https://github.com/opendatastudio/opendatapy
+Project-URL: Bug Tracker, https://github.com/opendatastudio/opendatapy/issues
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas<3.0,>=2.2
+Requires-Dist: docker<8,>=7.1.0
+Provides-Extra: development
+Requires-Dist: pre-commit; extra == "development"
+Requires-Dist: build; extra == "development"
+Provides-Extra: all
+Requires-Dist: opendatapy[development]; extra == "all"
+
+# opendatapy
+
+A Python library for interacting with opendata.studio datakits.
+
+This library contains low-level functions used by [opends-cli](https://github.com/opendatastudio/cli) to interact with opendata.studio datakits.
+
+## Development
+
+### Deploying to PyPI
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade build twine
+python -m build  # Generate distribution archives
+python -m twine upload --repository pypi dist/*  # Upload distribution archives
+```
