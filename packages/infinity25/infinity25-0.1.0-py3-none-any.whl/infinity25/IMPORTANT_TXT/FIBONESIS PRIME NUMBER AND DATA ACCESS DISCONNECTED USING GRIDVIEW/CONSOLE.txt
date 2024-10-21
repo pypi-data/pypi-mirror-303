@@ -1,0 +1,53 @@
+#]Create a console application and change the namespace name
+1] Fibonesis Series :
+using System;
+namespace ConsoleApp4
+{
+class Program
+{
+static void Main(string[] args)
+{
+int n1 = 0;
+int n2 = 1;
+int sum = n1 + n2;
+Console.WriteLine("Fibonesis Series : \n"+n1);
+while (sum < 20){
+sum = n1 + n2;
+n1 = n2;
+n2 = sum;
+Console.WriteLine(n1);
+}
+Console.Read();
+}
+}
+}
+2] Prime Number
+using System;
+namespace ConsoleApp4
+{
+class Program
+{
+static void Main(string[] args)
+{
+int s = 0;
+Console.WriteLine("Enter No :");
+int n = Convert.ToInt16(Console.ReadLine());
+int i = 2;
+while (i < n / 2)
+{
+if (n % i == 0){
+s = 1; }
+i++;
+}
+if (s == 1)
+{
+Console.WriteLine("COMPOSITE NUMBER");
+}
+if (s == 0)
+{
+Console.WriteLine("PRIME NUMBER");
+}
+Console.Read();
+}
+}
+}

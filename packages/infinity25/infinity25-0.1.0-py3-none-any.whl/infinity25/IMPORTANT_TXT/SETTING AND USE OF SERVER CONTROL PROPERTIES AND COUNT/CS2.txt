@@ -1,0 +1,29 @@
+using System;
+namespace WebApplication14
+{
+public partial class WebForm2 : System.Web.UI.Page
+{
+// A field to store the count
+int count;
+protected void Page_Load(object sender, EventArgs e)
+{
+if (!IsPostBack)
+{
+// Initialize count to 0 when the page is loaded for the first
+time
+ViewState["count"] = 0;
+}
+}
+protected void Button1_Click(object sender, EventArgs e)
+{
+// Retrieve the current count from ViewState
+count = (int)ViewState["count"];
+// Increment the count
+count++;
+// Store the updated count back to ViewState
+ViewState["count"] = count;
+// Update the label text to show the count
+Label1.Text = "Page submitted " + count + " times.";
+}
+}
+}

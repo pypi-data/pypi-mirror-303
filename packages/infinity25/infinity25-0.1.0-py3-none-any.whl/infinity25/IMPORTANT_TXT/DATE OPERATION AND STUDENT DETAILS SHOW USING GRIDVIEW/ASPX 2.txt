@@ -1,0 +1,32 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="StudentDetails.aspx.cs"
+Inherits="YourNamespace.StudentDetails" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<title>Student Details</title>
+<style>
+body { font-family: Arial, sans-serif; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+</style>
+</head>
+<body>
+<form id="form1" runat="server">
+<div>
+<h2>Student Details</h2>
+<asp:TextBox ID="RollNoTextBox" runat="server" Placeholder="Roll No" />
+<asp:TextBox ID="NameTextBox" runat="server" Placeholder="Name" />
+<asp:TextBox ID="ClassTextBox" runat="server" Placeholder="Class" />
+<asp:TextBox ID="PhoneTextBox" runat="server" Placeholder="Phone" />
+<asp:TextBox ID="EmailTextBox" runat="server" Placeholder="Email" />
+<asp:Button ID="AddButton" runat="server" Text="Add Student" OnClick="AddButton_Click"
+/>
+<br /><br />
+<asp:Button ID="ShowButton" runat="server" Text="Show Students" OnClick="ShowButton_Click" />
+<br /><br />
+<asp:GridView ID="StudentsGridView" runat="server"></asp:GridView>
+<asp:Label ID="MessageLabel" runat="server" Text=""></asp:Label>
+</div>
+</form>
+</body>
+</html>
