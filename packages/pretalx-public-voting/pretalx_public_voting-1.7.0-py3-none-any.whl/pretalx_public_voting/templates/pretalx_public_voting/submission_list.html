@@ -1,0 +1,77 @@
+{% extends "cfp/event/base.html" %}
+
+{% load compress %}
+{% load i18n %}
+{% load rich_text %}
+{% load static %}
+
+{% block scripts %}
+    {% compress js %}
+        <script src="{% static "js/jquery.js" %}"></script>
+        <script src="{% static "pretalx_public_voting/vote.js" %}"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "pretalx_public_voting/vote.css" %}" />
+    {% endcompress %}
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Public voting" %}</h1>
+    {{ request.event.public_vote_settings.text|rich_text }}
+    {% if hashed_email %}
+        <form method="POST">
+            {% csrf_token %}
+            {% for submission in submissions %}
+                <div class="card submission-card">
+                    {% if submission.image and request.event.public_vote_settings.show_session_image %}
+                        <div class="card-img-top-wrapper">
+                            <img loading="lazy" src="{{ submission.image.url }}" alt="{% trans "This talk's header image" %}" class="card-img-top">
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h3 class="card-title">{{ submission.title }}</h3>
+                        {% if not request.event.public_vote_settings.anonymize_speakers %}
+                            <p class="card-subtitle mb-2 text-muted">{{ submission.display_speaker_names }}</p>
+                        {% endif %}
+                        <div class="card-text">
+                            {{ submission.abstract|rich_text|default:'-' }}
+                            {% if request.event.public_vote_settings.show_session_description and submission.description %}
+                                {{ submission.description|rich_text|default:'-' }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-header card-footer">
+                        <strong>{% trans "Score" %}:</strong>
+                        <div class="form ml-auto">
+                            {{ submission.vote_form.score.as_field_group }}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No submissions yet.</p>
+            {% endfor %}
+            {% include "orga/includes/pagination.html" %}
+
+            <div id="save-bar">
+                <i class="fa fa-spinner fa-spin d-none"></i>
+                <div id="js-save" class="m-2">
+                    <span class="badge badge-primary d-none">Saving…</span>
+                    <span class="badge badge-success d-none">Saved!</span>
+                </div>
+                <noscript>
+                    <button class="btn btn-lg btn-info" name="action" value="manual">{% trans "Save!" %}</button>
+                </noscript>
+            </div>
+        </form>
+    {% else %}
+        <p>
+            {% blocktrans trimmed %}
+                This page is invalid. Please double-check that you have followed a complete link to this place.
+            {% endblocktrans %}
+            <a href="{% url "plugins:pretalx_public_voting:signup" event=request.event.slug %}">{% trans "Click here to sign up for voting." %}</a>
+        </p>
+    {% endif %}
+{% endblock %}
