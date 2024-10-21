@@ -1,0 +1,84 @@
+name: PyPI deploy
+on:
+  push:
+    tags:
+      - "**"
+jobs:
+  build_sdist:
+    name: Build SDist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Update version
+        run: sed -i "s/^version.*\$/version = \"${{ github.ref_name }}\"/g" pyproject.toml || sed -i "" "s/^version.*\$/version = \"${{ github.ref_name }}\"/g" pyproject.toml
+
+      - name: Build SDist
+        run: pipx run build --sdist
+
+      - name: Check metadata
+        run: pipx run twine check dist/*
+
+      - name: Upload sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-sdist
+          path: dist/*.tar.gz
+
+  build_wheels:
+    name: Build wheels (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-13, macos-14 ]
+
+    steps:
+      - name: Set MACOSX_DEPLOYMENT_TARGET
+        run: |
+          if [[ ${{ matrix.os }} = macos-13 ]]
+          then
+            echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+          elif [[ ${{ matrix.os }} = macos-14 ]]
+          then
+            echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Update version
+        run: sed -i "s/^version.*\$/version = \"${{ github.ref_name }}\"/g" pyproject.toml || sed -i "" "s/^version.*\$/version = \"${{ github.ref_name }}\"/g" pyproject.toml
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.21.3
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  publish:
+    name: Publish to PyPI
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+
+      - name: Push to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
