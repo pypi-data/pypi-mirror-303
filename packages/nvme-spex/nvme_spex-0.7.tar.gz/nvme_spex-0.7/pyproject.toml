@@ -1,0 +1,96 @@
+# SPDX-FileCopyrightText: 2024 Samsung Electronics Co., Ltd
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nvme-spex"
+description = "extract data structures from docx/HTML specification"
+authors = [{name = "Jesper Wendel Devantier", email = "j.devantier@samsung.com"}]
+maintainers = [{name = "Jesper Wendel Devantier", email = "j.devantier@samsung.com"}]
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "lxml>=4.9.2,<5.0",
+    "loguru>=0.6,<0.8",
+    "jsonschema>=4.21.1",
+    "gcgen",
+    "types-jsonschema",
+    "quart",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown; charset=UTF-8"
+
+[project.scripts]
+spexsrv = "spexsrv.__main__:main"
+spex = "spex.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "pytest",
+    "mypy",
+    "black",
+    "types-lxml",
+    "types-jsonschema",
+    "isort",
+    "flake8",
+    "Flake8-pyproject",
+    "sphinx",
+    "sphinx-copybutton",
+    "furo",
+    "wheel",
+    "build",
+    "twine",
+    "types-setuptools",
+    "reuse"]
+
+[tool.pytest.ini_options]
+pythonpath = [ "src" ]
+
+[tool.distutils.bdist_wheel]
+universal = 1
+
+[tool.setuptools]
+zip-safe = false
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "spex.__version__"}
+
+[tool.mypy]
+exclude = [
+    "^docs/"
+]
+
+[tool.black]
+line-length = 88
+
+[tool.flake8]
+max-line-length = 88
+exclude = [
+    "docs/",
+    ".venv/",
+    "venv/",
+]
+per-file-ignores = [
+    "src/spex/htmlspec/docx/__init__.py:F401"
+]
+
+
+[tool.isort]
+profile = "black"
