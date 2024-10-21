@@ -1,0 +1,62 @@
+# Definition of the Conda Development Environment.
+#
+# WARNING: Install all the PyPEEC dependencies.
+#          The optional libraries are included.
+#          The packaging/development tools are included.
+#
+# WARNING: Some listed packages are NOT open source.
+#          INTEL MKL is not open source.
+#          NVIDIA CUDA is not open source.
+#
+# Thomas Guillod - Dartmouth College
+# Mozilla Public License Version 2.0
+
+name: pypeec
+channels: [conda-forge]
+dependencies:
+  # base installation
+  - python=3.10
+  # dev tools
+  - pip=23.1.2
+  - twine=4.0.2
+  - python-build=0.10.0
+  - coverage=7.4.1
+  - setuptools_scm=7.1.0
+  - sphinx_rtd_theme=1.2.2
+  - sphinx=6.2.1
+  - pkg-config=0.29.2
+  # logging and serialization
+  - scilogger=1.1.0
+  - scisave=1.2.0
+  - jsonschema=4.23.0
+  # numerical libraries
+  - numpy=1.24.1
+  - scipy=1.9.3
+  - joblib=1.3.0
+  # geometry libraries
+  - vtk=9.2.6
+  - pyvista=0.40.0
+  - shapely=2.0.1
+  - rasterio=1.3.8
+  - pillow=10.0.0
+  # plotting libraries
+  - pyqt=5.15.7
+  - pyvistaqt=0.11.0
+  - matplotlib=3.7.1
+  # optional packages for Jupyter
+  - jupyterlab=4.0.4
+  - ipywidgets=8.1.0
+  - trame=3.1.0
+  # optional optimized numerical libraries
+  - pyamg=5.0.1
+  - cupy=12.1.0
+  - scikit-umfpack=0.3.3
+  # optional optimized numerical toolkits
+  - mkl-devel=2023.2.0
+  - cudatoolkit=11.8.0
+  # optional optimized numerical libraries
+  - pip:
+    # the conda package is not multithreaded
+    - pyFFTW==0.13.1
+    # the conda package is partially broken
+    - pydiso==0.0.5
