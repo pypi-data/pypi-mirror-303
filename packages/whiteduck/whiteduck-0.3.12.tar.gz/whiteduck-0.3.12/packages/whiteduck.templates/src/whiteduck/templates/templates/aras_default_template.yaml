@@ -1,0 +1,119 @@
+template: "ARA's Default Template"
+
+version: "1.0"
+short_description: ";y personal project starter template"
+description: |
+  This template creates everything I need to start a new project.
+  No questions asked, just a project with all the stuff at the dir you want.
+
+documentation_path: "data/docs/test.md"
+module_path: "data/modules"
+
+dependency_groups:
+  - name: "All the things"
+    environment: "all"
+    description: "This stuff gets installed as main dependencies"
+    is_mandatory: True
+    dependencies:
+      - name: "loguru"
+      - name: "rich"
+
+  - name: "All the dev things"
+    environment: "dev"
+    description: "This stuff gets installed as dev dependencies"
+    is_mandatory: True
+    dependencies:
+      - name: "pytest"
+      - name: "pytest-cov"
+      - name: "pytest-sugar"
+      - name: "pytest-clarity"
+      - name: "ruff"
+      - name: "mkdocs"
+      - name: "mkdocs-material"
+      - name: "mkdocs-gen-files"
+      - name: "mkdocstrings-python"
+      - name: "mkdocs-section-index"
+      - name: "mkdocs-literate-nav"
+      - name: "poethepoet"
+      
+
+  
+
+variables:
+  - id: project_name
+    value: "ara_[[wd.NOW_]]"
+  - id: project_dir
+    value: "D:/Projects"
+
+
+modules:
+  - id: "m_init_project"
+    type: init
+    module_definition: init_project
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+      - kind_of_project: "package"
+    displayName: "Initializing project [[project_name]] in directory [[project_dir]]..."
+
+
+  - id: "m_main_deps"
+    type: poe
+    module_definition: main_dep
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+      - package: "ruff loguru"
+    displayName: "Installing core dependencies for [[project_name]].."
+
+
+  - id: "m_dev_deps"
+    type: poe
+    module_definition: dev_dep
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+      - package: | 
+          pytest pytest-cov pytest-sugar pytest-clarity 
+          ruff 
+          mkdocs mkdocs-material mkdocs-gen-files mkdocstrings-python mkdocs-section-index mkdocs-literate-nav 
+          poethepoet
+    displayName: "Installing dev dependencies for [[project_name]].."
+
+
+  
+prompts:
+  - id: "p_project_name"
+    display_name: "Project Name"
+    prompt: "How should the program be named"
+    default: "[[project_name]]"
+    type: "text"
+    out: "project_name"
+
+  - id: "p_project_dir"
+    display_name: "Installation Directory"
+    prompt: "Where should the program be installed"
+    default: "[[project_dir]]"
+    out: "project_dir"
+    type: "file_dir"
+
+
+steps:
+  - title: "## Tell me about your project!"
+    type: wizard
+    value:
+      - prompt: "p_project_name"
+      - prompt: "p_project_dir"
+
+  - title: "## Initializing project"
+    type: module_id
+    value: m_init_project
+
+  - title: "## Installing main dependencies"
+    type: module_id
+    value: m_main_deps
+
+  - title: "## Installing dev dependencies"
+    type: module_id
+    value: m_dev_deps
+
+  # - title: "## Cleaning up"
+  #   type: module_id
+  #   value: m_clean_up

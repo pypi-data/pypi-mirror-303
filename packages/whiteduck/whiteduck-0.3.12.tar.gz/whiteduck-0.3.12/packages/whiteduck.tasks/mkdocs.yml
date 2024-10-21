@@ -1,0 +1,37 @@
+site_name: white duck library
+site_url: https://mydomain.org/mysite
+theme:
+  name: material
+  icon:
+    admonition:
+      <type>: material/alert-outline
+
+nav:
+  - "README": index.md
+  - "YAML Spec": yaml_schema.md
+  - Code Reference: reference/
+
+
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+plugins:
+- search
+- gen-files:
+    scripts:
+    - docs/scripts/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- section-index
+- mkdocstrings:
+    default_handler: python

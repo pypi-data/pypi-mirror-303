@@ -1,0 +1,50 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "01 - Debug - PROD",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/whiteduck/app.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src/whiteduck",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "preLaunchTask": "sync env"
+        },
+        {
+            "name": "01 - Debug - DEV",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/whiteduck/app.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src/whiteduck",
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "args": [
+                "--verbose"
+            ],
+            "preLaunchTask": "sync env"
+        },
+        {
+            "name": "01 - Debug - WIN - PROD",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/whiteduck/app.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
+        },
+        {
+            "name": "01 - Debug - WIN - DEV",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/whiteduck/app.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src/whiteduck",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
+            "args": [
+                "--verbose"
+            ],
+            "preLaunchTask": "sync env"
+        },
+    ]
+}
