@@ -1,0 +1,14 @@
+{
+  "python.analysis.extraPaths": ["./apps/"],
+  "python.analysis.autoImportCompletions": true,
+  "[python]": { {% if Ruff %}
+    "editor.defaultFormatter": "charliermarsh.ruff",{% endif %}
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  }{% if Tailwind or Prettier %},{% endif %}{% if Tailwind %}
+  "tailwindCSS.experimental.configFile": "comets/base.tailwind.js"{% endif %}{% if Tailwind and Prettier %},{% endif %}{% if Prettier %}
+  "[html][css][scss][javascript][typescript][json][jsonc][markdown][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }{% endif %}
+}
