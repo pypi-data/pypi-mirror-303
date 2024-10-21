@@ -1,0 +1,46 @@
+<video autoplay='' controls width='{{width}}' height='{{height}}' id='video-{{event_id}}' preload='auto'></video>
+<script>
+  new Promise(function(resolve, reject) {
+    if (typeof(require) !== "undefined") {
+      require.config({
+        "paths": {"Hls": "https://cdn.jsdelivr.net/npm/hls.js@1.5.16"},
+      });
+      require(["Hls"], resolve, reject);
+    } else if (typeof(Hls) === "undefined") {
+        var script = document.createElement("script");
+        script.onload = resolve;
+        script.onerror = reject;
+        script.src = "https://cdn.jsdelivr.net/npm/hls.js@1.5.16";
+        document.head.appendChild(script);
+    } else { 
+      resolve()
+    };
+  }).then(() => {
+    if (Hls.isSupported()) {
+      const video = document.getElementById('video-{{event_id}}');
+      const hls = new Hls({ startPosition: {{start_position}} });
+
+      hls.on(Hls.Events.MANIFEST_PARSED, function()
+      {
+        video.currentTime = {{start_position}}
+          
+        video.addEventListener('timeupdate', function () {
+          if (video.currentTime >= {{end_position}}) {
+            video.pause();
+          }
+        });
+    
+        video.addEventListener('pause', function () {
+          if (video.currentTime >= {{end_position}}) {
+            video.currentTime = {{start_position}};
+          }
+        });
+      });
+
+      hls.loadSource('{{playlist_url}}');
+      hls.attachMedia(video);
+    } else {
+      console.error('HLS is not supported');
+    }
+  });
+</script>
