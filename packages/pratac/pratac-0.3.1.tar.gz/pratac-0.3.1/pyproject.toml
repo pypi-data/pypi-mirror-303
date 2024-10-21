@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "pratac"
+version = "0.3.1"
+description = "Python script designed to streamline dorm room cleaning assignments "
+authors = ["Martin Lejko <Martin.lejko@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^69.5.1"
+pytest = "^8.2.0"
+ruff = "^0.4.2"
+mypy = "^1.10.0"
+twine = "^5.0.0"
+wheel = "^0.43.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+strict = true
+mypy_path = "pratac"
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E","F","I"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.poetry.scripts]
+pratac = "pratac.__main__:main"
