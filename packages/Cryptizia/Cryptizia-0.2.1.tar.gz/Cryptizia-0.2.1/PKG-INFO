@@ -1,0 +1,87 @@
+Metadata-Version: 2.1
+Name: Cryptizia
+Version: 0.2.1
+Summary: A Python library for various cipher techniques including the Caesar cipher and Playfair cipher examples.
+Author: Zia Ur Rehman
+Author-email: engrziaurrehman.kicsit@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# Cryptizia
+
+Cryptizia is a Python library for various cipher techniques including the Caesar cipher. 
+
+## Installation
+
+You can install the library using pip:
+
+```bash
+pip install cryptizia
+
+```
+## How to use in Code
+
+### Caeser Cipher
+
+```python
+
+from cryptizia import CaesarCipherExample
+
+CaesarCipherExample()
+```
+### Customization
+You can customize the 'shift' and 'plaintext' directly in the constructor if you want different values:
+```python
+# Example with custom shift and plaintext
+cipher = CaesarCipherExample(shift=5, plaintext="WORLD")
+```
+You can encrypt and decrypt whole file using Caeser Cipher class
+```python
+
+from CaeserCipher import CaesarCipher
+
+# Example usage with a file
+def encrypt_file(input_file, output_file, shift):
+    cipher = CaesarCipher()
+    
+    # Read the content of the input file
+    with open(input_file, 'r') as file:
+        file_content = file.read()
+    
+    # Encrypt the content
+    encrypted_content = cipher.caesar_encrypt(file_content, shift)
+    
+    # Write the encrypted content to the output file
+    with open(output_file, 'w') as file:
+        file.write(encrypted_content)
+
+def decrypt_file(input_file, output_file, shift):
+    cipher = CaesarCipher()
+    
+    # Read the content of the input file
+    with open(input_file, 'r') as file:
+        file_content = file.read()
+    
+    # Decrypt the content
+    decrypted_content = cipher.caesar_decrypt(file_content, shift)
+    
+    # Write the decrypted content to the output file
+    with open(output_file, 'w') as file:
+        file.write(decrypted_content)
+
+# Example: Encrypting and decrypting a file
+encrypt_file('example.txt', 'encrypted.txt', 3)  # Encrypt 'example.txt' with a shift of 3 and save it as 'encrypted.txt'
+decrypt_file('encrypted.txt', 'decrypted.txt', 3)  # Decrypt 'encrypted.txt' with a shift of 3 and save it as 'decrypted.txt'
+```
+
+### Playfair Cipher
+
+```python
+
+from cryptizia import PlayfairCipherExample
+
+PlayfairCipherExample()
+```
