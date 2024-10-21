@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: TrackingNet
+Version: 0.0.9
+Summary: TrackingNet SDK
+Home-page: https://github.com/SilvioGiancola/TrackingNet
+Author: Silvio Giancola
+Author-email: silvio.giancola@kaust.edu.sa
+License: MIT
+Keywords: TrackingNet,SDK,Tracking,Video
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+Requires-Dist: tqdm
+Requires-Dist: scikit-video
+Requires-Dist: google-measurement-protocol
+Requires-Dist: huggingface-hub
+
+
+# TrackingNet devkit
+
+```bash
+conda create -n TrackingNet python pip
+pip install TrackingNet
+```
+
+## Utility functions for TrackingNet
+
+```python
+from TrackingNet.utils import getListSplit
+
+# Get list of codenames for the 12 training + testing split
+TrackingNetSplits = getListSplit()
+print(getListSplit())
+# returns ["TEST", "TRAIN_0", "TRAIN_1", "TRAIN_2", "TRAIN_3", "TRAIN_4", "TRAIN_5", "TRAIN_6", "TRAIN_7", "TRAIN_8", "TRAIN_9", "TRAIN_10", "TRAIN_11"]
+
+
+# Get list of tracking sequences
+print(getListSequence(split=TrackingNetSplits[1])) # return list of tracking sequences in that split
+print(getListSequence(split="TEST")) # return list of tracking sequences for testing
+print(getListSequence(split=["TRAIN_0", "TRAIN_1"])) # return list of tracking sequences for train splits 0 and 1
+print(getListSequence(split="TRAIN")) # return list of tracking sequences for al train splits
+```
+
+## Downloading TrackingNet
+
+```python
+from huggingface_hub import login
+login(token="<TOKEN_HUGGINGFACE>") # https://huggingface.co/settings/tokens -> Create a new token
+
+from TrackingNet.Downloader import TrackingNetDownloader
+downloader = TrackingNetDownloader(LocalDirectory="path/to/TrackingNet")
+
+downloader.downloadSplit("TRAIN_0")
+downloader.downloadSplit("TEST")
+
+from TrackingNet.utils import getListSplit
+for split in getListSplit():
+    downloader.downloadSplit(split)
+```
+
+
+
+
