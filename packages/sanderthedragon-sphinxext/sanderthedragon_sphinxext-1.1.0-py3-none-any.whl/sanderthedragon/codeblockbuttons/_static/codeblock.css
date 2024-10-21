@@ -1,0 +1,117 @@
+/*
+ * SPDX-FileCopyrightText: 2021-2024 SanderTheDragon <sanderthedragon@zoho.com>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+/* Override default highlight block */
+div.highlight {
+    position: relative;
+}
+
+/* Button container */
+div.cb-button {
+    position: absolute;
+    top: 0px;
+
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+
+    background-color: var(--color-code-background);
+
+    cursor: pointer;
+}
+
+div.cbd-hidden div.cb-button,
+div.cb-hidden div.cb-button {
+    opacity: 0;
+}
+
+div.cbd-hidden:hover div.cb-button,
+div.cb-hidden:hover div.cb-button,
+div.cbd-hidden.cb-visible div.cb-button {
+    opacity: 1;
+}
+
+/* Icon container */
+div.cb-button div.cb-icon {
+    width: 100%;
+    height: 100%;
+}
+
+/* Color icon */
+div.cb-button div.cb-icon > svg {
+    stroke: var(--color-foreground-primary);
+}
+
+/* Color icon on hover */
+div.cb-button:hover div.cb-icon > svg {
+    stroke: var(--color-link);
+}
+
+/* Tooltip */
+div.cb-button span.cb-tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.12rem);
+    left: 50%;
+    z-index: 1;
+
+    margin-left: -32px;
+    padding: 0.12rem 0;
+    width: 64px;
+
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, .05),
+                0 0 .0625rem rgba(0, 0, 0, .1);
+    border-radius: 0.2rem;
+    background-color: var(--color-background-secondary);
+
+    text-align: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+/* Show tooltip when hovering over button (but not over tooltip) */
+div.cb-button:hover span.cb-tooltip:not(:hover) {
+    opacity: 1;
+}
+
+/* Positions of buttons */
+div.cb-button:first-of-type {
+    right: 0px !important;
+}
+
+div.cb-button:last-of-type {
+    right: 36px;
+
+    border-bottom-left-radius: 0.2rem;
+}
+
+/* Extra padding after first line */
+span.cb-pad {
+    display: inline-block;
+}
+
+span.cb-pad-1 {
+    width: calc((32px + 4px) * 1 + 4px);
+}
+
+span.cb-pad-2 {
+    width: calc((32px + 4px) * 2 + 4px);
+}
+
+/* Transitions */
+div.cb-transition.cbd-hidden div.cb-button,
+div.cb-transition.cb-hidden div.cb-button {
+    transition: opacity 100ms;
+}
+
+div.cb-transition div.cb-button div.cb-icon > svg {
+    transition: stroke 50ms;
+}
+
+div.cb-transition div.cb-button span.cb-tooltip {
+    transition: opacity 50ms;
+}
