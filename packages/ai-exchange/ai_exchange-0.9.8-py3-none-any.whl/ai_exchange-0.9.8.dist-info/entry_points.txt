@@ -1,0 +1,17 @@
+[exchange.moderator]
+passive = exchange.moderators.passive:PassiveModerator
+summarize = exchange.moderators.summarizer:ContextSummarizer
+truncate = exchange.moderators.truncate:ContextTruncate
+
+[exchange.provider]
+anthropic = exchange.providers.anthropic:AnthropicProvider
+azure = exchange.providers.azure:AzureProvider
+bedrock = exchange.providers.bedrock:BedrockProvider
+databricks = exchange.providers.databricks:DatabricksProvider
+google = exchange.providers.google:GoogleProvider
+groq = exchange.providers.groq:GroqProvider
+ollama = exchange.providers.ollama:OllamaProvider
+openai = exchange.providers.openai:OpenAiProvider
+
+[metadata.plugins]
+ai-exchange = exchange:module_name
