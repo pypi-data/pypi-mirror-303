@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: evidentialreasoning
+Version: 1.0.4
+Summary: A python package for evidential reasoning (ER) approach
+Home-page: https://github.com/
+Author: nmtoan91
+Author-email: toan_stt@yahoo.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: LICENSE.txt
+
+Python implementations evidential reasoning (ER) approach
+
+## Installation:
+### Using pip: 
+```shell
+pip install evidentialreasoning
+```
+##Example:
+```shell
+
+import numpy as np
+from evidentialreasoning.ER import *
+
+input = np.array([[0,0,0.2,0.2,0.6,0],[0,0,0.2,0.4,0.4,0],[0,0,0.2,0.8,0,0],[0,0,0.4,0.2,0.4,0]])
+weights = np.array([0.25,0.25,0.25,0.25])
+a = ER_Aggregation(input,weights)
+print(a)
+b = ER_Normaliation(a)
+print(b)
+
+```
+*To be updated*
