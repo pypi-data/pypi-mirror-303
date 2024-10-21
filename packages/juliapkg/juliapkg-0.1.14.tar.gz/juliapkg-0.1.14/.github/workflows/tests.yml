@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main
+    tags:
+    - '*'
+
+jobs:
+  tests:
+    name: Test (${{ matrix.os }}, python ${{ matrix.pyversion }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        pyversion: ["3.x", "3.8"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.pyversion }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.pyversion }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest pytest-cov
+          pip install -e .
+      - name: Lint with ruff
+        run: |
+          ruff format --check
+          ruff check
+      - name: Test with pytest
+        run: |
+          pytest --cov=src test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
