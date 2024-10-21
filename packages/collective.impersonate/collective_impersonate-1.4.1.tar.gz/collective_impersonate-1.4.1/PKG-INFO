@@ -1,0 +1,182 @@
+Metadata-Version: 2.1
+Name: collective.impersonate
+Version: 1.4.1
+Summary: Allow administrator to impersonate another user, for debugging purposes.
+Home-page: https://github.com/collective/collective.impersonate
+Author: NiteoWeb Ltd.
+Author-email: info@niteoweb.com
+License: GPL version 2
+Keywords: Python Plone
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Plone
+Classifier: Framework :: Plone :: Addon
+Classifier: Framework :: Plone :: 4.3
+Classifier: Framework :: Plone :: 5.1
+Classifier: Framework :: Plone :: 5.2
+Classifier: Framework :: Plone :: 6.0
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Requires-Dist: plone.api
+Requires-Dist: setuptools
+Requires-Dist: z3c.jbot
+Requires-Dist: Products.GenericSetup>=1.8.2
+Provides-Extra: test
+Requires-Dist: plone.app.testing; extra == "test"
+
+======================
+collective.impersonate
+======================
+
+Allow administrator to impersonate another user. Useful for verifying
+workflow/permission set up on real content.
+
+
+Installation
+------------
+
+Install collective.impersonate by adding it to your buildout::
+
+    [buildout]
+
+    ...
+
+    eggs =
+        collective.impersonate
+
+
+and then running ``bin/buildout``
+
+
+Usage
+-----
+
+See the `docs`_ folder for instructions on how to use this add-on.
+
+.. _docs: https://github.com/collective/collective.impersonate/blob/master/docs/index.rst
+
+
+Wishlist
+--------
+
+- autocomplete with search select2 widget for choosing the user to impersonate
+
+
+License
+-------
+
+The project is licensed under the GPLv2.
+
+Based on the old niteoweb.loginas package:
+https://pypi.python.org/pypi/niteoweb.loginas
+
+
+Contributors
+============
+
+- Nejc Zupan, nejc.zupan@gmail.com
+
+- T. Kim Nguyen, kim@sixfeetup.com
+
+
+Changelog
+=========
+
+1.4.1 (2024-10-21)
+------------------
+
+- Fix form action URL to support sites published under a subpath
+  [ale-rt]
+
+- Fix redirect to INavigationRoot after impersonate
+  [petschki]
+
+
+1.4 (2021-12-11)
+----------------
+
+- Plone 6 compatibility -> remove <includeDependencies />
+  [petschki]
+
+
+1.3 (2020-10-07)
+----------------
+
+- Add support for Plone 5.2 and Python 3
+  [cillianderoiste]
+
+- Use explicit dependency on Products.GenericSetup >= 1.8.2
+  [laulaz]
+
+- Fix issue with Lineage subsites, where the `many_users` property couldn't be resolved due to a wrong adapter context.
+  [thet]
+
+- Added French translation
+  [laulaz]
+
+- minor markup cleanup [ajung]
+
+- Plone 4.3 compatibility
+  [petschki]
+
+- Minor code cleanup: black, isort, travis fixes.
+  [thet]
+
+
+1.2 (2019-06-18)
+----------------
+
+- lists available users only if the "Many users?" box in Users and Groups control panel is not checked
+  [tkimnguyen]
+
+
+1.1.1 (2019-06-16)
+------------------
+
+- upgrade to Plone 5.1.5, add 'Framework :: Plone :: Addon' pypi classifier, tweak docs
+  [tkimnguyen]
+
+
+1.1 (2019-06-15)
+----------------
+
+- update docs to show Impersonate portal action
+  [tkimnguyen]
+
+- add user documentation
+  [tkimnguyen]
+
+- add Impersonate personal menu item for Manager role
+  [tkimnguyen]
+
+- fix buildout, isort fixes, flake8 fixes, Travis fixes
+  [tkimnguyen]
+
+- upgrade to Plone 5.0.10
+  [tkimnguyen]
+
+- tweak Travis xvfb start
+  [tkimnguyen]
+
+- fix test buildout
+  [tkimnguyen]
+
+
+1.0.1 (2017-03-07)
+------------------
+
+- Brownbag release.
+  [zupo]
+
+
+1.0 (2017-03-07)
+----------------
+
+- Initial release.
+  [zupo]
