@@ -1,0 +1,54 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "test_pypi_czs"
+version = "0.0.3"
+authors = [
+    { name = "Zesen Cheng", email = "ross@huggingface.co" },
+    { name = "Hang Zhang" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "torch>=2.0.0",
+    "numpy",
+    "triton>=2.2.0",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/clownrat6/test_pypi_czs"
+Issues = "https://github.com/clownrat6/test_pypi_czs/issues"
+
+[tool.pdm.build]
+excludes = [
+    "./**/.git",
+    "./**/logs/*",
+]
+package-dir = "."
+includes = [
+    "./test_pypi_abc",
+]
