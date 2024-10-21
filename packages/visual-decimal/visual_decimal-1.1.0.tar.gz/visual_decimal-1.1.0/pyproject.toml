@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "visual-decimal"
+version = "1.1.0"
+description = "Evaluate and pretty print mathematical expressions"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
+authors = [
+    {name = "Aljosha Papsch", email = "contact@ferro.software"},
+]
+
+[project.urls]
+homepage = "https://gitlab.com/ferrosoft/visual-decimal"
+
+[tool.hatch.build.targets.wheel]
+packages = ["visualdecimal"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.idea",
+]
