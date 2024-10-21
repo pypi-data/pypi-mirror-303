@@ -1,0 +1,220 @@
+Metadata-Version: 2.1
+Name: leitor_pdf_sensivel
+Version: 0.1.2
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: alabaster
+Requires-Dist: annotated-types ==0.7.0
+Requires-Dist: arrow
+Requires-Dist: astroid
+Requires-Dist: asttokens
+Requires-Dist: atomicwrites ==1.4.0
+Requires-Dist: attrs
+Requires-Dist: autopep8
+Requires-Dist: Babel
+Requires-Dist: bcrypt
+Requires-Dist: beautifulsoup4
+Requires-Dist: binaryornot
+Requires-Dist: black
+Requires-Dist: bleach
+Requires-Dist: blis ==1.0.1
+Requires-Dist: Brotli
+Requires-Dist: catalogue ==2.0.10
+Requires-Dist: certifi
+Requires-Dist: cffi
+Requires-Dist: chardet
+Requires-Dist: charset-normalizer
+Requires-Dist: click
+Requires-Dist: cloudpathlib ==0.19.0
+Requires-Dist: cloudpickle
+Requires-Dist: colorama
+Requires-Dist: comm
+Requires-Dist: confection ==0.1.5
+Requires-Dist: cookiecutter
+Requires-Dist: cryptography
+Requires-Dist: cymem ==2.0.8
+Requires-Dist: debugpy
+Requires-Dist: decorator
+Requires-Dist: defusedxml
+Requires-Dist: diff-match-patch
+Requires-Dist: dill
+Requires-Dist: docstring-to-markdown
+Requires-Dist: docutils
+Requires-Dist: et-xmlfile ==1.1.0
+Requires-Dist: executing
+Requires-Dist: fastjsonschema
+Requires-Dist: flake8
+Requires-Dist: idna
+Requires-Dist: imagesize
+Requires-Dist: importlib-metadata
+Requires-Dist: inflection
+Requires-Dist: intervaltree
+Requires-Dist: ipykernel
+Requires-Dist: ipython
+Requires-Dist: isort
+Requires-Dist: jaraco.classes
+Requires-Dist: jedi
+Requires-Dist: jellyfish
+Requires-Dist: Jinja2
+Requires-Dist: jsonschema
+Requires-Dist: jsonschema-specifications
+Requires-Dist: jupyter-client
+Requires-Dist: jupyter-core
+Requires-Dist: jupyterlab-pygments
+Requires-Dist: keyring
+Requires-Dist: langcodes ==3.4.1
+Requires-Dist: language-data ==1.2.0
+Requires-Dist: lazy-object-proxy
+Requires-Dist: marisa-trie ==1.2.1
+Requires-Dist: markdown-it-py
+Requires-Dist: MarkupSafe
+Requires-Dist: matplotlib-inline
+Requires-Dist: mccabe
+Requires-Dist: mdurl
+Requires-Dist: mistune
+Requires-Dist: more-itertools
+Requires-Dist: murmurhash ==1.0.10
+Requires-Dist: mypy-extensions
+Requires-Dist: nbclient
+Requires-Dist: nbconvert
+Requires-Dist: nbformat
+Requires-Dist: nest-asyncio
+Requires-Dist: numpy ==2.0.2
+Requires-Dist: numpydoc
+Requires-Dist: opencv-python-headless ==4.10.0.84
+Requires-Dist: openpyxl
+Requires-Dist: packaging
+Requires-Dist: pandas
+Requires-Dist: pandocfilters
+Requires-Dist: paramiko
+Requires-Dist: parso
+Requires-Dist: pathspec
+Requires-Dist: pexpect
+Requires-Dist: pickleshare
+Requires-Dist: platformdirs
+Requires-Dist: pluggy
+Requires-Dist: ply
+Requires-Dist: preshed ==3.0.9
+Requires-Dist: prompt-toolkit
+Requires-Dist: psutil
+Requires-Dist: ptyprocess
+Requires-Dist: pure-eval
+Requires-Dist: pycodestyle
+Requires-Dist: pycparser
+Requires-Dist: pydantic ==2.9.2
+Requires-Dist: pydantic-core ==2.23.4
+Requires-Dist: pydocstyle
+Requires-Dist: pyflakes
+Requires-Dist: Pygments
+Requires-Dist: pylint
+Requires-Dist: pylint-venv
+Requires-Dist: pyls-spyder ==0.4.0
+Requires-Dist: PyNaCl
+Requires-Dist: pypdf ==5.0.1
+Requires-Dist: PyQt5 ==5.15.10
+Requires-Dist: PyQt5-sip
+Requires-Dist: PyQtWebEngine ==5.15.6
+Requires-Dist: PySocks
+Requires-Dist: python-dateutil
+Requires-Dist: python-lsp-black
+Requires-Dist: python-lsp-jsonrpc
+Requires-Dist: python-lsp-server
+Requires-Dist: python-slugify
+Requires-Dist: pytoolconfig
+Requires-Dist: pytz
+Requires-Dist: pywin32 ==305.1
+Requires-Dist: pywin32-ctypes
+Requires-Dist: PyYAML
+Requires-Dist: pyzmq
+Requires-Dist: QDarkStyle
+Requires-Dist: qstylizer
+Requires-Dist: spacy
+
+# Projeto de Remoção de Dados Sensíveis de PDF
+
+Este projeto fornece uma solução para ler arquivos PDF e remover informações sensíveis, gerando um novo arquivo de texto com os dados filtrados.
+
+O pacote é uma ferramenta desenvolvida para auxiliar na conformidade com a Lei Geral de Proteção de Dados (LGPD) no Brasil. 
+Ele oferece funcionalidades para identificar e remover dados sensíveis, ajudando na tarefa de que informações pessoais identificáveis (PII) 
+não sejam expostas ou utilizadas de maneira inadequada.
+
+Este é um projeto da empresa Asi Tech. 
+Soluções em Inteligência Artificial? Fale conosco: asitech.solucoesemia@gmail.com.
+
+## Índice
+
+- [Descrição do Projeto](#descrição-do-projeto)
+- [Instalação](#instalação)
+- [Uso](#uso)
+- [Funções](#funções)
+- [Tratamento de Exceções](#tratamento-de-exceções)
+- [Licença](#licença)
+
+## Descrição do Projeto
+
+O objetivo deste projeto é permitir que os usuários leiam arquivos PDF e removam informações sensíveis com base em uma lista de dados.
+
+## Instalação
+
+Para usar este projeto, você precisará ter o Python instalado em seu ambiente. 
+
+```python
+
+pip install leitor-pdf-sensivel
+
+```
+
+## Uso
+
+Para utilizar a função principal, basta chamar `le_arquivo_sem_dados_sensiveis` com o caminho do arquivo PDF que você deseja processar.
+
+### Exemplo de uso:
+
+```python
+from leitor_pdf_sensivel import le_arquivo_sem_dados_sensiveis
+
+resultado = le_arquivo_sem_dados_sensiveis("caminho/para/seu/arquivo.pdf")
+print(resultado)
+```
+
+O texto sem dados sensíveis será salvo em um arquivo chamado `texto_sem_dados_sensiveis.txt`.
+
+## Funções
+
+### `le_arquivo_sem_dados_sensiveis(pdf_path)`
+
+Lê um arquivo PDF, remove informações sensíveis com base na LGPD e retorna o texto sem esses dados.
+A acurácia da ferramenta é alta, mas não 100%.
+
+**Parâmetros:**
+- `pdf_path` (str): Caminho para o arquivo PDF a ser processado.
+
+**Retorna:**
+- `texto_sem_dados_sensiveis` (str): Texto do PDF com as informações sensíveis removidas.
+- `arquivo texto` (arquivo): texto tratado sem as informações sensíveis encontradas.
+
+## Tratamento de Exceções
+
+O código inclui tratamento para as seguintes exceções:
+- `FileNotFoundError`: Arquivo PDF não encontrado ou inválido.
+- `pd.errors.EmptyDataError`: Problemas ao ler o arquivo Excel `exames.xlsx`.
+- `Exception`: Outros erros durante a execução.
+
+# Observação Importante
+Este pacote é um projeto da Empresa Asi Tech. A Asi Tech não se responsabiliza pelo uso de informações sigilosas por seus usuários.
+Ao instalar esse pacote, o usuário concorda que:
+
+- Ele é unicamente responsável pelo processamento de informações sigilosas.
+- A acurácia do pacote não é 100%, portanto pode haver informação sensível não removida.
+- Todo o processamento do pacote é feito localmente na máquina do usuário. A Asi Tech não guarda nem processa dados processados com esse pacote.
+- O objetivo desse pacote é unicamente ajudar na extração de informações sigilosas de um texto. Entretanto, dado que nem toda informação será necessáriamente retirada, o usuário é responsável por olhar o resultado e garantir que tudo tenha sido extraído.
+
+## Licença
+
+Este projeto é licenciado sob a [MIT License](LICENSE).
