@@ -1,0 +1,31 @@
+[project]
+name = "cshelve"
+version = "0.1.0.dev5"
+description = "Propulsing the shelve module to the cloud"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "azure-identity>=1.19.0",
+    "azure-storage-blob>=12.23.1",
+]
+keywords = ["shelve", "database", "azure-storage-account", "azure"]
+
+[project.urls]
+repository = "https://github.com/Standard-Cloud/cshelve"
+homepage = "https://github.com/Standard-Cloud/cshelve"
+documentation = "https://github.com/Standard-Cloud/cshelve"
+
+[tool.uv]
+dev-dependencies = [
+    "pandas>=1.4",
+    "pre-commit>=4.0.1",
+    "pytest-xdist>=3.6.1",
+    "pytest>=8.3.3",
+    "ruff>=0.6.9",
+]
+
+[tool.uv.sources]
+bird-feeder = { path = "./cshelve" }
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
