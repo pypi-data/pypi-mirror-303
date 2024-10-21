@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "lirc"
+version = "3.0.0"
+description = "Interact with the daemon in the Linux Infrared Remote Control package"
+authors = ["Eugene Triguba <eugenetriguba@gmail.com>"]
+license = "MIT"
+readme = "README.rst"
+repository = "https://github.com/eugenetriguba/lirc"
+keywords = ["LIRC", "IR"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Topic :: System :: Hardware",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.taskipy.tasks]
+test             = "task test_cov_missing"
+test_unit        = "pytest tests/"
+test_cov         = "task test_unit --cov=lirc/"
+test_cov_missing = "task test_cov -v --cov-report term-missing"
+test_ci          = "task test_cov --cov-report=xml"
+lint             = "ruff check"
+lint_fix         = "ruff check --fix"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+taskipy = "^1.13.0"
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.7.0"
+
+[tool.poetry.group.test.dependencies]
+pytest     = "^8.3.3"
+pytest-cov = "^5.0.0"
+codecov    = "^2.1.13"
+
+[tool.poetry.group.release.dependencies]
+bump2version = "^1.0.1"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+extend-select = [
+    "I",   # isort
+    "N",   # pep8-naming
+    "PL",  # pylint
+    "TID", # flake8-tidy-imports
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires      = ["poetry>=1.1"]
+build-backend = "poetry.masonry.api"
