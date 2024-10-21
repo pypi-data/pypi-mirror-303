@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: streamlit_react_jsonschema
+Version: 0.1.5
+Summary: streamlit component for GhostOS, render form from JSONSchema by react-jsonschema-component
+License: MIT
+Author: ZhuMing
+Author-email: thirdgerb@gmail.com
+Requires-Python: >=3.8, !=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*, !=3.7.*
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: pydantic (>=2,<3)
+Requires-Dist: streamlit (>=1.39.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# Streamlit-react-jsonschema
+
+Streamlit component, 
+building form by [react-jsonschema-form](https://react-jsonschema-form.readthedocs.io/).
+
+This library is experimental for [GhostOS](https://github.com/ghost-in-moss/GhostOS) yet.
+
+## Installation
+
+install `streamlit-react-jsonschema` with pip
+
+```bash
+pip install streamlit_react_jsonschema
+```
+
+## Example
+
+see [baseline example](examples/baseline.py)
+
+```python
+from typing import Union, List, Dict
+import streamlit as st
+import streamlit_react_jsonschema as srj
+import inspect
+from pydantic import BaseModel, Field
+
+
+class Student(BaseModel):
+    name: str = Field(description="name of the student")
+    level: int = Field(description="level of the student")
+
+
+class SomeClass(BaseModel):
+    """
+    test class of pydantic model Foo
+    """
+    name: Union[str, None] = Field(None, description="filed with optional[str]")
+    age: int = Field(0, description="bar value")
+    some_float: float = Field(description="test about float value")
+
+    students: List[Student] = Field(default_factory=list, description="list of students")
+    students_dict: Dict[str, Student] = Field(default_factory=dict, description="dict of students")
+
+
+st.title("Streamlit-react-jsonschema Example")
+with st.expander("source code of the example pydantic class", expanded=True):
+    codes = inspect.getsource(SomeClass)
+    st.code(codes)
+
+value, submitted = srj.pydantic_form(model=SomeClass)
+
+st.subheader("result:")
+st.write(f"submitted: {submitted}")
+st.write(f"type of the result: {type(value)}")
+st.write(value)
+if isinstance(value, BaseModel):
+    st.write("model dump value")
+    st.write(value.model_dump(exclude_defaults=False))
+```
+
+How to run this example? Check [streamlit](https://docs.streamlit.io/) first~
+
+## Dependencies
+
+- [Streamlit](https://streamlit.io/)
+- [React-jsonschema-form](https://react-jsonschema-form.readthedocs.io/): render the form from json schema
+- [Material UI](https://mui.com/) : use `@rjsf/mui` theme from the `react-jsonschema-form`
+- [pydantic](https://docs.pydantic.dev/latest/) : generate json schema
+
+
+
