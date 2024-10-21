@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbt_column_lineage"
+dynamic = ["version"]
+description = "A tool for dbt column lineage"
+authors = [{name = "Tomoki Takahashi", email = "takahashi_tomoki@oisixradaichi.co.jp"}]
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "isort",
+]
+
+[project.scripts]
+dbt-column-lineage = "dbt_column_lineage.main:main"
+
+[project.urls]
+Repository = "https://github.com/tomoki-takahashi-oisix/dbt-column-lineage"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["dbt_column_lineage*"]
+
+[tool.setuptools.package-data]
+"dbt_column_lineage" = ["frontend_out/**/*"]
+
+[tool.setuptools_scm]
+write_to = "src/dbt_column_lineage/_version.py"
+version_scheme = "post-release"
+local_scheme = "node-and-date"
