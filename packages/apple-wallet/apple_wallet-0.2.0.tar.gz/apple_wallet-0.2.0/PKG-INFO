@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: apple-wallet
+Version: 0.2.0
+Summary: A simple library to create Apple passes compatible with Wallet
+License: MIT
+Keywords: apple pass,apple wallet
+Author: Borja Toron-Antons
+Author-email: borja.toron@gmail.com
+Requires-Python: >=3.12,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: cryptography (>=43.0.1,<44.0.0)
+Requires-Dist: pydantic (>=2.9.2,<3.0.0)
+Requires-Dist: pydantic-settings (>=2.5.2,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Apple Wallet
+
+A very simple library to generate Passes for Apple Wallet
+
+Model-based (hello pydantic)
+
+### Configuration
+
+All the configuration comes through environment vars (see `pydantic-settings`, but can be overwritten):
+
+- **APPLE_WALLET_TEMPLATE_PATH**: Path to the templates. Every template is a folder called `<TEMPLATE>.pass` that follows the structure defined in [3]. Defaults to `./templates`
+
+- **APPLE_WALLET_CERTIFICATE_PATH**: Path to the folder containing certificates and keys. Defaults to `./certificates`. Three certificates are needed:
+  - Key
+  - CSR
+  - WWDR
+
+### Tests
+
+202409: Tested for iOS 17 and 18
+
+### Acknowledgments
+
+This library is heavily based on the examples and code provided in:
+
+[1] https://github.com/twopointone/applepassgenerator (Worked fine but I am addicted to Pydantic)
+
+[2] https://github.com/alexandercerutti/passkit-generator (Excellent ideas that I try to replicate in Python)
+
+### More about Apple Pass ###
+[3] Reference: Human Interface: https://developer.apple.com/design/human-interface-guidelines/wallet
+
+[4] Reference: PassKit: https://developer.apple.com/wallet/
+
+[5] Reference: PassKit Package Format Reference: https://developer.apple.com/library/archive/documentation/UserExperience/Reference/PassKit_Bundle/Chapters/Introduction.html
