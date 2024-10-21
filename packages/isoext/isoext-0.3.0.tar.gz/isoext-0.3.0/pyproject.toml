@@ -1,0 +1,39 @@
+[build-system]
+requires = ["scikit-build-core >=0.4.3", "nanobind >=2.2.0"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "isoext"
+version = "0.3.0"
+description = "A collection of algorithms for iso-sufrace extraction on GPU. Supports pytorch."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Guangyan Cai", email = "gcai3@uci.edu" }]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Environment :: GPU :: NVIDIA CUDA",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+]
+
+[project.urls]
+Homepage = "https://github.com/GuangyanCai/isoext"
+
+
+[tool.scikit-build]
+# Protect the configuration against future changes in scikit-build-core
+minimum-version = "0.4"
+
+# Setuptools-style build caching in a local directory
+build-dir = "build/{wheel_tag}"
+
+# Build stable ABI wheels for CPython 3.12+
+wheel.py-api = "cp312"
+
+
+[tool.cibuildwheel]
+# Necessary to see build output from the actual compilation
+build-verbosity = 1
+
+# Run pytest to ensure that the package was correctly built
+test-command = "pytest {project}/tests"
+test-requires = "pytest"
