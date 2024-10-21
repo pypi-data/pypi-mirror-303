@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: structure_step
+Version: 2024.10.24
+Summary: A SEAMM plug-in for energy optimized structures
+Home-page: https://github.com/molssi-seamm/structure_step
+Author: Paul Saxe
+Author-email: psaxe@molssi.org
+License: BSD-3-Clause
+Keywords: SEAMM,SEAMMplugin,flowchart
+Platform: Linux
+Platform: Mac OS-X
+Platform: Unix
+Platform: Windows
+Classifier: Environment :: Plugins
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: seamm
+Requires-Dist: seamm-ase
+Requires-Dist: seamm-geometric
+Requires-Dist: seamm-util
+Requires-Dist: seamm-widgets
+Requires-Dist: tabulate
+
+=======================
+SEAMM Structure Plug-in
+=======================
+
+.. image:: https://img.shields.io/github/issues-pr-raw/molssi-seamm/structure_step
+   :target: https://github.com/molssi-seamm/structure_step/pulls
+   :alt: GitHub pull requests
+
+.. image:: https://github.com/molssi-seamm/structure_step/workflows/CI/badge.svg
+   :target: https://github.com/molssi-seamm/structure_step/actions
+   :alt: Build Status
+
+.. image:: https://codecov.io/gh/molssi-seamm/structure_step/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/molssi-seamm/structure_step
+   :alt: Code Coverage
+
+.. image:: https://github.com/molssi-seamm/structure_step/workflows/CodeQL/badge.svg
+   :target: https://github.com/molssi-seamm/structure_step/security/code-scanning
+   :alt: Code Quality
+
+.. image:: https://github.com/molssi-seamm/structure_step/workflows/Release/badge.svg
+   :target: https://molssi-seamm.github.io/structure_step/index.html
+   :alt: Documentation Status
+
+.. image:: https://img.shields.io/pypi/v/structure_step.svg
+   :target: https://pypi.python.org/pypi/structure_step
+   :alt: PyPi VERSION
+
+A SEAMM plug-in for energy optimized structures
+
+* Free software: BSD-3-Clause
+* Documentation: https://molssi-seamm.github.io/structure_step/index.html
+* Code: https://github.com/molssi-seamm/structure_step
+
+Features
+--------
+
+* Please edit this section!
+
+Acknowledgements
+----------------
+
+This package was created with the `molssi-seamm/cookiecutter-seamm-plugin`_ tool, which
+is based on the excellent Cookiecutter_.
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`molssi-seamm/cookiecutter-seamm-plugin`: https://github.com/molssi-seamm/cookiecutter-seamm-plugin
+
+Developed by the Molecular Sciences Software Institute (MolSSI_),
+which receives funding from the `National Science Foundation`_ under
+award CHE-2136142.
+
+.. _MolSSI: https://molssi.org
+.. _`National Science Foundation`: https://www.nsf.gov
+
+
+=======
+History
+=======
+2024.10.20 -- Bugfixes & internal changes
+    * Reorganized the code, moving the ASE specific parts to seamm-ase.
+    * Fixed formatting of output
+    * Fixed typos in the references
+
+2024.10.15 -- Enhancement: improved output and aded to results
+    * Added energy, etc. to results
+    * Added more detail to printed output
+    * Fixed bugs with the GUI and with labeling substeps.
+
+2024.10.13 -- Added geomeTRIC minimizer
+    * Added transition states as a target
+    * Added the geomeTRIC minimizer
+    * Rationalized the convergence criteria, allowing them to be used across minimizers.
+      
+2024.7.31 -- Plug-in created using the SEAMM plug-in cookiecutter.
+
