@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "SuomiGeoData"
+description = "Downloading and extracting geospatial data from Finland, that is Suomi."
+authors = [
+  { name="Debasish Pal", email="bestdebasish@gmail.com" },
+]
+dependencies = [
+    "geopandas",
+    "rasterio",
+    "requests",
+    "openpyxl",
+    "xlsxwriter"
+]
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+	"Topic :: Scientific/Engineering :: GIS",
+	"Topic :: Scientific/Engineering :: Hydrology"
+]
+dynamic = ["version"]
+keywords = [
+	"Paituli",
+    "Syke",
+	"Topography",
+	"Data download",
+    "Data analysis"
+]
+
+
+[project.urls]
+"Homepage" = "https://github.com/debpal/SuomiGeoData"
+"Documentation" = "http://suomigeodata.readthedocs.io/"
+
+
+[tool.setuptools.package-data]
+SuomiGeoData = [
+    "data/*"
+]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "SuomiGeoData.__version__"}
+
+
+[tool.pytest.ini_options]
+addopts = "-rA -Werror --cov=SuomiGeoData --cov-report=html:cov_SuomiGeoData --cov-report=term -s"
+testpaths = [
+    "tests"
+]
+
+
+[tool.mypy]
+files = [
+    "SuomiGeoData"
+]
+ignore_missing_imports = true
+strict = true
