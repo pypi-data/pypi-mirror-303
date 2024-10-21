@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  static-checks:
+    name: Static checks (Ruff and mypy)
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.9", "3.10", "3.11", "3.12"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run static checks
+        run: make static-tests
+
+  pytest:
+    name: Pytest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [
+          { version: "3.9", upload-coverage: false },
+          { version: "3.10", upload-coverage: false },
+          { version: "3.11", upload-coverage: false },
+          { version: "3.12", upload-coverage: true }
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python ${{ matrix.python.version }}
+        run: uv python install ${{ matrix.python.version }}
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run tests
+        run: make test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.python.upload-coverage
+        with:
+          files: coverage.lcov
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
