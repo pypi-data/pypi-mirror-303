@@ -1,0 +1,29 @@
+[project]
+name = "rcmanyutils"
+version = "0.1.6"
+description = "Various utilities for making python development easier"
+readme = "README.md"
+requires-python = ">=3.12.5"
+dependencies = [
+    "pydantic>=2.9.2",
+    "type-lens>=0.2.3",
+]
+[project.urls]
+"Homepage" = "https://github.com/RLC92/rcmanyutils"
+"Issues" = "https://github.com/RLC92/rcmanyutils/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rclib"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest >=8.1.1,<9",
+    "pytest-check>=2.4.1",
+    "hypothesis>=6.113.0",
+    "twine>=5.1.1",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
