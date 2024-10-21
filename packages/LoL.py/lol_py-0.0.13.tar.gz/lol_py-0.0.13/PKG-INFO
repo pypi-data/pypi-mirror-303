@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: LoL.py
+Version: 0.0.13
+Summary: A tiny Riot-league of legends Api wrapper
+Home-page: https://github.com/Blackcool70/LoL.py
+Author: Blackcool70
+Author-email: blackcool70_cool7744@hotmail.com
+Project-URL: Bug Tracker, https://github.com/Blackcool70/LoL.py/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+
+# LoL.py
+A **Tiny** League Of Legends API Wrapper
+
+`pip install LoL.py`
+
+```python
+lol = LoL(api_key, region)
+#region can be [na, euw, eune, tr, ru, kr, jp, br, lan, las, oce]
+```
+
+```python
+from LoL import LoL
+
+api_key = "API TOKEN" # https://developer.riotgames.com/
+
+lol = LoL(api_key, "euw")
+
+user_data = lol.get_summoner("summoner_name")
+
+summonerId = user_data['id'] # grab summoner id
+puuid = user_data['puuid'] # grab ppuid
+
+matches = lol. get_matches_by_puuid(puuid)
+
+single_match = matches[0]
+
+print(lol.get_all_champions())
+
+print(lol.get_summoner(accountId="acc_id"))
+
+print(lol.get_summoner(puuid="puuid"))
+
+print(lol.get_summoner(summonerid="summoner_id"))
+
+print(lol.get_champion_rotations())
+
+print(lol.get_patch_version())
+
+print(lol.get_champions_mastery_by_summonerId(summonerId))
+
+print(lol.get_champion_mastery_by_summonerId_and_championId(summonerId,17))
+
+print(lol. get_matches_by_puuid(puuid))
+
+print(lol.get_match_by_matchid(single_match))
+```
