@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block main %}
+
+<section class="profile">
+  <img src="user.jpg">
+  <h1>{{ user.name }}</h1>
+  <p>
+    {{ user.description | safe}}  
+  </p>
+</section>
+
+<section class="gallery">
+  {% for coll in collections %}
+  <a href="collections/{{ coll.slug }}/index.html">
+  <div class="gallery-item">
+    <div class="name">{{ coll.title }}</div>
+    <img src="collections/{{ coll.slug }}/image.jpg">
+  </div>
+  </a>
+  {% endfor %}
+</section>
+
+{% endblock %}
