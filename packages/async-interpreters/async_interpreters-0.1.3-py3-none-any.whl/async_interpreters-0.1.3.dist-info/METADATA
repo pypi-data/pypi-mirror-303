@@ -1,0 +1,45 @@
+Metadata-Version: 2.3
+Name: async-interpreters
+Version: 0.1.3
+Summary: subinterpreters for asyncio.
+Project-URL: Source, https://github.com/yinziyan1206/async-interpreters
+Author-email: "ziyan.yin" <408856732@qq.com>
+License-File: LICENSE
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+
+# async-interpreters
+subinterpreters for asyncio
+
+## Usage
+
+```python
+from async_interpreters import WorkersPool
+
+workers = WorkersPool(max_size=10, timeout=5)
+
+def calc_sum(a, b):
+    sum = a
+    for i in range(b):
+        sum += i
+    return sum
+
+
+async def usage():
+    await workers.run_sync(calc_sum, 10, 100_000_000)
+
+
+async def benchmark():
+    t = time.perf_counter()
+    await asyncio.gather(*(usage() for _ in range(10)))
+    print(time.perf_counter() - t)
+
+```
+
