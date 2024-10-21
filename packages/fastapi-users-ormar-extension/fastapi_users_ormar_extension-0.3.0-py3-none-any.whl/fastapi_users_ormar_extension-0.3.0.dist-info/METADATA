@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: fastapi-users-ormar-extension
+Version: 0.3.0
+Summary: Use ormar for your fastapi-users project.
+License: MIT
+Author: Melih Değiş
+Author-email: melihdegis@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: fastapi-users (>=10.2.0)
+Requires-Dist: ormar (>0.12.2)
+Description-Content-Type: text/markdown
+
+# fastapi-users-ormar-extension
+Extension to use ormar in fastapi-users
+
+
+# Installation
+
+To install use:
+```sh
+pip install fastapi-users-ormar-extension
+```
+
+# Usage
+
+Example:
+
+```python
+from typing import Optional
+
+import ormar
+
+from fastapi_users_ormar_extension import (
+    OrmarBaseUserTableUUID,
+    OrmarBaseOAuthAccountTableUUID,
+)
+
+
+class BaseMeta(ormar.ModelMeta):
+    """Base metadata for models."""
+
+    database = database
+    metadata = meta
+
+
+class User(OrmarBaseUserTableUUID):
+    class Meta(BaseMeta):
+        pass
+
+    phone: str = ormar.String(nullable=False, max_length=100)
+
+
+class OAuthAccount(OrmarBaseOAuthAccountTableUUID):
+    class Meta(BaseMeta):
+        pass
+
+    user: User = ormar.ForeignKey(User, nullable=False, ondelete="cascade")
+```
