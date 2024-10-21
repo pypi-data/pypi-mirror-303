@@ -1,0 +1,44 @@
+{% extends "table.html" %}
+{% block table %}
+    <h2>Airlines</h2>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Airline</th>
+                <th scope="col">IATA</th>
+                <th scope="col">ICAO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in page.object_list %}
+                <tr role="button" data-href="{{ obj.get_absolute_url }}">
+                    <td>
+                        {% if obj.label %}
+                            {{ obj.label }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.iata %}
+                            {{ obj.iata }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.icao %}
+                            {{ obj.icao }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No airlines found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}
