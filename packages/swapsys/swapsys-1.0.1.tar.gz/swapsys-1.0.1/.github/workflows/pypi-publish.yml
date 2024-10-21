@@ -1,0 +1,46 @@
+name: Swapsys PyPi Package Upload
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write  # This is required for trusted publishing using OIDC
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    environment:
+      name: pypi  # Set the environment to PyPI
+      url: https://pypi.org/p/swapsys  # Replace with your PyPI project URL
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'  # You can adjust the Python version as needed
+    
+    - name: Clean previous builds
+      run: rm -rf dist/*  # Clean up previous builds
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+
+    - name: Build package
+      run: python -m build --verbose  # Enable verbose output during the build
+
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository_url: "https://upload.pypi.org/legacy/"
+      # No need for API token as trusted publishing uses the id-token generated automatically
+
+    - name: Confirm package publication
+      run: echo "Package has been published to PyPI successfully!"
