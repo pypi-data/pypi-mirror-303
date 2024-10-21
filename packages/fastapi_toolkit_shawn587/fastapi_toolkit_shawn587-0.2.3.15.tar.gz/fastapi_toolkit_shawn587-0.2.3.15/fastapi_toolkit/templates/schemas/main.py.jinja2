@@ -1,0 +1,51 @@
+{% import 'utils.j2' as utils %}
+import uuid
+import datetime
+from typing import List, Optional
+
+from fastapi_toolkit.define import Schema
+from pydantic import Field
+
+{% if deps %}
+from .custom_types import  (
+    {% for dep in deps %}
+    {{ dep.name }}
+    {% endfor %}
+)
+{% endif %}
+
+{% for model in models %}
+class {{ model.name.base_schema }}(Schema):
+    """pk"""
+    id: int = Field(default=None)
+
+    deleted_at: Optional[datetime.datetime] = Field(default=None, exclude=True)
+    created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
+    updated_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
+
+    """fields"""
+    {% for field in model.fields %}
+    {{ utils.render_schema_field(field) }}
+    {%- endfor %}
+
+
+class {{ model.name.schema }}({{ model.name.base_schema }}):
+    """relationships"""
+    {% for link in model.links %}
+    {% set l = link.render_data %}
+    {{ l.schema_link_name }}: "{{ l.schema_target_type }}" = {{ l.default_value }}
+    {% endfor %}
+
+
+{% endfor %}
+{% for model in models %}
+{{ model.name.base_schema }}.model_rebuild()
+{{ model.name.schema }}.model_rebuild()
+{% endfor %}
+
+__all__ = [
+    {% for model in models %}
+    '{{ model.name.base_schema }}',
+    '{{ model.name.schema }}',
+    {% endfor %}
+]

@@ -1,0 +1,9 @@
+from typing import Union
+
+from fastapi_toolkit.define.config import ModelConfig
+
+
+class Config:
+    {% for model in models %}
+    {{ model.name.snake }}: Union[ModelConfig, bool] = ModelConfig()
+    {% endfor %}

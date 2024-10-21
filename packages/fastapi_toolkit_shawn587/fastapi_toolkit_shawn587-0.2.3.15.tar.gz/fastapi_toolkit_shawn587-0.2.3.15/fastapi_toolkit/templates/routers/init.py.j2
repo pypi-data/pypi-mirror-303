@@ -1,0 +1,22 @@
+from fastapi import APIRouter
+
+{% for model in models %}
+from .{{ model.name.snake }}_router import {{ model.name.camel }}Router
+{% endfor %}
+
+
+class InnerRouter(APIRouter):
+    def __init__(self, config):
+        super().__init__()
+        if not config:
+            return
+        {% for model in models %}
+        if config.{{ model.name.snake }}:
+            self.include_router({{ model.name.camel }}Router(config.{{ model.name.snake }}))
+        {% endfor %}
+
+
+__all__ = [
+    'InnerRouter',
+]
+

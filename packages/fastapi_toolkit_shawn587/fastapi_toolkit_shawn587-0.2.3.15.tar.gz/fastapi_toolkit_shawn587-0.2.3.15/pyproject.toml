@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "fastapi_toolkit_shawn587"
+version = "0.2.3.15"
+authors = ["0x587 <shawnsiu@outlook.com>"]
+description = "This toolkit can generate database CRUD operations based on defined metadata in one click, basic fastapi routing and mock data scripts."
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [{ include = "fastapi_toolkit" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "0.112.2"
+fastapi-pagination = "^0.12.12"
+sqlalchemy = "^2.0.23"
+typer = { extras = ["all"], version = "^0.9.0" }
+pydantic = "2.8.2"
+pyyaml = "^6.0.1"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.6"
+bcrypt = "4.0.1"
+pydantic-settings = "^2.1.0"
+jinja2 = "^3.1.2"
+alembic = "^1.12.1"
+uvicorn = "^0.24.0.post1"
+aiomysql = "^0.2.0"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ftk = "fastapi_toolkit.__main__:app"

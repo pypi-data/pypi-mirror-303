@@ -1,0 +1,10 @@
+{% for model in models %}
+import inner_code.repo.{{ model.name.snake }}_repo as {{ model.name.snake }}_repo
+{% endfor %}
+from ..schemas import {{ models | map(attribute="name.base_schema") | join(', ')}}
+
+repo_map = {
+    {% for model in models %}
+    {{ model.name.base_schema }}: {{ model.name.snake }}_repo,
+    {% endfor %}
+}

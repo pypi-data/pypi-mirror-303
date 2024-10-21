@@ -1,0 +1,75 @@
+{% import 'utils.j2' as utils %}
+import datetime
+from typing import List, Optional
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, Table, Column
+from sqlalchemy.sql import sqltypes
+
+from .db import Base
+{% if deps %}
+from .custom_types import  (
+    {% for dep in deps %}
+    {{ dep.name }}
+    {% endfor %}
+)
+{% endif %}
+
+{% for association_table in association_tables %}
+{{ association_table.name }} = Table(
+    "{{ association_table.name }}",
+    Base.metadata,
+    Column("{{ association_table.left.name.table }}_id", ForeignKey("{{ association_table.left.name.table }}.id"), primary_key=True),
+    Column("{{ association_table.right.name.table }}_id", ForeignKey("{{ association_table.right.name.table }}.id"), primary_key=True),
+)
+
+{% endfor %}
+
+{% for model in models %}
+class {{ model.name.db }}(Base):
+    __tablename__ = "{{ model.name.table }}"
+
+    id: Mapped[int] = mapped_column(sqltypes.Integer, primary_key=True, autoincrement=True)
+    deleted_at: Mapped[Optional[datetime.datetime]] = mapped_column(sqltypes.DateTime, nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(sqltypes.DateTime)
+    updated_at: Mapped[datetime.datetime] = mapped_column(sqltypes.DateTime)
+
+    {% for field in model.fields %}
+    {{ utils.render_table_field(field) }}
+    {%- endfor %}
+
+    {%- for link in model.links %}
+
+    {% set l = link.render_data %}
+    {% set fk = link.fk %}
+    {% set table = link.table %}
+    {% if fk %}
+    {{ fk.name }}: Mapped[{{ fk.key_type }}] = mapped_column(ForeignKey("{{ fk.column }}"), nullable=True)
+    {% endif %}
+    {{ l.link_name }}: Mapped[{{ l.target_type }}] = relationship(
+        back_populates="{{ l.back_populates }}",
+    {% if table %}
+        secondary={{ table.name }}
+    {% endif %}
+    )
+{#    {% set t = link.t1 %}#}
+{#    {% set rt = link.t2 %}#}
+{#    {% set l = link.m1 %}#}
+{#    {% set r = link.m2 %}#}
+{#    {% set r_name = r.name.snake_plural if t == 'many' else r.name.snake %}#}
+{#    {% set l_name = l.name.snake_plural if rt == 'many' else l.name.snake %}#}
+{#    {% set r_type = 'List["'+r.name.db+'"]' if t == 'many' else "'"+r.name.db+"'" %}#}
+{#    {{ link.link_name }}: Mapped[{{ r_type }}] = relationship(back_populates="{{ l_name }}")#}
+{#    {% if t != 'many' %}#}
+{#    {{ r.name.fk }}: Mapped[int] = mapped_column(ForeignKey("{{ r.name.table }}.id"), nullable={{ link.nullable }})#}
+{#    {% endif %}#}
+    {% endfor %}
+
+
+{% endfor %}
+__all__ = [
+    'Base',
+    {% for model in models %}
+    '{{ model.name.db }}',
+    {% endfor %}
+]
