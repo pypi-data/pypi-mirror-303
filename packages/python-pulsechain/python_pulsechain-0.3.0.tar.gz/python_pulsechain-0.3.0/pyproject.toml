@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "python-pulsechain"
+version = "0.3.0"
+description = "Python implementation for PulseChain API"
+license = "GPL-3.0"
+repository = "https://github.com/crypto-ralph/python-pulsechain"
+authors = ["CryptoRalph <doxter@protonmail.com>"]
+readme = "README.md"
+include = [
+    "LICENSE",
+]
+packages = [{include = "pulsechain"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.27.0"
+pydantic = "^2.8.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.0.0"
+ruff = "^0.7.0"
+mypy = "^1.11.2"
+pylint = "^3.3.1"
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "^8.0.2"
+sphinx-rtd-theme = "^3.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+known_third_party = ["pydantic", "httpx"]
+
+[tool.pylint]
+max-line-length = 120
+extension-pkg-whitelist = ["pydantic"]
+disable = ["too-few-public-methods", "too-many-instance-attributes"]
+
+[tool.mypy]
+exclude = "(docs)"
