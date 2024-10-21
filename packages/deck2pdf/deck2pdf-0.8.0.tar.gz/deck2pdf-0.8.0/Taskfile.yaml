@@ -1,0 +1,34 @@
+version: '3'
+
+vars:
+  # If you run bare environment or activated venv, set '' (blank string)
+  RUN_PYTHON: 'uv run'
+  # Command to run cli installed of python environment.
+  PYTHONX: 'uvx'
+
+tasks:
+  setup:
+    desc: 'Setup workspace'
+    cmds:
+      - 'uv sync --frozen'
+      - '{{.PYTHONX}} playwright install chromium'
+      - '{{.PYTHONX}} pre-commit install'
+  verify:
+    desc: 'Verify healthy of local workspace'
+    cmds:
+      - '{{.PYTHONX}} pre-commit run --all-files'
+      - 'uv run pytest'
+      - task: 'docs:intl'
+      - task: 'docs:build-linkcheck'
+      - task: 'docs:build-dirhtml'
+      - 'uv build'
+  release-*:
+    desc: 'Run release process'
+    vars:
+      LEVEL: '{{index .MATCH 0}}'
+    cmds:
+      - 'age {{.LEVEL}}'
+      - 'uv sync'  # To write out as lock-file
+
+includes:
+  docs: './docs'

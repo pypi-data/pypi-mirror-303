@@ -1,0 +1,60 @@
+current_version = "0.8.0"
+
+[[files]]
+path = "pyproject.toml"
+
+search = "version = \"{{current_version}}\""
+replace = "version = \"{{new_version}}\""
+
+
+[[files]]
+path = "src/deck2pdf/__init__.py"
+
+search = "__version__ = \"{{current_version}}\""
+replace = "__version__ = \"{{new_version}}\""
+
+
+[[files]]
+path = "CHANGES.rst"
+
+search = """
+Change logs
+===========
+"""
+replace = """
+Change logs
+===========
+
+v{{new_version}}
+={% for _ in new_version %}={% endfor %}
+
+:Date: {{ now|date }} (JST)
+
+Breaking changes
+----------------
+
+Features
+--------
+
+Fixes
+-----
+
+Others
+------
+"""
+
+[[files]]
+path = ".github/release-body.md"
+regex = true
+search = """
+Release .+
+
+.+
+.+
+"""
+replace = """
+Release atsphinx-demo v{{new_version}}
+
+- Changelog is https://github.com/attakei/deck2pdf-python/blob/v{{new_version}}/CHANGES.rst
+- Diff is https://github.com/attakei/deck2pdf-python/compare/v{{current_version}}..v{{new_version}}
+"""
