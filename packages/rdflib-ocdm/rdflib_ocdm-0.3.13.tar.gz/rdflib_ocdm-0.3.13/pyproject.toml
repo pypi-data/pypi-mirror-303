@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "rdflib-ocdm"
+version = "0.3.13"
+description = ""
+authors = ["arcangelo7 <arcangelomas@gmail.com>"]
+license = "ISC"
+readme = "README.md"
+packages = [{include = "rdflib_ocdm"}]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.14"
+rdflib = "^6.2.0"
+oc-ocdm = "^9.1.1"
+sparqlwrapper = "^2.0.0"
+redis = "^4.5.5"
+time-agnostic-library = "^4.6.5"
+
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.2.3"
+coverage-badge = "^1.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
