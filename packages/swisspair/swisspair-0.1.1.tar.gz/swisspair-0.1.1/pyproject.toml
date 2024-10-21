@@ -1,0 +1,42 @@
+[build-system]
+requires = [
+    "scikit-build-core>=0.10",
+    "pybind11[global]"
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "swisspair"
+# version is only for local development, it gets set automatically in CI/CD
+version = "0.1.1"
+author = "Karel Jilek"
+author_email = "los.karlosss@gmail.com"
+description = "Python bindings for Swiss pairing algorithm for (not only) Magic: The Gathering."
+readme = "README.md"
+python_requires = ">=3.9"
+requires=[]
+
+[tool.cibuildwheel.linux]
+before-all = """
+yum -y install gmp-devel || apk add gmp-dev
+"""
+
+[tool.cibuildwheel.macos]
+before-all = """
+brew install gmp pkg-config
+"""
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+filterwarnings = [
+  "error",
+  "ignore::pytest.PytestCacheWarning",
+]
+testpaths = ["tests"]
+python_functions = "Given*"
