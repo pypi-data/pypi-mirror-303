@@ -1,0 +1,28 @@
+[project]
+name = "peakrdl-cocotb-ralgen"
+version = "0.1.0"
+description = "Generate RAL tests from systemRDL depends on peakrdl-python to create the class for frontend access"
+authors = [
+    { name = "Vijayvithal Jahagirdar", email = "jahagirdar.vs@gmail.com" },
+]
+dependencies = [
+    "peakrdl-python>=0.8.1",
+    "systemrdl-compiler>=1.27.3",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.entry-points."peakrdl.exporters"]
+cocotb_ralgen = "peakrdl_cocotb_ralgen.__peakrdl__:Exporter"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
