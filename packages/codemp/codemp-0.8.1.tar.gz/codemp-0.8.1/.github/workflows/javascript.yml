@@ -1,0 +1,89 @@
+name: javascript
+
+on:
+  push:
+    branches:
+      - stable
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runner: ubuntu-latest
+            target: linux-x64-gnu
+          - runner: windows-latest
+            target: win32-x64
+          - runner: macos-14
+            target: darwin-arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+        working-directory: dist/js
+      - run: npx napi build --cargo-cwd=../.. --platform --release --features=js --strip
+        working-directory: dist/js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codemp-js-${{ matrix.platform.target }}
+          path: dist/js/codemp.*.node
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      # TODO we need index.d.ts and index.js but those get auto generated with napi build
+      #      we could upload them from one of the previous runs but its messy, so we'll waste 
+      #      some github resources and build another time here, discarding the binary
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+        working-directory: dist/js
+      - run: npx napi build --cargo-cwd=../.. --platform --features=js
+        working-directory: dist/js
+      - run: rm *.node
+        working-directory: dist/js
+      - run: npx napi create-npm-dir -t .; tree
+        working-directory: dist/js
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist/js/artifacts
+          pattern: codemp-js-*
+      - run: npx napi artifacts; tree
+        working-directory: dist/js
+      - run: npx napi prepublish -t . --skip-gh-release
+        working-directory: dist/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: rm -rf *.node artifacts node_modules npm
+        working-directory: dist/js
+      - run: cp ../../README.md .
+        working-directory: dist/js
+      # TODO this is a bit awful, but napi just appends the platform triplet to the resulting package name
+      #      however we want '@codemp/native-...' and 'codemp' (because otherwise it gets flagged as spam)
+      #      so we just sed out before releasing. this is really ugly but if it works right now i'll just
+      #      take it and think again about it later
+      - run: sed -i 's/"@codemp\/native"/"codemp"/' package.json
+        working-directory: dist/js
+      - run: npm publish
+        working-directory: dist/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

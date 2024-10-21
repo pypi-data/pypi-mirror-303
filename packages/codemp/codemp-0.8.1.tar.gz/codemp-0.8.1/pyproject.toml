@@ -1,0 +1,35 @@
+[project]
+name = "codemp"
+version = "0.8.1"
+description = "code multiplexer"
+requires-python = ">=3.8"
+license = "GPL-3.0-only"
+keywords = ["codemp", "cooperative", "rust", "python"]
+authors = [
+	{ name = "cschen", email = "cschen@codemp.dev" },
+	{ name = "alemi", email = "me@alemi.dev" },
+	{ name = "zaaarf", email = "me@zaaarf.foo" },
+	{ name = "frelodev", email = "frelodev@gmail.com" },
+]
+maintainers = [
+	{ name = "cschen", email = "cschen@codemp.dev" },
+]
+classifiers = [
+	"Programming Language :: Python"
+]
+
+dependencies = []
+
+[project.urls]
+repository = "https://github.com/hexedtech/codemp.git"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["py"]
+python-source = "src"
+manifest-path = "Cargo.toml"
+
+
