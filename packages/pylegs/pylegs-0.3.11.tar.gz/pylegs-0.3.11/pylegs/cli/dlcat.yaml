@@ -1,0 +1,112 @@
+name: dlcat
+help: Tool for download Legacy Survey catalog based on square area
+args:
+  - flags: output
+    action: store
+    help: |
+      Path of the output table
+  
+  - flags: --ramin
+    action: store
+    type: float
+    default: 0
+    help: |
+      The lower bound of the RA range in degrees. Default: 0
+  
+  - flags: --ramax
+    action: store
+    type: float
+    default: 360
+    help: |
+      The upper bound of the RA range in degrees. Default: 360
+
+  - flags: --decmin
+    action: store
+    type: float
+    default: -90
+    help: |
+      The lower bound of the DEC range in degrees. Default: -90
+
+  - flags: --decmax
+    action: store
+    type: float
+    default: 90
+    help: |
+      The upper bound of the DEC range in degrees. Default: 90
+  
+  - flags: --delta
+    action: store
+    default: 10 arcmin
+    help: |
+      The value of the angle interval that the ra axis will be divided.
+      The unit must be specified. E.g: 1.2 deg, 20 arcmin, 14 arcsec.
+      Default: 10 arcmin
+
+  - flags: --cols
+    action: store
+    nargs: +
+    default: null
+    help: |
+      Column names to retrieve.
+  
+  - flags: --table
+    action: store
+    default: ls_dr10.tractor
+    help: |
+      Fully qualified table name following the format: <schema_name>.<table_name>. 
+      Default: ls_dr10.tractor
+  
+  - flags: --types
+    action: store
+    nargs: +
+    default: null
+    choices: ['PSF', 'REX', 'DEV', 'EXP', 'SER', 'DUP']
+    help: |
+      Morphological types to allow in final table.
+      By default, only PSF type (stars) are removed. 
+      Possible values: PSF, REX, DEV, EXP, SER, DUP. 
+      Default: None (all types are retrieved)
+  
+  - flags: --rmin
+    action: store
+    type: float
+    default: null
+    help: |
+      The lower bound of the magnitude range in r band. 
+      Default: None (no lower limit)
+  
+  - flags: --rmax
+    action: store
+    type: float
+    default: null
+    help: |
+      The upper bound of the magnitude range in r band. 
+      Default: None (no upper limit)
+  
+  - flags: --primary
+    action: store_true
+    help: |
+      Set this flag to include only primary objects.
+  
+  - flags: --overwrite
+    action: store_true
+    help: |
+      Use this flag to overwrite the destinaton path if the file exists
+  
+  - flags: --workers
+    action: store
+    type: int
+    default: 7
+    help: |
+      Number of parallel queries that will be sent to server. Default: 7
+
+  - flags: --tmp
+    action: store
+    default: null
+    help: |
+      Temp folder to store partial tables. Default: none
+
+  - flags: --otmp
+    action: store_true
+    help: |
+      Set this flag to overwrite partial tables in temp folder, if exists
