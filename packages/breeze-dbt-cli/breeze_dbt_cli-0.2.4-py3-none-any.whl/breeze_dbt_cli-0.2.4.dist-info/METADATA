@@ -1,0 +1,302 @@
+Metadata-Version: 2.1
+Name: breeze-dbt-cli
+Version: 0.2.4
+Summary: A CLI tool to streamline dbt project development.
+Home-page: https://github.com/alecab94/breeze-dbt-cli
+Author: Alejandro Cabrera
+Author-email: alecab1994@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: Jinja2
+Requires-Dist: pyodbc
+Requires-Dist: pyyaml
+Requires-Dist: ruamel.yaml
+Requires-Dist: typer[all]
+
+
+# Breeze CLI Tool Documentation
+
+## Introduction
+
+**Breeze** is a command-line interface (CLI) tool designed to streamline the development of dbt (Data Build Tool) projects. It automates the creation and management of dbt models, sources, and their associated YAML files. Additionally, it provides utilities to add tests to models and sources efficiently.
+
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Command Overview](#command-overview)
+3. [Build Commands](#build-commands)
+   - [`breeze build model`](#breeze-build-model)
+   - [`breeze build yml`](#breeze-build-yml)
+   - [`breeze build source`](#breeze-build-source)
+4. [Add Commands](#add-commands)
+   - [`breeze add test`](#breeze-add-test)
+5. [Templates](#templates)
+   - [Template Placeholders](#template-placeholders)
+   - [Example Templates](#example-templates)
+6. [Examples](#examples)
+7. [Best Practices](#best-practices)
+8. [Support and Contributions](#support-and-contributions)
+9. [Conclusion](#conclusion)
+
+## Installation
+
+run `pip install breeze-dbt-cli` in your dbt projects virtual environment.
+
+## Command Overview
+
+Breeze organizes its functionality into several command groups:
+
+- **build**: Commands to generate models, YAML files, and sources.
+- **add**: Commands to add tests to models or sources.
+
+Use `breeze --help` to display the help message and list of available commands.
+
+## Build Commands
+
+Commands under the `build` group help in creating models, YAML files, and sources.
+
+### breeze build model
+
+Generate `.sql` files with a boilerplate `SELECT` statement for each model under `models/folder_name/model_name/model_name.sql`.
+
+#### Usage
+
+```bash
+breeze build model [OPTIONS] FOLDER_NAME MODEL_NAMES...
+```
+
+#### Arguments
+
+- **FOLDER_NAME** *(required)*: The folder name where the model SQL file will be created.
+- **MODEL_NAMES** *(required)*: One or more model names for which to generate `.sql` files.
+
+#### Options
+
+- **--force, -f**: Overwrite existing `.sql` files if they exist.
+- **--template, -t**: Path to a custom SQL template file.
+
+#### Examples
+
+- Generate `.sql` files for `model1` and `model2` in `folder_name`:
+
+```bash
+breeze build model folder_name model1 model2
+```
+
+- Generate `.sql` files using a custom template and overwrite existing files:
+
+```bash
+breeze build model folder_name model1 --template path/to/template.sql --force
+```
+
+### breeze build yml
+
+Generate YAML files for one or more models under `models/folder_name/model_name/model_name.yml`.
+
+#### Usage
+
+```bash
+breeze build yml [OPTIONS] MODEL_NAMES...
+```
+
+#### Arguments
+
+- **MODEL_NAMES** *(required)*: One or more model names for which to generate YAML files.
+
+#### Options
+
+- **--force, -f**: Overwrite existing files if they exist.
+- **--template, -t**: Path to a custom YAML template file.
+
+#### Examples
+
+- Generate YAML files for `model1` and `model2`:
+
+```bash
+breeze build yml model1 model2
+```
+
+- Generate YAML files using a custom template:
+
+```bash
+breeze build yml model1 --template path/to/template.yml
+```
+
+### breeze build source
+
+Generate YAML files for one or more sources under `models/schema_name/source_name.yml`.
+
+#### Usage
+
+```bash
+breeze build source [OPTIONS] SCHEMA_NAME SOURCE_NAMES...
+```
+
+#### Arguments
+
+- **SCHEMA_NAME** *(required)*: The schema name of the sources.
+- **SOURCE_NAMES** *(required)*: One or more source names for which to generate YAML files.
+
+#### Options
+
+- **--force, -f**: Overwrite existing files if they exist.
+- **--template, -t**: Path to a custom YAML template file.
+
+#### Examples
+
+- Generate source YAML files for `source1` and `source2` under `models/schema_name/`:
+
+```bash
+breeze build source my_schema source1 source2
+```
+
+- Generate source YAML files using a custom template:
+
+```bash
+breeze build source my_schema source1 --template path/to/source_template.yml
+```
+
+## Add Commands
+
+Commands under the `add` group assist in adding tests to models or sources.
+
+### breeze add test
+
+Add one or more tests to a model or source. If columns are specified, the tests are added to those columns. If no columns are specified, the tests are added at the model or source level.
+
+#### Usage
+
+```bash
+breeze add test [OPTIONS] TEST_NAMES...
+```
+
+#### Arguments
+
+- **TEST_NAMES** *(required)*: One or more test names to add (e.g., `not_null`, `unique`).
+
+#### Options
+
+- **--model, -m**: The model name to add the test(s) to.
+- **--source, -s**: The source name to add the test(s) to.
+- **--columns, -c**: Comma-separated column names to add the test(s) to.
+
+#### Examples
+
+- Add multiple tests to specific columns in a model:
+
+```bash
+breeze add test not_null unique --model customers --columns "customer_id, email"
+```
+
+- Add multiple tests at the model level:
+
+```bash
+breeze add test unique accepted_values --model orders
+```
+
+- Add multiple tests to specific columns in a source:
+
+```bash
+breeze add test not_null accepted_values --source status --columns status_code
+```
+
+## Templates
+
+Breeze allows you to use custom templates for generating `.sql` and `.yml` files. You can specify a custom template using the `--template` option with the `build` commands.
+
+### Template Placeholders
+
+You can include the following placeholders in your templates:
+
+- **{{ model_name }}**: Name of the model.
+- **{{ source_name }}**: Name of the source table.
+- **{{ schema_name }}**: Name of the schema.
+- **{{ database }}**: Name of the database.
+- **{{ columns }}**: List of columns (used in loops).
+
+Within loops, each column has:
+
+- **{{ column.name }}**: Column name.
+- **{{ column.data_type }}**: Data type of the column.
+
+### Example Templates
+
+#### Model YAML Template
+
+```yaml
+version: 2
+
+models:
+  - name: {{ model_name }}
+    description: 'Describe {{ model_name }} here.'
+    columns:
+    {%- for column in columns %}
+      - name: {{ column.name }}
+        data_type: {{ column.data_type }}
+        description: ''
+        # tests:
+        #   - not_null
+    {%- endfor %}
+```
+
+#### Source YAML Template
+
+```yaml
+version: 2
+
+sources:
+  - name: {{ schema_name }}
+    description: ''
+    database: {{ database }}
+    schema: {{ schema_name }}
+    tables:
+    - name: {{ source_name }}
+      description: ''
+      columns:
+      {%- for column in columns %}
+        - name: {{ column.name }}
+          data_type: {{ column.data_type }}
+          description: ''
+          # tests:
+          #   - not_null
+      {%- endfor %}
+```
+
+#### SQL Template
+
+```sql
+-- Custom SQL Template stg tables
+WITH
+
+source AS (
+    SELECT *
+    FROM {{ source('raw', 'source_name') }}
+),
+
+SELECT * FROM source
+```
+
+Note: The `-` (dash) in Jinja blocks is used for whitespace control. It prevents unnecessary spaces and newlines from being added to the rendered output. This can help keep your final files (like YAML, SQL, or other templated outputs) clean and correctly formatted without extra blank lines or spaces.
+
+## Best Practices
+
+- **Run `dbt compile` or `dbt build` before generating YAML files**: This ensures that the `manifest.json` is up-to-date, which Breeze uses to gather model information.
+  
+- **Use the `--force` flag cautiously**: Overwriting existing files can lead to loss of manual changes. Ensure you have backups or use version control.
+
+- **Validate Generated Files**: After generating or modifying files, validate the YAML syntax and dbt configurations.
+
+- **Enclose Columns with Spaces in Quotes**: When specifying columns with spaces in their names or spaces after commas, enclose the columns in quotes.
+
+- **Consistent Indentation in Templates**: Use Jinja2's whitespace control features to maintain consistent formatting in your templates.
+
+## Support and Contributions
+
+If you encounter issues or have suggestions for new features, please consider contributing to the project or opening an issue on the project's repository.
+
+## Conclusion
+
+Breeze simplifies dbt project development by automating repetitive tasks and enforcing consistency across models and sources. By leveraging custom templates and automated test additions, you can focus on developing robust data transformations.
