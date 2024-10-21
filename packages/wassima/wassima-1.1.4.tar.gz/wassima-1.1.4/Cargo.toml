@@ -1,0 +1,16 @@
+[package]
+name = "wassima"
+version = "1.1.4"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "wassima"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.20.3", features = ["abi3-py37", "extension-module"] }
+rustls-native-certs = "0.7.3"
+
+[package.metadata.maturin]
+python-source = "wassima"
