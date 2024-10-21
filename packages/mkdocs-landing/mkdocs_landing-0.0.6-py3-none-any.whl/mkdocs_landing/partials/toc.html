@@ -1,0 +1,22 @@
+<nav class="vertical" id="toc">
+{% if config.theme.toc_level > 0 %}
+<ul>
+{% for toc_item in page.toc %}
+<li class="nav-item">
+<a href="{{ toc_item.url }}">{{ toc_item.title }}</a>
+    {% if config.theme.toc_level > 1 %}
+    <ul>
+    {% for toc_subitem in toc_item.children %}
+    {% if toc_subitem.level == toc_item.level + 1 %}
+    <li class="nav-subitem">
+    <a href="{{ toc_subitem.url }}">{{ toc_subitem.title }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    {% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+</nav>

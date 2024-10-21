@@ -1,0 +1,196 @@
+<head>
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}</title>
+    <style>
+      /* load heading font */
+      {% if config.theme.heading_font_files.regular %}@font-face {
+        font-family: "{{ config.theme.heading_font }}";
+        src: url('{{ config.theme.heading_font_files.regular | url }}');
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.heading_font }}:wght@400');{% endif %}
+      {% if config.theme.heading_font_files.italic %}@font-face {
+        font-family: "{{ config.theme.heading_font }}";
+        src: url('{{ config.theme.heading_font_files.italic | url }}');
+        font-style: italic;
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.heading_font }}:ital,wght@400');{% endif %}
+      {% if config.theme.heading_font_files.bold %}@font-face {
+        font-family: "{{ config.theme.heading_font }}";
+        src: url('{{ config.theme.heading_font_files.bold | url }}');
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.heading_font }}:wght@700');{% endif %}
+      {% if config.theme.heading_font_files.bold_italic %}@font-face {
+        font-family: "{{ config.theme.heading_font }}";
+        src: url('{{ config.theme.heading_font_files.bold_italic | url }}');
+        font-style: italic;
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.heading_font }}:ital,wght@700');{% endif %}
+
+      /* load body font */
+      {% if config.theme.body_font_files.regular %}@font-face {
+        font-family: "{{ config.theme.body_font }}";
+        src: url('{{ config.theme.body_font_files.regular | url }}');
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.body_font }}:wght@400');{% endif %}
+      {% if config.theme.body_font_files.italic %}@font-face {
+        font-family: "{{ config.theme.body_font }}";
+        src: url('{{ config.theme.body_font_files.italic | url }}');
+        font-style: italic;
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.body_font }}:ital,wght@400');{% endif %}
+      {% if config.theme.body_font_files.bold %}@font-face {
+        font-family: "{{ config.theme.body_font }}";
+        src: url('{{ config.theme.body_font_files.bold | url }}');
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.body_font }}:wght@700');{% endif %}
+      {% if config.theme.body_font_files.bold_italic %}@font-face {
+        font-family: "{{ config.theme.body_font }}";
+        src: url('{{ config.theme.body_font_files.bold_italic | url }}');
+        font-style: italic;
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.body_font }}:ital,wght@700');{% endif %}
+
+      /* load mono font */
+      {% if config.theme.mono_font_files.regular %}@font-face {
+        font-family: "{{ config.theme.mono_font }}";
+        src: url('{{ config.theme.mono_font_files.regular | url }}');
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.mono_font }}:wght@400');{% endif %}
+      {% if config.theme.mono_font_files.italic %}@font-face {
+        font-family: "{{ config.theme.mono_font }}";
+        src: url('{{ config.theme.mono_font_files.italic | url }}');
+        font-style: italic;
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.mono_font }}:ital,wght@400');{% endif %}
+      {% if config.theme.mono_font_files.bold %}@font-face {
+        font-family: "{{ config.theme.mono_font }}";
+        src: url('{{ config.theme.mono_font_files.bold | url }}');
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.mono_font }}:wght@700');{% endif %}
+      {% if config.theme.mono_font_files.bold_italic %}@font-face {
+        font-family: "{{ config.theme.mono_font }}";
+        src: url('{{ config.theme.mono_font_files.bold_italic | url }}');
+        font-style: italic;
+        font-weight: 700;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.mono_font }}:ital,wght@700');{% endif %}
+
+      /* load emoji font */
+      {% if config.theme.emoji_font_files.regular %}@font-face {
+        font-family: "{{ config.theme.emoji_font }}";
+        src: url('{{ config.theme.emoji_font_files.regular | url }}');
+        font-weight: 400;
+      }{% else %}@import url('https://fonts.googleapis.com/css2?family={{ config.theme.emoji_font }}:wght@400');{% endif %}
+  
+      :root {
+        /* colors */
+        --primary: {{config.theme.primary_color}};
+        --secondary: {{config.theme.secondary_color}};
+        --tertiary: {{config.theme.tertiary_color}};
+        /* shades */
+        --base: {{config.theme.base_color}};
+        --mantle: {{config.theme.mantle_color}};
+        --crust: {{config.theme.crust_color}};
+        --overlay: {{config.theme.overlay_color}};
+        --footer: #000000cc;
+        /* text */
+        --text: {{config.theme.text_color}};
+        --hltext: {{config.theme.hltext_color}};
+        color: var(--text);
+        /* background-specific text */
+        --primary-text: {{config.theme.primary_text_color}};
+        --secondary-text: {{config.theme.secondary_text_color}};
+        --tertiary-text: {{config.theme.tertiary_text_color}};
+        --base-text: {{config.theme.base_text_color}};
+        --mantle-text: {{config.theme.mantle_text_color}};
+        --crust-text: {{config.theme.crust_text_color}};
+        --overlay-text: {{config.theme.overlay_text_color}};
+        --footer-text: var(--hltext);
+        /* fonts */
+        --heading: {{config.theme.heading_font}}, {{config.theme.emoji_font}};
+        --body: {{config.theme.body_font}}, {{config.theme.emoji_font}};
+        --mono: {{config.theme.mono_font}}, {{config.theme.emoji_font}};
+        font-family: var(--body); 
+      }
+      /* dark mode */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* colors */
+          --primary: {{config.theme.primary_color_dark}};
+          --secondary: {{config.theme.secondary_color_dark}};
+          --tertiary: {{config.theme.tertiary_color_dark}};
+          /* shades */
+          --base: {{config.theme.base_color_dark}};
+          --mantle: {{config.theme.mantle_color_dark}};
+          --crust: {{config.theme.crust_color_dark}};
+          --overlay: {{config.theme.overlay_color_dark}};
+          --footer: #00000022;
+          /* text */
+          --text: {{config.theme.text_color_dark}};
+          --hltext: {{config.theme.hltext_color_dark}};
+          color: var(--text);
+          /* background-specific text */
+          --primary-text: {{config.theme.primary_text_color_dark}};
+          --secondary-text: {{config.theme.secondary_text_color_dark}};
+          --tertiary-text: {{config.theme.tertiary_text_color_dark}};
+          --base-text: {{config.theme.base_text_color_dark}};
+          --mantle-text: {{config.theme.mantle_text_color_dark}};
+          --crust-text: {{config.theme.crust_text_color_dark}};
+          --overlay-text: {{config.theme.overlay_text_color_dark}};
+          --footer-text: var(--text);
+        }
+      }
+      /* style settings */
+      header#header {
+        grid-template-columns: {{ config.theme.avatar_size }} auto {{ config.theme.avatar_size }};
+      }
+      body#background {
+        background: {{config.theme.background}};
+        {% if config.theme.background_color|length %}
+        background-color: {{config.theme.background_color}};
+        {% endif %}
+        {% if config.theme.background_image|length %}
+        background-image: url({{config.theme.background_image}});
+        {% endif %}
+      }
+      #background-gradient {
+        background: linear-gradient(
+          {{ config.theme.background_gradient_angle }}deg, 
+          {{ config.theme.background_gradient_colors|join(", ") }}
+        );
+      }
+      content#content {
+        padding: 0 {{ config.theme.content_box_padding }};
+        background: color-mix(in srgb, var(--base) {{config.theme.content_box_opacity}}, transparent);
+        border-left: {{ config.theme.border_left }};
+        border-right: {{ config.theme.border_right }};
+      }
+      #avatar {
+        {% if config.theme.round_avatar %}
+        border-radius: 50%;
+        {% else %}
+        border-radius: 1rem;
+        {% endif %}
+      }
+      footer#footer a {
+        color: {{config.theme.secondary_color_dark}};
+      }
+      footer#footer a:hover {
+        color: {{config.theme.tertiary_color_dark}};
+      }
+    </style>
+    <link rel="icon" type="image/x-icon" href={{ config.theme.favicon }}>
+    <link href="{{ 'css/style.css' | url }}" rel="stylesheet">
+    <link href="{{ 'css/responsivity.css' | url }}" rel="stylesheet">
+    {%- for path in config.extra_css %}
+    <link href="{{ path | url }}" rel="stylesheet">
+    {%- endfor %}
+    {%- for script in config.extra_javascript %}
+    {%- if script.path %}  {# Detected MkDocs 1.5+ which has `script.path` and `script_tag` #}
+    {{ script | script_tag }}
+    {%- else %}  {# Fallback - examine the file name directly #}
+    <script src="{{ script | url }}"{% if script.endswith(".mjs") %} type="module"{% endif %}></script>
+    {%- endif %}
+    {%- endfor %}
+    <script src="https://kit.fontawesome.com/b57355f8ac.js" crossorigin="anonymous"></script>
+    <script id="altmetric-embed-js" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/altmetric_badges-e7ba41a192efc3e63f5d48f8a1916dec4b1b49c01075bc7b39481408957b3b28.js"></script>
+    <link id="altmetric-embed-css" rel="stylesheet" type="text/css" href="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed-59614f5c46b49b21eeef3bb28c4fb38d1e7069e8d014752fcb66e84942556802.css">
+  </head>
