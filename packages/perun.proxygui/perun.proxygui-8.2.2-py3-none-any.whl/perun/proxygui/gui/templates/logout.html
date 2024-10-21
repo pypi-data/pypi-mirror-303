@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block contentwrapper %}
+  <div
+    class="window {% if cfg.css_framework == 'MUNI' %}framework_muni{% else %}framework_bootstrap5 bg-light{% endif %}">
+    <div
+      class="u-pl-20 u-pr-20{% if not cfg.css_framework == 'MUNI' %} d-flex flex-column gap-2{% endif %}">
+      {% if logged_out_service %}
+        <h1 class="h1 margin-top-1em">{{ _("Logout Successful") }}</h1>
+        <h2 class="h3">{{ _("You have successfully logged out from ") }}
+          {{ logged_out_service.get('labels', {}).get(lang) }}.
+        </h2>
+      {% else %}
+        <h2 class="margin-top-1em">{{ _("Logout") }}</h2>
+      {% endif %}
+      <div class="box-timeline-progress">
+        <ol class="box-timeline-progress__list">
+          <li class="box-timeline-progress__item box-timeline-progress__item--ok">
+            <p class="box-timeline-progress__illust">
+              <span class="icon icon-check"></span>
+            </p>
+            <p class="box-timeline-progress__title">{{ proxy_logout_texts.title }}</p>
+            <p
+              class="box-timeline-progress__desc">Log out from
+              the {{ proxy_logout_texts.proxy_name }}</p>
+          </li>
+          <li class="box-timeline-progress__item box-timeline-progress__item--active">
+            <p class="box-timeline-progress__illust">
+              2
+            </p>
+            <p class="box-timeline-progress__title">{{ _("Log out from services") }}</p>
+            <p
+              class="box-timeline-progress__desc">{{ _("Log out from all the services") }}</p>
+          </li>
+          <li class="box-timeline-progress__item">
+            <p class="box-timeline-progress__illust">
+              3
+            </p>
+            <p
+              class="box-timeline-progress__title">{{ _("Successfully logged out") }}</p>
+            <p
+              class="box-timeline-progress__desc">{{ _("The end of the logout process") }}</p>
+          </li>
+        </ol>
+      </div>
+      <hr>
+      <div class="my-flex-column">
+        <div class="services-box">
+          <h3>{{ _("Log out from services") }}</h3>
+          <p
+            class="small">{{ _("Would you like to log out from the following
+            services?") }}
+          </p>
+          {% if has_matching_services %}
+            <ul>
+              {% for service in device_services %}
+                <li>{{ service.get(lang) }} </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            {% if session_services|length != 0 %}
+              <h2 class="h5">{{ _("On this device:") }}</h2>
+              <ul>
+                {% for service in session_services %}
+                  <li>{{ service.get(lang) }} </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if device_services|length != 0 %}
+              <h2
+                class="h5">{{ _("On all of your devices:") }}</h2>
+              <ul>
+                {% for service in device_services %}
+                  <li>{{ service.get(lang) }} </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endif %}
+          <form action="{{ url_for('gui.logout_state') }}" method="get">
+            <p>
+              <label class="inp-item inp-item--checkbox">
+                <input type="checkbox" name="from_devices" value="True">
+                <span>{{ _("Log out on all my devices") }}</span>
+              </label>
+            </p>
+            <p
+              class="{% if cfg.css_framework == 'MUNI' %}btn-wrap{% else %}d-flex flex-row gap-3 ms-3{% endif %}">
+              {% if logged_out_service != {} %}
+                <a href="{{ url_for('gui.post_logout') }}"
+                   class="btn {% if cfg.css_framework == 'MUNI' %}btn-primary{% else %}btn-secondary{% endif %} btn-s btn-border">
+                  <span>{{ _('Cancel') }}</span>
+                </a>
+              {% else %}
+                <a href="{{ url_for('gui.logout_canceled') }}"
+                   class="btn {% if cfg.css_framework == 'MUNI' %}btn-primary{% else %}btn-secondary{% endif %} btn-s btn-border">
+                  <span>{{ _('Cancel') }}</span>
+                </a>
+              {% endif %}
+              <button type="submit" class="btn btn-primary btn-s">
+                <span>{{ _('Log out') }}</span>
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

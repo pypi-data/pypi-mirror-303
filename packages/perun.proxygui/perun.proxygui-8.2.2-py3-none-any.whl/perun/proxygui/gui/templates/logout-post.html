@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block contentwrapper %}
+  <div
+    class="window {% if cfg.css_framework == 'MUNI' %}framework_muni{% else %}framework_bootstrap5 bg-light{% endif %}">
+    <div
+      class="u-pl-20 u-pr-20{% if not cfg.css_framework == 'MUNI' %} d-flex flex-column gap-2{% endif %}">
+      <h2 class="margin-top-1em">{{ _("Logout") }}</h2>
+      <div class="box-timeline-progress">
+        <ol class="box-timeline-progress__list">
+          <li class="box-timeline-progress__item box-timeline-progress__item--ok">
+            <p class="box-timeline-progress__illust">
+              <span class="icon icon-check"></span>
+            </p>
+            <p class="box-timeline-progress__title">{{ proxy_logout_texts.title }}</p>
+            <p
+              class="box-timeline-progress__desc">Log out from the {{ proxy_logout_texts.proxy_name }}</p>
+          </li>
+          <li class="box-timeline-progress__item box-timeline-progress__item--ok">
+            <p class="box-timeline-progress__illust">
+              <span class="icon icon-check"></span>
+            </p>
+            <p class="box-timeline-progress__title">{{ _("Log out from services") }}</p>
+            <p
+              class="box-timeline-progress__desc">{{ _("Log out from all the services") }}</p>
+          </li>
+          <li class="box-timeline-progress__item box-timeline-progress__item--ok">
+            <p class="box-timeline-progress__illust">
+              <span class="icon icon-check"></span>
+            </p>
+            <p
+              class="box-timeline-progress__title">{{ _("Successfully logged out") }}</p>
+            <p
+              class="box-timeline-progress__desc">{{ _("The end of the logout process") }}</p>
+          </li>
+        </ol>
+      </div>
+      <hr>
+      <div class="my-flex-column">
+        <div class="services-box">
+          {% if successful_logout_services|length != 0 %}
+            <h2
+              class="h4 margin-top-1em">{{ _("Successfully logged out of services:") }}</h2>
+            <ul>
+              {% for service in successful_logout_services %}
+                <li>{{ service.rp_names.get(lang) }} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          {% if unknown_status_logout_services|length != 0 %}
+            <h2
+              class="h4 margin-top-1em">{{ _("Check the logout status of these services:") }}</h2>
+            <ul>
+              {% for service in unknown_status_logout_services %}
+                <li>{{ service.rp_names.get(lang) }} </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
+      </div>
+      {% if init_logged_out_service.logback_url is not none %}
+        <div class="my-flex-column margin-bot-1em">
+          <p
+            class="{% if cfg.css_framework == 'MUNI' %}btn-wrap{% else %}d-flex flex-row gap-3{% endif %}">
+            <a href="{{ init_logged_out_service.logback_url }}"
+               class="btn btn-primary btn-s">
+              <span>{{ _('Back to') }} {{ init_logged_out_service.labels.get(lang) }}</span>
+            </a>
+          </p>
+        </div>
+      {% else %}
+        <div>
+        <p class="small">{{ _('You may close this page now') }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

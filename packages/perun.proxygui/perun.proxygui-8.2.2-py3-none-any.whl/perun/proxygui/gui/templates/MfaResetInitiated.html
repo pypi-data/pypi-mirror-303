@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block contentwrapper %}
+  <div
+    class="window {% if cfg.css_framework == 'MUNI' %}framework_muni{% else %}framework_bootstrap5 bg-light{% endif %}">
+    <div id="content">
+      {% block content %}
+        <div class="content">
+        <br />
+        {% if cfg.mfa_reset_translations.sections[lang] is not none %}
+          {% if cfg.mfa_reset_translations.format is not none and (cfg.mfa_reset_translations.format == 'HTML' or cfg.mfa_reset_translations.format == 'markdown') %}
+            <h3><span>{{ cfg.mfa_reset_translations.sections[lang].disclaimer | safe }}</span></h3>
+            <div class="margin-bottom-24 wrap-col"><span>{{ cfg.mfa_reset_translations.sections[lang].explanation | safe }}</span></div>
+          {% else %}
+            <h3><span>{{ cfg.mfa_reset_translations.sections[lang].disclaimer }}</span></h3>
+            <div class="margin-bottom-24 wrap-col"><span>{{ cfg.mfa_reset_translations.sections[lang].explanation }}</span></div>
+          {% endif %}
+        {% endif %}
+        <form action="{{ next_action }}" method="POST">
+          <p class="btn-wrap">
+            <button type="submit" class="btn btn-primary btn-accept">
+              <span>{{ cfg.general_translations.sections[lang].continue }}</span>
+            </button>
+          </p>
+        </form>
+        <p class="btn-wrap">
+          <a href="{{ referrer }}" class="btn btn-primary btn-s btn-border">
+            <span>{{ cfg.general_translations.sections[lang].cancel }}</span>
+          </a>
+        </p>
+      {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
