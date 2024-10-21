@@ -1,0 +1,296 @@
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- CONDITION NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `true` if the condition is true, `false` otherwise.
+
+    MODULE bt_condition(enable_condition, condition)
+    VAR
+        enable : boolean;
+        output : { None, Success, Failure };
+    ASSIGN
+        init(enable) := FALSE;
+        init(output) := None;
+        next(enable) := enable_condition;
+        next(output) :=
+        case
+            condition & enable_condition: Success;
+            TRUE : Failure;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- ACTION NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `running` while the action is being executed, `true` if the action is successful, `false` otherwise.
+
+    MODULE bt_action(enable_condition)
+    VAR
+        enable : boolean;
+        goal_reached : boolean;
+        output : { None, Running, Failure, Success };
+        i : { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    ASSIGN
+        init(enable) := FALSE;
+        init(output) := None;
+        init(goal_reached) := FALSE;
+        init(i) := 0;
+        next(enable) := enable_condition | enable;
+        next(output) :=
+        case
+            goal_reached : Success;
+            enable_condition | enable: Running;
+            TRUE : Failure;
+        esac;
+        next(i) :=
+        case
+            output = Running & i<10: i + 1;
+            i = 10 : 10;
+            TRUE : 0;
+        esac;
+        next(goal_reached) :=
+        case
+            goal_reached : goal_reached;
+            i < 10: FALSE;
+            i >= 10 : TRUE;
+            TRUE : goal_reached;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- FALLBACK NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `running` if the left child is `running`, `true` if the left child is `true`, right child otherwise.
+
+    MODULE bt_fallback(left_bt, right_bt)
+    DEFINE 
+    output := case
+        left_bt.output in { Running, Success } : left_bt.output;
+        TRUE : right_bt.output;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- SEQUENCE NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `running` if the left child is `running`, `false` if the left child is `false`, right child otherwise.
+
+    MODULE bt_sequence(left_bt, right_bt)
+    DEFINE
+        output :=
+        case
+            left_bt.output in { Running, Failure } : left_bt.output;
+            TRUE : right_bt.output;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- NEGATION NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `true` if the child output is `false`, `false` otherwise.
+
+    MODULE bt_not(child_bt)
+    DEFINE
+        output :=
+        case
+            child_bt.output = Failure : Success;
+            child_bt.output = Success : Failure;
+            TRUE : child_bt.output;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+
+
+    -------------------------------------------------------------------------------------------------------------------------
+    -- PLACEHOLDER NODE
+    -------------------------------------------------------------------------------------------------------------------------
+
+    -- The output is `success` if the condition is true, `failure` otherwise.
+
+    MODULE bt_placeholder(condition)
+    DEFINE
+        output := 
+        case
+            condition : Success;
+            TRUE : Failure;
+        esac;
+    -------------------------------------------------------------------------------------------------------------------------
+    MODULE HZ_02(condition, Event_E13, Event_E14, Event_E15)
+  VAR
+    E15 : bt_condition(TRUE, condition & Event_E15);
+    E14 : bt_condition(TRUE, condition & Event_E14);
+    E13 : bt_condition(TRUE, condition & Event_E13);
+    fallback_0 : bt_fallback(E15, E14);
+    fallback_1 : bt_fallback(fallback_0, E13);
+  DEFINE
+    output := fallback_1.output;
+
+MODULE HZ_01(condition, Event_E10, Event_E11, Event_E12A, Event_E12B)
+  VAR
+    E11 : bt_condition(TRUE, condition & Event_E11);
+    E12B : bt_condition(TRUE, condition & Event_E12B);
+    E12A : bt_condition(TRUE, condition & Event_E12A);
+    seq_0 : bt_sequence(E12B, E12A);
+    E10 : bt_condition(TRUE, condition & Event_E10);
+    fallback_0 : bt_fallback(E11, seq_0);
+    fallback_1 : bt_fallback(fallback_0, E10);
+  DEFINE
+    output := fallback_1.output;
+
+MODULE OS3(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15)
+  VAR
+    HZ_02 : HZ_02(condition, Event_E13, Event_E14, Event_E15);
+    SS_04 : bt_action(HZ_02.output = Success);
+    seq_0 : bt_sequence(HZ_02, SS_04);
+    HZ_01 : HZ_01(condition, Event_E10, Event_E11, Event_E12A, Event_E12B);
+    SS_01 : bt_action(HZ_01.output = Success);
+    seq_1 : bt_sequence(HZ_01, SS_01);
+    fallback_0 : bt_fallback(seq_0, seq_1);
+  DEFINE
+    output := fallback_0.output;
+
+MODULE OS1(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15)
+  VAR
+    HZ_01 : HZ_01(condition, Event_E10, Event_E11, Event_E12A, Event_E12B);
+    SS_01 : bt_action(HZ_01.output = Success);
+    seq_0 : bt_sequence(HZ_01, SS_01);
+    HZ_02 : HZ_02(condition, Event_E13, Event_E14, Event_E15);
+    SS_02 : bt_action(HZ_02.output = Success);
+    seq_1 : bt_sequence(HZ_02, SS_02);
+    fallback_0 : bt_fallback(seq_0, seq_1);
+  DEFINE
+    output := fallback_0.output;
+
+MODULE OS2(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15)
+  VAR
+    HZ_01 : HZ_01(condition, Event_E10, Event_E11, Event_E12A, Event_E12B);
+    SS_01 : bt_action(HZ_01.output = Success);
+    seq_0 : bt_sequence(HZ_01, SS_01);
+    HZ_02 : HZ_02(condition, Event_E13, Event_E14, Event_E15);
+    SS_03 : bt_action(HZ_02.output = Success);
+    seq_1 : bt_sequence(HZ_02, SS_03);
+    fallback_0 : bt_fallback(seq_0, seq_1);
+  DEFINE
+    output := fallback_0.output;
+
+MODULE I_01(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15, Event_condition_OS1, Event_condition_OS2, Event_condition_OS3)
+  VAR
+    condition_OS3 : bt_condition(TRUE, condition & Event_condition_OS3);
+    OS3 : OS3(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15);
+    seq_0 : bt_sequence(condition_OS3, OS3);
+    condition_OS1 : bt_condition(TRUE, condition & Event_condition_OS1);
+    OS1 : OS1(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15);
+    seq_1 : bt_sequence(condition_OS1, OS1);
+    condition_OS2 : bt_condition(TRUE, condition & Event_condition_OS2);
+    OS2 : OS2(condition, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15);
+    seq_2 : bt_sequence(condition_OS2, OS2);
+    fallback_0 : bt_fallback(seq_0, seq_1);
+    fallback_1 : bt_fallback(fallback_0, seq_2);
+  DEFINE
+    output := fallback_1.output;
+
+MODULE main
+  FROZENVAR
+    os: {os1, os2, os3};
+    Event_E10: boolean;
+    Event_E11: boolean;
+    Event_E12A: boolean;
+    Event_E12B: boolean;
+    Event_E13: boolean;
+    Event_E14: boolean;
+    Event_E15: boolean;
+    Event_condition_OS1: boolean;
+    Event_condition_OS2: boolean;
+    Event_condition_OS3: boolean;
+  ASSIGN
+    ASSIGN
+    init(Event_condition_OS1) := os = os1;
+    ASSIGN
+    init(Event_condition_OS2) := os = os2;
+    ASSIGN
+    init(Event_condition_OS3) := os = os3;
+  VAR
+    I_01 : I_01(TRUE, Event_E10, Event_E11, Event_E12A, Event_E12B, Event_E13, Event_E14, Event_E15, Event_condition_OS1, Event_condition_OS2, Event_condition_OS3);
+-------------------------------------------------------------------------------------------------------------------------
+-- CTL PROPERTIES
+-------------------------------------------------------------------------------------------------------------------------
+
+-- PROPOSITION 1
+-- Verify that operating situations (os) are being checked until one is successful. 
+-- Verify that there is always one successful operating situation.
+
+CTLSPEC
+    AG (I_01.condition_OS1.enable & I_01.condition_OS2.enable & I_01.condition_OS3.enable -> AG(I_01.condition_OS1.output = Success | I_01.condition_OS2.output = Success | I_01.condition_OS3.output = Success));
+
+
+-- PROPOSITION 2
+-- Verify that when an operating situation is found, its corresponding hazards are being checked until one is found. 
+-- It is not necessary to check all hazards if one is found. If no event is found, any hazard is detected. 
+
+CTLSPEC
+    AG (I_01.condition_OS1.output = Success -> AG(I_01.OS1.HZ_01.output = Success | I_01.OS1.HZ_02.output = Success | I_01.OS1.HZ_01.output = Failure & I_01.OS1.HZ_02.output = Failure));
+
+-- PROPOSITION 2
+-- Verify that when an operating situation is found, its corresponding hazards are being checked until one is found. 
+-- It is not necessary to check all hazards if one is found. If no event is found, any hazard is detected. 
+
+CTLSPEC
+    AG (I_01.condition_OS2.output = Success -> AG(I_01.OS2.HZ_01.output = Success | I_01.OS2.HZ_02.output = Success | I_01.OS2.HZ_01.output = Failure & I_01.OS2.HZ_02.output = Failure));
+
+-- PROPOSITION 2
+-- Verify that when an operating situation is found, its corresponding hazards are being checked until one is found. 
+-- It is not necessary to check all hazards if one is found. If no event is found, any hazard is detected. 
+
+CTLSPEC
+    AG (I_01.condition_OS3.output = Success -> AG(I_01.OS3.HZ_01.output = Success | I_01.OS3.HZ_02.output = Success | I_01.OS3.HZ_01.output = Failure & I_01.OS3.HZ_02.output = Failure));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS1.HZ_01.output = Success -> AX( A [I_01.OS1.SS_01.output = Running U I_01.OS1.SS_01.goal_reached]));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS1.HZ_02.output = Success -> AX( A [I_01.OS1.SS_02.output = Running U I_01.OS1.SS_02.goal_reached]));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS2.HZ_01.output = Success -> AX( A [I_01.OS2.SS_01.output = Running U I_01.OS2.SS_01.goal_reached]));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS2.HZ_02.output = Success -> AX( A [I_01.OS2.SS_03.output = Running U I_01.OS2.SS_03.goal_reached]));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS3.HZ_01.output = Success -> AX( A [I_01.OS3.SS_01.output = Running U I_01.OS3.SS_01.goal_reached]));
+
+-- PROPOSITION 3
+-- Verify that when a hazard found under the identified operating scenatio, its corresponding safety state action 
+-- is running until the safety goal is reached
+
+CTLSPEC
+    AG (I_01.OS3.HZ_02.output = Success -> AX( A [I_01.OS3.SS_04.output = Running U I_01.OS3.SS_04.goal_reached]));
+
