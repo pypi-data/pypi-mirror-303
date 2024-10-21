@@ -1,0 +1,99 @@
+Metadata-Version: 2.3
+Name: scrapebiblio
+Version: 1.2.0
+Summary: library for extracting reference from documents
+Author-email: Marco Vinciguerra <mvincig11@gmail.com>, Marco Perini <perinim.98@gmail.com>, Lorenzo Padoan <lorenzo.padoan977@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Keywords: ai,artificial intelligence,gpt,graph,machine learning,natural language processing,nlp,openai,scraping,web scraping tool,webscraping
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: <4.0,>=3.9
+Requires-Dist: browserbase>=0.1.0
+Requires-Dist: gtts>=2.5.3
+Requires-Dist: openai>=1.45.0
+Requires-Dist: pymupdf>=1.24.10
+Requires-Dist: pypdf2>=3.0.1
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: requests>=2.32.3
+Requires-Dist: scrapegraphai>=1.18.1
+Provides-Extra: docs
+Requires-Dist: furo==2024.5.6; extra == 'docs'
+Requires-Dist: sphinx==6.0; extra == 'docs'
+Description-Content-Type: text/markdown
+
+# ScrapeBiblio: PDF Reference Extraction and Verification Library
+
+## Powered by Scrapegraphai
+![ScrapeBiblio Logo](docs/scrapebiblio.png)
+[![Downloads](https://static.pepy.tech/badge/scrapebiblio)](https://pepy.tech/project/scrapebiblio)
+
+ScrapeBiblio is a powerful library designed to extract references from PDF files, verify them against various databases, and convert the content to Markdown format.
+
+## Features
+
+- Extract text from PDF files
+- Extract references using OpenAI's GPT models
+- Verify references using Semantic Scholar, CORE, and BASE databases
+- Convert PDF content to Markdown format
+- Integration with ScrapeGraph for additional reference checking
+
+## Installation
+
+Install ScrapeBiblio using pip:
+```bash
+pip install scrapebiblio
+```
+
+## Configuration
+
+Create a `.env` file in your project root with the following content:
+
+```plaintext
+OPENAI_API_KEY=your_openai_api_key
+SEMANTIC_SCHOLAR_API_KEY=your_semantic_scholar_api_key
+CORE_API_KEY=your_core_api_key
+BASE_API_KEY=your_base_api_key
+```
+## Usage
+
+Here's a basic example of how to use ScrapeBiblio:
+
+```python
+from scrapebiblio.core.find_reference import process_pdf
+from dotenv import load_dotenv
+import os
+load_dotenv()
+pdf_path = 'path/to/your/pdf/file.pdf'
+output_path = 'references.md'
+openai_api_key = os.getenv('OPENAI_API_KEY')
+semantic_scholar_api_key = os.getenv('SEMANTIC_SCHOLAR_API_KEY')
+core_api_key = os.getenv('CORE_API_KEY')
+base_api_key = os.getenv('BASE_API_KEY')
+process_pdf(pdf_path, output_path, openai_api_key, semantic_scholar_api_key,
+core_api_key=core_api_key, base_api_key=base_api_key)
+```
+## Advanced Usage
+
+ScrapeBiblio offers additional functionalities:
+
+1. Convert PDF to Markdown:
+```python
+from scrapebiblio.core.convert_to_md import convert_to_md
+convert_to_md(pdf_path, output_path, openai_api_key)
+```
+2. Check references with ScrapeGraph:
+
+```python
+from scrapebiblio.utils.api.reference_utils import check_reference_with_scrapegraph
+result = check_reference_with_scrapegraph("Reference Title")
+```
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
