@@ -1,0 +1,120 @@
+
+[project]
+name = "synaptic"
+version = "0.0.4"
+description = ""
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = []
+authors = [{name="mbodiai"}]
+classifiers = [
+"Development Status :: 4 - Beta",
+"Programming Language :: Python",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Programming Language :: Python :: 3.12",
+"Programming Language :: Python :: Implementation :: CPython",
+"Programming Language :: Python :: Implementation :: PyPy",
+]
+
+dependencies = [
+    "eclipse-zenoh>=0.11.0",
+    "fastapi>=0.115.0",
+    "hatch-build-scripts>=0.0.4",
+    "mbodied>=1.2.1",
+    "mbpy>=1.0.1",
+    "more-itertools>=10.5.0",
+    'msgpack>=1.0.2',
+    "numpy==1.26.4",
+    "pydantic-settings>=2.5.2",
+    "pytest-asyncio>=0.24.0",
+    "pytest>=8.3.3",
+    "requests>=2.32.3",
+    "uvicorn>=0.30.6",
+    'websockets>=10.0',
+]
+[project.optional-dependencies]
+[project.urls]
+Documentation = "https://github.com/mbodiai/synaptic#readme"
+Issues = "https://github.com/mbodiai/synaptic/issues"
+Source = "https://github.com/mbodiai/synaptic"
+
+[project.scripts]
+synaptic = "synaptic:cli"
+
+
+
+[build-system]
+requires = ["hatchling", "hatch-build-scripts"]
+build-backend = "hatchling.build"
+[[tool.hatch.build.hooks.build-scripts.scripts]]
+out_dir = "out"
+commands = [
+    "chmod +x build.sh && ./build.sh",
+]
+artifacts = [
+    "~/.local/bin/synaptic",
+]
+
+[tool.coverage.run]
+source_pkgs = ["synaptic", "tests"]
+branch = true
+parallel = true
+omit = ["synaptic/__about__.py"]
+
+[tool.coverage.paths]
+synaptic = ["synaptic/"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+extend-unsafe-fixes = ["ALL"]
+select = [
+"A", "C4", "D", "E", "F", "UP", "B", "SIM", "N", "ANN", "ASYNC",
+"S", "T20", "RET", "SIM", "ARG", "PTH", "ERA", "PD", "I", "PLW",
+]
+ignore = [
+"D100", "D101", "D104", "D106", "ANN101", "ANN102", "ANN003", "UP009", "ANN204",
+"B026", "ANN001", "ANN401", "ANN202", "D107", "D102", "D103", "E731", "UP006",
+"UP035", "ANN002", "PLW2901", "E741"
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"**/{tests,docs}/*" = ["ALL"]
+"**__init__.py" = ["F401"]
+
+[tool.pytest.ini_options]
+markers = [{zenoh_test = "marks tests that make network calls (deselect with '-m \"not zenoh_test\"'"},
+           {network = "marks tests that make network calls (deselect with '-m \"not network\"'"},
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "twine>=5.1.1",
+]
+
+[tool.uv.sources]
+synaptic = { workspace = true }
+
+    
+

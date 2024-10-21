@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Hello gh-submodulize!"
+
+# Snippets to help get started:
+
+# Determine if an executable is in the PATH
+# if ! type -p ruby >/dev/null; then
+#   echo "Ruby not found on the system" >&2
+#   exit 1
+# fi
+
+# Pass arguments through to another command
+# gh issue list "$@" -R cli/cli
+
+# Using the gh api command to retrieve and format information
+# QUERY='
+#   query($endCursor: String) {
+#     viewer {
+#       repositories(first: 100, after: $endCursor) {
+#         nodes {
+#           nameWithOwner
+#           stargazerCount
+#         }
+#       }
+#     }
+#   }
+# '
+# TEMPLATE='
+#   {{- range $repo := .data.viewer.repositories.nodes -}}
+#     {{- printf "name: %s - stargazers: %v\n" $repo.nameWithOwner $repo.stargazerCount -}}
+#   {{- end -}}
+# '
+# exec gh api graphql -f query="${QUERY}" --paginate --template="${TEMPLATE}"
+#!/bin/bash
+
+# This script converts an embedded Git repository into a submodule by forking it, pushing it, and then adding it back as a submodule.
+
+# Ensure the script exits on any error
+set -e
+
+# Check if gh CLI is installed
+if ! command -v gh &> /dev/null
+then
+    echo "gh CLI could not be found, please install it first."
+    exit 1
+fi
+
+# Get the directory of the embedded repo
+if [ -z "$1" ]; then
+    echo "You must provide the directory of the embedded repository."
+    exit 1
+fi
+
+EMBEDDED_REPO_DIR=$1
+
+# Get the submodule path (optional)
+SUBMODULE_PATH=$2
+
+if [ -z "$SUBMODULE_PATH" ]; then
+    SUBMODULE_PATH=$EMBEDDED_REPO_DIR
+fi
+
+# Navigate to the embedded repository
+cd $EMBEDDED_REPO_DIR
+
+# Fork the repository using gh CLI
+gh repo fork --clone=false
+
+
+
+# Get the URL of the forked repository
+FORK_URL=$(git remote get-url origin)
+
+gh repo set-default 
+
+# Push the content to the fork
+BRANCH_NAME=$(git branch --show-current)
+git add .gitignore
+git commit -m "Initial commit"
+git add .
+git push origin $BRANCH_NAME
+
+# Navigate back to the main repository
+cd ..
+
+# Remove the existing directory
+rm -rf $EMBEDDED_REPO_DIR
+
+# Add the forked repository as a submodule
+git submodule add -b $BRANCH_NAME $FORK_URL $SUBMODULE_PATH
+
+# Initialize and update the submodule
+git submodule update --init --recursive
+
+# Stage and commit the changes
+git add .gitmodules $SUBMODULE_PATH
+git commit -m "Converted $EMBEDDED_REPO_DIR to submodule from forked repository"
+
+echo "Submodule created successfully!"
