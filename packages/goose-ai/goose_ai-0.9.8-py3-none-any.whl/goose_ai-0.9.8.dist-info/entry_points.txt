@@ -1,0 +1,26 @@
+[console_scripts]
+goose = goose.cli.main:cli
+
+[exchange.moderator]
+synopsis = goose.synopsis.moderator:Synopsis
+
+[goose.cli.group]
+goose = goose.cli.main:goose_cli
+
+[goose.command]
+file = goose.command.file:FileCommand
+
+[goose.profile]
+default = goose.profile:default_profile
+
+[goose.toolkit]
+developer = goose.toolkit.developer:Developer
+github = goose.toolkit.github:Github
+jira = goose.toolkit.jira:Jira
+reasoner = goose.toolkit.reasoner:Reasoner
+repo_context = goose.toolkit.repo_context.repo_context:RepoContext
+screen = goose.toolkit.screen:Screen
+synopsis = goose.synopsis.toolkit:SynopsisDeveloper
+
+[metadata.plugins]
+goose-ai = goose.module_name
