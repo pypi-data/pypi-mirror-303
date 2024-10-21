@@ -1,0 +1,42 @@
+# 说明：如下配置的索引均从0开始计数，第1列为0、第2列为1，依此类推
+# 环境
+environment: "production"
+
+# 对公
+corporate:
+  # 生成的目标Excel文件存放路径
+  target_directory: "./"
+  # 目标文件名称
+  target_filename: "对公结算户营销统计.xlsx"
+
+  # 营销统计分析
+  sales_summary:
+    # 是否启用分析，True：分析，False：不分析
+    enabled: true
+    # 业务分类类型说明
+    business_type: "营销统计分析"
+    # 分析源文件名称（{}会被替换成8位数字日期）
+    source_file_path: "对公结算户考核明细表_下载 ({}).csv"
+    # 日期格式
+    date_format: '%Y%m%d'
+    # 分析开始日期（基准日期）
+    start_date: "20240515"
+    # 分析结束日期
+    end_date: "20240930"
+    # 表头行索引
+    header_row: 0
+    # 账户名称
+    account_name_column: "A"
+    # 单位账号
+    account_no_column: "B"
+    total_bonus_column_name: "总奖励金额"
+    column_suffix: "_奖励"
+    # 存期
+    deposit_period_column: "L"
+    filtered_deposit_period_name: "活期存款"
+    # 单位时点数
+    pos_column: "G"
+    # 奖励单位（与基数相比新增的金额大于奖励单位，才有奖励，单位：万元）
+    bonus_unit: 100
+    # 每天单位奖励金额（单位：元）
+    bonus_amount_per_unit: 3
