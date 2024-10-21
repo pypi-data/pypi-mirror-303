@@ -1,0 +1,98 @@
+Metadata-Version: 2.3
+Name: tlfs
+Version: 0.0.5
+Summary: Classes and scripts to create TLFs (Table, Listing, Figures shells) quickly and in an opinionated way.
+Project-URL: Documentation, https://github.com/lbraglia/tlfs#readme
+Project-URL: Issues, https://github.com/lbraglia/tlfs/issues
+Project-URL: Source, https://github.com/lbraglia/tlfs
+Author-email: Luca Braglia <lbraglia@gmail.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: docx
+Requires-Dist: multimethod
+Requires-Dist: numpy
+Requires-Dist: pandas
+Description-Content-Type: text/markdown
+
+# tlfs
+
+[![PyPI - Version](https://img.shields.io/pypi/v/tlfs.svg)](https://pypi.org/project/tlfs)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tlfs.svg)](https://pypi.org/project/tlfs)
+
+-----
+
+## Table of Contents
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install tlfs
+```
+
+## License
+
+`tlfs` is distributed under the terms of the
+[MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Example usage
+For some "standard" (opinionated) stuff you could do the following
+(which is what is done in the [web version on
+streamlit](https://webtlfs.streamlit.app/)):
+``` python
+tlf = TLF("Test")
+tlf.from_xlsx("path-to-your.xlsx")
+tlf
+tlf.to_docx("path-to-your.docx")
+```
+For custom stuff one has to program by hand:
+``` python
+
+# overloading * Quant/Quali/Itemset to create Tables quickly
+age = Quant("Age")
+sex = Quali("Sex", groups = ["M", "F"])
+trt = Quali("Treatment", groups = ["EXP", "CTRL"])
+prices = Itemset("Unit costs",
+                 items = ["Dentist", "Hospice", "Blood test"],
+                 contents = ["unit cost", "per", "source"])
+nation = Quali("Nation", groups = ["UK", "ITA"])
+
+age * trt
+[var * trt for var in [age, sex]] + [prices * nation]
+
+
+# Changing display default in a table
+age2 = Quant("Age", display = ["median", "25pct", "75pct"], unit = 'years')
+age3 = Quant("Age", display = "median (iqr)", cell_content = "xx (xx - xx)")
+sex2 = Quali("Sex", groups = ["M", "F"], display = "n", cell_content = "x")
+
+
+univ = Section("Univariate tables", [Table(age), Table(sex)])
+changed_def = Section("Some changed defaults", [Table(age2), age2 * trt, age3 * trt, Table(sex2)])
+listings = Section("Listings", [Table(prices), prices * nation])
+tlf2 = TLF("Table, Listings, Figure examples", [univ, biv, changed_def, listings])
+tlf.to_doc("whatever.docx")
+```
+
+
+## TODO
+- add random figures/graphs
+- table/figure numbering?
+- overload + in `Table` to stack them
+- overload + in `Sections` to concatenate them
+- just do `Section("Univariate tables", [age, sex])` instead of 
+  `Section("Univariate tables", [Table(age), Table(sex)])`
+- "UK|Control", "UK|Intervention", "Tot|Control", "Tot|Intervention",
+  by three way tables
