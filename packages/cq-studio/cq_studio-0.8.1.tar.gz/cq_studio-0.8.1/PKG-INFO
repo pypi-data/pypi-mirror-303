@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: cq-studio
+Version: 0.8.1
+Summary: Hot-reloading server for CadQuery 3D objects with in-browser viewer from yacv-server
+Home-page: https://pyropus.ca/docs/cq-studio/
+License: GPL-2.0-only
+Keywords: model,3D,CAD,viewer,CadQuery,programmatic,modelling,server,hot-reload,editor,part,design
+Author: Charles Cazabon
+Author-email: charlesc-software-cqs@pyropus.ca
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Manufacturing
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Multimedia :: Graphics :: 3D Modeling
+Classifier: Topic :: Multimedia :: Graphics :: Viewers
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Requires-Dist: build123d
+Requires-Dist: cadquery (>=2.4.0,<3.0.0)
+Requires-Dist: click
+Requires-Dist: yacv-server
+Project-URL: Documentation, https://pyropus.ca/docs/cq-studio/
+Project-URL: Repository, https://github.com/ccazabon/cq-studio/
+Description-Content-Type: text/markdown
+
+# `cq-studio`
+
+`cq-studio` is a server and utilities for running a live, updating preview of
+objects designed in [CadQuery](https://cadquery.readthedocs.io/), rendered in 
+your web browser.  CadQuery is a package for designing 3D models 
+programmatically using Python code.
+
+The web client side uses three.js to render the user's models.  The client-side
+interface and HTTP server are supplied by the 
+[yacv-server package](https://github.com/yeicor-3d/yet-another-cad-viewer/).
+
+`cq-studio` starts a server, loads objects from a specified file, and then 
+re-loads them on any change to that file or other Python modules it imports, 
+and pushes the new objects to the browser ("hot-reloading").
+
+## License
+
+`cq-studio` is Copyright © 2024 Charles Cazabon <charlesc-software-cqs@pyropus.ca>.
+Licensed under the GNU General Public License v2 (only).  See the file COPYING 
+for details.
+
+## Documentation
+
+The documentation is available in HTML and plaintext in the `docs` subdirectory,
+or online at https://pyropus.ca/docs/cq-studio/ .
+
