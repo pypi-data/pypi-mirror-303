@@ -1,0 +1,40 @@
+{
+    "name": "CronMon Py Dev Container",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": ".."
+    },
+    "runArgs": [
+        "--name",
+        "cron-mon-py-dev",
+        "--add-host",
+        "host.docker.internal:host-gateway"
+    ],
+    "otherPortsAttributes": {
+        "onAutoForward": "ignore"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "[python]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.codeActionsOnSave": {
+                        "source.fixAll": "explicit",
+                        "source.organizeImports": "explicit"
+                    }
+                }
+            },
+            "extensions": [
+                "charliermarsh.ruff",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "ms-vscode.makefile-tools",
+                "tamasfe.even-better-toml"
+            ]
+        }
+    }
+}
