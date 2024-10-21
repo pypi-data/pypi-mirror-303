@@ -1,0 +1,19 @@
+---
+provider: anthropic
+model: claude-3-haiku
+prompt_version: 1.0
+input: examples/define_test_cases/input/podcast_description.txt
+output: title-claude.txt
+test_path: tests
+tests:
+    test_01: 
+        type: question
+        prompt: Are all the title written in normal-casing?
+    test_02: 
+        type: property
+        unit: lines
+        equals: 5
+---
+# Instructies
+
+Generate 5 titles for a podcast about the following:
