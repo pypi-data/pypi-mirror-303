@@ -1,0 +1,11 @@
+rm build/ -rf
+
+meson build -Dgrid_prefix=$HOME/qlat-build/default --prefix=$HOME/qlat-build/default
+
+time (
+cd build
+ninja -j8
+ninja install
+)
+
+echo finished
