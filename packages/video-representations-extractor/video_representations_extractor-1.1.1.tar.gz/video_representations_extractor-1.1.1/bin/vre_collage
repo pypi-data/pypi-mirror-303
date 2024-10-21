@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""vre_collage tool"""
+from argparse import ArgumentParser
+from pathlib import Path
+from natsort import natsorted
+from tqdm import tqdm
+from moviepy.editor import ImageSequenceClip
+import numpy as np
+
+from vre.utils import image_read, image_write, image_resize, image_add_title, collage_fn
+from vre.logger import vre_logger as logger
+
+def get_args():
+    """Cli args"""
+    parser = ArgumentParser()
+    parser.add_argument("vre_export_dir", type=lambda p: Path(p).absolute(), help="Path to the dir where VRE exported")
+    parser.add_argument("--output_path", "-o", required=False, help="Path to the collage is stored")
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--video", action="store_true")
+    parser.add_argument("--fps", type=int)
+    parser.add_argument("--output_resolution", type=int, nargs=2)
+    # TODO: add order of collage
+    args = parser.parse_args()
+
+    if args.output_path is None:
+        args.output_path = args.vre_export_dir / "collage"
+        logger.warning(f"--output_path not provided, defaulting to '{args.output_path}'")
+    args.output_path = Path(args.output_path).absolute()
+    # assert not args.output_path.exists() or args.overwrite, f"Output path '{args.output_path}' exists. Use --overwrite."
+    assert args.video is False or args.fps is not None, "If video is set, --fps must also be set."
+    return args
+
+def resolve_files(vre_export_dir: Path) -> dict[str, list[Path]]:
+    """Gets a list of all images that are going to be used for the collage."""
+    found_dirs = [x / "png" for x in vre_export_dir.iterdir() if (x / "png").exists()]
+    repr_files = {}
+    for repr_png_dir in found_dirs:
+        files = natsorted([x for x in repr_png_dir.iterdir()], key=lambda p: p.name)
+        repr_files[repr_png_dir.parent.name] = files
+
+    name_files = np.array([[x.name for x in v] for v in repr_files.values()])
+    assert (name_files == name_files[0]).all(), f"Not all png files are named identically: {name_files}"
+    n_files = {k: len(v) for k, v in repr_files.items()}
+    assert np.std(list(n_files.values())) == 0, f"Not all png files have the same number of images: {n_files}"
+    logger.info(f"Returning {n_files[found_dirs[0].parent.name]} images from {len(n_files)} representations.")
+    return repr_files
+
+def main():
+    """main fn"""
+    args = get_args()
+    logger.info(f"VRE pngs dir: {args.vre_export_dir}")
+    logger.info(f"Output dir: {args.output_path}")
+    logger.info(f"Export video: {args.video} {args.output_path / 'collage.mp4' if args.video else ''}")
+
+    found_files = resolve_files(args.vre_export_dir)
+    keys = found_files.keys()
+    # convert [[key1_0, key1_1], [key2_0, key2_1]] to [[key1_0, key2_0], [key1_1, key2_1]]
+    values = np.array(list(found_files.values())).T
+    args.output_path.mkdir(parents=True, exist_ok=True)
+    for current_frame_paths in tqdm(values, desc="collage images"):
+        # export the png with the same name as all the other png from which it is constructed
+        name = current_frame_paths[0].stem
+        current_frames = [image_read(x) for x in current_frame_paths]
+        h, w = current_frames[0].shape[0:2]
+        # keep only first 25 chars of vre representation, otherwise the title is too long
+        titles = [k[0:25] for k in keys]
+        h_out, w_out = args.output_resolution if args.output_resolution is not None else (h, w)
+        rsz_frames = [image_resize(img, height=h_out, width=w_out) for img in current_frames]
+        titled_frames = [image_add_title(img, title, size_px=w_out // 15, top_padding=w_out // 10)
+                         for img, title in zip(rsz_frames, titles)]
+        img = collage_fn(titled_frames, pad_right=w_out // 75)
+        image_write(img, args.output_path / f"{name}.png")
+
+    if args.video:
+        files = natsorted([str(x) for x in args.output_path.iterdir() if x.suffix == ".png"], key=lambda p: p.name)
+        video = ImageSequenceClip(files, fps=args.fps)
+        video.write_videofile(f"{args.output_path}/collage.mp4")
+
+if __name__ == "__main__":
+    main()
