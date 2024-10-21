@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: tidy_headers
+Version: 1.0.4
+Summary: Easy headers, inspired by the tidy data specification.
+Home-page: https://github.com/untzag/tidy_headers
+Author: Blaise Thompson
+Author-email: blaise@untzag.com
+Requires-Python: >3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Requires-Dist: numpy
+Requires-Dist: black ; extra == "dev"
+Requires-Dist: pre-commit ; extra == "dev"
+Requires-Dist: pytest ; extra == "dev"
+Requires-Dist: pytest-cov ; extra == "dev"
+Provides-Extra: dev
+
+# tidy_headers
+
+`tidy_headers` stores metadata in beautifully readable plain text headers.
+
+## example
+
+For some `filepath`, 
+
+```python
+import collections
+import tidy_headers
+meta = collections.OrderedDict()
+meta['date'] = '2017-11-10'
+meta['location'] = 'Madison, Wisconsin, USA'
+meta['name'] = ['batch', 'apples', 'pineapple', 'oregano', 'tomatoes']
+tidy_headers.write(filepath, meta)
+```
+
+To get the dictionary back, simply `read`:
+
+```python
+meta = tidy_headers.read(filepath)
+```
+
+:tada:
+
+See the examples directory for more:
+* [minimal.txt](../master/examples/minimal.txt)
+* [named.txt](../master/examples/named.txt)
+
+## installation
+
+### using pip
+
+```
+pip install tidy_headers
+```
+
+### using conda
+
+```
+conda config --add channels conda-forge
+conda install tidy_headers
+```
+
+## allowed values
+
+`tidy_headers` strives to write plain text headers in an unambiguous way such that an identical metadata dictionary can be generated using `read`. This process is only reliable for the following subset of python types:
+
+- `str`
+- `int`
+- `float`
+- `list` containing any combination of the above
+- `numpy.ndarray` (arbitrary size and dimensionality)
+
+Metadata dictionaries containing only these types are guaranteed to `read` and `write` succesfully.
+
