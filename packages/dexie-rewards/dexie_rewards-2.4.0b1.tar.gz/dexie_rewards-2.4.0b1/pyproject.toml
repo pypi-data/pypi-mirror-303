@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "dexie-rewards"
+version = "2.4.0-b1"
+description = "dexie-rewards is a Python CLI helper tool designed automatically to claim dexie liquidity rewards for offers created using the official Chia Wallet."
+authors = ["Dexie Contributors <pypi@dexie.space>"]
+license = "Apache-2.0"
+readme = "README.md"
+packages = [{ include = "dexie_rewards", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "<3.13,>=3.8.10"
+rich-click = "^1.6.1"
+aiomisc = {extras = ["aiohttp", "rich"], version = "^17.3.21"}
+aiohttp = "3.10.4"
+based58 = "^0.1.1"
+aiosqlite = ">=0.17.0"
+
+[tool.poetry.scripts]
+dexie = "dexie_rewards.main:dexie_cmd"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+mypy = "^1.2.0"
+types-setuptools = "^67.7.0.1"
+flake8 = "^7.0.0"
+
+
+
+[tool.poetry.group.chia.dependencies]
+chia-blockchain = "^2.4.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
