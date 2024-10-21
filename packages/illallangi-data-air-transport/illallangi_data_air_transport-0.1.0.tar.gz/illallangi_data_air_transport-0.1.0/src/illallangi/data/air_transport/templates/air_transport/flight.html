@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h2>{{ obj }}</h2>
+    {% if obj.description %}
+        <p>
+            <em>{{ obj.description }}</em>
+        </p>
+    {% endif %}
+    <table class="table table-hover table-sm">
+        <tbody>
+            <tr {% if obj.airline %}role="button" data-href="{{ obj.airline.get_absolute_url }}"{% endif %}>
+                <th scope="row">Carrier</th>
+                <td>
+                    {% if obj.airline %}
+                        {{ obj.airline }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Departure</th>
+                <td>
+                    {% if obj.departure %}
+                        {{ obj.departure }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Arrival</th>
+                <td>
+                    {% if obj.arrival %}
+                        {{ obj.arrival }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr {% if obj.origin %}role="button" data-href="{{ obj.origin.get_absolute_url }}"{% endif %}>
+                <th scope="row">Origin</th>
+                <td>
+                    {% if obj.origin %}
+                        {{ obj.origin }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr {% if obj.destination %}role="button" data-href="{{ obj.destination.get_absolute_url }}"{% endif %}>
+                <th scope="row">Destination</th>
+                <td>
+                    {% if obj.destination %}
+                        {{ obj.destination }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="bp-ticket_grid">
+        <!-- box names are the first upper left cell for each segment-->
+        <div class="bp-box bp-left bp-edging"></div>
+        <div class="bp-box bp-left bp-b1">SEQ No</div>
+        <div class="bp-box bp-left bp-c1">{{ obj.sequence_number | default:'' }}</div>
+        <div class="bp-box bp-left bp-a2">
+            <img src="{{ obj.airline.get_logo_url }}" alt="{{ obj.airline }}">
+        </div>
+        <div class="bp-box bp-left bp-b4">
+            <h1>{{ obj.flight_class | default:'' }}</h1>
+        </div>
+        <div class="bp-box bp-left bp-b6">
+            <img src="{% static 'air_transport/barcode.png' %}" alt="barcode">
+        </div>
+        <div class="bp-box bp-left bp-d2">Name</div>
+        <div class="bp-box bp-left bp-e2">{{ obj.passenger | default:'Cole, Andrew' }}</div>
+        <div class="bp-box bp-left bp-f2">Carrier</div>
+        <div class="bp-box bp-left bp-g2">{{ obj.airline | default:'' }}</div>
+        <div class="bp-box bp-left bp-h2">From</div>
+        <div class="bp-box bp-left bp-i2">{{ obj.origin | default:'' }}</div>
+        <div class="bp-box bp-left bp-j2">{{ obj.origin_terminal | default:'' }}</div>
+        <div class="bp-box bp-left bp-h4">To</div>
+        <div class="bp-box bp-left bp-i4">{{ obj.destination | default:'' }}</div>
+        <div class="bp-box bp-left bp-j4">{{ obj.destination_terminal | default:'' }}</div>
+        <div class="bp-box bp-left bp-e6">Flight</div>
+        <div class="bp-box bp-left bp-g6">{{ obj.flight_number | default:'XX1234' }}</div>
+        <div class="bp-box bp-left bp-e7">Date</div>
+        <div class="bp-box bp-left bp-g7">{{ obj.departure_date_local }}</div>
+        <div class="bp-box bp-left bp-h7">Seat</div>
+        <div class="bp-box bp-left bp-i7">{{ obj.seat | default:'' }}</div>
+        <div class="bp-box bp-left bp-k2">Service Information</div>
+        <div class="bp-box bp-left bp-l2">{{ obj.service_information | default:'' }}</div>
+        <div class="bp-box bp-left bp-o2">
+            {% if obj.airline.alliance %}
+                <img src="{{ obj.airline.alliance.get_logo_url }}"
+                     alt="{{ obj.airline.alliance }}">
+            {% endif %}
+        </div>
+        <div class="bp-box bp-left bp-r2">{{ obj.airline.url | default:'' }}</div>
+        <div class="bp-box bp-left bp-o3">Gate</div>
+        <div class="bp-box bp-left bp-p3">{{ obj.origin_gate | default:'' }}</div>
+        <div class="bp-box bp-left bp-n4">ETKT</div>
+        <!-- Means Electronic Ticket, Static element -->
+        <div class="bp-box bp-left bp-o5">Boarding Time</div>
+        <div class="bp-box bp-left bp-p5">{{ obj.boarding_time_local | default:obj.departure_time_local }}</div>
+        <div class="bp-box bp-left bp-o7">Class</div>
+        <div class="bp-box bp-left bp-p7">{{ obj.flight_class | default:'' }}</div>
+        <div class="bp-box bp-left bp-r3">Boarding closes 10 minutes before departure</div>
+        <!-- RIGHT HAND SECTION OF TICKET -->
+        <div class="bp-box bp-b8">Name</div>
+        <div class="bp-box bp-c8">{{ obj.passenger | default:'Cole, Andrew' }}</div>
+        <div class="bp-box bp-d8">Flight</div>
+        <div class="bp-box bp-e8">{{ obj.flight_number | default:'XX1234' }}</div>
+        <div class="bp-box bp-d10">Date</div>
+        <div class="bp-box bp-e10">{{ obj.departure_date_local }}</div>
+        <div class="bp-box bp-f8">Seat</div>
+        <div class="bp-box bp-g8">{{ obj.seat | default:'' }}</div>
+        <div class="bp-box bp-f10">Class</div>
+        <div class="bp-box bp-g10">{{ obj.flight_class | default:'' }}</div>
+        <div class="bp-box bp-i8">From</div>
+        <div class="bp-box bp-j8">{{ obj.origin.iata | default:'XX' }}</div>
+        <div class="bp-box bp-i9">To</div>
+        <div class="bp-box bp-j9">{{ obj.destination.iata | default:'XX' }}</div>
+        <div class="bp-box bp-i11">SEQ No</div>
+        <div class="bp-box bp-j11">{{ obj.sequence_number | default:'' }}</div>
+        <div class="bp-box bp-k8">Carrier</div>
+        <div class="bp-box bp-l8">{{ obj.airline | default:'' }}</div>
+        <div class="bp-box bp-n8">
+            <img src="{% static 'air_transport/barcode.png' %}" alt="barcode">
+        </div>
+        <!-- EXTRA PERFERATION CELLS -->
+        <div class="bp-empty bp-a8"></div>
+        <div class="bp-empty bp-m8"></div>
+        <div class="bp-empty bp-q8"></div>
+    </div>
+{% endblock content %}
