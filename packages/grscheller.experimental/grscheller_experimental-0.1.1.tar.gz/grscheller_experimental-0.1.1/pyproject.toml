@@ -1,0 +1,53 @@
+[build-system]
+requires = ["flit_core>=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "grscheller.experimental"
+authors = [
+    { name = "Geoffrey R. Scheller", email = "geoffrey@scheller.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: Apache Software License"
+]
+dependencies = []
+dynamic = ["version", "description"]
+keywords = ["bottom", "nothing"]
+
+[project.optional-dependencies]
+test = ["pytest >=7.4", "grscheller.circular-array >=3.6.0, <3.7"]
+
+[project.urls]
+Source = "https://github.com/grscheller/experimental"
+Changelog = "https://github.com/grscheller/experimental/blob/main/CHANGELOG.md"
+Documentation = "https://grscheller.github.io/grscheller-pypi-namespace-docs/experimental"
+
+[tool.flit.sdist]
+exclude = ["dist", "docs", ".gitignore", ".mypy_cache"]
+
+[tool.pylsp-mypy]
+enabled = true
+live-mode = true
+strict = true
+report_progress = true
+
+[tool.mypy]
+enable_incomplete_feature = ["NewGenericSyntax"]
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
