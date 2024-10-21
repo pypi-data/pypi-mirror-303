@@ -1,0 +1,72 @@
+
+#
+#	Create containers
+#
+
+create cse-in 
+{	"m2m:cnt": {
+		"rn": "cnt1"
+	}
+}
+
+sleep 1
+
+create cse-in 
+{	"m2m:cnt": {
+		"rn": "cnt2"
+	}
+}
+
+sleep 1
+
+
+#
+#	Create <action>
+#
+
+# EvalCriteriaOperator
+#		equal				= 1
+#		notEqual			= 2
+#		greaterThan			= 3
+#		lessThan			= 4
+#		greaterThanEqual	= 5
+#		lessThanEqual		= 6
+
+# EvalMode
+#			off					= 0
+#			once				= 1
+#			periodic			= 2
+#			continous 			= 3
+
+
+# action under container
+create cse-in/cnt1
+{	"m2m:actr": { 
+		"rn": "actr1",
+		"evm": 3,
+
+		"evc" : { 
+			"optr": 3,		
+			"sbjt": "cni",
+			"thld": 0
+		},
+
+		"orc": "cse-in/cnt2",
+		"apv": {
+			"op": 1,
+			"fr": "CAdmin",
+			"to": "cse-in/cnt2",
+			"rqi": "1234",
+			"rvi": "4",
+			"ty": 4,
+			"pc": { 
+				"m2m:cin": {
+					"con": "test1"
+			}}
+		} 
+}}
+
+
+
+
+
