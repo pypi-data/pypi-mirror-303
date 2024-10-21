@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indicatorPy"
+version = "0.1.2"
+authors = [
+  { name="Mayank Khanna", email="cryptex.mk@gmail.com" },
+]
+description = "Yet Another Library for technical indicators, but this time with more stationarity."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas",
+    "numpy",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/monk-boop/indicatorPy"
+"Bug Tracker" = "https://github.com/monk-boop/indicatorPy/issues"
+
+[tool.setuptools]
+packages = ["indicators", "indicators.deviationExpectation", "indicators.informationContent", "indicators.trend", "indicators.volume"]
