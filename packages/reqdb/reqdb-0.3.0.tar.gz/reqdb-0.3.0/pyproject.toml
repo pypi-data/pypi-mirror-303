@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "reqdb"
+version = "0.3.0"
+description = "Python API client for ReqDB"
+authors = ["dcfSec <contributor@dcfsec.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+marshmallow = "^3.21.2"
+requests = "^2.32.2"
+msal = {version="^1.28.0", optional=true}
+
+[tool.poetry.extras]
+msal = ["msal"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
