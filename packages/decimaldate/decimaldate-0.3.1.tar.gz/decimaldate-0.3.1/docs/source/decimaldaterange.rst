@@ -1,0 +1,6 @@
+####################
+  DecimalDateRange
+####################
+
+.. note:: 
+   Placeholder
