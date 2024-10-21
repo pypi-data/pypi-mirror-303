@@ -1,0 +1,25 @@
+[project]
+name = "markov-chain-1"
+version = "0.1.0"
+description = "A simple Markov chain implementation"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.11.2",
+    "pre-commit>=4.0.1",
+    "pytest>=8.3.3",
+    "ruff>=0.7.0",
+    "twine>=5.1.1",
+]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = 'tests.*'
+ignore_errors = true
