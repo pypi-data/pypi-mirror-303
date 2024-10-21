@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "krakenpull"
+version = "2.0.1"
+description = "A user friendly Kraken API client using pydantic 🐙"
+authors = ["marc <marc@mawaie.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^2.7.0"
+requests = "^2.31.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+ruff = "^0.4.1"
+black = "^24.4.0"
+mypy = "^1.9.0"
+types-requests = "^2.31.0.20240406"
+deepdiff = "^8.0.1"
+python-semantic-release = "^9.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variables = ["krakenpull/__init__.py:__version__"]
+version_toml = ["pyproject.toml:tool.poetry.version"]
+upload_to_pypi = false
+commit_parser = "emoji"
+allow_zero_version = false
+commit_message = "chore(release): v{version} [skip ci]"
