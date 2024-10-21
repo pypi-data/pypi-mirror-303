@@ -1,0 +1,55 @@
+using System;
+using System.Globalization;
+namespace WebApplication14
+{
+public partial class WebForm3 : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+}
+protected void Calendar1_SelectionChanged(object sender, EventArgs e)
+{
+MessageLabel.Text = $"You selected:
+{Calendar1.SelectedDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)}";
+}
+protected void AddVacationButton_Click(object sender, EventArgs e)
+{
+// Specify the expected date format
+string dateFormat = "MM/dd/yyyy";
+if (DateTime.TryParseExact(VacationDateTextBox.Text, dateFormat,
+CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime vacationDate))
+{
+Calendar1.SelectedDate = vacationDate;
+VacationLabel.Text = $"Vacation date added:
+{vacationDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)}";
+VacationLabel.ForeColor = System.Drawing.Color.Blue; // Set color
+for visibility
+}
+else
+{
+VacationLabel.Text = "Invalid date format. Please enter a valid
+date (MM/DD/YYYY).";
+VacationLabel.ForeColor = System.Drawing.Color.Red; // Set color
+for error
+}
+}
+protected void CalculateDifferenceButton_Click(object sender, EventArgs e)
+{
+string dateFormat = "MM/dd/yyyy";
+if (DateTime.TryParseExact(StartDateTextBox.Text, dateFormat,
+CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate) &&
+DateTime.TryParseExact(EndDateTextBox.Text, dateFormat,
+CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate))
+{
+TimeSpan difference = endDate - startDate;
+DifferenceLabel.Text = $"Difference: {Math.Abs(difference.Days)}
+days";
+}
+else
+{
+DifferenceLabel.Text = "Invalid date format. Please enter dates in
+MM/DD/YYYY format.";
+}
+}
+}
+}

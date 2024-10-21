@@ -1,0 +1,31 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm4.aspx.cs" Inherits="WebApplication5.WebForm4" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+     <asp:Label ID="Label1" runat="server" BorderStyle="Solid" Font-Bold="True" Font-Size="Larger" style="z-index: 1; left: 554px; top: 19px; position: absolute; width: 265px; height: 39px" Text="AdRotator Controls"></asp:Label>
+
+        <div>
+            <asp:AdRotator ID="AdRotator1" runat="server" AdvertisementFile="~/XMLFile1.xml" style="z-index: 1; left: 595px; top: 212px; position: absolute; height: 64px; width: 31px"/>            
+            <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+                    <asp:Timer ID="Timer1" runat="server">2
+                    </asp:Timer>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            
+        </div>
+      
+        
+  
+      
+        
+    </form>
+</body>
+</html>

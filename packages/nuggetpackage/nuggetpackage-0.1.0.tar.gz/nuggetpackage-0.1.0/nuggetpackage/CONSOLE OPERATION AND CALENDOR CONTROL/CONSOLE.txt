@@ -1,0 +1,82 @@
+using System;
+namespace SimpleOperations
+{
+class Program
+{
+static void Main(string[] args)
+{
+while (true)
+{
+Console.WriteLine("Select an operation:");
+Console.WriteLine("1. Find Factorial");
+Console.WriteLine("2. Money Conversion");
+Console.WriteLine("3. Cube of a Number");
+Console.WriteLine("4. Generate Fibonacci Series");
+Console.WriteLine("5. Exit");
+Console.Write("Enter your choice (1-5): ");
+int choice = Convert.ToInt32(Console.ReadLine());
+switch (choice)
+{
+case 1:
+FindFactorial();
+break;
+case 2:
+MoneyConversion();
+break;
+case 3:
+CubeOfNumber();
+break;
+case 4:
+GenerateFibonacci();
+break;
+case 5:
+return;
+default:
+Console.WriteLine("Invalid choice. Please try again.");
+break;
+}
+Console.WriteLine();
+}
+}
+static void FindFactorial()
+{
+Console.Write("Enter a number: ");
+int number = Convert.ToInt32(Console.ReadLine());
+long factorial = 1;
+for (int i = 1; i <= number; i++)
+{
+factorial *= i;
+}
+Console.WriteLine($"Factorial of {number} is {factorial}");
+}
+static void MoneyConversion()
+{
+Console.Write("Enter amount in USD: ");
+double amount = Convert.ToDouble(Console.ReadLine());
+double convertedAmount = amount * 75; // Assuming 1 USD = 75 INR
+Console.WriteLine($"Converted Amount: {convertedAmount} INR");
+}
+static void CubeOfNumber()
+{
+Console.Write("Enter a number: ");
+double number = Convert.ToDouble(Console.ReadLine());
+double cube = Math.Pow(number, 3);
+Console.WriteLine($"Cube of {number} is {cube}");
+}
+static void GenerateFibonacci()
+{
+Console.Write("Enter the number of terms in the Fibonacci series: ");
+int terms = Convert.ToInt32(Console.ReadLine());
+int a = 0, b = 1;
+Console.WriteLine("Fibonacci Series:");
+for (int i = 0; i < terms; i++)
+{
+Console.Write(a + " ");
+int next = a + b;
+a = b;
+b = next;
+}
+Console.WriteLine();
+}
+}
+}

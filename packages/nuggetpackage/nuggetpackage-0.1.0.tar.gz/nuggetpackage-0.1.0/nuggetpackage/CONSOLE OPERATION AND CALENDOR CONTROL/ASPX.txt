@@ -1,0 +1,43 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm3.aspx.cs"
+Inherits="WebApplication14.WebForm3" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<title>Calendar Demo</title>
+<style>
+body { font-family: Arial, sans-serif; }
+.message { color: green; }
+.vacation { color: blue; }
+</style>
+</head>
+<body>
+<form id="form1" runat="server">
+<div>
+<h2>Calendar Control Demo</h2>
+<asp:Calendar ID="Calendar1" runat="server"
+OnSelectionChanged="Calendar1_SelectionChanged"></asp:Calendar>
+<br />
+<asp:Label ID="MessageLabel" runat="server" Text=""
+CssClass="message"></asp:Label>
+<br />
+<asp:TextBox ID="VacationDateTextBox" runat="server"
+Placeholder="Enter a vacation date (MM/DD/YYYY)"></asp:TextBox>
+<asp:Button ID="AddVacationButton" runat="server" Text="Add Vacation"
+OnClick="AddVacationButton_Click" />
+<br />
+<asp:Label ID="VacationLabel" runat="server" Text=""
+CssClass="vacation"></asp:Label>
+<br />
+<h3>Date Difference Calculator</h3>
+<asp:TextBox ID="StartDateTextBox" runat="server" Placeholder="Start
+Date (MM/DD/YYYY)"></asp:TextBox>
+<asp:TextBox ID="EndDateTextBox" runat="server" Placeholder="End Date
+(MM/DD/YYYY)"></asp:TextBox>
+<asp:Button ID="CalculateDifferenceButton" runat="server"
+Text="Calculate Difference" OnClick="CalculateDifferenceButton_Click" />
+<br />
+<asp:Label ID="DifferenceLabel" runat="server"></asp:Label>
+</div>
+</form>
+</body>
+</html>

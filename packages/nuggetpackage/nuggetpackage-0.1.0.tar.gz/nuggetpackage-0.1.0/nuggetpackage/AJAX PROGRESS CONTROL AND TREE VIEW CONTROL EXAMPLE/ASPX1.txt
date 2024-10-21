@@ -1,0 +1,45 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs"
+Inherits="WebApplication13.WebForm1" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<title>Ajax Progress Control Demo</title>
+<style>
+.progress-container {
+margin: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+}
+.loading {
+font-size: 16px;
+color: green;
+}
+</style>
+</head>
+<body>
+<form id="form1" runat="server">
+<asp:ScriptManager ID="ScriptManager1" runat="server" />
+<div class="progress-container">
+<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<ContentTemplate>
+<asp:Button ID="Button1" runat="server" Text="Start Process"
+OnClick="Button1_Click" />
+<br /><br />
+<asp:Label ID="Label1" runat="server" Text="Result will be
+shown here" />
+</ContentTemplate>
+<Triggers>
+<asp:AsyncPostBackTrigger ControlID="Button1"
+EventName="Click" />
+</Triggers>
+</asp:UpdatePanel>
+<asp:UpdateProgress ID="UpdateProgress1" runat="server"
+AssociatedUpdatePanelID="UpdatePanel1">
+<ProgressTemplate>
+<div class="loading">Processing... Please wait.</div>
+</ProgressTemplate>
+</asp:UpdateProgress>
+</div>
+</form>
+</body>
+</html>

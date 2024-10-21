@@ -1,0 +1,64 @@
+using System;
+using System.Web.UI.WebControls;
+namespace WebApplication14
+{
+public partial class WebForm1 : System.Web.UI.Page
+{
+protected void Button1_Click(object sender, EventArgs e)
+{
+// Display selected items from ListBox in TextBox
+string selectedItems = "";
+foreach (ListItem item in ListBox1.Items)
+{
+if (item.Selected)
+{
+if (selectedItems != "")
+{
+selectedItems += ", ";
+}
+selectedItems += item.Text;
+}
+}
+TextBox1.Text = selectedItems;
+}
+protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs
+e)
+{
+// Display selected item from DropDownList1 in Label
+Label1.Text = "Selected Item: " + DropDownList1.SelectedItem.Text;
+}
+protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs
+e)
+{
+// Change font size of Label according to selected value in
+DropDownList2
+int fontSize;
+int.TryParse(DropDownList2.SelectedValue, out fontSize);
+Label1.Font.Size = FontUnit.Point(fontSize);
+}
+protected void chkFormatting_CheckedChanged(object sender, EventArgs e)
+{
+// Apply special formatting (Bold, Italic, Underline) to Label based
+on CheckBoxes
+Label1.Font.Bold = chkBold.Checked;
+Label1.Font.Italic = chkItalic.Checked;
+Label1.Font.Underline = chkUnderline.Checked;
+}
+protected void rbtnColor_CheckedChanged(object sender, EventArgs e)
+{
+// Change color of Label based on selected RadioButton
+if (rbtnRed.Checked)
+{
+Label1.ForeColor = System.Drawing.Color.Red;
+}
+else if (rbtnBlue.Checked)
+{
+Label1.ForeColor = System.Drawing.Color.Blue;
+}
+else if (rbtnGreen.Checked)
+{
+Label1.ForeColor = System.Drawing.Color.Green;
+}
+}
+}
+}
