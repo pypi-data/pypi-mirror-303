@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: xn-model
+Version: 0.11.2
+Summary: Base model for xn-api
+Author-email: Mike Artemiev <mixartemev@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/XyncNet/x-model
+Project-URL: Repository, https://github.com/XyncNet/x-model
+Keywords: tortoise,model,crud,generator,api,admin
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: tortoise-orm[accel,asyncpg]
+Requires-Dist: python-dotenv
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: setuptools-scm ; extra == 'dev'
+
+## INSTALL
+```bash
+# Create python virtual environment
+python3 -m venv venv
+# Activate this environment
+source venv/bin/activate
+# Install dependencies
+pip install .
+
+# Create pg db
+createdb --U username -W dbname
+## set password for db user
+
+# Copy .env file from sample template
+cp .env.sample .env
+## set your pg creds in .env file
+```
+
+## TEST
+```bash
+pytest
+```
