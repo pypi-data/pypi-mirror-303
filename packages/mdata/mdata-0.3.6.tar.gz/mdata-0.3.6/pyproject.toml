@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "mdata"
+version = "0.3.6"
+description = ""
+authors = ["Leah Tacke genannt Unterberg <leah.tgu@pads.rwth-aachen.de>"]
+readme = "README.md"
+license = "MIT"
+keywords = ["data format", "machine data"]
+exclude = ["files/", "test/"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+numpy = "*"
+pandas = { version = "^2.0", extras = ["performance", "excel", "hdf5", "output_formatting", "computation", "plot", "compression"] }
+pyyaml = "*"
+immutabledict = "*"
+matplotlib = "*"
+seaborn = "*"
+plotly = "^5.24.0"
+lttb = "*"
+pm4py = "^2.7.0"
+
+
+[tool.poetry.group.future.dependencies]
+lets-plot = "*"
+tsfresh = "*"
+statsmodels = "*"
+sktime = {version = "^0.28", extras = ["annotation"]}
+ruptures = "*"
+nitime = "*"
+
+# tsdownsample = "^0.1.2"
+#tables = "*"
+#numba = "^0.57"
+#numexpr = "*"
+#bottleneck = "*"
+#llvmlite = "^0.40"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0"
+
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/"
+priority = "explicit"
+
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

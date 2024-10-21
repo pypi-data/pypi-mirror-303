@@ -1,0 +1,2 @@
+CSV_KEY = 'S'
+CSV_KEY_DATA = 'SD'
