@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+namespace WebApplication13
+{
+public partial class WebForm4 : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+DateTime dt = DateTime.Now;
+Label7.Text = "Year :" + dt.Year.ToString();
+Label6.Text = "Month :" + dt.Month.ToString();
+Label5.Text = "Day :" + dt.Day.ToString();
+Label4.Text = "Hours :" + dt.Hour.ToString();
+Label3.Text = "Minutes :" + dt.Minute.ToString();
+Label2.Text = "Seconds :" + dt.Second.ToString();
+Label11.Text = "Miliseconds :" + dt.Millisecond.ToString();
+}
+protected void Button1_Click(object sender, EventArgs e)
+{
+int totaldays = 0;
+int fromyear = Convert.ToInt32(TextBox1.Text);
+int toyear = Convert.ToInt32(TextBox2.Text);
+for (int year =fromyear; year < toyear; year++)
+{
+if (DateTime.IsLeapYear(year))
+{
+totaldays += 366;
+}
+else
+{
+totaldays += 365;
+}
+}
+Label10.Text = "The Total Number of Days :" + totaldays;
+}
+}
+}

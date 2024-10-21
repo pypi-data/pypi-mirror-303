@@ -1,0 +1,68 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs"
+Inherits="WebApplication14.WebForm1" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Integrated Server Controls Demo</title>
+</head>
+<body>
+<form id="form1" runat="server">
+<h2>Integrated Server Controls Demo</h2>
+<!-- ListBox to select items -->
+<asp:ListBox ID="ListBox1" runat="server" SelectionMode="Multiple"
+AutoPostBack="True">
+<asp:ListItem Value="1">Item 1</asp:ListItem>
+<asp:ListItem Value="2">Item 2</asp:ListItem>
+<asp:ListItem Value="3">Item 3</asp:ListItem>
+</asp:ListBox>
+<br />
+<!-- Button to display selected items -->
+<asp:Button ID="Button1" runat="server" Text="Show Selected Items"
+OnClick="Button1_Click" />
+<br />
+<!-- TextBox to display selected items -->
+<asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+<br /><br />
+<!-- DropDownList1 to select an item to display in Label -->
+<asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True"
+OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
+<asp:ListItem Value="Apple">Apple</asp:ListItem>
+<asp:ListItem Value="Banana">Banana</asp:ListItem>
+<asp:ListItem Value="Cherry">Cherry</asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+<!-- DropDownList2 to select font size -->
+<asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True"
+OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged">
+<asp:ListItem Value="10">10</asp:ListItem>
+<asp:ListItem Value="14">14</asp:ListItem>
+<asp:ListItem Value="18">18</asp:ListItem>
+</asp:DropDownList>
+<br /><br />
+<!-- Label to display selected item from DropDownList1 -->
+<asp:Label ID="Label1" runat="server" Text="Selected Item:"></asp:Label>
+<br /><br />
+<!-- Image control -->
+<asp:Image ID="Image1" runat="server" ImageUrl="~/Images/sample.jpg"
+AlternateText="Sample Image" />
+<br /><br />
+<!-- CheckBoxes for special formatting -->
+<asp:CheckBox ID="chkBold" runat="server" Text="Bold" AutoPostBack="True"
+OnCheckedChanged="chkFormatting_CheckedChanged" />
+<asp:CheckBox ID="chkItalic" runat="server" Text="Italic"
+AutoPostBack="True" OnCheckedChanged="chkFormatting_CheckedChanged" />
+<asp:CheckBox ID="chkUnderline" runat="server" Text="Underline"
+AutoPostBack="True" OnCheckedChanged="chkFormatting_CheckedChanged" />
+<br /><br />
+<!-- RadioButtons for color -->
+<asp:RadioButton ID="rbtnRed" runat="server" Text="Red" GroupName="Color"
+AutoPostBack="True" OnCheckedChanged="rbtnColor_CheckedChanged" />
+<asp:RadioButton ID="rbtnBlue" runat="server" Text="Blue"
+GroupName="Color" AutoPostBack="True" OnCheckedChanged="rbtnColor_CheckedChanged"
+/>
+<asp:RadioButton ID="rbtnGreen" runat="server" Text="Green"
+GroupName="Color" AutoPostBack="True" OnCheckedChanged="rbtnColor_CheckedChanged"
+/>
+</form>
+</body>
+</html>

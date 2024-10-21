@@ -1,0 +1,49 @@
+using System;
+namespace YourNamespace
+{
+public partial class Calculator : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+}
+// Addition
+protected void btnAdd_Click(object sender, EventArgs e)
+{
+double num1 = Convert.ToDouble(txtNum1.Text);
+double num2 = Convert.ToDouble(txtNum2.Text);
+double result = num1 + num2;
+lblResult.Text = "Addition Result: " + result.ToString();
+}
+// Subtraction
+protected void btnSubtract_Click(object sender, EventArgs e)
+{
+double num1 = Convert.ToDouble(txtNum1.Text);
+double num2 = Convert.ToDouble(txtNum2.Text);
+double result = num1 - num2;
+lblResult.Text = "Subtraction Result: " + result.ToString();
+}
+// Multiplication
+protected void btnMultiply_Click(object sender, EventArgs e)
+{
+double num1 = Convert.ToDouble(txtNum1.Text);
+double num2 = Convert.ToDouble(txtNum2.Text);
+double result = num1 * num2;
+lblResult.Text = "Multiplication Result: " + result.ToString();
+}
+// Division
+protected void btnDivide_Click(object sender, EventArgs e)
+{
+double num1 = Convert.ToDouble(txtNum1.Text);
+double num2 = Convert.ToDouble(txtNum2.Text);
+if (num2 != 0)
+{
+double result = num1 / num2;
+lblResult.Text = "Division Result: " + result.ToString();
+}
+else
+{
+lblResult.Text = "Cannot divide by zero!";
+}
+}
+}
+}

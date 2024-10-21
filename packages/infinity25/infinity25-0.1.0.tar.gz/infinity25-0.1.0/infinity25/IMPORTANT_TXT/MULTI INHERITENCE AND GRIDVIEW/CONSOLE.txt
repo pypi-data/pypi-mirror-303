@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+// Define the IStudent interface
+public interface IStudent
+{
+void AddStudent(string name, int rollNo);
+void DisplayStudents();
+}
+// Define the ICourse interface
+public interface ICourse
+{
+void EnrollStudent(int rollNo, string courseName);
+}
+// Define the Student class
+public class Student
+{
+public int RollNo { get; set; }
+public string Name { get; set; }
+public string CourseName { get; set; }
+}
+// Implement the interfaces in the StudentCourse class
+public class StudentCourse : IStudent, ICourse
+{
+private List<Student> studentRecords = new List<Student>();
+public void AddStudent(string name, int rollNo)
+{
+var student = new Student { RollNo = rollNo, Name = name };
+studentRecords.Add(student);
+Console.WriteLine($"Student {name} with Roll No {rollNo} added.");
+}
+public void EnrollStudent(int rollNo, string courseName)
+{
+var student = studentRecords.Find(s => s.RollNo == rollNo);
+if (student != null)
+{
+student.CourseName = courseName;
+Console.WriteLine($"Student with Roll No {rollNo} enrolled in {courseName}.");
+}
+else
+{
+Console.WriteLine($"Student with Roll No {rollNo} not found.");
+}
+}
+public void DisplayStudents()
+{
+Console.WriteLine("Student Records:");
+foreach (var student in studentRecords)
+{
+Console.WriteLine($"Roll No: {student.RollNo}, Name: {student.Name}, Course:
+{student.CourseName}");
+}
+}
+}
+// Main program to test the implementation
+class Program
+{
+static void Main(string[] args)
+{
+StudentCourse sc = new StudentCourse();
+sc.AddStudent("John Doe", 1);
+sc.AddStudent("Jane Smith", 2);
+sc.EnrollStudent(1, "Mathematics");
+sc.EnrollStudent(2, "Science");
+sc.DisplayStudents();
+}
+}
