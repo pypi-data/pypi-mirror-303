@@ -1,0 +1,283 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$defs": {
+    "python_identifier": {
+      "type": "string",
+      "pattern": "^[^\\d\\W]\\w*\\Z"
+    },
+    "valid_identifier": {
+      "type": "string"
+    },
+    "feature_spec": {
+      "$ref": "#/$defs/valid_identifier"
+    },
+    "meta_feature_spec": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/feature_spec"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "long_name": {
+                "type": "string"
+              },
+              "data_type": {
+                "type": "string",
+                "enum": [
+                  "infer",
+                  "string",
+                  "int",
+                  "float",
+                  "boolean",
+                  "categorical",
+                  "datetime",
+                  "duration"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/valid_identifier"
+          },
+          "minProperties": 1,
+          "maxProperties": 1
+        }
+      ]
+    },
+    "datapoint_spec": {
+      "type": "object",
+      "uniqueItems": true,
+      "propertyNames": {
+        "$ref": "#/$defs/python_identifier"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "$ref": "#/$defs/meta_feature_spec"
+        }
+      }
+    },
+    "datapoint_spec_min_one": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/datapoint_spec"
+        },
+        {
+          "additionalProperties": {
+            "minItems": 1
+          }
+        }
+      ]
+    },
+    "basic_feature_specs": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/feature_spec"
+        }
+      }
+    },
+    "meta_feature_specs": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/meta_feature_spec"
+        }
+      }
+    },
+    "segment_spec": {
+      "$ref": "#/$defs/valid_identifier"
+    },
+    "meta_segment_spec": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/segment_spec"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "long_name": {
+                "type": "string"
+              },
+              "properties": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "monotonic",
+                    "disjoint",
+                    "seamless",
+                    "complete"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/valid_identifier"
+          },
+          "minProperties": 1,
+          "maxProperties": 1
+        }
+      ]
+    },
+    "basic_segment_specs": {
+      "items": {
+        "$ref": "#/$defs/segment_spec"
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "extensions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "metadata",
+          "segments",
+          "directionality"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "event_specs": {
+      "$ref": "#/$defs/datapoint_spec"
+    },
+    "measurement_specs": {
+      "$ref": "#/$defs/datapoint_spec_min_one"
+    },
+    "segment_specs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/meta_segment_spec"
+      }
+    },
+    "segment_data_specs": {
+      "$ref": "#/$defs/datapoint_spec"
+    },
+    "directionality": {
+      "type": "object",
+      "properties": {
+        "in": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/valid_identifier"
+          }
+        },
+        "out": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/valid_identifier"
+          }
+        }
+      },
+      "required": [
+        "in",
+        "out"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "event_specs",
+    "measurement_specs"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "extensions": {
+            "contains": {
+              "const": "metadata"
+            }
+          }
+        },
+        "required": [
+          "extensions"
+        ]
+      },
+      "then": {
+      },
+      "else": {
+        "properties": {
+          "event_specs": {
+            "$ref": "#/$defs/basic_feature_specs"
+          },
+          "measurement_specs": {
+            "$ref": "#/$defs/basic_feature_specs"
+          },
+          "segment_specs": {
+            "$ref": "#/$defs/basic_segment_specs"
+          },
+          "segmentdata_specs": {
+            "$ref": "#/$defs/basic_feature_specs"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "extensions": {
+            "contains": {
+              "const": "segments"
+            }
+          }
+        },
+        "required": [
+          "extensions"
+        ]
+      },
+      "then": {
+        "required": [
+          "segment_specs",
+          "segmentdata_specs"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "segment_specs",
+            "segmentdata_specs"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "extensions": {
+            "contains": {
+              "const": "directionality"
+            }
+          }
+        },
+        "required": [
+          "extensions"
+        ]
+      },
+      "then": {
+        "required": [
+          "directionality"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "directionality"
+          ]
+        }
+      }
+    }
+  ]
+}
