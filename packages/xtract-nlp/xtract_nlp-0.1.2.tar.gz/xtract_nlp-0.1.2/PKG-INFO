@@ -1,0 +1,97 @@
+Metadata-Version: 2.3
+Name: xtract-nlp
+Version: 0.1.2
+Summary: A tool to process codebases, generate embeddings for code chunks, and query code snippets using natural language models like CodeBERT.
+Project-URL: Homepage, https://github.com/ooojustin/xTrAct-NLP
+Project-URL: Documentation, https://github.com/ooojustin/xTrAct-NLP#readme
+Project-URL: Source, https://github.com/ooojustin/xTrAct-NLP
+Project-URL: Tracker, https://github.com/ooojustin/xTrAct-NLP/issues
+Author-email: Justin Garofolo <justin@garofolo.net>
+License: MIT
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Requires-Dist: click>=8.1.0
+Requires-Dist: nltk>=3.5
+Requires-Dist: scikit-learn>=1.2.0
+Requires-Dist: seaborn>=0.12.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: transformers>=4.25.0
+Description-Content-Type: text/markdown
+
+# xTrAct-NLP: A Code Query and Embedding Toolkit
+
+**xTrAct-NLP** is a toolkit designed to process codebases, generate embeddings from code chunks, and retrieve relevant snippets using natural language queries. It uses state-of-the-art models to create meaningful embeddings and facilitates sophisticated query expansion and ranking mechanisms. This project is especially useful for developers looking to integrate NLP into code search engines.
+
+## Features
+
+- **Code Parsing**: Supports code parsing using AST to extract functions and classes as code chunks.
+- **Embedding Generation**: Generates embeddings from code chunks using HuggingFace models (e.g., CodeBERT, T5).
+- **Query Expansion**: Automatically expands natural language queries with relevant technical terms using language models.
+- **Reranking**: Supports BM25 and cosine similarity-based ranking for more relevant code retrieval.
+- **Visualization**: Supports both scatter plots (for PCA and t-SNE) and heatmaps to visually analyze and compare code embeddings.
+
+## Installation
+
+```bash
+pip install xtract-nlp
+```
+
+For development:
+
+```bash
+git clone https://github.com/ooojustin/xTrAct-NLP.git
+cd xTrAct-NLP
+pip install -e .
+```
+
+## Usage
+
+### CLI Usage
+
+1. **Process Codebase:**
+
+   ```bash
+   xtract process <path_to_codebase>
+   ```
+
+2. **Generate Embeddings:**
+
+   ```bash
+   xtract generate
+   ```
+
+3. **Query the Codebase:**
+   ```bash
+   xtract query "parse python code using ast"
+   ```
+
+### Python Library Usage
+
+```python
+from xtract.core import process_code, generate_embeddings, query_code
+
+# Process codebase
+num_chunks = process_code("/path/to/codebase")
+
+# Generate embeddings
+num_embeddings = generate_embeddings()
+
+# Query codebase
+results = query_code("parse python code using ast")
+```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/ooojustin/xTrAct-NLP/blob/main/LICENSE) for more details.

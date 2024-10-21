@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "xtract-nlp"
+version = "0.1.2"
+description = "A tool to process codebases, generate embeddings for code chunks, and query code snippets using natural language models like CodeBERT."
+authors = [{ name = "Justin Garofolo", email = "justin@garofolo.net" }]
+license = { text = "MIT" }
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed"
+]
+dependencies = [
+    "torch >= 2.0.0",
+    "transformers >= 4.25.0",
+    "click >= 8.1.0",
+    "scikit-learn >= 1.2.0",
+    "seaborn >= 0.12.0",
+    "nltk >= 3.5"
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/ooojustin/xTrAct-NLP"
+Documentation = "https://github.com/ooojustin/xTrAct-NLP#readme"
+Source = "https://github.com/ooojustin/xTrAct-NLP"
+Tracker = "https://github.com/ooojustin/xTrAct-NLP/issues"
+
+[project.scripts]
+xtract = "xtract.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["xtract"]
