@@ -1,0 +1,60 @@
+digraph G {
+    rankdir=TB;
+    bgcolor="#1B1D1E";
+    label="summawise + xtract";
+    labelloc="t";
+    fontsize=24;
+    fontname="Fira Code, Segoe UI, Helvetica, Arial";
+    fontcolor="#F8F8F2";
+    
+    // node default styling
+    node [style=filled, fontname="Fira Code, Segoe UI, Helvetica, Arial", fontsize=12, fontcolor="#F8F8F2"];
+
+    // edge default styling
+    edge [color="#A6E22E", style=solid, arrowhead=open, fontname="Fira Code, Segoe UI, Helvetica, Arial", fontsize=12];
+
+    // summawise project
+    "summawise" [shape=hexagon, fillcolor="#2D3A3F", color="#A6E22E"];
+
+    // summawise processes
+    "Vectorize" [shape=box, fillcolor="#273822", color="#66D9EF"];
+    "VectorStore" [shape=box, fillcolor="#273822", color="#66D9EF"];
+    "Code as Text" [shape=box, fillcolor="#273822", color="#66D9EF"];
+    "OpenAI" [shape=box, fillcolor="#273822", color="#66D9EF"];
+
+    // xtract component of summawise
+    "xTrAct-NLP" [shape=hexagon, fillcolor="#465362", color="#F92672"];
+    "Extract Chunks" [shape=ellipse, fillcolor="#3B4055", color="#A6E22E"];
+    "Chunks" [shape=ellipse, fillcolor="#3B4055", color="#A6E22E"];
+    "Generate Embeddings" [shape=ellipse, fillcolor="#3B4055", color="#A6E22E"];
+    "Embeddings" [shape=ellipse, fillcolor="#3B4055", color="#A6E22E"];
+
+    // processing pipeline
+    "Question" [shape=diamond, fillcolor="#1B1D1E", color="#F92672"];
+    "Related Chunks" [shape=diamond, fillcolor="#465362", color="#66D9EF"];
+    "Question + Chunks" [shape=diamond, fillcolor="#465362", color="#66D9EF"];
+    "OpenAI API" [shape=ellipse, fillcolor="#272822", fontcolor="#F8F8F2", color="#66D9EF"];
+    "Answer" [shape=ellipse, fillcolor="#272822", fontcolor="#F8F8F2", color="#66D9EF"];
+
+    // connections between components
+    "summawise" -> "Vectorize";
+    "Vectorize" -> "VectorStore";
+    "summawise" -> "Code as Text";
+    "Code as Text" -> "OpenAI";
+    "VectorStore" -> "OpenAI";
+
+    // xtract connections
+    "summawise" -> "xTrAct-NLP";
+    "xTrAct-NLP" -> "Extract Chunks";
+    "Extract Chunks" -> "Chunks";
+    "xTrAct-NLP" -> "Generate Embeddings";
+    "Generate Embeddings" -> "Embeddings";
+    "Embeddings" -> "Related Chunks";
+    "Chunks" -> "Related Chunks";
+
+    // processing pipeline
+    "Question" -> "summawise";
+    "Related Chunks" -> "Question + Chunks";
+    "Question + Chunks" -> "OpenAI API";
+    "OpenAI API" -> "Answer";
+}
