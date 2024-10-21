@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: cz_convention
+Version: 2.0.1
+Summary: Extend the commitizen tools to create conventional commits and CHANGELOG that link to git providers.
+Home-page: https://github.com/evanhongo/cz-convention
+Author: evanhongo
+Author-email: evanhongo@gmail.com
+License: MIT
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: commitizen
+
+# Intro
+
+## What is it
+
+**cz-convention** is a plugin for [commitizen](https://github.com/commitizen-tools/commitizen)
+
+## What it do
+
+Create links to commits & author info in the CHANGELOG.md
+
+## Installation
+
+```sh
+pip install cz-convention
+cz init
+```
+
+## Config sample
+
+cz.json
+
+```json
+{
+  "commitizen": {
+    "name": "cz_convention",
+    "version": "0.0.1",
+    "tag_format": "v$version",
+    "git_provider": "github",
+    "repo_url": "https://github.com/superman/super-project"
+  }
+}
+```
+
+.pre-commit-config.yaml
+
+```yaml
+repos:
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.38.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+        additional_dependencies: [cz-convention]
+```
