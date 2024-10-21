@@ -1,0 +1,38 @@
+deprecated>=1.2.13
+numpy<2.0
+opencv-python-headless
+pandas
+Pillow
+prettytable
+psutil
+py-cpuinfo
+pyyaml
+requests
+schema
+scikit-learn
+
+[:sys_platform != "win32" or python_version > "3.8"]
+pycocotools
+
+[:sys_platform == "win32" and python_version <= "3.8"]
+pycocotools-windows
+
+[pt]
+prettytable
+psutil
+py-cpuinfo
+pydantic
+
+[pt:python_version < "3.12"]
+numpy==1.23.5
+
+[pt:python_version >= "3.12"]
+numpy<2.0
+
+[tf]
+prettytable
+psutil
+py-cpuinfo
+pydantic
+pyyaml
+tensorflow
