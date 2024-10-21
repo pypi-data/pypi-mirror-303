@@ -1,0 +1,60 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "acte"
+version = "0.0.15"
+description = "A framework to build Tools for AI Agents, a GUI-like solution to enhance Function Calling."
+readme = "README.md"
+authors = [
+    { name = "j66n", email = "jonathan.nuance@gmail.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+]
+keywords = [
+    "ai",
+    "agent",
+    "tool",
+    "framework",
+    "llm",
+    "function calling",
+]
+dependencies = [
+    "aiohttp==3.10.5",
+    "starlette==0.38.2",
+    "uvicorn==0.30.6",
+    "jsonschema==4.23.0",
+]
+requires-python = ">=3.10"
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/acte-all/acte"
+
+[tool.pdm]
+package-dir = "."
+
+[tool.pdm.build]
+includes = [
+    "acte",
+]
+
+[tool.pdm.build.package-data]
+acte = [
+    "*.html",
+    "*.js",
+    "*.css",
+]
