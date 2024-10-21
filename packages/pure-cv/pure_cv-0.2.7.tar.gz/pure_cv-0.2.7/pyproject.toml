@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pure-cv"
+version = "0.2.7"
+authors = [
+    {name="Marcel Claramunt", email="marcel@moveread.com"}
+]
+description = "Purely functional tools for Python OpenCV "
+dependencies = [
+    "ramda",
+    "numpy",
+    "opencv-python",
+    "lazy-loader",
+    "jaxtyping",
+    "nudantic"
+]
+requires-python = ">=3.10"
+readme = {file="README.md", content-type="text/markdown"}
+
+[project.optional-dependencies]
+plot = ["matplotlib"]
