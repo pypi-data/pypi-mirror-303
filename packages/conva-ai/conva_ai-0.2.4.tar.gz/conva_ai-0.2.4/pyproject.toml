@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "conva_ai"
+version = "0.2.4"
+authors = [
+  { name="Slang Labs", email="support@slanglabs.in" },
+]
+dynamic = ["dependencies"]
+description = "Python SDK for using Conva AI co-pilots"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "http://www.slanglabs.in"
+Documentation = "https://docs.slanglabs.in/"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
