@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "identificador-pii"
+version = "0.1.4"
+description = "Este pacote visa criar uma ferramenta simples que pode auxiliar pessoas que trbalham com dados a identificar se em um determinado conjunto de dados, existem dados pessoais."
+authors = ["Pedro Campagna <pedrohcmds@gmail.com>"]
+readme = "README.md"
+packages = [{include="identificador_pii"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: Portuguese (Brazilian)",
+    "Topic :: Education",
+    "Programming Language :: Python :: 3"
+]
+license = "MIT"
+
+[tool.project.urls]
+"Documentação" = "https://projeto-pii-brasil.readthedocs.io/en/latest/"
+"Repositório" = "https://github.com/pedrohcmds/identificador-pii"
+"Bug Tracker" = "https://github.com/pedrohcmds/identificador-pii/issues"
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.2.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+blue = "^0.9.1"
+isort = "^5.13.2"
+taskipy = "^1.13.0"
+pytest-cov = "^5.0.0"
+
+
+[tool.poetry.group.doc.dependencies]
+mkdocs-material = "==9.*"
+ipykernel = "^6.29.5"
+pandas = "^2.2.2"
+poetry = "^1.8.3"
+mkdocstrings = {extras = ["python"], version = "^0.26.1"}
+mkdocstrings-python = "^1.11.1"
+jinja2 = "^3.1.4"
+mkdocs-mermaid2-plugin = "^1.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = "--doctest-modules"
+
+[tool.isort]
+profile = "black"
+line_length = 99
+
+[tool.taskipy.tasks]
+lint = "blue --check --diff . && isort --check --diff ."
+docs = "mkdocs serve"
+pre_test = "task lint"
+test = "pytest -s -x --cov=identificador_pii -vv"
+post_test = "coverage html"
+
