@@ -1,0 +1,11 @@
+query absenceReasons($orderBy: [String], $filters: JSONString) {
+  items: coursebookAbsenceReasons(orderBy: $orderBy, filters: $filters) {
+    id
+    shortName
+    name
+    colour
+    default
+    canEdit
+    canDelete
+  }
+}
