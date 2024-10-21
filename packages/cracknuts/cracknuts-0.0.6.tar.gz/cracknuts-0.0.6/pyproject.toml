@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cracknuts"
+description = "A library for cracknuts device."
+dynamic = ["version"]
+requires-python = ">=3.12"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Dingzb", email = "dingzibiao@gmail.com" }]
+maintainers = [{ name = "Dingzb", email = "dingzibiao@gmail.com" }]
+dependencies = [
+    "numpy~=1.26.4",
+    "pandas~=2.2.2",
+    "click~=8.1.7",
+    "zarr~=2.18.2"
+]
+
+[project.urls]
+homepage = "https://cracknuts.io"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6.3",
+    "typos~=1.24.4",
+    "build~=1.2.1",
+    "pre-commit~=3.8.0",
+]
+
+test = [
+    "pytest~=8.3.2",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "cracknuts.__version__" }
+
+[project.scripts]
+cracknuts = "cracknuts.__main__:main"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = ["demo", "tests"]
+
+[tool.ruff.lint]
+extend-select = [
+    "F",
+    "E",
+    "W",
+    "UP",
+]
+
+[tool.typos.files]
+extend-exclude = [
+    "demo",
+    "tests"
+]
+
+#[tool.rye]
+#managed = true
+#dev-dependencies = []
+#
+#[tool.hatch.metadata]
+#allow-direct-references = true
+#
+#[tool.hatch.build.targets.wheel]
+#packages = ["src/cracknuts"]
+#
+#[[tool.rye.sources]]
+#name = "default"
+#url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+#
+#[tool.rye.workspace]
+#members = ["scarr"]
