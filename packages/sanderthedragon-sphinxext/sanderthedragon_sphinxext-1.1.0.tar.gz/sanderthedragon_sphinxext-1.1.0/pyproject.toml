@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: 2021-2024 SanderTheDragon <sanderthedragon@zoho.com>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+[project]
+name = "sanderthedragon-sphinxext"
+dynamic = [ "version" ]
+description = "SanderTheDragon's Sphinx Extensions"
+readme = "README.rst"
+
+requires-python = ">= 3.10"
+
+license = "MIT"
+
+authors = [
+    { name = "SanderTheDragon", email = "sanderthedragon@zoho.com" }
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Sphinx :: Extension",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+
+[project.urls]
+Homepage = "https://sanderthedragon.gitlab.io/sphinx-extensions"
+Repository = "https://gitlab.com/SanderTheDragon/sphinx-extensions"
+Issues = "https://gitlab.com/SanderTheDragon/sphinx-extensions/issues"
+Changelog = "https://sanderthedragon.gitlab.io/sphinx-extensions/changelog.html"
+
+[build-system]
+requires = [ "hatchling" ]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/sanderthedragon/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "docs",
+    ".gitlab-ci.yml",
+    "requirements.txt"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [ "src/sanderthedragon" ]
+exclude = [
+    "*.license"
+]
