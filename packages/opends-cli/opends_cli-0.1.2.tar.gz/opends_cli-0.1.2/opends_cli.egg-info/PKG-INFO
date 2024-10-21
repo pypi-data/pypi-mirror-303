@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: opends-cli
+Version: 0.1.2
+Summary: A command line client for running opendata.studio datakits
+Author-email: Varvara Efremova <varvara@echus.co>, James Wilmot <jameswilmot2000@gmail.com>
+Project-URL: Homepage, https://github.com/opendatastudio/cli
+Project-URL: Bug Tracker, https://github.com/opendatastudio/cli/issues
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer<1,>=0.12
+Requires-Dist: docker<8,>=7.1.0
+Requires-Dist: matplotlib<4,>=3.9.1
+Requires-Dist: tornado
+Requires-Dist: opendatapy>=0.1.2
+Requires-Dist: tabulate
+Provides-Extra: development
+Requires-Dist: pre-commit; extra == "development"
+Requires-Dist: build; extra == "development"
+Provides-Extra: all
+Requires-Dist: opends-cli[development]; extra == "all"
+
+# opendata.studio CLI
+
+A command line client for running opendata.studio datakits.
+
+View usage documentation at [docs/README.md](https://github.com/opendatastudio/cli/blob/main/docs/README.md).
+
+
+## Development
+
+To install and test locally, navigate to the datakit directory you want to
+test.
+```
+cd /path/to/datakit
+```
+
+Create a virtualenv and install the CLI via pip in local mode:
+```
+python -m venv .venv
+source .venv/bin/activate
+pip install -e [/path/to/cli]
+```
+
+You can now run the CLI script with:
+```
+opends
+```
