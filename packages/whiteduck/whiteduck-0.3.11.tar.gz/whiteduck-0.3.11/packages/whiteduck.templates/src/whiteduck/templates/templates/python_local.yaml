@@ -1,0 +1,169 @@
+template: "white duck python stack (linux/mac)"
+
+version: "1.0"
+short_description: "A template to create a ready-to-use Python project with essential development tools and dependencies."
+description: |
+  This template creates a Python project with essential development tools and dependencies. 
+  The project is ready to use with pre-commit hooks, pytest, mypy, pyinstrument, deptry, ruff, tox, loguru, gradio, mkdocs, and mkdocs-material. 
+  The template also includes a wizard to set up the project name, type, and directory. 
+  The template is designed to be flexible and can be easily extended with additional dependencies and tools.
+
+documentation_path: "data/docs/test.md"
+module_path: "data/modules"
+dependency_groups:
+  - name: "Dev"
+    environment: "dev"
+    description: "Development tools and dependencies"
+    is_mandatory: True
+    dependencies:
+      - name: "loguru"
+      - name: "rich"
+      - name: "ruff"
+      - name: "deptry"
+
+  - name: "Testing"
+    environment: "test"
+    description: "Testing and coverage"
+    is_mandatory: False
+    dependencies:
+      - name: "pytest"
+      - name: "pytest-cov"
+      - name: "pytest-sugar"
+      - name: "pytest-clarity"
+
+  - name: "Documentation"
+    environment: "docs"
+    description: "Documentation generator"
+    is_mandatory: False
+    dependencies:
+      - name: "mkdocs"
+      - name: "mkdocs-material"
+      - name: "mkdocs-gen-files"
+      - name: "mkdocstrings-python"
+      - name: "mkdocs-section-index"
+      - name: "mkdocs-literate-nav"
+
+  - name: "Task Automation"
+    environment: "task"
+    description: "Dependencies for task automation"
+    is_mandatory: False
+    dependencies:
+      - name: "pre-commit"
+      - name: "poethepoet"
+      - name: "nox"
+
+variables:
+  - id: show_modules
+    value: "Skip"
+  - id: project_name
+    value: "wd_app_[[wd.NOW_]]"
+  - id: project_dir
+    value: ""
+  - id: kind_of_project
+    value: "library"
+  - id: is_pre_commit
+    value: True
+  - id: is_pytest_package
+    value: True
+  - id: is_ruff
+    value: True
+  - id: is_deptry
+    value: True
+  - id: is_pyinstrument
+    value: True
+  - id: is_loguru
+    value: True
+
+modules:
+  - id: "m_init_project"
+    type: init
+    module_definition: init_project
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+    displayName: "Initializing project [[project_name]] in directory [[project_dir]]..."
+
+  - id: "m_pre-commit"
+    type: poe
+    module_definition: pre-commit
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+    displayName: "Initializing pre-commit for [[project_name]].."
+
+  - id: "m_ruff"
+    type: poe
+    module_definition: ruff
+    arguments:
+      - path: "[[project_dir]]/[[project_name]]"
+      - env: "dev"
+      - package: "ruff"
+    displayName: "Initializing pre-commit for [[project_name]].."
+
+prompts:
+  - id: "p_kind_of_project"
+    display_name: "Project Type"
+    prompt: "What kind of project is this"
+    value_set: ["library", "webapp", "cli"]
+    description: |
+      A library is a collection of functions and classes that can be used in other programs. 
+      A webapp is a program that runs on a server and can be accessed through a web browser. 
+      A CLI is a program that runs in the terminal and takes commands from the user.
+    show_description: True
+    default: "[[kind_of_project]]"
+    out: "kind_of_project"
+
+  - id: "p_project_name"
+    display_name: "Project Name"
+    prompt: "How should the program be named"
+    default: "[[project_name]]"
+    type: "text"
+    out: "project_name"
+
+  - id: "p_project_dir"
+    display_name: "Installation Directory"
+    prompt: "Where should the program be installed"
+    default: "[[project_dir]]"
+    type: "file_dir"
+
+  - id: "p_show_modules"
+    display_name: "Modules and Dependencies"
+    prompt: "Do you want to set modules and dependencies?"
+    value_set: ["Skip", "Set"]
+    default: "[[show_modules]]"
+
+  - id: "p_do_pre_commit"
+    display_name: "Pre-commit"
+    prompt: "Do you want to use pre-commit"
+    value_set: ["True", "False"]
+    description: "Pre-commit is a tool that checks your code for style and errors before you commit it"
+    url: "https://pre-commit.com/"
+    show_description: True
+    default: "[[do_pre_commit]]"
+
+steps:
+  - id: "wizard_init_project"
+    type: wizard
+    title: "## Tell me about your project!"
+    value:
+      - prompt: "p_kind_of_project"
+      - prompt: "p_project_name"
+      - prompt: "p_project_dir"
+
+  - id: "exec_init_project"
+    title: "## Initializing project"
+    type: module_id
+    value: m_init_project
+
+  - id: "dependency_wizard"
+    type: dependency_wizard
+    title: "## Which dependencies do you want to include?"
+    value: dependecy_group
+
+  - id: "post_clean"
+    title: "# Rate me!"
+    type: prompt
+    value:
+      id: "p_clean"
+      display_name: "Rating"
+      prompt: "How awesome was this?"
+      value_set: ["True", "False"]
+      default: "True"
