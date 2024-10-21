@@ -1,0 +1,115 @@
+Metadata-Version: 2.1
+Name: tcolr
+Version: 0.2.0
+Summary: A simple terminal colorizer
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: rich >13.8.0
+Requires-Dist: pyyaml >5.4.1
+Requires-Dist: asteval >1.0.5
+
+# tcolr - table colouriser
+
+This is a simple program that handles colorising tabular content using a set of rules, similar to how grc or similar
+out of band colorisers work.
+
+## Overview
+
+When working using a command shell is it often very useful to have colourised output. This makes
+it easier to parse output at a glance and see
+
+Consider the following output.
+
+```text
+bash% kubectl get pods
+NAME                               READY   STATUS    RESTARTS        AGE
+etcd-node001                       1/1     Running   1 (4d20h ago)   15d
+kube-apiserver-node001             1/1     Running   0               4d20h
+kube-controller-manager-node001    0/1     Pending   0               4d20h
+kube-proxy-ngz4s                   1/1     Running   0               4d20h
+kube-scheduler-node001             1/1     Running   0               4d20h
+```
+
+This is a typical example from the kubernetes world. The word `Pending` is often difficult to
+recognise in a page full of pods since the overall shape of the word is very similar to `Running`.
+
+There is the kubecolor drop in replacement for kubectl but this implies that you will always want
+the same colourisation logic to be applied in all circumstances.
+
+It is often more beneficial to decouple the colourisation of the content from the command that
+generates it. This is where "generic colourisers" such are grc (amongst others) have value.
+
+However, all of these colourisers struggle to work flexibly with tabular content since their
+pattern matching logic is line based. 
+
+This is the reason for `tcolr`. It only exists for handling the colourisation of tabular context.
+Whilst the examples above are all examples from the kubernetes world, this is intended for
+for colourising tabular content from any source.
+
+## Usage
+
+
+
+### Basic Usage
+
+`tcolr` is driven from a simple configuration file such as the one below:
+
+```yaml
+rules:
+  - column: STATUS
+    match: Running
+    color: green
+  - column: STATUS
+    match: Failed
+    color: red
+  - column: READY
+    match: '1/1'
+    color: yellow
+```
+
+When `tcolr` parses each line, it first parses the line into columns based
+on the column header widths. It then evaluates the rules for each line
+and if the rule matches it colourises that cell to the given colour. The matches
+in the above example are all literals, but they are evaulated as standard regular
+expressions.
+
+No effort at present has been made to avoid multiple rules matching for a given
+column. It is up to you to ensure this doesn't occur.
+
+
+### Variables
+
+Sometimes it might be valuable to parse the line into variables so that you
+can make colourisation decisions with more control or alternatively to 
+colourise one cell based on the values in another cell on the line. This is 
+possible by specifying a config file with a values block.
+
+If you consider the sample output and the following config file:
+
+```yaml
+variables:
+  - name: ready
+    column: READY
+    match: (\d+)/\d+
+  - name: max
+    column: READY
+    match: \d+/(\d+)
+
+rules:
+  - column: READY
+    match: '.*'
+    color: red
+    when: 'int(ready) < int(max)'
+  - column: READY
+    match: '.*'
+    color: yellow
+```
+
+If any variables are specified `tcolr` will generate all these variables
+first when parsing a line. Once these are present, they are available
+to all of the rules. The above example will colourise the READY field as red
+if all of the containers are not ready (i.e. 0/1) and yellow for the normal
+case.
+
+
+
