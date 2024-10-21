@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "oqclib"
+version = "0.1.45"
+description = "OQC Python Libraries"
+authors = ["OQC <oqc@hotmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "oqclib/*"},
+    {include = "oqclib/robot/*"},
+    {include = "oqclib/utils*"},
+    {include = "oqclib/indicators*"},
+    {include = "oqclib/exch*"},
+    ]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pycryptodome = "^3.18.0"
+tomli = "^2.0.1"
+mplfinance = "^0.12.10b0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+
+# douban https://pypi.doubanio.com/simple/
+# netease https://mirrors.163.com/pypi/simple/
+# aliyun https://mirrors.aliyun.com/pypi/simple/
+# tsinghua https://pypi.tuna.tsinghua.edu.cn/simple/
+
+[[tool.poetry.source]]
+name = "aliyun"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
