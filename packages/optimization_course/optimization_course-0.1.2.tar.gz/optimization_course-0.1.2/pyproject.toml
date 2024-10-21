@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "optimization_course"
+version = "0.1.2"
+description = ""
+authors = ["hatarhini <hussein.tarhini@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "*"
+matplotlib = "^3.9.2"
+PuLP = "^2.9.0"
+scipy = "^1.7.3"
+
+[tool.poetry.dev-dependencies]
+ipykernel = "^6.4.1"
+ruff = "^0.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 85
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "N",  # PEP8 naming convetions
+    "D",  # pydocstyle
+    "ANN",  # flake8-annotations
+]
+
+ignore = ["ANN101","N802","N803", "N806", "N816"]
