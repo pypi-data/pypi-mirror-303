@@ -1,0 +1,70 @@
+import asyncio
+from typing import List
+from pydantic import BaseModel, TypeAdapter
+from cachetools import cached
+from fastapi import APIRouter
+
+from ..schemas import *
+{% for crud in cruds %}
+from ..repo import {{ crud }} as {{ crud }}
+{% endfor %}
+
+
+
+class {{ crd.name.origin }}(APIRouter):
+    def __init__(self):
+        super().__init__(prefix="/{{ crd.name.snake }}")
+        {% for method in crd.methods %}
+        self.add_api_route(
+            path='/{{ method.name }}',
+            methods=['POST'],
+            endpoint=self.{{ method.name }}()
+        )
+        {% endfor %}
+
+{% for method in crd.methods %}
+    {% for define in method.defines %}
+    {{ define }}
+    {% endfor %}
+    @cached(cache={})
+    def __{{ method.name }}_adapters():
+        return (
+            {% for t in method.res_fields.values() %}
+            TypeAdapter({{ t }}),
+            {% endfor %}
+        )
+    def {{ method.name }}(self):
+        async def f(
+                {% for k,v in method.args.items() %}
+                {{ k }}: {{ v }},
+                {% endfor %}
+                db=Depends(get_db),
+        ) -> self.{{ method.res_type }}:
+            {% for process in method.process %}
+            {{ process }}
+            {% endfor %}
+
+            {% for res_field_name in method.res_fields.keys() %}
+            {{ res_field_name}}_query =
+            {% endfor %}
+
+            {{ method.res_fields.keys() | join('_result, ') }} = await asyncio.gather(
+                {% for res_field_name in method.res_fields.keys() %}
+                db.scalars({{ res_field_name}}_query),
+                {% endfor %}
+            )
+
+            {{ method.res_fields.keys() | join('_adapter, ') }} = self.__{{ method.name }}_adapters()
+
+            {% for res_field_name in method.res_fields.keys() %}
+            {{ res_field_name}} = {{ res_field_name }}_adapter.validate_python({{ res_field_name }}_result.all()),
+            {% endfor %}
+
+            return self.{{ method.res_type }}(
+                {% for res_field_name in method.res_fields.keys() %}
+                {{ res_field_name}}={{ res_field_name }},
+                {% endfor %}
+            )
+
+        return f
+{% endfor %}

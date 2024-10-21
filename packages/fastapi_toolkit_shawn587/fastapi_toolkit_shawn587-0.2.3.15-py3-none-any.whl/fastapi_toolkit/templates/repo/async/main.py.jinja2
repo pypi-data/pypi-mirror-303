@@ -1,0 +1,152 @@
+{% set name = model.name.db %}
+{% set s_name = model.name.snake %}
+{% set base_schema = model.name.base_schema %}
+{#{% set router = s_name + "_router" %}#}
+{#{% set just_one_pk = metadata.model.pk|length == 1 %}#}
+{#{% set pk_type = (metadata.model.pk.values()|list)[0].python_type_str %}#}from enum import Enum
+from typing import List, Optional
+from pydantic import BaseModel, Field
+from fastapi import Depends, Body, Response, HTTPException, status
+from fastapi_pagination import Page
+from fastapi_pagination.ext.sqlalchemy import paginate
+import datetime
+from sqlalchemy import select, Select
+from sqlalchemy.orm import joinedload, selectinload
+from ..db import get_db
+from ..models import *
+from ..schemas import *
+
+NOT_FOUND = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item Not found")
+
+
+# ------------------------Query Routes------------------------
+async def get_one({{ s_name }}_ident: int, db=Depends(get_db)) -> {{ base_schema }}:
+    res = await db.get({{ name }}, {{ s_name }}_ident)
+    if res and res.deleted_at is None:
+        return res
+    raise NOT_FOUND
+
+
+async def batch_get({{ s_name }}_idents: List[int], db=Depends(get_db)) -> Page[{{ base_schema }}]:
+    query = select({{ name }}).filter({{ name }}.deleted_at.is_(None)).filter({{ name }}.id.in_({{ s_name }}_idents))
+    return await paginate(db, query)
+
+class QueryParams(BaseModel):
+    class SortParams(BaseModel):
+        class StorFieldEnum(str, Enum):
+            {% for field in model.fields %}
+            {{field.name.snake}} = "{{field.name.snake}}"
+            {% endfor %}
+
+        field: StorFieldEnum
+        is_desc: bool = False
+
+    {% for field in model.fields %}
+    {{field.name.snake}}: Optional[{{field.type.python_type}}] = None
+    {% if field.type.python_type == 'str' %}
+    {{field.name.snake}}_like: Optional[{{field.type.python_type}}] = None
+    {% endif %}
+    {% endfor %}
+    sort_by: List[SortParams] = Field(default_factory=list)
+
+def get_all_query(params: QueryParams = Body()) -> Select:
+    query = select({{ name }}).filter({{ name }}.deleted_at.is_(None))
+    {% for field in model.fields %}
+    if params.{{field.name.snake}} is not None:
+        query = query.filter({{ name }}.{{field.name.snake}}.__eq__(params.{{field.name.snake}}))
+    {% if field.type.python_type == 'str' %}
+    if params.{{field.name.snake}}_like is not None:
+        query = query.filter({{ name }}.{{field.name.snake}}.like(params.{{field.name.snake}}_like))
+    {% endif %}
+    {% endfor %}
+    for sort_item in params.sort_by:
+        if sort_item.is_desc:
+            query = query.order_by(getattr({{ name }}, sort_item.field).desc())
+        else:
+            query = query.order_by(getattr({{ name }}, sort_item.field))
+    return query
+
+
+async def get_all(
+        query=Depends(get_all_query),
+        db=Depends(get_db),
+) -> Page[{{ base_schema }}]:
+    return await paginate(db, query)
+
+
+async def get_link_all(
+        query=Depends(get_all_query),
+        db=Depends(get_db)
+) -> Page[{{ model.name.schema }}]:
+    return await paginate(db, query)
+# ---------------------User Query Routes----------------------
+
+
+# -----------------------Create Routes------------------------
+async def create_one(
+        {% for field in model.fields %}
+        {{field.name.snake}}: {{field.type.python_type}},
+        {% endfor %}
+        db=Depends(get_db)
+) -> {{ base_schema }}:
+    {{ s_name }} = {{ base_schema }}(
+        {% for field in model.fields %}
+        {{field.name.snake}}={{field.name.snake}},
+        {% endfor %}
+    )
+    {{ s_name }} = {{ name }}(**{{ s_name }}.model_dump())
+    db.add({{ s_name }})
+    await db.commit()
+    await db.refresh({{ s_name }})
+    return {{ base_schema }}.model_validate({{ s_name }})
+
+
+# -----------------------Update Routes------------------------
+async def update_one(
+        {{ s_name }}_ident: int,
+        {% for field in model.fields %}
+        {{field.name.snake}}: Optional[{{field.type.python_type}}] = None,
+        {% endfor %}
+        db=Depends(get_db)) -> {{ base_schema }}:
+    res = await db.get({{ name }}, {{ s_name }}_ident)
+    if not res or res.deleted_at is not None:
+        raise NOT_FOUND
+    {% for field in model.fields %}
+    if {{field.name.snake}} is not None:
+        res.{{field.name.snake}} = {{field.name.snake}}
+    {% endfor %}
+    res.updated_at = datetime.datetime.now()
+    await db.commit()
+    await db.refresh(res)
+    return {{ base_schema }}.model_validate(res)
+
+
+# -----------------------Delete Routes------------------------
+async def delete_one({{ s_name }}_ident: int, db=Depends(get_db)):
+    res = await db.get({{ name }}, {{ s_name }}_ident)
+    if not res or res.deleted_at is not None:
+        raise NOT_FOUND
+# TODO
+{#    {% if model.links %}#}
+{#    {% for link in model.links %}#}
+{#    {% if link.t1 == 'one' %}#}
+{#    res_type.{{ link.m2.name.snake }} = None#}
+{#    {% else %}#}
+{#    for i in await res_type.awaitable_attrs.{{ link.m2.name.snake_plural }}:#}
+{#        await db.delete(i)#}
+{#    {% endif %}#}
+{#    {% endfor %}#}
+{#    await db.commit()#}
+{#    {% endif %}#}
+    res.deleted_at = datetime.datetime.now()
+    await db.commit()
+    return {'message': 'Deleted', 'id': {{ s_name }}_ident}
+
+
+# ----------------------Relation Routes-----------------------
+
+{% for link in model.links %}
+{% for link_op_code in link.link_op_codes %}
+{{ link_op_code }}
+{% endfor %}
+{% endfor %}

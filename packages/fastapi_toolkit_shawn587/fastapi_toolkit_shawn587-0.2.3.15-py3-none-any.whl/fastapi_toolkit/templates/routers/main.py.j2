@@ -1,0 +1,47 @@
+{% set name = model.name.camel %}
+{% set s_name = model.name.snake %}
+{% set router = s_name + "_router" %}
+
+from fastapi_toolkit.base.router import BaseRouter
+
+from ..config import ModelConfig
+from ..repo.{{ s_name }}_repo import *
+
+
+class {{ name }}Router(BaseRouter):
+    def __init__(self, config: ModelConfig):
+        self.snake_name = "{{ s_name }}"
+        self.snake_plural_name = "{{ model.name.snake_plural }}"
+        self.camel_name = "{{ name }}"
+        super().__init__(config, {{ model.name.base_schema }}, {{ model.name.schema }})
+        {% for link in model.links %}
+        {% for link_op_name in link.link_op_names %}
+        self.add_api_route(
+            endpoint={{ link_op_name }},
+            methods=["POST"],
+            path='/{{ link_op_name }}'
+        )
+        {% endfor %}
+        {% endfor %}
+
+    def _get_one(self):
+        return get_one
+
+    def _batch_get(self):
+        return batch_get
+
+    def _get_all(self):
+        return get_all
+
+    def _get_link_all(self):
+        return get_link_all
+
+    def _create_one(self):
+        return create_one
+
+    def _update_one(self):
+        return update_one
+
+    def _delete_one(self):
+        return delete_one
+
