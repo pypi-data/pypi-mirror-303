@@ -1,0 +1,65 @@
+[project]
+name = "autogs-core"
+description = "AutoGS Core"
+authors = [{ name = "Younes Strittmatter", email = "ystrittm@gmail.com" }]
+dynamic = ["version"]
+
+readme = "README.md"
+license = { text = "MIT License" }
+requires-python = ">=3.10,<4"
+
+dependencies = [
+    "google-cloud-documentai",
+    "pyPDF2",
+    "python-dotenv",
+    "PyGithub"
+]
+
+[project.optional-dependencies]
+dev = [
+    "autogs-core[test]",
+    "autogs-core[build]",
+    "autogs-core[notebook]",
+    "autogs-core[docs]",
+]
+
+test = [
+    "pytest",
+]
+build = [
+    "build",
+    "twine",
+    "flake8",
+    "pre-commit",
+]
+notebook = [
+    "jupyter",
+    "ipython",
+    "ipywidgets",
+]
+docs = [
+    "mkdocs-material",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-section-index",
+    "mkdocs-multirepo-plugin",
+    "mkdocstrings-python",
+    "mkdocs-jupyter",
+    "pymdown-extensions",
+]
+
+[project.urls]
+homepage = "http://www.empiricalresearch.ai"
+repository = "https://github.com/AutoResearch/autogs-core"
+documentation = "https://autoresearch.github.io/autogs/"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--doctest-modules --import-mode importlib"
+pythonpath = "tests"
