@@ -1,0 +1,34 @@
+description: Using a weather API and LLM to make a small weather app
+text:
+- read:
+  def: QUERY
+  message: "Ask a query: "
+  contribute: []
+- model: replicate/ibm-granite/granite-3.0-8b-instruct
+  input: |
+      Extract the location from the question.
+      Question: What is the weather in London?
+      Answer: London
+      Question: What's the weather in Paris?
+      Answer: Paris
+      Question: Tell me the weather in Lagos?
+      Answer: Lagos
+      Question: ${ QUERY }
+  parameters:
+    stop_sequences: "Question,What,!,\n"
+  def: LOCATION
+  contribute: []
+- lang: python
+  code: |
+    import requests
+    response = requests.get('https://api.weatherapi.com/v1/current.json?key=cf601276764642cb96224947230712&q=${ LOCATION }') 
+    result = response.content
+  def: WEATHER
+  parser: json
+  contribute: []
+
+- model: replicate/ibm-granite/granite-3.0-8b-instruct
+  input: |
+      Explain the weather from the following JSON:
+      ${ WEATHER }
+  
