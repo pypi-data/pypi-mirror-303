@@ -1,0 +1,1 @@
+## A package to simplify work with Delta Lake and Spark-SQL
