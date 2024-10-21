@@ -1,0 +1,63 @@
+[project]
+name = "scrapebiblio"
+version = "1.2.0"
+description = "library for extracting reference from documents"
+authors = [
+    { name = "Marco Vinciguerra", email = "mvincig11@gmail.com" },
+    { name = "Marco Perini", email = "perinim.98@gmail.com" },
+    { name = "Lorenzo Padoan", email = "lorenzo.padoan977@gmail.com" }
+]
+
+dependencies = [
+    "openai>=1.45.0",
+    "PyPDF2>=3.0.1",
+    "requests>=2.32.3",
+    "scrapegraphai>=1.18.1",
+    "browserbase>=0.1.0",
+    "PyMuPDF>=1.24.10",
+    "python-dotenv==1.0.1",
+    "gTTS>=2.5.3"
+]
+
+license = "MIT"
+readme = "README.md"
+homepage = "https://scrapegraphai.com/"
+repository = ""
+documentation = ""
+keywords = [
+    "ai",
+    "artificial intelligence",
+    "gpt",
+    "machine learning",
+    "nlp",
+    "natural language processing",
+    "openai",
+    "scraping",
+    "web scraping tool",
+    "webscraping",
+    "graph",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9,<4.0"
+
+[project.optional-dependencies]
+docs = ["sphinx==6.0", "furo==2024.5.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest==8.0.0",
+    "pytest-mock==3.14.0",
+    "-e file:.[burr]",
+    "-e file:.[docs]",
+    "pylint>=3.2.5",
+]
