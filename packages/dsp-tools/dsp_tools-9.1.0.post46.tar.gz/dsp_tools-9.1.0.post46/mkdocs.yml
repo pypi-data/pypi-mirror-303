@@ -1,0 +1,63 @@
+---
+
+site_name: DSP-TOOLS
+site_url: https://docs.dasch.swiss/latest/DSP-TOOLS
+repo_url: https://github.com/dasch-swiss/dsp-tools
+repo_name: dasch-swiss/dsp-tools
+edit_uri: blob/main/docs/
+
+nav:
+  - Overview: index.md
+  - CLI commands: cli-commands.md
+  - File formats:
+      - JSON project file:
+          - Overview: file-formats/json-project/overview.md
+          - Ontologies: file-formats/json-project/ontologies.md
+          - Caveats: file-formats/json-project/caveats.md
+      - XML data file: file-formats/xml-data-file.md
+      - excel2json: file-formats/excel2json.md
+      - excel2xml: file-formats/excel2xml.md
+  - Incremental xmlupload: incremental-xmlupload.md
+  - excel2xml module: excel2xml-module.md
+  - Running DSP locally: start-stack.md
+  - Information for developers:
+      - Developers documentation: developers/index.md
+      - Dependencies, packaging & distribution: developers/packaging.md
+      - User data: developers/user-data.md
+      - MkDocs and markdown-link-validator: developers/mkdocs.md
+      - Code quality tools:
+          - Overview: developers/code-quality-tools/code-quality-tools.md
+          - General formatting: developers/code-quality-tools/general-formatting.md
+          - Python formatting: developers/code-quality-tools/python-formatting.md
+          - Python docstring formatting: developers/code-quality-tools/python-docstring-formatting.md
+          - Python type checking: developers/code-quality-tools/python-type-checking.md
+          - Python linting: developers/code-quality-tools/python-linting.md
+          - Security checks: developers/code-quality-tools/security.md
+          - See also: developers/code-quality-tools/python-see-also.md
+  - Changelog: changelog.md
+
+theme:
+  name: material
+  logo: "https://raw.githubusercontent.com/dasch-swiss/dsp-docs/main/docs/assets/images/logo_bw.svg"
+  favicon: "https://raw.githubusercontent.com/dasch-swiss/dsp-docs/main/docs/assets/images/logo_bw.svg"
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+
+extra_css:
+  # Using the one from https://github.com/dasch-swiss/dsp-docs/blob/main/docs/assets/style/theme.css directly
+  # is not possible. Use a local copy instead
+  - "assets/style/theme.css"
+
+plugins:
+  - search
+  - include-markdown
