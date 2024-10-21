@@ -1,0 +1,248 @@
+<Window xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PlatynUI.Spy.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+    xmlns:wnd="using:FluentAvalonia.UI.Windowing"
+    xmlns:converters="using:PlatynUI.Spy.Converters"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="PlatynUI.Spy.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    Icon="/Assets/platynui-spy.png"
+    Title="PlatynUI Spy"
+    Width="800"
+    Height="600"
+>
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at
+        App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Resources>
+        <converters:ValueToStringConverter x:Key="ValueToString" />
+    </Window.Resources>
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="F5"
+            Command="{Binding Refresh}" />
+        <KeyBinding Gesture="Escape"
+            Command="{Binding CancelSearch}" />
+    </Window.KeyBindings>
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid Name="TitleBarHost"
+            ColumnDefinitions="Auto,Auto,*,Auto,Auto"
+            Background="Transparent">
+            <Image Margin="12 4"
+                IsHitTestVisible="False"
+                Source="/Assets/platynui-spy.png"
+                Width="18" Height="18"
+                DockPanel.Dock="Left"
+                Name="WindowIcon"
+                RenderOptions.BitmapInterpolationMode="HighQuality">
+                <Image.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </Image.IsVisible>
+            </Image>
+
+            <TextBlock
+                Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                FontSize="12"
+                IsHitTestVisible="False"
+                VerticalAlignment="Center"
+                Grid.Column="1">
+                <TextBlock.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </TextBlock.IsVisible>
+            </TextBlock>
+
+            <Border Grid.Column="2" Padding="6">
+                <TextBox Name="SearchBox"
+                    MaxWidth="500"
+                    Watermark="Search..."
+                    Text="{Binding SearchText, Mode=TwoWay}">
+                    <TextBox.InnerRightContent>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="&#xE74D;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Theme="{StaticResource TransparentButton}"
+                                Command="{Binding ClearSearch}"
+                                IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            />
+                            <Button Content="&#xE721;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Theme="{StaticResource TransparentButton}"
+                                Command="{Binding SearchAsync}"
+                                IsVisible="{Binding !InSearch}"
+                            />
+                            <Button Content="&#xE711;"
+                                FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                Theme="{StaticResource TransparentButton}"
+                                Command="{Binding CancelSearch}"
+                                IsVisible="{Binding InSearch}"
+                            />
+                        </StackPanel>
+                    </TextBox.InnerRightContent>
+                    <TextBox.Styles>
+                        <Style Selector="DataValidationErrors">
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <DockPanel LastChildFill="True">
+                                        <ContentControl DockPanel.Dock="Right"
+                                            ContentTemplate="{TemplateBinding ErrorTemplate}"
+                                            DataContext="{TemplateBinding Owner}"
+                                            Content="{Binding (DataValidationErrors.Errors)}"
+                                            IsVisible="{Binding (DataValidationErrors.HasErrors)}" />
+                                        <ContentPresenter Name="PART_ContentPresenter"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="{TemplateBinding CornerRadius}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            Content="{TemplateBinding Content}"
+                                            Padding="{TemplateBinding Padding}" />
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Setter>
+                            <Setter Property="ErrorTemplate">
+                                <DataTemplate x:DataType="{x:Type x:Object}">
+                                    <ui:InfoBadge Classes="Critical Icon"
+                                        HorizontalAlignment="Left" Margin="3">
+                                        <ui:InfoBadge.Styles>
+                                            <Style Selector="ToolTip">
+                                                <Setter Property="Background" Value="DarkRed" />
+                                                <Setter Property="BorderBrush" Value="Red" />
+                                            </Style>
+                                        </ui:InfoBadge.Styles>
+                                        <ToolTip.Tip>
+                                            <ItemsControl ItemsSource="{Binding}" />
+                                        </ToolTip.Tip>
+                                    </ui:InfoBadge>
+                                </DataTemplate>
+                            </Setter>
+                        </Style>
+                    </TextBox.Styles>
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter"
+                            Command="{Binding SearchAsync}" />
+                        <KeyBinding Gesture="Escape"
+                            Command="{Binding CancelSearch}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+            </Border>
+            <ToggleSwitch Grid.Column="3" OnContent="" OffContent="" ToolTip.Tip="Always On Top"
+                IsChecked="{Binding $parent[Window].Topmost}" />
+        </Grid>
+
+
+        <DockPanel Grid.Row="1">
+            <Grid RowDefinitions="*,4,0.40*" Margin="6">
+                <Grid Grid.Row="0" ColumnDefinitions="0.60*,4,0.40*">
+                    <Border Grid.Column="0" Margin="6">
+                        <TreeView ItemsSource="{Binding Root}"
+                            SelectedItem="{Binding SelectedNode, Mode=TwoWay}"
+                            SelectionMode="Single"
+                            AutoScrollToSelectedItem="True">
+                            <TreeView.DataTemplates>
+                                <TreeDataTemplate DataType="vm:TreeNode"
+                                    ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="{Binding NodeName}">
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Description}" />
+                                        <StackPanel.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuItem Header="Refresh"
+                                                    Command="{Binding Refresh}"
+                                                    CommandParameter="{Binding .}" />
+                                            </MenuFlyout>
+                                        </StackPanel.ContextFlyout>
+                                    </StackPanel>
+                                </TreeDataTemplate>
+                            </TreeView.DataTemplates>
+                            <TreeView.Styles>
+                                <Style Selector="TreeViewItem" x:DataType="vm:TreeNode">
+                                    <Setter Property="IsExpanded"
+                                        Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    <Setter Property="IsSelected"
+                                        Value="{Binding IsSelected, Mode=TwoWay}" />
+                                </Style>
+                            </TreeView.Styles>
+                        </TreeView>
+                    </Border>
+                    <GridSplitter Grid.Column="1" />
+                    <Border Grid.Column="2" Margin="6">
+                        <DataGrid ItemsSource="{Binding SelectedNodeAttributes}"
+                            CanUserResizeColumns="true" ClipboardCopyMode="ExcludeHeader">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}"
+                                    x:DataType="vm:TreeNodeAttribute"
+                                    CanUserSort="true" ClipboardContentBinding="{Binding Name}" CanUserResize="True"
+                                />
+                                <DataGridTemplateColumn Header="Value" Width="*" CanUserResize="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Text="{Binding ., Converter={StaticResource ValueToString}, ConverterParameter=Value}"
+                                                ToolTip.Tip="{Binding Value}"
+                                                VerticalAlignment="Center"
+                                            />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                            <DataGrid.Styles>
+                                <Style Selector="TextBlock">
+                                    <Setter Property="FontSize"
+                                        Value="{DynamicResource ControlContentThemeFontSize}" />
+                                </Style>
+                            </DataGrid.Styles>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+
+                <Border Grid.Row="2" Padding="6">
+                    <Grid RowDefinitions="Auto,*">
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Label Grid.Row="0" Content="Results" />
+                            <ui:InfoBadge Margin="3" Value="{Binding SearchResults.Count}"
+                                IsVisible="{Binding SearchResults.Count}" />
+
+                            <StackPanel Orientation="Horizontal"
+                                IsVisible="{Binding LastError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <ui:InfoBadge Classes="Critical Icon"
+                                    HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center">
+                                </ui:InfoBadge>
+                                <TextBlock Text="{Binding LastError}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <ListBox Grid.Row="1" ItemsSource="{Binding SearchResults}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding ResultsSelectedNode, Mode=TwoWay}"
+                        >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="{Binding NodeName}" />
+                                        <TextBlock Text="{Binding Description}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

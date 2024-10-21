@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tmds.DBus.Protocol" Version="0.20.0" />
+    <PackageReference Include="Tmds.DBus.SourceGenerator" Version="0.0.18">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="xml/Bus.xml" DBusGeneratorMode="Proxy" />
+    <AdditionalFiles Include="xml/Accessible.xml" DBusGeneratorMode="Proxy" />
+    <AdditionalFiles Include="xml/Component.xml" DBusGeneratorMode="Proxy" />
+    <AdditionalFiles Include="xml/Application.xml" DBusGeneratorMode="Proxy" />
+    <AdditionalFiles Include="xml/Registry.xml" DBusGeneratorMode="Proxy" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PlatynUI.Runtime\PlatynUI.Runtime.csproj" />
+  </ItemGroup>
+</Project>
