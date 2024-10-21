@@ -1,0 +1,111 @@
+Metadata-Version: 2.3
+Name: illallangi-tripit
+Version: 0.6.0
+Summary: A collection of command line tools to interact with TripIt.
+Project-URL: Homepage, https://github.com/illallangi/python-tripit
+Project-URL: Repository, https://github.com/illallangi/python-tripit.git
+Project-URL: Issues, https://github.com/illallangi/python-tripit/issues
+Project-URL: Changelog, https://github.com/illallangi/python-tripit/blob/master/CHANGELOG.md
+Author-email: Andrew Cole <andrew.cole@illallangi.com>
+Maintainer-email: Andrew Cole <andrew.cole@illallangi.com>
+License: MIT License
+License-File: LICENSE
+Keywords: cli,tools,tripit
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10.1
+Requires-Dist: alive-progress>=3.1.5
+Requires-Dist: appdirs>=1.4.4
+Requires-Dist: click>=8.1.7
+Requires-Dist: diffsync>=2.0.0
+Requires-Dist: jsonpatch>=1.33
+Requires-Dist: more-itertools>=10.5.0
+Requires-Dist: orjson>=3.10.7
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: requests-cache>=1.2.1
+Requires-Dist: requests-oauthlib>=2.0.0
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: yarl>=1.13.1
+Description-Content-Type: text/markdown
+
+# Illallangi TripIt
+
+Illallangi TripIt is a collection of command line tools to interact with TripIt.
+
+## Requirements
+
+- Python >= 3.10.12
+
+## Installation
+
+### Using Python
+
+1. Install the dependencies:
+
+    ```sh
+    uv sync --frozen --no-dev
+    ```
+
+2. Install the project:
+
+    ```sh
+    uv sync --frozen
+    ```
+
+## Usage
+
+### Command Line Interface
+
+The main entry point for the CLI is `tripit-tools`. You can see the available commands by running:
+
+```sh
+tripit-tools --help
+```
+
+### Example Commands
+
+List trips:
+
+```sh
+tripit-tools trips
+```
+
+List trips in JSON format:
+
+```sh
+tripit-tools trips --json
+```
+
+## Development
+
+### Code Formatting and Linting
+
+To format and lint the code, use the following command:
+
+```sh
+make ruff
+```
+
+### Cleaning Up
+
+To clean up the project directory, use the following command:
+
+```sh
+make clean
+```
+
+### Building and Pushing Docker Image
+
+To build the Docker image, use the following command:
+
+```sh
+make image
+```
+
+To push the Docker image to a registry defined in the `DEV_REGISTRY` environment variable, use the following command:
+
+```sh
+make push
+```
