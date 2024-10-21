@@ -1,0 +1,54 @@
+[project]
+name = "lupyne"
+version = "3.3"
+description = "Pythonic search engine based on PyLucene."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE.txt"}
+authors = [{name = "Aric Coady", email = "aric.coady@gmail.com"}]
+keywords = ["lucene", "pylucene"]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Indexing",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/coady/lupyne"
+Documentation = "https://coady.github.io/lupyne"
+Changelog = "https://github.com/coady/lupyne/blob/main/CHANGELOG.md"
+Issues = "https://github.com/coady/lupyne/issues"
+
+[project.optional-dependencies]
+rest = ["fastapi"]
+graphql = ["strawberry-graphql[asgi]>=0.221"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "preserve"
+
+[[tool.mypy.overrides]]
+module = ["lucene", "jcc", "java.*", "org.apache.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "-p no:faulthandler"
+filterwarnings = ["ignore:builtin type .* has no __module__ attribute:DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["lupyne"]
+branch = true
