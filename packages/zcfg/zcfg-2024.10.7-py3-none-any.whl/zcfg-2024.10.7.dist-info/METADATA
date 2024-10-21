@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: zcfg
+Version: 2024.10.7
+Summary: Config for ini
+Author: Xin-Xin Ma
+License: GPL
+Project-URL: Source, https://gitee.com/SIZXSN6/zcfg
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: loguru
+
+# 读配置的库
+## 示例
+```python
+from zcfg import Config
+
+cfg = Config("./example.ini")
+# 获取配置的参数
+a = cfg.get_value("section.opt", "default-value")
+
+# 监控配置文件是否改变
+if cfg.update_config():
+    new_a = cfg.get_value("section.opt", "default-value")
+```
+
+## 特色功能
+* 如果字符串里包含`~`，自动展开
+
