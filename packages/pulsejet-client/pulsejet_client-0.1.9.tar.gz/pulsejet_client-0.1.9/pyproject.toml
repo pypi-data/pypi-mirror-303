@@ -1,0 +1,65 @@
+[tool.poetry]
+name = "pulsejet-client"
+version = "0.1.9"
+description = "PulsejetDB Client - Vector database for local and cloud development"
+authors = ["JetEngine Engineering <info@jetengine.tech>"]
+packages = [
+    {include = "pulsejet_client"},
+    {include = "gen"}
+]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://jetengine.tech"
+repository = "https://github.com/Jet-Engine/pulsejet-client"
+keywords = ["vector", "search", "performance", "database", "client"]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+numpy = [
+    { version = "<1.21", python = "<3.8" },
+    { version = ">=1.21", python = ">=3.8,<3.12" },
+    { version = ">=1.26", python = ">=3.12" }
+]
+pydantic = ">=1.10.8"
+grpcio = { version = ">=1.66.2", allow-prereleases = true }
+grpcio-tools = ">=1.66.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1"
+protobuf = ">=5.28.2"
+grpcio-tools = [
+    # the proper version to use for generating grpc client is python 3.10.10
+    { version = "1.66.2", python = "3.10" },
+    { version = "^1.66.2" }
+]
+coverage = "^6.3.3"
+pytest-asyncio = "^0.21.0"
+pytest-timeout = "^2.1.0"
+autoflake = "^2.2.1"
+ruff = "0.4.3"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^4.5.0"
+nbsphinx = "^0.9.3"
+ipython = "8"
+Pygments= "2.16.1"
+
+[tool.poetry.group.types.dependencies]
+pyright = ">=1.1.293"
+mypy = "^1.0.0"
+types-protobuf = "^4.21.0.5"
+
+[tool.poetry.extras]
+fastembed = ["fastembed"]
+fastembed-gpu = ["fastembed-gpu"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+typeCheckingMode = "strict"
+
+[tool.isort]
+known_third_party = "grpc"
