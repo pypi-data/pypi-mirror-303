@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "iudex"
+version = "0.15.4"
+description = ""
+authors = ["Drake Wong <drake@iudex.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9,!=3.9.7" # streamlit doesn't support 3.9.7
+wrapt = "^1.16.0"
+tiktoken = ">=0.3.3,<1"
+# opentelemetry
+opentelemetry-exporter-otlp = "^1.27.0"
+opentelemetry-contrib-instrumentations = "^0.48b0"
+# openllmetry
+opentelemetry-instrumentation-alephalpha = "^0.32.1"
+opentelemetry-instrumentation-anthropic = "^0.32.1"
+opentelemetry-instrumentation-bedrock = "^0.32.1"
+opentelemetry-instrumentation-chromadb = "^0.32.1"
+opentelemetry-instrumentation-cohere = "^0.32.1"
+opentelemetry-instrumentation-google-generativeai = "^0.32.1"
+opentelemetry-instrumentation-haystack = "^0.32.1"
+opentelemetry-instrumentation-langchain = "^0.32.1"
+opentelemetry-instrumentation-llamaindex = "^0.32.1"
+opentelemetry-instrumentation-milvus = "^0.32.1"
+opentelemetry-instrumentation-mistralai = "^0.32.1"
+opentelemetry-instrumentation-ollama = "^0.32.1"
+opentelemetry-instrumentation-pinecone = "^0.32.1"
+opentelemetry-instrumentation-qdrant = "^0.32.1"
+opentelemetry-instrumentation-replicate = "^0.32.1"
+opentelemetry-instrumentation-together = "^0.32.1"
+opentelemetry-instrumentation-transformers = "^0.32.1"
+opentelemetry-instrumentation-vertexai = "^0.32.1"
+opentelemetry-instrumentation-watsonx = "^0.32.1"
+opentelemetry-instrumentation-weaviate = "^0.32.1"
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+openai = "^1.33.0"
+fastapi = {extras = ["all"], version = "^0.111.0"}
+supabase = "^2.5.1"
+modal = "^0.63.12"
+guardrails-ai = "^0.5.4"
+streamlit = "^1.37.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[virtualenvs]
+in-project = true
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
