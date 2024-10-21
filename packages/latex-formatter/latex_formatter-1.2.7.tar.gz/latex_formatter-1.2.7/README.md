@@ -1,0 +1,25 @@
+# latex-formatter
+
+# Change Log
+
+## 1.2.6 (2024-7-6)
+
+###
+
+Feature:
+
+- Refactor all functions!
+
+## 1.2.4 (2024-5-23)
+
+###
+
+Feature:
+
+- Add some description on readme!
+
+## 1.2.3 (2024-5-23)
+
+### Bug Fix
+
+Fix a bug in the c_by function caused by `_mode` and `answer_index`.
