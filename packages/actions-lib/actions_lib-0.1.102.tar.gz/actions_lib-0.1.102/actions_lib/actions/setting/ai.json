@@ -1,0 +1,42 @@
+[
+    {
+        "name": "switch_run_mode",
+        "group": "env",
+        "type": "setting",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "mode",
+                "type": "string",
+                "enum": [
+                    "auto",
+                    "manual"
+                ],
+                "required": true,
+                "description": "Specifies the run mode. 'auto' will enable automatic operation, while 'manual' allows for manual control."
+            }
+        ],
+        "description": "Switches the system's run mode between 'auto' for automatic operation and 'manual' for manual control. Use this function to toggle the current mode based on operational requirements.",
+        "details": "For example, to switch to automatic mode, you can call: `switch runmode to auto`. To switch to manual mode, call: `switch runmode to manual`."
+    },
+    {
+        "name": "switch_chain",
+        "group": "env",
+        "type": "setting",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "chain",
+                "type": "string",
+                "enum": [
+                    "Base",
+                    "ETH"
+                ],
+                "required": true,
+                "description": "Specifies the blockchain network. 'Base' refers to the Base chain, 'ETH' to the Ethereum network."
+            }
+        ],
+        "description": "Sets the system's blockchain network to one of the specified chains: 'Base', 'ETH' (Ethereum). Use this function to switch the operational blockchain network based on your requirements.",
+        "details": "For example, to switch to the Ethereum network, you can call: `switch chain to ETH`. To switch to the Base chain, you can call: `switch chain to Base`."
+    }
+]
