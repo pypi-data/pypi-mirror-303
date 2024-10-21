@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dazbo_commons"
+version = "0.1.4"
+authors = [{ name = "Darren Lester", email = "derailed.dash@gmail.com" }]
+description = "Handy utility code, such as coloured logging."
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+]
+urls = { "Homepage" = "https://github.com/derailed-dash/dazbo-commons-py" }
+requires-python = ">=3.7"
+dependencies = [
+    "colorama>=0.4.6",
+]
+[project.optional-dependencies]
+dev = [
+    "pytest>=5.4",
+    "check-manifest",
+    "twine",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["dazbo_commons"]
