@@ -1,0 +1,76 @@
+Metadata-Version: 2.3
+Name: chronovoyage
+Version: 0.1.0
+Summary: My database migration framework.
+Project-URL: Documentation, https://chronovoyagemigration.net/
+Project-URL: Issues, https://gitlab.com/technical-study/chronovoyage/-/issues
+Project-URL: Source, https://gitlab.com/technical-study/chronovoyage
+Author-email: Noritaka IZUMI <noritaka.izumi@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: click
+Requires-Dist: python-dotenv
+Requires-Dist: pyyaml
+Requires-Dist: typing-extensions
+Provides-Extra: mariadb
+Requires-Dist: mariadb; extra == 'mariadb'
+Description-Content-Type: text/markdown
+
+# ChronoVoyage
+
+[![PyPI - Version](https://img.shields.io/pypi/v/chronovoyage.svg)](https://pypi.org/project/chronovoyage)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/chronovoyage.svg)](https://pypi.org/project/chronovoyage)
+
+-----
+
+Documentation is [here](https://chronovoyagemigration.net/).
+
+## License
+
+`chronovoyage` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Roadmap
+
+- Support for Python
+    - [x] 3.8
+    - [x] 3.9 or later
+- Database support
+    - [ ] MySQL
+    - [x] MariaDB
+    - [ ] PostgreSQL
+- Migration file support
+    - [x] SQL (.sql)
+    - [ ] Shell script (.sh)
+- Commands
+    - ~~new~~ init
+        - [x] create migration directory and config file
+    - ~~generate~~ add
+        - [x] create migration files from template
+    - migrate
+        - [x] to latest
+        - [x] to specific version
+        - [x] from the beginning
+        - [x] from the middle
+        - --dry-run
+            - [ ] show executing SQL
+        - [ ] detect ddl or dml
+    - ~~status~~ current
+        - [x] show current migration status
+    - rollback
+        - [x] to version
+    - test
+        - [ ] check if every "migrate -> rollback" operation means do nothing for schema
+        - [ ] if dml, the operation means do nothing for data (including autoincrement num)
+- Other
+    - [x] CLI logging
+    - [x] Documentation
