@@ -1,0 +1,32 @@
+class:
+    ### from a high level, want this all put into a pip-installable package with a call sequence like the following:
+    ## from wam_api import WAMInterpolator
+    ## foo = WAMInterpolator() # <-- as a class/object
+    ## dt = datetime(2024, 5, 11, 18, 12, 22)
+    ## lat, lon, alt = -33.4, -153.24, 550.68  # degrees north, degrees east, km
+    ## my_density = foo.get_density(dt, lat, lon, alt)
+
+main():
+    # SUMMARY OF CHANGES
+    # - now, the user simply inputs a datetime instance to get_files, or get_datasets, etc.
+    # - the user can now define their preference of WFS/WRS, as well as max cache size (defaults to WRS)
+    # - get_files() checks if the wrs file exists, if not changes the input file path to wfs (which we are under the
+    #   assumption will always exist) and retrieves associated file
+    # Now, all the user needs to do is create an instance of Wam_Interpolate and call its methods for desired functionality
+    # Note: if the datetime entered is invalid (a corresponding object in aws bucket DNE), get_datasets and get_files return an empty list
+
+    # wam = WAMInterpolator(10, "WRS")
+    # target_dt = datetime(2023, 4, 8, 21, 4, 13)
+    #
+    # print(wam.get_files(target_dt))  # prints [] as there is no correspdonding s3 bucket
+    #
+    # target_dt = datetime(2024, 4, 8, 21, 4, 13)  # now, a valid date
+    #
+    # print(wam.get_files(target_dt))  # prints local paths of retrieved files
+    # print(wam.get_datasets(target_dt))  # prints dataset info
+
+    # nc_fids = wam.get_datasets(target_dt)
+    # print(nc_fids)
+
+    # print(wam.get_files(target_dt))
+    # print(wam.get_files(target_dt))
