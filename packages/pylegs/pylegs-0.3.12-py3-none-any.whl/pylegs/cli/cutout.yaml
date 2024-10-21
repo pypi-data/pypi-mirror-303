@@ -1,0 +1,185 @@
+name: cutout
+help: |
+  Legacy stamps cutout
+args:
+  - flags: output
+    action: store
+    help: |
+      The folder path to save the figures
+
+  - flags: [--cat, -c]
+    action: store
+    help: |
+      The path of the catalog to be downloaded. Default: None
+  
+  - flags: --ra
+    action: store
+    help: |
+      The name of the RA column. Default: auto, the package will try to infer
+  
+  - flags: --dec
+    action: store
+    help: |
+      The name of the DEC column. Default: auto, the package will try to infer
+  
+  - flags: [--fnames, -f]
+    action: store
+    help: |
+      The name of the column to be used as filename for each stamp.
+      If not specified, this package will compute the IAUNAME for each
+      object based on position RA and DEC and will use the IAUNAME as filename.
+      Default: None
+  
+  - flags: [--pixscale, -p]
+    action: store
+    default: 0.4
+    help: |
+      A float indicating a static pixscale for all stamps in arcsec/pixel,
+      a string with the name of the pixscale column in the catalog, 
+      or "auto" to compute pixscale automatically. For the last option, 
+      mag_r, shape_e1 and shape_e2 must be set to compute pixscale using 
+      elliptical fit or mag_r and shape_r to use radial fit. Default: 0.4
+  
+  - flags: [--limit, -l]
+    action: store
+    type: int
+    help: |
+      The row limit to download, starting with 0.
+      Default: None (download the full catalog)
+  
+  - flags: [--offset, -o]
+    action: store
+    type: int
+    default: 0
+    help: |
+      The index of the row to start the download, starting with 0.
+      Default: 0 (the first row)
+  
+  - flags: --format
+    action: store
+    default: jpg
+    choices: [jpg, fits]
+    help: |
+      The image format. Default: jpg
+
+  - flags: --bands
+    action: store
+    help: |
+      A string representating the bands (griz) to dowload.
+      Default: None (all available bands - griz)
+  
+  - flags: --layer
+    action: store
+    default: ls-dr10
+    help: |
+      The image layer. More details in Legacy documentation. Default: ls-dr10
+    
+  - flags: --width
+    action: store
+    type: int
+    default: 256
+    help: |
+      The width of the image in pixels. Default: 256
+  
+  - flags: --height
+    action: store
+    type: int
+    default: 256
+    help: |
+      The height of the image in pixels. Default: 256
+    
+  - flags: [--size, -s]
+    action: store
+    type: int
+    help: |
+      The size of the image in pixels (square image). The arguments --width
+      and --height are ignored if this argument is specified. Default: 256
+  
+  - flags: --shape1
+    action: store
+    help: |
+      Name of the shape_e1 column
+  
+  - flags: --shape2
+    action: store
+    help: |
+      Name of the shape_e2 column
+  
+  - flags: --shaper
+    action: store
+    help: |
+      Name of the shape_r column
+  
+  - flags: --magr
+    action: store
+    help: |
+      Name of the mag_r column
+  
+  - flags: --pixscale-interp
+    action: store
+    choices: ['linear', 'step']
+    default: linear
+    help: |
+      Pixelscale interpolation mode. Default: linear
+
+  - flags: --compress
+    action: store
+    choices: ['RICE_1', 'RICE_ONE', 'PLIO_1', 'GZIP_1', 'GZIP_2', 'HCOMPRESS_1', 'NOCOMPRESS']
+    default: 'NOCOMPRESS'
+    help: |
+      Compression algorithm, only works for fits stamps. Default NOCOMPRESS, no compression
+
+  - flags: --hcomp-scale
+    action: store
+    type: int
+    default: 3
+    help: |
+      Parameter `scale` of the HCOMPRESS algorithm. Only works for --compress HCOMPRESS_1. 
+      Default value: 3
+
+  - flags: --quantize-level
+    action: store
+    type: int
+    default: 10
+    help: |
+      Parameter `quantize_level` of the quantization algorithm. Only works if --compress 
+      is not NOCOMPRESS.
+
+  - flags: --quantize-method
+    action: store
+    type: int
+    choices: [-1, 1, 2]
+    default: -1
+    help: |
+      Parameter `quantize_method` of the. Only works if --compress is not NOCOMPRESS.
+      Default: -1 (NO DITHER)
+
+  - flags: --tile-shape
+    action: store
+    type: int
+    nargs: 2
+    default: null
+    help: |
+      The tile shape used in compression algorithm. Only works if --compress is not NOCOMPRESS.
+      Default: None
+
+  - flags: --dither-seed
+    action: store
+    type: int
+    default: 0
+    help: |
+      The pseudorandom number generator seed, used in the quantization algorithm.
+      Default: 0 (random seed)
+
+  - flags: --overwrite
+    action: store_true
+    help: |
+      Set this flag to overwrite stamps
+
+  - flags: --workers
+    action: store
+    type: int
+    default: 6
+    help: |
+      The number of workers to spawn, meaning the number of parallel downloads.
+      Default: 6
