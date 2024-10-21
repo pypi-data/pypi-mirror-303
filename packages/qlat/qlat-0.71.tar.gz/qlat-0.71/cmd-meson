@@ -1,0 +1,11 @@
+# rm build/ -rf
+
+meson build --prefix=~/qlat-build/default
+
+time (
+cd build
+ninja -j8
+ninja install
+)
+
+echo finished
