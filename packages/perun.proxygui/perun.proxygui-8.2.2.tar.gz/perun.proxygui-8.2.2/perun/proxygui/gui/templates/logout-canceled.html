@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block contentwrapper %}
+    <div class="window {% if cfg.css_framework == 'MUNI' %}framework_muni{% else %}framework_bootstrap5 bg-light{% endif %}">
+        <div id="content">
+            <div class="wrap{% if not cfg.css_framework == 'MUNI' %} container{% endif %}">
+                {% block content %}
+                    <div class="content">
+                        <br/>
+                        <h1><span>{{ _("Logout canceled") }}</span></h1>
+                        <br/>
+                        <p><span>{{ _("You were not logged out. You may close this page.") }}</span> </p>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block contentwrapper %}
+    <div class="window {% if cfg.css_framework == 'MUNI' %}framework_muni{% else %}framework_bootstrap5 bg-light{% endif %}">
+        <div id="content">
+            <div class="box-bg{% if not cfg.css_framework == 'MUNI' %} container{%
+              endif %}">
+                {% block content %}
+                    {% if selected %}
+                        <div class="content">
+                            <br/>
+                            <h3><span>{{ name }} ({{ user }})</span></h3>
+                            <div>
+                                <h5><span>{{ _("Logging times through days") }}</span></h5>
+                                <div id="heuristic-graph" class="graph-wrapper" heuristic_data='{{ last_n_times | safe }}'>
+                                    <svg></svg>
+                                </div>
+                            </div>
+                            <div class="{% if cfg.css_framework == 'MUNI' %} u-pb-50 {% else %} pb-4 {% endif %}">
+                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                icon icon-user-check green {% else %} fa fa-user-check {% endif %} success"
+                                ></span>
+                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                u-mr-30 {% else %} me-4 {% endif%}"
+                                >{{ _("MFA perfomed (at least once)") }}</span>
+                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                icon icon-user-slash  {% else %} fa fa-user-slash {% endif %}"></span>
+                                <span>{{ _("MFA not performed") }}</span>
+                            </div>
+                            <div class="grid row {% if not cfg.css_framework == 'MUNI' %}text-left{% endif %}">
+                                    <div class="grid__cell size--l--5-12 col mx-5">
+                                        <h5><span>{{ _("Last citites connected from") }}</span></h5>
+                                        <ul>
+                                        {% for city in last_n_cities %}
+                                            <li>
+                                                {% if city.mfa %}
+                                                    <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                    icon icon-user-check green {% else %}
+                                                    fa fa-user-check {% endif %} success"
+                                                    ></span>
+                                                {% else %}
+                                                    <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                    icon icon-user-slash  {% else %}
+                                                    fa fa-user-slash {% endif %}"></span>
+                                                    </span>
+                                                {% endif %}
+                                                {{ city.value }}
+                                            </li>
+                                                
+                                         {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="grid__cell size--l--5-12 col mx-5">
+                                        <h5><span>{{ _("Last connected IP addresses") }}</span></h5>
+                                        <ul>
+                                        {% for ip in ips %}
+                                            <li>
+                                                {% if ip.mfa %}
+                                                    <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                    icon icon-user-check green {% else %}
+                                                    fa fa-user-check {% endif %} success"
+                                                    ></span>
+                                                {% else %}
+                                                    <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                    icon icon-user-slash  {% else %}
+                                                    fa fa-user-slash {% endif %}"></span>
+                                                    </span>
+                                                {% endif %}
+                                                {{ ip.value }}
+                                            </li>
+                                                
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                            </div>
+                            <div class="grid row {% if not cfg.css_framework == 'MUNI' %}text-left{% endif %}">  
+                                <div class="grid__cell size--l--5-12 col mx-5">
+                                    <h5><span>{{ _("Devices and browsers (most common first)") }}</span></h5>
+                                    <ul>
+                                    {% for agent in user_agents %}
+                                        <li>
+                                            {% if agent.mfa %}
+                                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                icon icon-user-check green {% else %}
+                                                fa fa-user-check {% endif %} success"
+                                                ></span>
+                                            {% else %}
+                                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                icon icon-user-slash  {% else %}
+                                                fa fa-user-slash {% endif %}"></span>
+                                                </span>
+                                            {% endif %}
+                                            ({{agent.value}}x) - {{ agent.label }}
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="grid__cell size--l--5-12 col mx-5">
+                                    <h5><span>{{ _("Last requested services") }}</span></h5>
+                                    <ul>
+                                    {% for service in sps %}
+                                        <li>
+                                            {% if service.upstream_acrs or service.local_mfa_performed %}
+                                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                icon icon-user-check green {% else %}
+                                                fa fa-user-check {% endif %} success"
+                                                ></span>
+                                            {% else %}
+                                                <span class="{% if cfg.css_framework == 'MUNI' %}
+                                                icon icon-user-slash  {% else %}
+                                                fa fa-user-slash {% endif %}"></span>
+                                                </span>
+                                            {% endif %}
+                                            {{ service.name }} ({{ service.identifier }})
+                                            <ul>
+                                                <li>{{ service.requested_acrs }}</li>
+                                            </ul>
+                                            
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="content">
+                            <br/>
+                            <h3><span>{{ _("Specify a Perun user ID to gather data:") }}</span></h3>
+                            <form action="{{ url_for('gui.heuristics') }}" method="get">
+                                <div class="u-pb-30">
+                                  <input type="number" id="user_id" name="user_id" min="1" required placeholder="User ID">
+                                </div>
+                              {% if user_not_exists %}
+                                  {% if not cfg.css_framework == 'MUNI' %}
+                                    <div class="bd-callout bd-callout-danger">
+                                      {{ user_not_exists_message }}
+                                    </div>
+                                  {% else %}
+                                    <div class="message message--common message--common-error"
+                                         role="alert">
+                                      <span class="message__icon icon icon-exclamation-triangle"></span>
+                                      <p class="message__desc">{{ user_not_exists_message }}</p>
+                                    </div>
+                                  {% endif %}
+                                {% endif %}
+                                <p class="btn-wrap">
+                                    <button class="btn btn-primary btn-s btn-accept"
+                                            type="submit" name="submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </p>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
