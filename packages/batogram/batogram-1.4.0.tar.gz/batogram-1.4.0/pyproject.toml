@@ -1,0 +1,55 @@
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "batogram"
+version = "1.4.0"
+authors = [
+    {name = "John Mears", email = "john+batogram@themears.co.uk"},
+]
+description = "Batogram is a GUI program for rendering spectrograms from full spectrum recordings of bat calls."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["bat", "spectrogram", "chiropterology", "fourier", "ultrasonic", "ultrasound", "echo", "GUANO"]
+license = {file = "LICENSE"}
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Science/Research',
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+    'Topic :: Multimedia :: Sound/Audio :: Analysis',
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "Pillow",
+    "argparse",
+    "dataclasses-json",
+    "platformdirs",
+    "PyAudio",
+    "hsluv",
+    "Send2Trash",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["batogram*"]
+
+[tool.setuptools.package-data]
+# For some reason these file types also need to be listed in MANIFEST.in
+"*" = ["assets/*.png", "colour_maps/*.csv"]
+
+[project.scripts]
+# Automatically create a command to run the program. There is an alternative to run a GUI script,
+# with no terminal window.
+batogram = "batogram.runner:run"
+
+[project.urls]
+"Homepage" = "https://github.com/jmears63/batogram"
