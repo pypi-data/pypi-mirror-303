@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chain-index"
+version = "0.1.0"
+description = "A Python library for managing and organizing AI language model chains"
+readme = "README.md"
+authors = [{ name = "gmatrix", email = "gmatrixuniverse@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["ai", "language-model", "chain", "index"]
+dependencies = [
+    "pydantic >= 1.8.0",
+    "typing-extensions >= 3.7.4",
+]
+requires-python = ">=3.7"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/chain-index"
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["chain_index*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+addopts = "-v"
+testpaths = ["tests"]
+pythonpath = ["."]
