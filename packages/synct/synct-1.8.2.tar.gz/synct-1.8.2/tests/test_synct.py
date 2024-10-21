@@ -1,0 +1,195 @@
+""" 
+Testing the synct script functionality that covers
+adding rows, default columns and inheriting formulas.
+"""
+
+# Disable pylint message regarding similar lines in 2 files
+# pylint: disable=R0801
+
+from dataclasses import dataclass
+from pathlib import Path
+
+import unittest
+from unittest.mock import patch
+from parameterized import parameterized
+
+import pandas as pd
+from pandas.testing import assert_frame_equal
+
+import yaml
+
+from synct.config import Column, Sheet
+from synct.source import SourceData
+from synct.synct import transform_data
+
+TESTS_DIR = Path(__file__).parent
+DATA_DIR = TESTS_DIR / 'data'
+SUFFIX = '.txt'
+
+CONFIG_DATA = DATA_DIR / 'config.yaml'
+SOURCE_DATA = DATA_DIR / 'source_data.txt'
+INITIAL_DATA_BASIC = DATA_DIR / 'initial_data_basic.txt'
+INITIAL_DATA_ADV = DATA_DIR / 'initial_data_adv.txt'
+
+EXPECTED_DATA_BASIC_0 = DATA_DIR / 'expected_data_basic_0.txt'
+EXPECTED_DATA_BASIC_1 = DATA_DIR / 'expected_data_basic_1.txt'
+EXPECTED_DATA_BASIC_2 = DATA_DIR / 'expected_data_basic_2.txt'
+EXPECTED_DATA_BASIC_3 = DATA_DIR / 'expected_data_basic_3.txt'
+EXPECTED_DATA_BASIC_4 = DATA_DIR / 'expected_data_basic_4.txt'
+EXPECTED_DATA_BASIC_5 = DATA_DIR / 'expected_data_basic_5.txt'
+EXPECTED_DATA_BASIC_6 = DATA_DIR / 'expected_data_basic_6.txt'
+EXPECTED_DATA_BASIC_7 = DATA_DIR / 'expected_data_basic_7.txt'
+
+EXPECTED_DATA_ADV_0 = DATA_DIR / 'expected_data_adv_0.txt'
+EXPECTED_DATA_ADV_1 = DATA_DIR / 'expected_data_adv_1.txt'
+EXPECTED_DATA_ADV_2 = DATA_DIR / 'expected_data_adv_2.txt'
+EXPECTED_DATA_ADV_3 = DATA_DIR / 'expected_data_adv_3.txt'
+EXPECTED_DATA_ADV_4 = DATA_DIR / 'expected_data_adv_4.txt'
+EXPECTED_DATA_ADV_5 = DATA_DIR / 'expected_data_adv_5.txt'
+EXPECTED_DATA_ADV_6 = DATA_DIR / 'expected_data_adv_6.txt'
+EXPECTED_DATA_ADV_7 = DATA_DIR / 'expected_data_adv_7.txt'
+
+SHEET = 'TEST'
+
+@dataclass
+class Args:
+    """ Default command line arguments of the script """
+    add = False
+    remove = False
+    noupdate = False
+
+def allow_duplicated_columns(df):
+    """ Transformation data structure like obtained from pd.read_excel """
+    col_map = []
+    for col in df.columns:
+        if col.rpartition('.')[0]:
+            col_name = col.rpartition('.')[0]
+            in_map = col.rpartition('.')[0] in col_map
+            last_is_num = col.rpartition('.')[-1].isdigit()
+            dupe_count = col_map.count(col_name)
+            if in_map and last_is_num and (int(col.rpartition('.')[-1]) == dupe_count):
+                col_map.append(col_name)
+                continue
+        col_map.append(col)
+    df.columns = col_map
+
+def operation(initial_data, mock_tsheet_class, add, default_columns, inherit_formulas):
+    """ Make the operation with data and return the final data """
+
+    # Arguments set-up
+    args = Args()
+    args.add = add
+
+    # Prepare the mock Gsheet instance
+    target_spreadsheet_data = pd.read_fwf(initial_data, encoding='utf-8', dtype=str)
+    allow_duplicated_columns(target_spreadsheet_data)
+    tsheet_instance = mock_tsheet_class.return_value
+    tsheet_instance.active_sheets = [SHEET]
+    tsheet_instance.data = {SHEET: target_spreadsheet_data}
+    tsheet_instance.unique_columns = \
+            {SHEET: list(dict.fromkeys(target_spreadsheet_data.columns.values.tolist()))}
+
+    # Read source data
+    source_data = pd.read_fwf(SOURCE_DATA, encoding='utf-8', dtype=str).to_dict(orient='records')
+
+    # Configure tests parameters
+    sheet_conf = configure(default_columns, inherit_formulas)
+    tsheet_instance.sheets_config = sheet_conf
+
+    # Set up source data instance
+    source_data_instance = set_source_data_instance(source_data, sheet_conf, tsheet_instance)
+
+    # Call the function under test
+    transform_data(source_data_instance, tsheet_instance, args)
+
+    return tsheet_instance.data[SHEET]
+
+def configure(default_columns, inherit_formulas):
+    """ Configure test parameters """
+    header_offset = 0
+    delimiter = ' '
+    sheet_columns = {}
+    key = 'G_ISSUE'
+
+    with open(CONFIG_DATA, encoding='utf-8') as config_file:
+        config_sheet_columns = yaml.safe_load(config_file.read())
+
+    sheet_conf = {}
+    sheet_conf[SHEET] = Sheet(header_offset, delimiter, default_columns, \
+                              inherit_formulas, sheet_columns, key)
+    for column in config_sheet_columns:
+        sheet_conf[SHEET].columns[column] = Column()
+        sheet_conf[SHEET].columns[column].data = config_sheet_columns[column]
+    return sheet_conf
+
+def set_source_data_instance(source_data, sheet_conf, tsheet_instance):
+    """ Set up source data instance """
+    source_data_instance = {}
+    if sheet_conf[SHEET].default_columns:
+        source_data_instance[SHEET] = SourceData(source_data, \
+            sheet_conf[SHEET], SHEET, tsheet_instance.data[SHEET])
+    else:
+        source_data_instance[SHEET] = SourceData(source_data, \
+            sheet_conf[SHEET])
+    return source_data_instance
+
+def custom_name_func(testcase_func, param_num, param):
+    """
+    The names of the test cases generated by @parameterized.expand
+    :param testcase_func: will be the function to be tested
+    :param param_num: will be the index of the test case parameters in the list of parameters
+    :param param: (an instance of param) will be the parameters which will be used.
+    :return: test case name
+    """
+    return (f'{testcase_func.__name__}_'
+            f'{parameterized.to_safe_name("_".join([str(param.args[0]), param_num]))}')
+
+class TestTransformDataBasic(unittest.TestCase):
+    """ Test the basic synct script functionality with unique columns """
+    @parameterized.expand([
+        # Order of parameters:
+        # test name, add rows, default columns, inherit formulas, expected data
+        ('disabledparameters', False, False, False, EXPECTED_DATA_BASIC_0),
+        ('addrows', True, False, False, EXPECTED_DATA_BASIC_1),
+        ('defaultcolumns', False, True, False, EXPECTED_DATA_BASIC_2),
+        ('addrows_defaultcolumns', True, True, False, EXPECTED_DATA_BASIC_3),
+        ('inheritformulas', False, False, True, EXPECTED_DATA_BASIC_4),
+        ('addrows_inheritformulas', True, False, True, EXPECTED_DATA_BASIC_5),
+        ('defaultcolumns_inheritformulas', False, True, True, EXPECTED_DATA_BASIC_6),
+        ('addrows_defaultcolumns_inheritformulas', True, True, True, EXPECTED_DATA_BASIC_7)
+    ], name_func=custom_name_func)
+
+    @patch('synct.tsheet.Tsheet', autospec=True)
+    def test_transform_data(self, _, add, default_columns, inherit_formulas, expected_data, \
+            mock_tsheet_class):           # pylint: disable=too-many-arguments
+        """ Testing with fake data """
+        transformed_data = operation(INITIAL_DATA_BASIC, mock_tsheet_class, add, default_columns, \
+                inherit_formulas).fillna('')
+        expected_data = pd.read_fwf(expected_data, encoding='utf-8', dtype=str).fillna('')
+        allow_duplicated_columns(expected_data)
+        assert_frame_equal(transformed_data, expected_data, check_dtype=False)
+
+class TestTransformDataAdv(unittest.TestCase):
+    """ Test the advanced synct script functionality with multiple target columns """
+    @parameterized.expand([
+        # Order of parameters:
+        # test name, add rows, default columns, inherit formulas, expected data
+        ('disabledparameters', False, False, False, EXPECTED_DATA_ADV_0),
+        ('addrows', True, False, False, EXPECTED_DATA_ADV_1),
+        ('defaultcolumns', False, True, False, EXPECTED_DATA_ADV_2),
+        ('addrows_defaultcolumns', True, True, False, EXPECTED_DATA_ADV_3),
+        ('inheritformulas', False, False, True, EXPECTED_DATA_ADV_4),
+        ('addrows_inheritformulas', True, False, True, EXPECTED_DATA_ADV_5),
+        ('defaultcolumns_inheritformulas', False, True, True, EXPECTED_DATA_ADV_6),
+        ('addrows_defaultcolumns_inheritformulas', True, True, True, EXPECTED_DATA_ADV_7)
+    ], name_func=custom_name_func)
+
+    @patch('synct.tsheet.Tsheet', autospec=True)
+    def test_transform_data(self, _, add, default_columns, inherit_formulas, expected_data, \
+            mock_tsheet_class):           # pylint: disable=too-many-arguments
+        """ Testing with fake data """
+        transformed_data = operation(INITIAL_DATA_ADV, mock_tsheet_class, add, default_columns, \
+                inherit_formulas).fillna('')
+        expected_data = pd.read_fwf(expected_data, encoding='utf-8', dtype=str).fillna('')
+        allow_duplicated_columns(expected_data)
+        assert_frame_equal(transformed_data, expected_data, check_dtype=False)
