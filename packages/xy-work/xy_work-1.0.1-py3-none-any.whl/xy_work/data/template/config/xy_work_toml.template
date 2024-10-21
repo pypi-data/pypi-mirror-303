@@ -1,0 +1,33 @@
+# ######################## xy_work配置 ###########################
+# 默认配置文件位置为 当前工作目录下的 config/xy_work.toml
+
+
+# ######################## xy_work项目配置 ###########################
+[xy_work_project]
+
+# 项目名称, 仅支持英文
+name = "{xy_work_project_name}"
+
+# 项目标识
+identifier = "{xy_work_project_identifier}"
+
+# 项目名称, 支持中英文
+verbose_name = "{xy_work_project_verbose_name}"
+
+# 项目说明, 支持中英文
+description = "{xy_work_project_description}"
+
+# 项目路径
+path = "{xy_work_project_path}"
+
+# ######################## xy_work运行配置 ###########################
+
+[xy_work_runner]
+
+# 服务源码目录自动添加到sys.path 
+# 默认 当前项目目录下的 source/Runner
+path = "{xy_work_runner_path}"
+
+# 服务入口类，根据上文的path寻找对应的类初始化即为启动，字符串，若包含模块使用module.class根据importlib引入
+# 默认 Runner.Runner
+runner = "{xy_work_runner_runner}"
