@@ -1,0 +1,76 @@
+[project]
+name = "gandula"
+version = "0.2.4"
+description = "Gandula grabs football data and puts it back into play."
+authors = [
+  {name="Thiago Costa Porto", email="thiagocostaporto@gmail.com"},
+  {name="Ricardo Furbino", email="ricardofurbino@gmail.com"},
+  {name="Luiza Chagas", email="luiza.chagas@dcc.ufmg.br"},
+  {name="Leo Martins", email="leomartins@dcc.ufmg.br"},
+]
+maintainers = [
+  {name="Thiago Costa Porto", email="thiagocostaporto@gmail.com"},
+  {name="Ricardo Furbino", email="ricardofurbino@gmail.com"},
+]
+license = ""
+readme = 'README.md'
+homepage = "https://salabufmg.github.io"
+repository = "https://github.com/salabufmg/gandula"
+documentation = "https://github.com/salabufmg/gandula"
+keywords = ["football", "sports analytics", "pff"]
+requires-python = ">=3.10"
+dependencies = [
+    "ruff>=0.6.2",
+    "gql>=3.5.0",
+    "aiohttp>=3.10.5",
+    "pydantic>=2.8.2",
+    "tqdm>=4.66.5",
+    "matplotlib>=3.9.2",
+    "jupyter>=1.0.0",
+    "pandas>=2.2.2",
+    "mplsoccer>=1.4.0",
+    "jinja2>=3.1.4",
+    "ipython>=8.26.0",
+    "requests>=2.32.3",
+    "beautifulsoup4>=4.12.3",
+    "structlog>=24.4.0",
+    "orjson>=3.10.7",
+    "ipywidgets>=8.1.5",
+    "imageio>=2.36.0",
+    "pygifsicle>=1.1.0",
+    "pre-commit>=4.0.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E4", "E5", "E7", "E9", "F", "B", "I"] # "D"
+ignore = ["D417"]
+extend-select = ["D400"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402"]
+"*.ipynb" = ["E501"]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 72
+max-line-length = 88
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-line-length = 72
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[tool.uv.sources]
+pypff = { git = "https://github.com/pro-football-focus/pypff.git" }
