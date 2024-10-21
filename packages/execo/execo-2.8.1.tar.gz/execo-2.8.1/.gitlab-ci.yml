@@ -1,0 +1,64 @@
+variables:
+  GIT_STRATEGY: clone
+  DEBIAN_FRONTEND: noninteractive
+  APT: "apt-get -q -y --no-install-recommends"
+
+stages:
+  - build
+  - deploy
+
+build-packages:
+  tags:
+    - ci.inria.fr
+    - small
+  stage: build
+  except: [ tags ]
+  image: debian:buster
+  script:
+    - $APT update
+    - $APT full-upgrade
+    - $APT install build-essential devscripts equivs
+    - $APT install git dh-python python-all python3-all python-setuptools python3-setuptools python-docutils python3-docutils python-sphinx python3-sphinx sphinx-doc python-argparse python-requests python-keyring python3-keyring python-psycopg2 python3-psycopg2 python-networkx python3-networkx python-pygraphviz python3-pygraphviz python-matplotlib python3-matplotlib graphviz
+    - python3 setup.py sdist
+    - dpkg-buildpackage -us -uc
+    - mkdir packages
+    - cp $(debc --list-debs) packages
+    - cp dist/*.tar.gz packages
+  artifacts:
+     paths:
+       - packages
+     expire_in: '1 week'
+
+push-packages:
+  tags:
+    - ci.inria.fr
+    - small
+  stage: deploy
+  image: debian:buster
+  only:
+    - master
+  when: manual
+  needs: ["build-packages"]
+  script:
+    - $APT update
+    - $APT install curl
+    - "for F in packages/*.deb ; do V=$(echo $F | sed -n 's/packages.python.\\?-execo_\\(.*\\)\\.deb/\\1/p') ; echo deb: $F $V ; curl -k --header \"JOB-TOKEN: $CI_JOB_TOKEN\" --upload-file \"$F\" \"${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/deb/$V/$(basename $F)\" ; done"
+    - "for F in packages/*.tar.gz ; do V=$(echo $F | sed -n 's/packages.execo-\\(.*\\)\\.tar\\.gz/\\1/p') ; echo tar.gz: $F $V ; curl -k --header \"JOB-TOKEN: $CI_JOB_TOKEN\" --upload-file \"$F\" \"${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/source/$V/$(basename $F)\" ; done"
+
+pages:
+  tags:
+    - ci.inria.fr
+    - small
+  image: debian:buster
+  stage: deploy
+  script:
+    - $APT update && $APT full-upgrade
+    - $APT install python3 python3-distutils python3-sphinx sphinx-doc graphviz python3-networkx git
+    - python3 setup.py build_doc
+    - mv build/sphinx/html public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+  when: manual
