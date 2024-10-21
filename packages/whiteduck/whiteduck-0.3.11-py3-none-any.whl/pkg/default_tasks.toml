@@ -1,0 +1,24 @@
+[tool.poe.tasks._init_project]
+cmd = "uv init --app --author-from git --vcs git"
+
+[tool.poe.tasks._init_run]
+cmd = "uv run hello.py"
+
+
+##########################################################
+
+
+[tool.poe.tasks.install_win]
+cmd = "powershell -ExecutionPolicy ByPass -c 'irm https://github.com/astral-sh/uv/releases/download/0.4.22/uv-installer.ps1 | iex'"
+[tool.poe.tasks.install]
+cmd = "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/astral-sh/uv/releases/download/0.4.22/uv-installer.sh | sh"
+
+
+[tool.poe.tasks.init]
+sequence = [{ ref = "_init_project" }]
+
+[tool.poe.tasks.main_dep]
+cmd = "uv add"
+
+[tool.poe.tasks.dev_dep]
+cmd = "uv add --dev"
