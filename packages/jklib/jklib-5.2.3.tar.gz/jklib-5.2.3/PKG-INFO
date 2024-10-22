@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: jklib
+Version: 5.2.3
+Summary: Package with utility functions on many different subjects
+Author-email: Jordan Kowal <kowaljordan@gmail.com>
+Maintainer-email: Jordan Kowal <kowaljordan@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/Jordan-Kowal/jklib
+Project-URL: Issues, https://github.com/Jordan-Kowal/jklib/issues
+Project-URL: Download, https://github.com/Jordan-Kowal/jklib/archive/v5.2.3.tar.gz
+Project-URL: Release notes, https://github.com/Jordan-Kowal/jklib/releases
+Keywords: utility,development,django,meilisearch
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENCE.txt
+Requires-Dist: django>=5.1.1
+Requires-Dist: django-filter>=24.3
+Requires-Dist: djangorestframework>=3.15.2
+Requires-Dist: meilisearch>=0.31.5
+Requires-Dist: pillow>=10.4.0
+
+# jklib
+
+## Description
+
+Package with useful snippets for Django and general Python development.
+
+The snippets are split into folders/categories:
+
+- `dj`: Web development around **Django** and **Django Rest Framework**
+- `meili`: Utilities to interact with **MeiliSearch** (with a subfolder for `dj` **Django**)
+- `std`: Generic utilities around the standard library that can be used in any project
+
+## Using git hooks
+
+Git hooks are set in the [.githooks](.githooks) folder
+_(as `.git/hooks` is not tracked in `.git`)_
+
+Run the following command to tell `git` to look for hooks in this folder:
+
+```shell
+git config core.hooksPath .githooks
+```
