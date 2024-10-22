@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "cz-light-conventional-gitmoji"
+version = "0.3.1"
+description = "A commitizen plugin that combines gitmoji and conventional commits in a lightweight way."
+authors = ["sasirven <77392535+sasirven@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+  { include = "shared", from = "src" },
+  { include = "cz_light_gitmoji", from = "src" },
+  { include = "gitmojify", from = "src" },
+]
+repository = "https://github.com/sasirven/cz-light-conventional-gitmoji"
+
+[tool.poetry.plugins."commitizen.plugin"]
+cz_light_gitmoji = "cz_light_gitmoji.main:CommitizenGitmojiCz"
+
+[tool.poetry.scripts]
+gitmojify = "gitmojify.mojify:run"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+commitizen = ">=3.29.0"
+setuptools = { version = "*", python = ">=3.12" }
+
+[tool.poetry.group.dev.dependencies]
+mypy = ">=1.3.0"
+black = ">=24.8.0"
+pytest = ">=8.2.0"
+pytest-cov = ">=5.0.0"
+coverage = { extras = ["toml"], version = ">=7.6.1" }
+pylint = ">=3.2.7"
+pylint-pytest = ">=1.1.8"
+
+[tool.commitizen]
+name = "cz_light_gitmoji"
+tag_format = "$version"
+version_scheme = "semver"
+version_provider = "poetry"
+update_changelog_on_bump = true
+
+[tool.black]
+target-version = ["py39", "py310", "py311", "py312"]
+line-length = 79
+
+[tool.pylint."MAIN"]
+py-version = "3.9"
+fail-under = 8.0
+max-line-length = 79
+init-hook="import sys; sys.path.extend(['src', 'tests'])"
+load-plugins = "pylint_pytest"
+ignore = [
+  ".venv",
+  "venv",
+]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+command_line = "--module pytest"
+data_file = "reports/.coverage"
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 80
+precision = 1
+show_missing = true
+exclude_lines = [
+  'if __name__ == "__main__":',
+]
+
+[tool.coverage.xml]
+output = "reports/coverage.xml"
+
+[tool.pytest.ini_options]
+addopts = """--color=yes --doctest-modules --exitfirst --failed-first \
+  --strict-markers --strict-config --verbosity=2 \
+  --junitxml=reports/pytest.xml --cov"""
+testpaths = ["src", "tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
