@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: llm-finetuner
+Version: 0.1.1
+Summary: A package for fine-tuning and quantizing language models
+Author-email: Seekh <insha@seekh.co>
+Project-URL: Homepage, https://github.com/yourusername/llm-finetuner
+Project-URL: Repository, https://github.com/yourusername/llm-finetuner.git
+Keywords: llm,finetuning,quantization
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: llama-cpp-python
+Requires-Dist: huggingface_hub[cli,tensorflow,torch]
+Requires-Dist: boto3
+Requires-Dist: setuptools
+Requires-Dist: wheel
+Requires-Dist: torch
+Requires-Dist: transformers
+Requires-Dist: peft
+Requires-Dist: datasets
+Requires-Dist: trl
+Requires-Dist: tf-keras
+Requires-Dist: bitsandbytes
+Requires-Dist: sentencepiece
+Requires-Dist: virtualenv
+
+# Finetuner Module
+
+### This module contains functions for fine-tuning language models, merging models, and uploading models to Hugging Face
+
+1. train_model: Used for fine-tuning a language model on a specific dataset.
+2. merge_model: Allows merging of a base model with a fine-tuned model.
+3. upload_to_hf: Handles uploading models to the Hugging Face model hub.
+
+# Quantise Module
+
+### This module provides functionality for quantizing models and uploading the quantized versions
+
+1. run_quantization: Performs quantization on a given model to reduce its size.
+2. run_upload: Uploads a quantized model to Hugging Face.
