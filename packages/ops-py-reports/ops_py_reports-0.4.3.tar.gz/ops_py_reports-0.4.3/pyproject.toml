@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ops-py-reports"
+description = "Post Key Vault Secrets report to webhook"
+license = {file = "LICENSE"}
+version = "0.4.3"
+dynamic = ["readme", "dependencies"]
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type = "text/markdown"}
+dependencies = {file = ["requirements.txt"]}
