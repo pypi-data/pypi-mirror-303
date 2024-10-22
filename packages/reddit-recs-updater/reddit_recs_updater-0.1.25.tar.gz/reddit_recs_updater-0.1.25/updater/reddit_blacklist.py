@@ -1,0 +1,5 @@
+BLACKLIST = [
+  'AutoModerator',
+  'VettedBot',
+  'FirdausIWant'
+]
