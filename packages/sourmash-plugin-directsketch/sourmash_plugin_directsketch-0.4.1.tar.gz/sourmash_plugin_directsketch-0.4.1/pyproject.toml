@@ -1,0 +1,39 @@
+[project]
+name = "sourmash_plugin_directsketch"
+description = "Download and Sketch GenBank Assembly Datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    ]
+dependencies = ["sourmash>=4.8.5,<5"]
+
+authors = [
+  { name="N. Tessa Pierce-Ward", orcid="0000-0002-2942-5331" },
+]
+
+[build-system]
+requires = ["maturin>=1.4.0,<2"]
+build-backend = "maturin"
+
+[project.entry-points."sourmash.cli_script"]
+gbsketch = "sourmash_plugin_directsketch:Download_and_Sketch_Assemblies"
+urlsketch = "sourmash_plugin_directsketch:Download_and_Sketch_Url"
+
+[project.optional-dependencies]
+test = [
+  "pytest>=6.2.4,<8.4.0",
+  "pytest-cov>=2.12,<6.0",
+  "pytest-xdist",
+]
+
+[tool.maturin]
+python-source = "src/python"
+
+[tool.maturin.target.x86_64-apple-darwin]
+macos-deployment-target = "10.14"
+
+[metadata]
+license = { text = "GNU Affero General Public License v3" }
