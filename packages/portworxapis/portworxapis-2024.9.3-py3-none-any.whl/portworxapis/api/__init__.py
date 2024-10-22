@@ -1,0 +1,33 @@
+# flake8: noqa
+
+# import apis into api package
+from portworx.api.account_service_api import AccountServiceApi
+from portworx.api.application_service_api import ApplicationServiceApi
+from portworx.api.backup_config_service_api import BackupConfigServiceApi
+from portworx.api.backup_location_service_api import BackupLocationServiceApi
+from portworx.api.backup_policy_service_api import BackupPolicyServiceApi
+from portworx.api.backup_service_api import BackupServiceApi
+from portworx.api.cloud_credential_service_api import CloudCredentialServiceApi
+from portworx.api.copilot_service_api import CopilotServiceApi
+from portworx.api.data_service_deployment_config_update_service_api import DataServiceDeploymentConfigUpdateServiceApi
+from portworx.api.data_service_deployment_event_service_api import DataServiceDeploymentEventServiceApi
+from portworx.api.data_service_deployment_service_api import DataServiceDeploymentServiceApi
+from portworx.api.data_service_version_service_api import DataServiceVersionServiceApi
+from portworx.api.data_services_service_api import DataServicesServiceApi
+from portworx.api.iam_service_api import IAMServiceApi
+from portworx.api.image_service_api import ImageServiceApi
+from portworx.api.invitation_service_api import InvitationServiceApi
+from portworx.api.login_service_api import LoginServiceApi
+from portworx.api.metric_service_api import MetricServiceApi
+from portworx.api.namespace_service_api import NamespaceServiceApi
+from portworx.api.onboard_service_api import OnboardServiceApi
+from portworx.api.project_service_api import ProjectServiceApi
+from portworx.api.restore_service_api import RestoreServiceApi
+from portworx.api.service_account_service_api import ServiceAccountServiceApi
+from portworx.api.target_cluster_registration_manifest_service_api import TargetClusterRegistrationManifestServiceApi
+from portworx.api.target_cluster_service_api import TargetClusterServiceApi
+from portworx.api.template_definition_service_api import TemplateDefinitionServiceApi
+from portworx.api.template_service_api import TemplateServiceApi
+from portworx.api.tenant_service_api import TenantServiceApi
+from portworx.api.who_am_i_service_api import WhoAmIServiceApi
+
