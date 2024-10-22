@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "reaktion-next"
+version = "0.1.76"
+description = ""
+authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
+packages = [{ include = "reaktion_next" }]
+
+
+[tool.poetry.dependencies]
+python = " >=3.8,<4.0"
+rekuest-next = ">=0.2.27"
+fluss-next = ">=0.1.82"
+
+[tool.poetry.group.dev.dependencies]
+autoflake = "^1.7.7"
+pytest = "^7.2.0"
+pytest-asyncio = "^0.20.2"
+black = "^22.10.0"
+pytest-cov = "^4.1.0"
+
+
+[tool.pytest.ini_options]
+qt_api = "pyqt5"
+markers = [
+    "integration: marks tests that require a running server",
+    "qt: marks tests that require a running qt application",
+    "serialize: marks tests that require serialization of graphs",
+    "actor: marks tests that require an actor",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.pydoc-markdown.loaders]]
+type = "python"
+search_path = ["reaktion"]
+
+[tool.pydoc-markdown.renderer]
+type = "docusaurus"
