@@ -1,0 +1,76 @@
+.TH "ramalama-run 1" 
+.nh
+.ad l
+
+.SH NAME
+.PP
+ramalama\-run \- run specified AI Model as a chatbot
+
+.SH SYNOPSIS
+.PP
+\fBramalama run\fP [\fIoptions\fP] \fImodel\fP [arg ...]
+
+.SH OPTIONS
+.SS \fB\-\-help\fP, \fB\-h\fP
+.PP
+show this help message and exit
+
+.SS \fB\-\-name\fP, \fB\-n\fP
+.PP
+name of the container to run the Model in
+
+.SH DESCRIPTION
+.PP
+Run specified AI Model as a chat bot. RamaLama pulls specified AI Model from
+registry if it does not exist in local storage. By default a prompt for a chat
+bot will be started. When arguments are specified, the arguments will be given
+to the AI Model and the output returned without entering the chatbot.
+
+.SH EXAMPLES
+.PP
+Run command without arguments starts a chatbot
+
+.PP
+.RS
+
+.nf
+ramalama run granite
+
+>
+
+.fi
+.RE
+
+.PP
+.RS
+
+.nf
+ramalama run merlinite "when is the summer solstice"
+The summer solstice, which is the longest day of the year, will happen on June ...
+
+.fi
+.RE
+
+.PP
+Run command with a custom prompt and a file passed by the stdin
+
+.PP
+.RS
+
+.nf
+cat file.py | ramalama run granite\-code 'what does this program do?'
+
+This program is a Python script that allows the user to interact with a terminal. ...
+ [end of text]
+
+.fi
+.RE
+
+.SH SEE ALSO
+.PP
+\fBramalama(1)\fP
+
+.SH HISTORY
+.PP
+Aug 2024, Originally compiled by Dan Walsh 
+\[la]dwalsh@redhat.com\[ra]
