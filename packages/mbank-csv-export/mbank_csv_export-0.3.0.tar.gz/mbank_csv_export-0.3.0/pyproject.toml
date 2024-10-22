@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "mbank-csv-export"
+version = "0.3.0"
+description = "Quick & reliable operations csv exporter for mBank."
+authors = ["Marcin Tyszkiewicz <56219944+mtyszkiewicz@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+playwright = "^1.44.0"
+pydantic-settings = "^2.3.1"
+python-dateutil = "^2.9.0.post0"
+pydantic = "^2.9.2"
+
+[tool.poetry.scripts]
+mbank-export = "mbank_csv_export.cli.mbank:main"
+mbank-parser = "mbank_csv_export.cli.parser:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
