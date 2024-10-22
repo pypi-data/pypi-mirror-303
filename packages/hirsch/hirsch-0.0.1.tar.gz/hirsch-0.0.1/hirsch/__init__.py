@@ -1,0 +1,2 @@
+
+from .hirsch import hirsch
