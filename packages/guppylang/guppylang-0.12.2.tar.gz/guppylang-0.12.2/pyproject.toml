@@ -1,0 +1,83 @@
+[project]
+name = "guppylang"
+version = "0.12.2"
+requires-python = ">=3.10,<4"
+description = "Pythonic quantum-classical programming language"
+license = { file = "LICENCE" }
+readme = "quickstart.md"
+authors = [
+    { name = "Mark Koch", email = "mark.koch@quantinuum.com" },
+    { name = "TKET development team", email = "tket-support@quantinuum.com" },
+]
+maintainers = [
+    { name = "Mark Koch", email = "mark.koch@quantinuum.com" },
+    { name = "TKET development team", email = "tket-support@quantinuum.com" },
+]
+
+dependencies = [
+    "graphviz >=0.20.1,<0.21",
+    "networkx >=3.2.1,<4",
+    "pydantic >=2.7.0b1,<3",
+    "typing-extensions >=4.9.0,<5",
+    "hugr >=0.8.1,<0.9",
+]
+
+[project.optional-dependencies]
+# pytket = ["pytket >=1.30.0,<2", "tket2 >=0.4.1,<0.5"]
+docs = ["sphinx >=7.2.6,<9", "sphinx-book-theme >=1.1.2,<2"]
+execution = ["execute-llvm"]
+
+[project.urls]
+homepage = "https://github.com/CQCL/guppylang"
+repository = "https://github.com/CQCL/guppylang"
+
+[tool.uv]
+dev-dependencies = [
+    "ipykernel >=6.29.5,<7",
+    "pytest >=8.3.2,<9",
+    "pytest-cov >=5.0.0,<6",
+    "pytest-notebook >=0.10.0,<0.11",
+    "pytest-snapshot >=0.9.0,<1",
+    "mypy ==1.10.0",
+    "pre-commit >=3.6.0,<4",
+    "ruff >=0.6.2,<0.7",
+    "maturin >=1.4.0,<2",
+    "pytket >=1.30.0,<2",
+    # Required to run `maturin develop`
+    "pip >=24",
+]
+
+[tool.uv.workspace]
+members = ["execute_llvm"]
+
+[tool.uv.sources]
+execute-llvm = { workspace = true }
+
+# Uncomment these to test the latest dependency version during development
+#hugr = { git = "https://github.com/CQCL/hugr", subdirectory = "hugr-py", rev = "4cbe890ab4e72090708ff83592c0771caf2335df" }
+#tket2 = { git = "https://github.com/CQCL/tket2", subdirectory = "tket2-py", rev = "e3f9da1abe28f31cb249de2e06be846ab48d9708" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+strict = true
+allow_redefinition = true
+
+
+[tool.coverage.report]
+exclude_also = [
+    # Don't complain about missing coverage on typing imports
+    "if TYPE_CHECKING:",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "raise InternalGuppyError",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@abstractmethod",
+]
