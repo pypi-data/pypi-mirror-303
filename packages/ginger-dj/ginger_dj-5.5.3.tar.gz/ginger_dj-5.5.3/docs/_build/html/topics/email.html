@@ -1,0 +1,1305 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Internationalization and localization" href="i18n/index.html" /><link rel="prev" title="Cryptographic signing" href="signing.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Sending email - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/topics/email.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.core.mail">
+<span id="s-sending-email"></span><span id="module-ginger.core.mail"></span><span id="sending-email"></span><h1>Sending email<a class="headerlink" href="#module-ginger.core.mail" title="Link to this heading">¶</a></h1>
+<p>Although Python provides a mail sending interface via the <a class="reference external" href="https://docs.python.org/3/library/smtplib.html#module-smtplib" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">smtplib</span></code></a>
+module, Ginger provides a couple of light wrappers over it. These wrappers are
+provided to make sending email extra quick, to help test email sending during
+development, and to provide support for platforms that can’t use SMTP.</p>
+<p>The code lives in the <code class="docutils literal notranslate"><span class="pre">ginger.core.mail</span></code> module.</p>
+<section id="s-quick-example">
+<span id="quick-example"></span><h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">¶</a></h2>
+<p>In two lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="n">send_mail</span><span class="p">(</span>
+    <span class="s2">&quot;Subject here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Here is the message.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;to@example.com&quot;</span><span class="p">],</span>
+    <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Mail is sent using the SMTP host and port specified in the
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST</span></code></a> and <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_PORT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_PORT</span></code></a> settings. The
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_USER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_USER</span></code></a> and <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_PASSWORD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_PASSWORD</span></code></a> settings, if
+set, are used to authenticate to the SMTP server, and the
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_USE_TLS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_USE_TLS</span></code></a> and <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_USE_SSL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_USE_SSL</span></code></a> settings control whether
+a secure connection is used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The character set of email sent with <code class="docutils literal notranslate"><span class="pre">ginger.core.mail</span></code> will be set to
+the value of your <a class="reference internal" href="../ref/settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> setting.</p>
+</div>
+</section>
+<section id="s-send-mail">
+<span id="send-mail"></span><h2><code class="docutils literal notranslate"><span class="pre">send_mail()</span></code><a class="headerlink" href="#send-mail" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.mail.send_mail">
+<span class="sig-name descname"><span class="pre">send_mail</span></span>(<em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.core.mail.send_mail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>In most cases, you can send email using <code class="docutils literal notranslate"><span class="pre">ginger.core.mail.send_mail()</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">subject</span></code>, <code class="docutils literal notranslate"><span class="pre">message</span></code>, <code class="docutils literal notranslate"><span class="pre">from_email</span></code> and <code class="docutils literal notranslate"><span class="pre">recipient_list</span></code> parameters
+are required.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">subject</span></code>: A string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: A string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_email</span></code>: A string. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, Ginger will use the value of the
+<a class="reference internal" href="../ref/settings.html#std-setting-DEFAULT_FROM_EMAIL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_FROM_EMAIL</span></code></a> setting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recipient_list</span></code>: A list of strings, each an email address. Each
+member of <code class="docutils literal notranslate"><span class="pre">recipient_list</span></code> will see the other recipients in the “To:”
+field of the email message.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fail_silently</span></code>: A boolean. When it’s <code class="docutils literal notranslate"><span class="pre">False</span></code>, <code class="docutils literal notranslate"><span class="pre">send_mail()</span></code> will raise
+an <a class="reference external" href="https://docs.python.org/3/library/smtplib.html#smtplib.SMTPException" title="(in Python v3.13)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">smtplib.SMTPException</span></code></a> if an error occurs. See the <a class="reference external" href="https://docs.python.org/3/library/smtplib.html#module-smtplib" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">smtplib</span></code></a>
+docs for a list of possible exceptions, all of which are subclasses of
+<a class="reference external" href="https://docs.python.org/3/library/smtplib.html#smtplib.SMTPException" title="(in Python v3.13)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SMTPException</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auth_user</span></code>: The optional username to use to authenticate to the SMTP
+server. If this isn’t provided, Ginger will use the value of the
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_USER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_USER</span></code></a> setting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auth_password</span></code>: The optional password to use to authenticate to the
+SMTP server. If this isn’t provided, Ginger will use the value of the
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_PASSWORD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_PASSWORD</span></code></a> setting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">connection</span></code>: The optional email backend to use to send the mail.
+If unspecified, an instance of the default backend will be used.
+See the documentation on <a class="reference internal" href="#topic-email-backends"><span class="std std-ref">Email backends</span></a>
+for more details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">html_message</span></code>: If <code class="docutils literal notranslate"><span class="pre">html_message</span></code> is provided, the resulting email will be a
+<em class="mimetype">multipart/alternative</em> email with <code class="docutils literal notranslate"><span class="pre">message</span></code> as the
+<em class="mimetype">text/plain</em> content type and <code class="docutils literal notranslate"><span class="pre">html_message</span></code> as the
+<em class="mimetype">text/html</em> content type.</p></li>
+</ul>
+<p>The return value will be the number of successfully delivered messages (which
+can be <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> since it can only send one message).</p>
+</section>
+<section id="s-send-mass-mail">
+<span id="send-mass-mail"></span><h2><code class="docutils literal notranslate"><span class="pre">send_mass_mail()</span></code><a class="headerlink" href="#send-mass-mail" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.mail.send_mass_mail">
+<span class="sig-name descname"><span class="pre">send_mass_mail</span></span>(<em class="sig-param"><span class="n"><span class="pre">datatuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.core.mail.send_mass_mail" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">ginger.core.mail.send_mass_mail()</span></code> is intended to handle mass emailing.</p>
+<p><code class="docutils literal notranslate"><span class="pre">datatuple</span></code> is a tuple in which each element is in this format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="n">recipient_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fail_silently</span></code>, <code class="docutils literal notranslate"><span class="pre">auth_user</span></code> and <code class="docutils literal notranslate"><span class="pre">auth_password</span></code> have the same functions
+as in <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a>.</p>
+<p>Each separate element of <code class="docutils literal notranslate"><span class="pre">datatuple</span></code> results in a separate email message.
+As in <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a>, recipients in the same
+<code class="docutils literal notranslate"><span class="pre">recipient_list</span></code> will all see the other addresses in the email messages’
+“To:” field.</p>
+<p>For example, the following code would send two different messages to
+two different sets of recipients; however, only one connection to the
+mail server would be opened:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;Subject here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Here is the message&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;first@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;other@example.com&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">message2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;Another Subject&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Here is another message&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;second@test.com&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">send_mass_mail</span><span class="p">((</span><span class="n">message1</span><span class="p">,</span> <span class="n">message2</span><span class="p">),</span> <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The return value will be the number of successfully delivered messages.</p>
+<section id="s-send-mass-mail-vs-send-mail">
+<span id="send-mass-mail-vs-send-mail"></span><h3><code class="docutils literal notranslate"><span class="pre">send_mass_mail()</span></code> vs. <code class="docutils literal notranslate"><span class="pre">send_mail()</span></code><a class="headerlink" href="#send-mass-mail-vs-send-mail" title="Link to this heading">¶</a></h3>
+<p>The main difference between <a class="reference internal" href="#ginger.core.mail.send_mass_mail" title="ginger.core.mail.send_mass_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a> and
+<a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a> is that
+<a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a> opens a connection to the mail server
+each time it’s executed, while <a class="reference internal" href="#ginger.core.mail.send_mass_mail" title="ginger.core.mail.send_mass_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a> uses
+a single connection for all of its messages. This makes
+<a class="reference internal" href="#ginger.core.mail.send_mass_mail" title="ginger.core.mail.send_mass_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a> slightly more efficient.</p>
+</section>
+</section>
+<section id="s-mail-admins">
+<span id="mail-admins"></span><h2><code class="docutils literal notranslate"><span class="pre">mail_admins()</span></code><a class="headerlink" href="#mail-admins" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.mail.mail_admins">
+<span class="sig-name descname"><span class="pre">mail_admins</span></span>(<em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.core.mail.mail_admins" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">ginger.core.mail.mail_admins()</span></code> is a shortcut for sending an email to the
+site admins, as defined in the <a class="reference internal" href="../ref/settings.html#std-setting-ADMINS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">ADMINS</span></code></a> setting.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mail_admins()</span></code> prefixes the subject with the value of the
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_SUBJECT_PREFIX"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_SUBJECT_PREFIX</span></code></a> setting, which is <code class="docutils literal notranslate"><span class="pre">&quot;[Ginger]</span> <span class="pre">&quot;</span></code> by default.</p>
+<p>The “From:” header of the email will be the value of the
+<a class="reference internal" href="../ref/settings.html#std-setting-SERVER_EMAIL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SERVER_EMAIL</span></code></a> setting.</p>
+<p>This method exists for convenience and readability.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">html_message</span></code> is provided, the resulting email will be a
+<em class="mimetype">multipart/alternative</em> email with <code class="docutils literal notranslate"><span class="pre">message</span></code> as the
+<em class="mimetype">text/plain</em> content type and <code class="docutils literal notranslate"><span class="pre">html_message</span></code> as the
+<em class="mimetype">text/html</em> content type.</p>
+</section>
+<section id="s-mail-managers">
+<span id="mail-managers"></span><h2><code class="docutils literal notranslate"><span class="pre">mail_managers()</span></code><a class="headerlink" href="#mail-managers" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.mail.mail_managers">
+<span class="sig-name descname"><span class="pre">mail_managers</span></span>(<em class="sig-param"><span class="n"><span class="pre">subject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.core.mail.mail_managers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">ginger.core.mail.mail_managers()</span></code> is just like <code class="docutils literal notranslate"><span class="pre">mail_admins()</span></code>, except it
+sends an email to the site managers, as defined in the <a class="reference internal" href="../ref/settings.html#std-setting-MANAGERS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">MANAGERS</span></code></a>
+setting.</p>
+</section>
+<section id="s-examples">
+<span id="examples"></span><h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<p>This sends a single email to <a class="reference external" href="mailto:john&#37;&#52;&#48;example&#46;com">john<span>&#64;</span>example<span>&#46;</span>com</a> and <a class="reference external" href="mailto:jane&#37;&#52;&#48;example&#46;com">jane<span>&#64;</span>example<span>&#46;</span>com</a>, with them
+both appearing in the “To:”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">send_mail</span><span class="p">(</span>
+    <span class="s2">&quot;Subject&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Message.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;jane@example.com&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This sends a message to <a class="reference external" href="mailto:john&#37;&#52;&#48;example&#46;com">john<span>&#64;</span>example<span>&#46;</span>com</a> and <a class="reference external" href="mailto:jane&#37;&#52;&#48;example&#46;com">jane<span>&#64;</span>example<span>&#46;</span>com</a>, with them both
+receiving a separate email:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datatuple</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;Subject&quot;</span><span class="p">,</span> <span class="s2">&quot;Message.&quot;</span><span class="p">,</span> <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;john@example.com&quot;</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">&quot;Subject&quot;</span><span class="p">,</span> <span class="s2">&quot;Message.&quot;</span><span class="p">,</span> <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;jane@example.com&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">send_mass_mail</span><span class="p">(</span><span class="n">datatuple</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-preventing-header-injection">
+<span id="preventing-header-injection"></span><h2>Preventing header injection<a class="headerlink" href="#preventing-header-injection" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="http://www.nyphp.org/phundamentals/8_Preventing-Email-Header-Injection.html">Header injection</a> is a security exploit in which an attacker inserts extra
+email headers to control the “To:” and “From:” in email messages that your
+scripts generate.</p>
+<p>The Ginger email functions outlined above all protect against header injection
+by forbidding newlines in header values. If any <code class="docutils literal notranslate"><span class="pre">subject</span></code>, <code class="docutils literal notranslate"><span class="pre">from_email</span></code> or
+<code class="docutils literal notranslate"><span class="pre">recipient_list</span></code> contains a newline (in either Unix, Windows or Mac style),
+the email function (e.g. <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a>) will raise
+<code class="docutils literal notranslate"><span class="pre">ginger.core.mail.BadHeaderError</span></code> (a subclass of <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>) and, hence,
+will not send the email. It’s your responsibility to validate all data before
+passing it to the email functions.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">message</span></code> contains headers at the start of the string, the headers will
+be printed as the first bit of the email message.</p>
+<p>Here’s an example view that takes a <code class="docutils literal notranslate"><span class="pre">subject</span></code>, <code class="docutils literal notranslate"><span class="pre">message</span></code> and <code class="docutils literal notranslate"><span class="pre">from_email</span></code>
+from the request’s POST data, sends that to <a class="reference external" href="mailto:admin&#37;&#52;&#48;example&#46;com">admin<span>&#64;</span>example<span>&#46;</span>com</a> and redirects to
+“/contact/thanks/” when it’s done:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.mail</span> <span class="kn">import</span> <span class="n">BadHeaderError</span><span class="p">,</span> <span class="n">send_mail</span>
+<span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span>
+
+
+<span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">from_email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_email&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subject</span> <span class="ow">and</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">from_email</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;admin@example.com&quot;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="n">BadHeaderError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;Invalid header found.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/contact/thanks/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># In reality we&#39;d use a form class</span>
+        <span class="c1"># to get proper validation errors.</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;Make sure all fields are entered and valid.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-the-emailmessage-class">
+<span id="s-emailmessage-and-smtpconnection"></span><span id="the-emailmessage-class"></span><span id="emailmessage-and-smtpconnection"></span><h2>The <code class="docutils literal notranslate"><span class="pre">EmailMessage</span></code> class<a class="headerlink" href="#the-emailmessage-class" title="Link to this heading">¶</a></h2>
+<p>Ginger’s <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a> and
+<a class="reference internal" href="#ginger.core.mail.send_mass_mail" title="ginger.core.mail.send_mass_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a> functions are actually thin
+wrappers that make use of the <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> class.</p>
+<p>Not all features of the <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> class are
+available through the <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a> and related
+wrapper functions. If you wish to use advanced features, such as BCC’ed
+recipients, file attachments, or multi-part email, you’ll need to create
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> instances directly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a design feature. <a class="reference internal" href="#ginger.core.mail.send_mail" title="ginger.core.mail.send_mail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_mail()</span></code></a> and
+related functions were originally the only interface Ginger provided.
+However, the list of parameters they accepted was slowly growing over
+time. It made sense to move to a more object-oriented design for email
+messages and retain the original functions only for backwards
+compatibility.</p>
+</div>
+<p><a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> is responsible for creating the email
+message itself. The <a class="reference internal" href="#topic-email-backends"><span class="std std-ref">email backend</span></a> is then
+responsible for sending the email.</p>
+<p>For convenience, <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> provides a <code class="docutils literal notranslate"><span class="pre">send()</span></code>
+method for sending a single email. If you need to send multiple messages, the
+email backend API <a class="reference internal" href="#topics-sending-multiple-emails"><span class="std std-ref">provides an alternative</span></a>.</p>
+<section id="s-emailmessage-objects">
+<span id="emailmessage-objects"></span><h3><code class="docutils literal notranslate"><span class="pre">EmailMessage</span></code> Objects<a class="headerlink" href="#emailmessage-objects" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.core.mail.EmailMessage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EmailMessage</span></span><a class="headerlink" href="#ginger.core.mail.EmailMessage" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> class is initialized with the
+following parameters (in the given order, if positional arguments are used).
+All parameters are optional and can be set at any time prior to calling the
+<code class="docutils literal notranslate"><span class="pre">send()</span></code> method.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">subject</span></code>: The subject line of the email.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">body</span></code>: The body text. This should be a plain text message.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_email</span></code>: The sender’s address. Both <code class="docutils literal notranslate"><span class="pre">fred&#64;example.com</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;Fred&quot;</span> <span class="pre">&lt;fred&#64;example.com&gt;</span></code> forms are legal. If omitted, the
+<a class="reference internal" href="../ref/settings.html#std-setting-DEFAULT_FROM_EMAIL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_FROM_EMAIL</span></code></a> setting is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to</span></code>: A list or tuple of recipient addresses.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bcc</span></code>: A list or tuple of addresses used in the “Bcc” header when
+sending the email.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">connection</span></code>: An email backend instance. Use this parameter if
+you want to use the same connection for multiple messages. If omitted, a
+new connection is created when <code class="docutils literal notranslate"><span class="pre">send()</span></code> is called.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attachments</span></code>: A list of attachments to put on the message. These can
+be either <a class="reference external" href="https://docs.python.org/3/library/email.mime.html#email.mime.base.MIMEBase" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MIMEBase</span></code></a> instances, or <code class="docutils literal notranslate"><span class="pre">(filename,</span>
+<span class="pre">content,</span> <span class="pre">mimetype)</span></code> triples.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">headers</span></code>: A dictionary of extra headers to put on the message. The
+keys are the header name, values are the header values. It’s up to the
+caller to ensure header names and values are in the correct format for
+an email message. The corresponding attribute is <code class="docutils literal notranslate"><span class="pre">extra_headers</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cc</span></code>: A list or tuple of recipient addresses used in the “Cc” header
+when sending the email.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reply_to</span></code>: A list or tuple of recipient addresses used in the “Reply-To”
+header when sending the email.</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.mail</span> <span class="kn">import</span> <span class="n">EmailMessage</span>
+
+<span class="n">email</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span>
+    <span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Body goes here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;to1@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;to2@example.com&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;bcc@example.com&quot;</span><span class="p">],</span>
+    <span class="n">reply_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;another@example.com&quot;</span><span class="p">],</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Message-ID&quot;</span><span class="p">:</span> <span class="s2">&quot;foo&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The class has the following methods:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">send(fail_silently=False)</span></code> sends the message. If a connection was
+specified when the email was constructed, that connection will be used.
+Otherwise, an instance of the default backend will be instantiated and
+used. If the keyword argument <code class="docutils literal notranslate"><span class="pre">fail_silently</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, exceptions
+raised while sending the message will be quashed. An empty list of
+recipients will not raise an exception. It will return <code class="docutils literal notranslate"><span class="pre">1</span></code> if the message
+was sent successfully, otherwise <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message()</span></code> constructs a <code class="docutils literal notranslate"><span class="pre">ginger.core.mail.SafeMIMEText</span></code> object (a
+subclass of Python’s <a class="reference external" href="https://docs.python.org/3/library/email.mime.html#email.mime.text.MIMEText" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MIMEText</span></code></a> class) or a
+<code class="docutils literal notranslate"><span class="pre">ginger.core.mail.SafeMIMEMultipart</span></code> object holding the message to be
+sent. If you ever need to extend the
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> class, you’ll probably want to
+override this method to put the content you want into the MIME object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recipients()</span></code> returns a list of all the recipients of the message,
+whether they’re recorded in the <code class="docutils literal notranslate"><span class="pre">to</span></code>, <code class="docutils literal notranslate"><span class="pre">cc</span></code> or <code class="docutils literal notranslate"><span class="pre">bcc</span></code> attributes. This
+is another method you might need to override when subclassing, because the
+SMTP server needs to be told the full list of recipients when the message
+is sent. If you add another way to specify recipients in your class, they
+need to be returned from this method as well.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attach()</span></code> creates a new file attachment and adds it to the message.
+There are two ways to call <code class="docutils literal notranslate"><span class="pre">attach()</span></code>:</p>
+<ul>
+<li><p>You can pass it a single argument that is a
+<a class="reference external" href="https://docs.python.org/3/library/email.mime.html#email.mime.base.MIMEBase" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MIMEBase</span></code></a> instance. This will be inserted directly
+into the resulting message.</p></li>
+<li><p>Alternatively, you can pass <code class="docutils literal notranslate"><span class="pre">attach()</span></code> three arguments:
+<code class="docutils literal notranslate"><span class="pre">filename</span></code>, <code class="docutils literal notranslate"><span class="pre">content</span></code> and <code class="docutils literal notranslate"><span class="pre">mimetype</span></code>. <code class="docutils literal notranslate"><span class="pre">filename</span></code> is the name
+of the file attachment as it will appear in the email, <code class="docutils literal notranslate"><span class="pre">content</span></code> is
+the data that will be contained inside the attachment and
+<code class="docutils literal notranslate"><span class="pre">mimetype</span></code> is the optional MIME type for the attachment. If you
+omit <code class="docutils literal notranslate"><span class="pre">mimetype</span></code>, the MIME content type will be guessed from the
+filename of the attachment.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="s2">&quot;design.png&quot;</span><span class="p">,</span> <span class="n">img_data</span><span class="p">,</span> <span class="s2">&quot;image/png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you specify a <code class="docutils literal notranslate"><span class="pre">mimetype</span></code> of <em class="mimetype">message/rfc822</em>, it will also
+accept <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.core.mail.EmailMessage</span></code></a> and
+<a class="reference external" href="https://docs.python.org/3/library/email.compat32-message.html#email.message.Message" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">email.message.Message</span></code></a>.</p>
+<p>For a <code class="docutils literal notranslate"><span class="pre">mimetype</span></code> starting with <em class="mimetype">text/</em>, content is expected to
+be a string. Binary data will be decoded using UTF-8, and if that fails,
+the MIME type will be changed to <em class="mimetype">application/octet-stream</em> and
+the data will be attached unchanged.</p>
+<p>In addition, <em class="mimetype">message/rfc822</em> attachments will no longer be
+base64-encoded in violation of <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2046.html#section-5.2.1"><strong>RFC 2046 Section 5.2.1</strong></a>, which can cause
+issues with displaying the attachments in <a class="reference external" href="https://bugzilla.gnome.org/show_bug.cgi?id=651197">Evolution</a> and <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=333880">Thunderbird</a>.</p>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attach_file()</span></code> creates a new attachment using a file from your
+filesystem. Call it with the path of the file to attach and, optionally,
+the MIME type to use for the attachment. If the MIME type is omitted, it
+will be guessed from the filename. You can use it like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message</span><span class="o">.</span><span class="n">attach_file</span><span class="p">(</span><span class="s2">&quot;/images/weather_map.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For MIME types starting with <em class="mimetype">text/</em>, binary data is handled as in
+<code class="docutils literal notranslate"><span class="pre">attach()</span></code>.</p>
+</li>
+</ul>
+<section id="s-sending-alternative-content-types">
+<span id="sending-alternative-content-types"></span><h4>Sending alternative content types<a class="headerlink" href="#sending-alternative-content-types" title="Link to this heading">¶</a></h4>
+<p>It can be useful to include multiple versions of the content in an email; the
+classic example is to send both text and HTML versions of a message. With
+Ginger’s email library, you can do this using the <code class="docutils literal notranslate"><span class="pre">EmailMultiAlternatives</span></code>
+class. This subclass of <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> has an
+<code class="docutils literal notranslate"><span class="pre">attach_alternative()</span></code> method for including extra versions of the message
+body in the email. All the other methods (including the class initialization)
+are inherited directly from <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a>.</p>
+<p>To send a text and HTML combination, you could write:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.mail</span> <span class="kn">import</span> <span class="n">EmailMultiAlternatives</span>
+
+<span class="n">subject</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;to@example.com&quot;</span>
+<span class="n">text_content</span> <span class="o">=</span> <span class="s2">&quot;This is an important message.&quot;</span>
+<span class="n">html_content</span> <span class="o">=</span> <span class="s2">&quot;&lt;p&gt;This is an &lt;strong&gt;important&lt;/strong&gt; message.&lt;/p&gt;&quot;</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">EmailMultiAlternatives</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">text_content</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="p">[</span><span class="n">to</span><span class="p">])</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">attach_alternative</span><span class="p">(</span><span class="n">html_content</span><span class="p">,</span> <span class="s2">&quot;text/html&quot;</span><span class="p">)</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By default, the MIME type of the <code class="docutils literal notranslate"><span class="pre">body</span></code> parameter in an
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> is <code class="docutils literal notranslate"><span class="pre">&quot;text/plain&quot;</span></code>. It is good
+practice to leave this alone, because it guarantees that any recipient will be
+able to read the email, regardless of their mail client. However, if you are
+confident that your recipients can handle an alternative content type, you can
+use the <code class="docutils literal notranslate"><span class="pre">content_subtype</span></code> attribute on the
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> class to change the main content type.
+The major type will always be <code class="docutils literal notranslate"><span class="pre">&quot;text&quot;</span></code>, but you can change the
+subtype. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">html_content</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="p">[</span><span class="n">to</span><span class="p">])</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">content_subtype</span> <span class="o">=</span> <span class="s2">&quot;html&quot;</span>  <span class="c1"># Main content is now text/html</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="s-email-backends">
+<span id="s-topic-email-backends"></span><span id="email-backends"></span><span id="topic-email-backends"></span><h2>Email backends<a class="headerlink" href="#email-backends" title="Link to this heading">¶</a></h2>
+<p>The actual sending of an email is handled by the email backend.</p>
+<p>The email backend class has the following methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">open()</span></code> instantiates a long-lived email-sending connection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close()</span></code> closes the current email-sending connection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">send_messages(email_messages)</span></code> sends a list of
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> objects. If the connection is
+not open, this call will implicitly open the connection, and close the
+connection afterward. If the connection is already open, it will be
+left open after mail has been sent.</p></li>
+</ul>
+<p>It can also be used as a context manager, which will automatically call
+<code class="docutils literal notranslate"><span class="pre">open()</span></code> and <code class="docutils literal notranslate"><span class="pre">close()</span></code> as needed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core</span> <span class="kn">import</span> <span class="n">mail</span>
+
+<span class="k">with</span> <span class="n">mail</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span> <span class="k">as</span> <span class="n">connection</span><span class="p">:</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">EmailMessage</span><span class="p">(</span>
+        <span class="n">subject1</span><span class="p">,</span>
+        <span class="n">body1</span><span class="p">,</span>
+        <span class="n">from1</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">to1</span><span class="p">],</span>
+        <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">EmailMessage</span><span class="p">(</span>
+        <span class="n">subject2</span><span class="p">,</span>
+        <span class="n">body2</span><span class="p">,</span>
+        <span class="n">from2</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">to2</span><span class="p">],</span>
+        <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="s-obtaining-an-instance-of-an-email-backend">
+<span id="obtaining-an-instance-of-an-email-backend"></span><h3>Obtaining an instance of an email backend<a class="headerlink" href="#obtaining-an-instance-of-an-email-backend" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference internal" href="#ginger.core.mail.get_connection" title="ginger.core.mail.get_connection"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_connection()</span></code></a> function in <code class="docutils literal notranslate"><span class="pre">ginger.core.mail</span></code> returns an
+instance of the email backend that you can use.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.mail.get_connection">
+<span class="sig-name descname"><span class="pre">get_connection</span></span>(<em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em>)<a class="headerlink" href="#ginger.core.mail.get_connection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>By default, a call to <code class="docutils literal notranslate"><span class="pre">get_connection()</span></code> will return an instance of the
+email backend specified in <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_BACKEND</span></code></a>. If you specify the
+<code class="docutils literal notranslate"><span class="pre">backend</span></code> argument, an instance of that backend will be instantiated.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fail_silently</span></code> argument controls how the backend should handle errors.
+If <code class="docutils literal notranslate"><span class="pre">fail_silently</span></code> is True, exceptions during the email sending process
+will be silently ignored.</p>
+<p>All other arguments are passed directly to the constructor of the
+email backend.</p>
+<p>Ginger ships with several email sending backends. With the exception of the
+SMTP backend (which is the default), these backends are only useful during
+testing and development. If you have special email sending requirements, you
+can <a class="reference internal" href="#topic-custom-email-backend"><span class="std std-ref">write your own email backend</span></a>.</p>
+<section id="s-smtp-backend">
+<span id="s-topic-email-smtp-backend"></span><span id="smtp-backend"></span><span id="topic-email-smtp-backend"></span><h4>SMTP backend<a class="headerlink" href="#smtp-backend" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.core.mail.backends.smtp.EmailBackend">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">backends.smtp.</span></span><span class="sig-name descname"><span class="pre">EmailBackend</span></span>(<em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fail_silently</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ssl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_keyfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_certfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em>)<a class="headerlink" href="#ginger.core.mail.backends.smtp.EmailBackend" title="Link to this definition">¶</a></dt>
+<dd><p>This is the default backend. Email will be sent through a SMTP server.</p>
+<p>The value for each argument is retrieved from the matching setting if the
+argument is <code class="docutils literal notranslate"><span class="pre">None</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">host</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_PORT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_PORT</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_USER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_USER</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST_PASSWORD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST_PASSWORD</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_tls</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_USE_TLS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_USE_TLS</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_ssl</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_USE_SSL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_USE_SSL</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeout</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_TIMEOUT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_TIMEOUT</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssl_keyfile</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_SSL_KEYFILE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_SSL_KEYFILE</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssl_certfile</span></code>: <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_SSL_CERTFILE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_SSL_CERTFILE</span></code></a></p></li>
+</ul>
+<p>The SMTP backend is the default configuration inherited by Ginger. If you
+want to specify it explicitly, put the following in your settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;ginger.core.mail.backends.smtp.EmailBackend&quot;</span>
+</pre></div>
+</div>
+<p>If unspecified, the default <code class="docutils literal notranslate"><span class="pre">timeout</span></code> will be the one provided by
+<a class="reference external" href="https://docs.python.org/3/library/socket.html#socket.getdefaulttimeout" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">socket.getdefaulttimeout()</span></code></a>, which defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code> (no timeout).</p>
+</dd></dl>
+
+</section>
+<section id="s-console-backend">
+<span id="s-topic-email-console-backend"></span><span id="console-backend"></span><span id="topic-email-console-backend"></span><h4>Console backend<a class="headerlink" href="#console-backend" title="Link to this heading">¶</a></h4>
+<p>Instead of sending out real emails the console backend just writes the
+emails that would be sent to the standard output. By default, the console
+backend writes to <code class="docutils literal notranslate"><span class="pre">stdout</span></code>. You can use a different stream-like object by
+providing the <code class="docutils literal notranslate"><span class="pre">stream</span></code> keyword argument when constructing the connection.</p>
+<p>To specify this backend, put the following in your settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;ginger.core.mail.backends.console.EmailBackend&quot;</span>
+</pre></div>
+</div>
+<p>This backend is not intended for use in production – it is provided as a
+convenience that can be used during development.</p>
+</section>
+<section id="s-file-backend">
+<span id="s-topic-email-file-backend"></span><span id="file-backend"></span><span id="topic-email-file-backend"></span><h4>File backend<a class="headerlink" href="#file-backend" title="Link to this heading">¶</a></h4>
+<p>The file backend writes emails to a file. A new file is created for each new
+session that is opened on this backend. The directory to which the files are
+written is either taken from the <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_FILE_PATH"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_FILE_PATH</span></code></a> setting or from
+the <code class="docutils literal notranslate"><span class="pre">file_path</span></code> keyword when creating a connection with
+<a class="reference internal" href="#ginger.core.mail.get_connection" title="ginger.core.mail.get_connection"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_connection()</span></code></a>.</p>
+<p>To specify this backend, put the following in your settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;ginger.core.mail.backends.filebased.EmailBackend&quot;</span>
+<span class="n">EMAIL_FILE_PATH</span> <span class="o">=</span> <span class="s2">&quot;/tmp/app-messages&quot;</span>  <span class="c1"># change this to a proper location</span>
+</pre></div>
+</div>
+<p>This backend is not intended for use in production – it is provided as a
+convenience that can be used during development.</p>
+</section>
+<section id="s-in-memory-backend">
+<span id="s-topic-email-memory-backend"></span><span id="in-memory-backend"></span><span id="topic-email-memory-backend"></span><h4>In-memory backend<a class="headerlink" href="#in-memory-backend" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">'locmem'</span></code> backend stores messages in a special attribute of the
+<code class="docutils literal notranslate"><span class="pre">ginger.core.mail</span></code> module. The <code class="docutils literal notranslate"><span class="pre">outbox</span></code> attribute is created when the
+first message is sent. It’s a list with an
+<a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> instance for each message that would
+be sent.</p>
+<p>To specify this backend, put the following in your settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;ginger.core.mail.backends.locmem.EmailBackend&quot;</span>
+</pre></div>
+</div>
+<p>This backend is not intended for use in production – it is provided as a
+convenience that can be used during development and testing.</p>
+<p>Ginger’s test runner <a class="reference internal" href="testing/tools.html#topics-testing-email"><span class="std std-ref">automatically uses this backend for testing</span></a>.</p>
+</section>
+<section id="s-dummy-backend">
+<span id="s-topic-email-dummy-backend"></span><span id="dummy-backend"></span><span id="topic-email-dummy-backend"></span><h4>Dummy backend<a class="headerlink" href="#dummy-backend" title="Link to this heading">¶</a></h4>
+<p>As the name suggests the dummy backend does nothing with your messages. To
+specify this backend, put the following in your settings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s2">&quot;ginger.core.mail.backends.dummy.EmailBackend&quot;</span>
+</pre></div>
+</div>
+<p>This backend is not intended for use in production – it is provided as a
+convenience that can be used during development.</p>
+</section>
+</section>
+<section id="s-defining-a-custom-email-backend">
+<span id="s-topic-custom-email-backend"></span><span id="defining-a-custom-email-backend"></span><span id="topic-custom-email-backend"></span><h3>Defining a custom email backend<a class="headerlink" href="#defining-a-custom-email-backend" title="Link to this heading">¶</a></h3>
+<p>If you need to change how emails are sent you can write your own email
+backend. The <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_BACKEND</span></code></a> setting in your settings file is then
+the Python import path for your backend class.</p>
+<p>Custom email backends should subclass <code class="docutils literal notranslate"><span class="pre">BaseEmailBackend</span></code> that is located in
+the <code class="docutils literal notranslate"><span class="pre">ginger.core.mail.backends.base</span></code> module. A custom email backend must
+implement the <code class="docutils literal notranslate"><span class="pre">send_messages(email_messages)</span></code> method. This method receives a
+list of <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> instances and returns the
+number of successfully delivered messages. If your backend has any concept of
+a persistent session or connection, you should also implement the <code class="docutils literal notranslate"><span class="pre">open()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">close()</span></code> methods. Refer to <code class="docutils literal notranslate"><span class="pre">smtp.EmailBackend</span></code> for a reference
+implementation.</p>
+</section>
+<section id="s-sending-multiple-emails">
+<span id="s-topics-sending-multiple-emails"></span><span id="sending-multiple-emails"></span><span id="topics-sending-multiple-emails"></span><h3>Sending multiple emails<a class="headerlink" href="#sending-multiple-emails" title="Link to this heading">¶</a></h3>
+<p>Establishing and closing an SMTP connection (or any other network connection,
+for that matter) is an expensive process. If you have a lot of emails to send,
+it makes sense to reuse an SMTP connection, rather than creating and
+destroying a connection every time you want to send an email.</p>
+<p>There are two ways you tell an email backend to reuse a connection.</p>
+<p>Firstly, you can use the <code class="docutils literal notranslate"><span class="pre">send_messages()</span></code> method. <code class="docutils literal notranslate"><span class="pre">send_messages()</span></code> takes
+a list of <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> instances (or subclasses),
+and sends them all using a single connection.</p>
+<p>For example, if you have a function called <code class="docutils literal notranslate"><span class="pre">get_notification_email()</span></code> that
+returns a list of <a class="reference internal" href="#ginger.core.mail.EmailMessage" title="ginger.core.mail.EmailMessage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailMessage</span></code></a> objects representing
+some periodic email you wish to send out, you could send these emails using
+a single call to send_messages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core</span> <span class="kn">import</span> <span class="n">mail</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>  <span class="c1"># Use default email connection</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="n">get_notification_email</span><span class="p">()</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">send_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, the call to <code class="docutils literal notranslate"><span class="pre">send_messages()</span></code> opens a connection on the
+backend, sends the list of messages, and then closes the connection again.</p>
+<p>The second approach is to use the <code class="docutils literal notranslate"><span class="pre">open()</span></code> and <code class="docutils literal notranslate"><span class="pre">close()</span></code> methods on the
+email backend to manually control the connection. <code class="docutils literal notranslate"><span class="pre">send_messages()</span></code> will not
+manually open or close the connection if it is already open, so if you
+manually open the connection, you can control when it is closed. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core</span> <span class="kn">import</span> <span class="n">mail</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+
+<span class="c1"># Manually open the connection</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+<span class="c1"># Construct an email message that uses the connection</span>
+<span class="n">email1</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">EmailMessage</span><span class="p">(</span>
+    <span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Body goes here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;to1@example.com&quot;</span><span class="p">],</span>
+    <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">email1</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>  <span class="c1"># Send the email</span>
+
+<span class="c1"># Construct two more messages</span>
+<span class="n">email2</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">EmailMessage</span><span class="p">(</span>
+    <span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Body goes here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;to2@example.com&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">email3</span> <span class="o">=</span> <span class="n">mail</span><span class="o">.</span><span class="n">EmailMessage</span><span class="p">(</span>
+    <span class="s2">&quot;Hello&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Body goes here&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from@example.com&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s2">&quot;to3@example.com&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Send the two emails in a single call -</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">send_messages</span><span class="p">([</span><span class="n">email2</span><span class="p">,</span> <span class="n">email3</span><span class="p">])</span>
+<span class="c1"># The connection was already open so send_messages() doesn&#39;t close it.</span>
+<span class="c1"># We need to manually close the connection.</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-configuring-email-for-development">
+<span id="configuring-email-for-development"></span><h2>Configuring email for development<a class="headerlink" href="#configuring-email-for-development" title="Link to this heading">¶</a></h2>
+<p>There are times when you do not want Ginger to send emails at
+all. For example, while developing a website, you probably don’t want
+to send out thousands of emails – but you may want to validate that
+emails will be sent to the right people under the right conditions,
+and that those emails will contain the correct content.</p>
+<p>The easiest way to configure email for local development is to use the
+<a class="reference internal" href="#topic-email-console-backend"><span class="std std-ref">console</span></a> email backend. This backend
+redirects all email to <code class="docutils literal notranslate"><span class="pre">stdout</span></code>, allowing you to inspect the content of mail.</p>
+<p>The <a class="reference internal" href="#topic-email-file-backend"><span class="std std-ref">file</span></a> email backend can also be useful
+during development – this backend dumps the contents of every SMTP connection
+to a file that can be inspected at your leisure.</p>
+<p>Another approach is to use a “dumb” SMTP server that receives the emails
+locally and displays them to the terminal, but does not actually send
+anything. The <a class="reference external" href="https://aiosmtpd.readthedocs.io/en/latest/">aiosmtpd</a> package provides a way to accomplish this:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>aiosmtpd
+
+python<span class="w"> </span>-m<span class="w"> </span>aiosmtpd<span class="w"> </span>-n<span class="w"> </span>-l<span class="w"> </span>localhost:8025
+</pre></div>
+</div>
+<p>This command will start a minimal SMTP server listening on port 8025 of
+localhost. This server prints to standard output all email headers and the
+email body. You then only need to set the <a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_HOST</span></code></a> and
+<a class="reference internal" href="../ref/settings.html#std-setting-EMAIL_PORT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">EMAIL_PORT</span></code></a> accordingly. For a more detailed discussion of SMTP
+server options, see the documentation of the <a class="reference external" href="https://aiosmtpd.readthedocs.io/en/latest/">aiosmtpd</a> module.</p>
+<p>For information about unit-testing the sending of emails in your application,
+see the <a class="reference internal" href="testing/tools.html#topics-testing-email"><span class="std std-ref">Email services</span></a> section of the testing documentation.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="i18n/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Internationalization and localization</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="signing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Cryptographic signing</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Sending email</a><ul>
+<li><a class="reference internal" href="#quick-example">Quick example</a></li>
+<li><a class="reference internal" href="#send-mail"><code class="docutils literal notranslate"><span class="pre">send_mail()</span></code></a></li>
+<li><a class="reference internal" href="#send-mass-mail"><code class="docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a><ul>
+<li><a class="reference internal" href="#send-mass-mail-vs-send-mail"><code class="docutils literal notranslate"><span class="pre">send_mass_mail()</span></code> vs. <code class="docutils literal notranslate"><span class="pre">send_mail()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mail-admins"><code class="docutils literal notranslate"><span class="pre">mail_admins()</span></code></a></li>
+<li><a class="reference internal" href="#mail-managers"><code class="docutils literal notranslate"><span class="pre">mail_managers()</span></code></a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#preventing-header-injection">Preventing header injection</a></li>
+<li><a class="reference internal" href="#the-emailmessage-class">The <code class="docutils literal notranslate"><span class="pre">EmailMessage</span></code> class</a><ul>
+<li><a class="reference internal" href="#emailmessage-objects"><code class="docutils literal notranslate"><span class="pre">EmailMessage</span></code> Objects</a><ul>
+<li><a class="reference internal" href="#sending-alternative-content-types">Sending alternative content types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#email-backends">Email backends</a><ul>
+<li><a class="reference internal" href="#obtaining-an-instance-of-an-email-backend">Obtaining an instance of an email backend</a><ul>
+<li><a class="reference internal" href="#smtp-backend">SMTP backend</a></li>
+<li><a class="reference internal" href="#console-backend">Console backend</a></li>
+<li><a class="reference internal" href="#file-backend">File backend</a></li>
+<li><a class="reference internal" href="#in-memory-backend">In-memory backend</a></li>
+<li><a class="reference internal" href="#dummy-backend">Dummy backend</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defining-a-custom-email-backend">Defining a custom email backend</a></li>
+<li><a class="reference internal" href="#sending-multiple-emails">Sending multiple emails</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuring-email-for-development">Configuring email for development</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

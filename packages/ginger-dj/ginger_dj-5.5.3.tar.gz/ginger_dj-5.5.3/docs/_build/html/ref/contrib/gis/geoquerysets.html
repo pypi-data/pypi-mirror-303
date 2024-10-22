@@ -1,0 +1,1854 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Geographic Database Functions" href="functions.html" /><link rel="prev" title="GeoGinger Forms API" href="forms-api.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>GIS QuerySet API Reference - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="index.html">GeoGinger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/ref/contrib/gis/geoquerysets.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-gis-queryset-api-reference">
+<span id="gis-queryset-api-reference"></span><h1>GIS QuerySet API Reference<a class="headerlink" href="#gis-queryset-api-reference" title="Link to this heading">¶</a></h1>
+<section id="s-spatial-lookups">
+<span id="s-id1"></span><span id="spatial-lookups"></span><span id="id1"></span><h2>Spatial Lookups<a class="headerlink" href="#spatial-lookups" title="Link to this heading">¶</a></h2>
+<p>The spatial lookups in this section are available for <a class="reference internal" href="model-api.html#ginger.contrib.gis.db.models.GeometryField" title="ginger.contrib.gis.db.models.GeometryField"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryField</span></code></a>
+and <a class="reference internal" href="model-api.html#ginger.contrib.gis.db.models.RasterField" title="ginger.contrib.gis.db.models.RasterField"><code class="xref py py-class docutils literal notranslate"><span class="pre">RasterField</span></code></a>.</p>
+<p>For an introduction, see the <a class="reference internal" href="db-api.html#spatial-lookups-intro"><span class="std std-ref">spatial lookups introduction</span></a>.  For an overview of what lookups are
+compatible with a particular spatial backend, refer to the
+<a class="reference internal" href="db-api.html#spatial-lookup-compatibility"><span class="std std-ref">spatial lookup compatibility table</span></a>.</p>
+<section id="s-lookups-with-rasters">
+<span id="lookups-with-rasters"></span><h3>Lookups with rasters<a class="headerlink" href="#lookups-with-rasters" title="Link to this heading">¶</a></h3>
+<p>All examples in the reference below are given for geometry fields and inputs,
+but the lookups can be used the same way with rasters on both sides. Whenever
+a lookup doesn’t support raster input, the input is automatically
+converted to a geometry where necessary using the <a class="reference external" href="https://postgis.net/docs/RT_ST_Polygon.html">ST_Polygon</a> function. See also the
+<a class="reference internal" href="db-api.html#spatial-lookup-raster"><span class="std std-ref">introduction to raster lookups</span></a>.</p>
+<p>The database operators used by the lookups can be divided into three categories:</p>
+<ul class="simple">
+<li><p>Native raster support <code class="docutils literal notranslate"><span class="pre">N</span></code>: the operator accepts rasters natively on both
+sides of the lookup, and raster input can be mixed with geometry inputs.</p></li>
+<li><p>Bilateral raster support <code class="docutils literal notranslate"><span class="pre">B</span></code>: the operator supports rasters only if both
+sides of the lookup receive raster inputs. Raster data is automatically
+converted to geometries for mixed lookups.</p></li>
+<li><p>Geometry conversion support <code class="docutils literal notranslate"><span class="pre">C</span></code>. The lookup does not have native raster
+support, all raster data is automatically converted to geometries.</p></li>
+</ul>
+<p>The examples below show the SQL equivalent for the lookups in the different
+types of raster support. The same pattern applies to all spatial lookups.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Case</p></th>
+<th class="head"><p>Lookup</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>N, B</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__contains=rst</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(rast,</span> <span class="pre">rst)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>N, B</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__1__contains=(rst,</span> <span class="pre">2)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(rast,</span> <span class="pre">1,</span> <span class="pre">rst,</span> <span class="pre">2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>B, C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__contains=geom</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(ST_Polygon(rast),</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>B, C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__1__contains=geom</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(ST_Polygon(rast,</span> <span class="pre">1),</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>B, C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly__contains=rst</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(poly,</span> <span class="pre">ST_Polygon(rst))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>B, C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly__contains=(rst,</span> <span class="pre">1)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(poly,</span> <span class="pre">ST_Polygon(rst,</span> <span class="pre">1))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__crosses=rst</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(ST_Polygon(rast),</span> <span class="pre">ST_Polygon(rst))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__1__crosses=(rst,</span> <span class="pre">2)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(ST_Polygon(rast,</span> <span class="pre">1),</span> <span class="pre">ST_Polygon(rst,</span> <span class="pre">2))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rast__crosses=geom</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(ST_Polygon(rast),</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly__crosses=rst</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(poly,</span> <span class="pre">ST_Polygon(rst))</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Spatial lookups with rasters are only supported for PostGIS backends
+(denominated as PGRaster in this section).</p>
+</section>
+<section id="s-bbcontains">
+<span id="s-std-fieldlookup-bbcontains"></span><span id="bbcontains"></span><span id="std-fieldlookup-bbcontains"></span><h3><code class="docutils literal notranslate"><span class="pre">bbcontains</span></code><a class="headerlink" href="#bbcontains" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Contain.html">PostGIS</a>,
+MariaDB, MySQL, SpatiaLite, PGRaster (Native)</p>
+<p>Tests if the geometry or raster field’s bounding box completely contains the
+lookup geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__bbcontains</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly</span> <span class="pre">~</span> <span class="pre">geom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBRContains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBRContains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MbrContains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-bboverlaps">
+<span id="s-std-fieldlookup-bboverlaps"></span><span id="bboverlaps"></span><span id="std-fieldlookup-bboverlaps"></span><h3><code class="docutils literal notranslate"><span class="pre">bboverlaps</span></code><a class="headerlink" href="#bboverlaps" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/geometry_overlaps.html">PostGIS</a>,
+MariaDB, MySQL, SpatiaLite, PGRaster (Native)</p>
+<p>Tests if the geometry field’s bounding box overlaps the lookup geometry’s
+bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__bboverlaps</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly</span> <span class="pre">&amp;&amp;</span> <span class="pre">geom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBROverlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBROverlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MbrOverlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-contained">
+<span id="s-std-fieldlookup-contained"></span><span id="contained"></span><span id="std-fieldlookup-contained"></span><h3><code class="docutils literal notranslate"><span class="pre">contained</span></code><a class="headerlink" href="#contained" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Contained.html">PostGIS</a>,
+MariaDB, MySQL, SpatiaLite, PGRaster (Native)</p>
+<p>Tests if the geometry field’s bounding box is completely contained by the
+lookup geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__contained</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly</span> <span class="pre">&#64;</span> <span class="pre">geom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBRWithin(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MBRWithin(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MbrWithin(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-contains">
+<span id="s-std-fieldlookup-gis-contains"></span><span id="contains"></span><span id="std-fieldlookup-gis-contains"></span><h3><code class="docutils literal notranslate"><span class="pre">contains</span></code><a class="headerlink" href="#contains" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Contains.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field spatially contains the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__contains</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_CONTAINS(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Contains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Contains(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-contains-properly">
+<span id="s-std-fieldlookup-contains_properly"></span><span id="contains-properly"></span><span id="std-fieldlookup-contains_properly"></span><h3><code class="docutils literal notranslate"><span class="pre">contains_properly</span></code><a class="headerlink" href="#contains-properly" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_ContainsProperly.html">PostGIS</a>,
+PGRaster (Bilateral)</p>
+<p>Returns true if the lookup geometry intersects the interior of the
+geometry field, but not the boundary (or exterior).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__contains_properly</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_ContainsProperly(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-coveredby">
+<span id="s-std-fieldlookup-coveredby"></span><span id="coveredby"></span><span id="std-fieldlookup-coveredby"></span><h3><code class="docutils literal notranslate"><span class="pre">coveredby</span></code><a class="headerlink" href="#coveredby" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_CoveredBy.html">PostGIS</a>,
+Oracle, PGRaster (Bilateral), SpatiaLite</p>
+<p>Tests if no point in the geometry field is outside the lookup geometry.
+<a class="footnote-reference brackets" href="#fncovers" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__coveredby</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_CoveredBy(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_COVEREDBY(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CoveredBy(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-covers">
+<span id="s-std-fieldlookup-covers"></span><span id="covers"></span><span id="std-fieldlookup-covers"></span><h3><code class="docutils literal notranslate"><span class="pre">covers</span></code><a class="headerlink" href="#covers" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Covers.html">PostGIS</a>,
+Oracle, PGRaster (Bilateral), SpatiaLite</p>
+<p>Tests if no point in the lookup geometry is outside the geometry field.
+<a class="footnote-reference brackets" href="#fncovers" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__covers</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Covers(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_COVERS(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Covers(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-crosses">
+<span id="s-std-fieldlookup-crosses"></span><span id="crosses"></span><span id="std-fieldlookup-crosses"></span><h3><code class="docutils literal notranslate"><span class="pre">crosses</span></code><a class="headerlink" href="#crosses" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Crosses.html">PostGIS</a>,
+MariaDB, MySQL, SpatiaLite, PGRaster (Conversion)</p>
+<p>Tests if the geometry field spatially crosses the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__crosses</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Crosses(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Crosses(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-disjoint">
+<span id="s-std-fieldlookup-disjoint"></span><span id="disjoint"></span><span id="std-fieldlookup-disjoint"></span><h3><code class="docutils literal notranslate"><span class="pre">disjoint</span></code><a class="headerlink" href="#disjoint" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Disjoint.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field is spatially disjoint from the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__disjoint</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Disjoint(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.RELATE(poly,</span> <span class="pre">'DISJOINT',</span> <span class="pre">geom,</span> <span class="pre">0.05)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Disjoint(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Disjoint(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Disjoint(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-equals">
+<span id="s-std-fieldlookup-equals"></span><span id="equals"></span><span id="std-fieldlookup-equals"></span><h3><code class="docutils literal notranslate"><span class="pre">equals</span></code><a class="headerlink" href="#equals" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Equals.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Conversion)</p>
+<p>Tests if the geometry field is spatially equal to the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__equals</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_EQUAL(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-exact-same-as">
+<span id="s-std-fieldlookup-same_as"></span><span id="s-std-fieldlookup-exact-noindex"></span><span id="exact-same-as"></span><span id="std-fieldlookup-same_as"></span><span id="std-fieldlookup-exact-noindex"></span><h3><code class="docutils literal notranslate"><span class="pre">exact</span></code>, <code class="docutils literal notranslate"><span class="pre">same_as</span></code><a class="headerlink" href="#exact-same-as" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Same.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field is “equal” to the lookup geometry. On Oracle,
+MySQL, and SpatiaLite, it tests spatial equality, while on PostGIS it tests
+equality of bounding boxes.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">poly</span> <span class="pre">~=</span> <span class="pre">geom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_EQUAL(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Equals(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-intersects">
+<span id="s-std-fieldlookup-intersects"></span><span id="intersects"></span><span id="std-fieldlookup-intersects"></span><h3><code class="docutils literal notranslate"><span class="pre">intersects</span></code><a class="headerlink" href="#intersects" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Intersects.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field spatially intersects the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__intersects</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Intersects(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_OVERLAPBDYINTERSECT(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Intersects(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Intersects(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Intersects(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-isempty">
+<span id="s-std-fieldlookup-isempty"></span><span id="isempty"></span><span id="std-fieldlookup-isempty"></span><h3><code class="docutils literal notranslate"><span class="pre">isempty</span></code><a class="headerlink" href="#isempty" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_IsEmpty.html">PostGIS</a></p>
+<p>Tests if the geometry is empty.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__isempty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-isvalid">
+<span id="s-std-fieldlookup-isvalid"></span><span id="isvalid"></span><span id="std-fieldlookup-isvalid"></span><h3><code class="docutils literal notranslate"><span class="pre">isvalid</span></code><a class="headerlink" href="#isvalid" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: MySQL, <a class="reference external" href="https://postgis.net/docs/ST_IsValid.html">PostGIS</a>,
+Oracle, SpatiaLite</p>
+<p>Tests if the geometry is valid.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__isvalid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MySQL, PostGIS, SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_IsValid(poly)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.VALIDATE_GEOMETRY_WITH_CONTEXT(poly,</span> <span class="pre">0.05)</span> <span class="pre">=</span> <span class="pre">'TRUE'</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-overlaps">
+<span id="s-std-fieldlookup-overlaps"></span><span id="overlaps"></span><span id="std-fieldlookup-overlaps"></span><h3><code class="docutils literal notranslate"><span class="pre">overlaps</span></code><a class="headerlink" href="#overlaps" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Overlaps.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field spatially overlaps the lookup geometry.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Overlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_OVERLAPS(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Overlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Overlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Overlaps(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-relate">
+<span id="s-std-fieldlookup-relate"></span><span id="relate"></span><span id="std-fieldlookup-relate"></span><h3><code class="docutils literal notranslate"><span class="pre">relate</span></code><a class="headerlink" href="#relate" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Relate.html">PostGIS</a>,
+MariaDB, Oracle, SpatiaLite, PGRaster (Conversion)</p>
+<p>Tests if the geometry field is spatially related to the lookup geometry by
+the values given in the given pattern.  This lookup requires a tuple parameter,
+<code class="docutils literal notranslate"><span class="pre">(geom,</span> <span class="pre">pattern)</span></code>; the form of <code class="docutils literal notranslate"><span class="pre">pattern</span></code> will depend on the spatial backend:</p>
+<section id="s-mariadb-postgis-and-spatialite">
+<span id="mariadb-postgis-and-spatialite"></span><h4>MariaDB, PostGIS, and SpatiaLite<a class="headerlink" href="#mariadb-postgis-and-spatialite" title="Link to this heading">¶</a></h4>
+<p>On these spatial backends the intersection pattern is a string comprising
+nine characters, which  define intersections between  the interior, boundary,
+and exterior of the geometry field and the lookup geometry.
+The intersection pattern matrix may only use the following characters:
+<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">T</span></code>, <code class="docutils literal notranslate"><span class="pre">F</span></code>, or <code class="docutils literal notranslate"><span class="pre">*</span></code>.  This lookup type allows users to “fine tune”
+a specific geometric relationship consistent with the DE-9IM model. <a class="footnote-reference brackets" href="#fnde9im" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p>Geometry example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A tuple lookup parameter is used to specify the geometry and</span>
+<span class="c1"># the intersection pattern (the pattern here is for &#39;contains&#39;).</span>
+<span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__relate</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="s2">&quot;T*T***FF*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>PostGIS and MariaDB SQL equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;T*T***FF*&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>SpatiaLite SQL equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">Relate</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;T*T***FF*&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Raster example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__relate</span><span class="o">=</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;T*T***FF*&quot;</span><span class="p">))</span>
+<span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">rast__2__relate</span><span class="o">=</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;T*T***FF*&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>PostGIS SQL equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Polygon</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;T*T***FF*&#39;</span><span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Relate</span><span class="p">(</span><span class="n">ST_Polygon</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">ST_Polygon</span><span class="p">(</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;T*T***FF*&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-oracle">
+<span id="oracle"></span><h4>Oracle<a class="headerlink" href="#oracle" title="Link to this heading">¶</a></h4>
+<p>Here the relation pattern is comprised of at least one of the nine relation
+strings: <code class="docutils literal notranslate"><span class="pre">TOUCH</span></code>, <code class="docutils literal notranslate"><span class="pre">OVERLAPBDYDISJOINT</span></code>, <code class="docutils literal notranslate"><span class="pre">OVERLAPBDYINTERSECT</span></code>,
+<code class="docutils literal notranslate"><span class="pre">EQUAL</span></code>, <code class="docutils literal notranslate"><span class="pre">INSIDE</span></code>, <code class="docutils literal notranslate"><span class="pre">COVEREDBY</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINS</span></code>, <code class="docutils literal notranslate"><span class="pre">COVERS</span></code>, <code class="docutils literal notranslate"><span class="pre">ON</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">ANYINTERACT</span></code>.   Multiple strings may be combined with the logical Boolean
+operator OR, for example, <code class="docutils literal notranslate"><span class="pre">'inside+touch'</span></code>. <a class="footnote-reference brackets" href="#fnsdorelate" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>  The relation
+strings are case-insensitive.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__relate</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="s2">&quot;anyinteract&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Oracle SQL equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">SDO_RELATE</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;anyinteract&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-touches">
+<span id="s-std-fieldlookup-touches"></span><span id="touches"></span><span id="std-fieldlookup-touches"></span><h3><code class="docutils literal notranslate"><span class="pre">touches</span></code><a class="headerlink" href="#touches" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Touches.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite</p>
+<p>Tests if the geometry field spatially touches the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__touches</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Touches(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Touches(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Touches(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_TOUCH(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Touches(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-within">
+<span id="s-std-fieldlookup-within"></span><span id="within"></span><span id="std-fieldlookup-within"></span><h3><code class="docutils literal notranslate"><span class="pre">within</span></code><a class="headerlink" href="#within" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Within.html">PostGIS</a>,
+Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Bilateral)</p>
+<p>Tests if the geometry field is spatially within the lookup geometry.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__within</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Within(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Within(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Within(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_INSIDE(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Within(poly,</span> <span class="pre">geom)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-left">
+<span id="s-std-fieldlookup-left"></span><span id="left"></span><span id="std-fieldlookup-left"></span><h3><code class="docutils literal notranslate"><span class="pre">left</span></code><a class="headerlink" href="#left" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Left.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box is strictly to the left of the
+lookup geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__left</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-right">
+<span id="s-std-fieldlookup-right"></span><span id="right"></span><span id="std-fieldlookup-right"></span><h3><code class="docutils literal notranslate"><span class="pre">right</span></code><a class="headerlink" href="#right" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Right.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box is strictly to the right of the
+lookup geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__right</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-overlaps-left">
+<span id="s-std-fieldlookup-overlaps_left"></span><span id="overlaps-left"></span><span id="std-fieldlookup-overlaps_left"></span><h3><code class="docutils literal notranslate"><span class="pre">overlaps_left</span></code><a class="headerlink" href="#overlaps-left" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Overleft.html">PostGIS</a>,
+PGRaster (Bilateral)</p>
+<p>Tests if the geometry field’s bounding box overlaps or is to the left of the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__overlaps_left</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&amp;&lt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-overlaps-right">
+<span id="s-std-fieldlookup-overlaps_right"></span><span id="overlaps-right"></span><span id="std-fieldlookup-overlaps_right"></span><h3><code class="docutils literal notranslate"><span class="pre">overlaps_right</span></code><a class="headerlink" href="#overlaps-right" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Overright.html">PostGIS</a>,
+PGRaster (Bilateral)</p>
+<p>Tests if the geometry field’s bounding box overlaps or is to the right of the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__overlaps_right</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&amp;&gt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-overlaps-above">
+<span id="s-std-fieldlookup-overlaps_above"></span><span id="overlaps-above"></span><span id="std-fieldlookup-overlaps_above"></span><h3><code class="docutils literal notranslate"><span class="pre">overlaps_above</span></code><a class="headerlink" href="#overlaps-above" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Overabove.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box overlaps or is above the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__overlaps_above</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">|&amp;&gt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-overlaps-below">
+<span id="s-std-fieldlookup-overlaps_below"></span><span id="overlaps-below"></span><span id="std-fieldlookup-overlaps_below"></span><h3><code class="docutils literal notranslate"><span class="pre">overlaps_below</span></code><a class="headerlink" href="#overlaps-below" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Overbelow.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box overlaps or is below the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__overlaps_below</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&amp;&lt;|</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-strictly-above">
+<span id="s-std-fieldlookup-strictly_above"></span><span id="strictly-above"></span><span id="std-fieldlookup-strictly_above"></span><h3><code class="docutils literal notranslate"><span class="pre">strictly_above</span></code><a class="headerlink" href="#strictly-above" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Above.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box is strictly above the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__strictly_above</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">|&gt;&gt;</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+<section id="s-strictly-below">
+<span id="s-std-fieldlookup-strictly_below"></span><span id="strictly-below"></span><span id="std-fieldlookup-strictly_below"></span><h3><code class="docutils literal notranslate"><span class="pre">strictly_below</span></code><a class="headerlink" href="#strictly-below" title="Link to this heading">¶</a></h3>
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Geometry_Below.html">PostGIS</a>,
+PGRaster (Conversion)</p>
+<p>Tests if the geometry field’s bounding box is strictly below the lookup
+geometry’s bounding box.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__strictly_below</span><span class="o">=</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>PostGIS equivalent:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">poly</span><span class="w"> </span><span class="o">&lt;&lt;|</span><span class="w"> </span><span class="n">geom</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-distance-lookups">
+<span id="s-id6"></span><span id="distance-lookups"></span><span id="id6"></span><h2>Distance Lookups<a class="headerlink" href="#distance-lookups" title="Link to this heading">¶</a></h2>
+<p><em>Availability</em>: PostGIS, Oracle, MariaDB, MySQL, SpatiaLite, PGRaster (Native)</p>
+<p>For an overview on performing distance queries, please refer to
+the <a class="reference internal" href="db-api.html#distance-queries"><span class="std std-ref">distance queries introduction</span></a>.</p>
+<p>Distance lookups take the following form:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;field&gt;__&lt;distance lookup&gt;=(&lt;geometry/raster&gt;, &lt;distance value&gt;[, &quot;spheroid&quot;])
+&lt;field&gt;__&lt;distance lookup&gt;=(&lt;raster&gt;, &lt;band_index&gt;, &lt;distance value&gt;[, &quot;spheroid&quot;])
+&lt;field&gt;__&lt;band_index&gt;__&lt;distance lookup&gt;=(&lt;raster&gt;, &lt;band_index&gt;, &lt;distance value&gt;[, &quot;spheroid&quot;])
+</pre></div>
+</div>
+<p>The value passed into a distance lookup is a tuple; the first two
+values are mandatory, and are the geometry to calculate distances to,
+and a distance value (either a number in units of the field, a
+<a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> object, or a <a class="reference internal" href="../../models/expressions.html"><span class="doc">query
+expression</span></a>). To pass a band index to the lookup, use
+a 3-tuple where the second entry is the band index.</p>
+<p>On every distance lookup except <a class="reference internal" href="#std-fieldlookup-dwithin"><code class="xref std std-lookup docutils literal notranslate"><span class="pre">dwithin</span></code></a>, an optional element,
+<code class="docutils literal notranslate"><span class="pre">'spheroid'</span></code>, may be included to use the more accurate spheroid distance
+calculation functions on fields with a geodetic coordinate system.</p>
+<p>On PostgreSQL, the <code class="docutils literal notranslate"><span class="pre">'spheroid'</span></code> option uses <a class="reference external" href="https://postgis.net/docs/ST_Distance_Spheroid.html">ST_DistanceSpheroid</a> instead of
+<a class="reference external" href="https://postgis.net/docs/ST_DistanceSphere.html">ST_DistanceSphere</a>. The
+simpler <a class="reference external" href="https://postgis.net/docs/ST_Distance.html">ST_Distance</a> function is
+used with projected coordinate systems. Rasters are converted to geometries for
+spheroid based lookups.</p>
+<section id="s-distance-gt">
+<span id="s-std-fieldlookup-distance_gt"></span><span id="distance-gt"></span><span id="std-fieldlookup-distance_gt"></span><h3><code class="docutils literal notranslate"><span class="pre">distance_gt</span></code><a class="headerlink" href="#distance-gt" title="Link to this heading">¶</a></h3>
+<p>Returns models where the distance to the geometry field from the lookup
+geometry is greater than the given distance value.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__distance_gt</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">D</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance/ST_Distance_Sphere(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.SDO_DISTANCE(poly,</span> <span class="pre">geom,</span> <span class="pre">0.05)</span> <span class="pre">&gt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-distance-gte">
+<span id="s-std-fieldlookup-distance_gte"></span><span id="distance-gte"></span><span id="std-fieldlookup-distance_gte"></span><h3><code class="docutils literal notranslate"><span class="pre">distance_gte</span></code><a class="headerlink" href="#distance-gte" title="Link to this heading">¶</a></h3>
+<p>Returns models where the distance to the geometry field from the lookup
+geometry is greater than or equal to the given distance value.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__distance_gte</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">D</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance/ST_Distance_Sphere(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.SDO_DISTANCE(poly,</span> <span class="pre">geom,</span> <span class="pre">0.05)</span> <span class="pre">&gt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&gt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-distance-lt">
+<span id="s-std-fieldlookup-distance_lt"></span><span id="distance-lt"></span><span id="std-fieldlookup-distance_lt"></span><h3><code class="docutils literal notranslate"><span class="pre">distance_lt</span></code><a class="headerlink" href="#distance-lt" title="Link to this heading">¶</a></h3>
+<p>Returns models where the distance to the geometry field from the lookup
+geometry is less than the given distance value.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__distance_lt</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">D</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance/ST_Distance_Sphere(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.SDO_DISTANCE(poly,</span> <span class="pre">geom,</span> <span class="pre">0.05)</span> <span class="pre">&lt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;</span> <span class="pre">5</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-distance-lte">
+<span id="s-std-fieldlookup-distance_lte"></span><span id="distance-lte"></span><span id="std-fieldlookup-distance_lte"></span><h3><code class="docutils literal notranslate"><span class="pre">distance_lte</span></code><a class="headerlink" href="#distance-lte" title="Link to this heading">¶</a></h3>
+<p>Returns models where the distance to the geometry field from the lookup
+geometry is less than or equal to the given distance value.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__distance_lte</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">D</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance/ST_Distance_Sphere(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>MariaDB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>MySQL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_GEOM.SDO_DISTANCE(poly,</span> <span class="pre">geom,</span> <span class="pre">0.05)</span> <span class="pre">&lt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Distance(poly,</span> <span class="pre">geom)</span> <span class="pre">&lt;=</span> <span class="pre">5</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-dwithin">
+<span id="s-std-fieldlookup-dwithin"></span><span id="dwithin"></span><span id="std-fieldlookup-dwithin"></span><h3><code class="docutils literal notranslate"><span class="pre">dwithin</span></code><a class="headerlink" href="#dwithin" title="Link to this heading">¶</a></h3>
+<p>Returns models where the distance to the geometry field from the lookup
+geometry are within the given distance from one another. Note that you can only
+provide <a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> objects if the targeted
+geometries are in a projected system. For geographic geometries, you should use
+units of the geometry field (e.g. degrees for <code class="docutils literal notranslate"><span class="pre">WGS84</span></code>) .</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__dwithin</span><span class="o">=</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">D</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>SQL Equivalent</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PostGIS</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_DWithin(poly,</span> <span class="pre">geom,</span> <span class="pre">5)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Oracle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SDO_WITHIN_DISTANCE(poly,</span> <span class="pre">geom,</span> <span class="pre">5)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SpatiaLite</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PtDistWithin(poly,</span> <span class="pre">geom,</span> <span class="pre">5)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-aggregate-functions">
+<span id="s-gis-aggregation-functions"></span><span id="aggregate-functions"></span><span id="gis-aggregation-functions"></span><h3>Aggregate Functions<a class="headerlink" href="#aggregate-functions" title="Link to this heading">¶</a></h3>
+<p>Ginger provides some GIS-specific aggregate functions. For details on how to
+use these aggregate functions, see <a class="reference internal" href="../../../topics/db/aggregation.html"><span class="doc">the topic guide on aggregation</span></a>.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keyword Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code></p></td>
+<td><p>This keyword is for Oracle only.  It is for the
+tolerance value used by the <code class="docutils literal notranslate"><span class="pre">SDOAGGRTYPE</span></code>
+procedure; the  <a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/spatl/spatial-concepts.html#GUID-CE10AB14-D5EA-43BA-A647-DAC9EEF41EE6">Oracle documentation</a> has more
+details.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.db.models</span> <span class="kn">import</span> <span class="n">Extent</span><span class="p">,</span> <span class="n">Union</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WorldBorder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Extent</span><span class="p">(</span><span class="s2">&quot;mpoly&quot;</span><span class="p">),</span> <span class="n">Union</span><span class="p">(</span><span class="s2">&quot;mpoly&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<section id="s-collect">
+<span id="collect"></span><h4><code class="docutils literal notranslate"><span class="pre">Collect</span></code><a class="headerlink" href="#collect" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.Collect">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Collect</span></span>(<em class="sig-param"><span class="n"><span class="pre">geo_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.Collect" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Collect.html">PostGIS</a>, MySQL,
+SpatiaLite</p>
+<p>Returns a <code class="docutils literal notranslate"><span class="pre">GEOMETRYCOLLECTION</span></code> or a <code class="docutils literal notranslate"><span class="pre">MULTI</span></code> geometry object from the geometry
+column. This is analogous to a simplified version of the <a class="reference internal" href="#ginger.contrib.gis.db.models.Union" title="ginger.contrib.gis.db.models.Union"><code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code></a>
+aggregate, except it can be several orders of magnitude faster than performing
+a union because it rolls up geometries into a collection or multi object, not
+caring about dissolving boundaries.</p>
+<div class="versionchanged">
+<span class="title">Changed in Ginger 5.0:</span> <p>Support for using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> argument was added.</p>
+</div>
+<div class="versionchanged">
+<span class="title">Changed in Ginger Development version:</span> <p>MySQL 8.0.24+ support was added.</p>
+</div>
+</section>
+<section id="s-extent">
+<span id="extent"></span><h4><code class="docutils literal notranslate"><span class="pre">Extent</span></code><a class="headerlink" href="#extent" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.Extent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Extent</span></span>(<em class="sig-param"><span class="n"><span class="pre">geo_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.Extent" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Extent.html">PostGIS</a>,
+Oracle, SpatiaLite</p>
+<p>Returns the extent of all <code class="docutils literal notranslate"><span class="pre">geo_field</span></code> in the <code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> as a 4-tuple,
+comprising the lower left coordinate and the upper right coordinate.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__in</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Houston&quot;</span><span class="p">,</span> <span class="s2">&quot;Dallas&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Extent</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="p">[</span><span class="s2">&quot;poly__extent&quot;</span><span class="p">])</span>
+<span class="go">(-96.8016128540039, 29.7633724212646, -95.3631439208984, 32.782058715820)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<span class="title">Changed in Ginger 5.0:</span> <p>Support for using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> argument was added.</p>
+</div>
+</section>
+<section id="s-extent3d">
+<span id="extent3d"></span><h4><code class="docutils literal notranslate"><span class="pre">Extent3D</span></code><a class="headerlink" href="#extent3d" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.Extent3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Extent3D</span></span>(<em class="sig-param"><span class="n"><span class="pre">geo_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.Extent3D" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_3DExtent.html">PostGIS</a></p>
+<p>Returns the 3D extent of all <code class="docutils literal notranslate"><span class="pre">geo_field</span></code> in the <code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> as a 6-tuple,
+comprising the lower left coordinate and upper right coordinate (each with x, y,
+and z coordinates).</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__in</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Houston&quot;</span><span class="p">,</span> <span class="s2">&quot;Dallas&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Extent3D</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="p">[</span><span class="s2">&quot;poly__extent3d&quot;</span><span class="p">])</span>
+<span class="go">(-96.8016128540039, 29.7633724212646, 0, -95.3631439208984, 32.782058715820, 0)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<span class="title">Changed in Ginger 5.0:</span> <p>Support for using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> argument was added.</p>
+</div>
+</section>
+<section id="s-makeline">
+<span id="makeline"></span><h4><code class="docutils literal notranslate"><span class="pre">MakeLine</span></code><a class="headerlink" href="#makeline" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.MakeLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MakeLine</span></span>(<em class="sig-param"><span class="n"><span class="pre">geo_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.MakeLine" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_MakeLine.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Returns a <code class="docutils literal notranslate"><span class="pre">LineString</span></code> constructed from the point field geometries in the
+<code class="docutils literal notranslate"><span class="pre">QuerySet</span></code>. Currently, ordering the queryset has no effect.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name__in</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Houston&quot;</span><span class="p">,</span> <span class="s2">&quot;Dallas&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">MakeLine</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="p">[</span><span class="s2">&quot;poly__makeline&quot;</span><span class="p">])</span>
+<span class="go">LINESTRING (-95.3631510000000020 29.7633739999999989, -96.8016109999999941 32.7820570000000018)</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<span class="title">Changed in Ginger 5.0:</span> <p>Support for using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> argument was added.</p>
+</div>
+</section>
+<section id="s-union">
+<span id="union"></span><h4><code class="docutils literal notranslate"><span class="pre">Union</span></code><a class="headerlink" href="#union" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.Union">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Union</span></span>(<em class="sig-param"><span class="n"><span class="pre">geo_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.Union" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Union.html">PostGIS</a>,
+Oracle, SpatiaLite</p>
+<p>This method returns a <a class="reference internal" href="geos.html#ginger.contrib.gis.geos.GEOSGeometry" title="ginger.contrib.gis.geos.GEOSGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">GEOSGeometry</span></code></a> object
+comprising the union of every geometry in the queryset. Please note that use of
+<code class="docutils literal notranslate"><span class="pre">Union</span></code> is processor intensive and may take a significant amount of time on
+large querysets.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the computation time for using this method is too expensive, consider
+using <a class="reference internal" href="#ginger.contrib.gis.db.models.Collect" title="ginger.contrib.gis.db.models.Collect"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collect</span></code></a> instead.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Union</span><span class="p">(</span><span class="n">poly</span><span class="p">))</span>  <span class="c1"># This may take a long time.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">poly__within</span><span class="o">=</span><span class="n">bbox</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Union</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>  <span class="c1"># A more sensible approach.</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<span class="title">Changed in Ginger 5.0:</span> <p>Support for using the <code class="docutils literal notranslate"><span class="pre">filter</span></code> argument was added.</p>
+</div>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="fnde9im" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">1</a><span class="fn-bracket">]</span></span>
+<p><em>See</em> <a class="reference external" href="https://portal.ogc.org/files/?artifact_id=829">OpenGIS Simple Feature Specification For SQL</a>, at Ch. 2.1.13.2, p. 2-13 (The Dimensionally Extended Nine-Intersection Model).</p>
+</aside>
+<aside class="footnote brackets" id="fnsdorelate" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">2</a><span class="fn-bracket">]</span></span>
+<p><em>See</em> <a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/18/spatl/spatial-operators-reference.html#GUID-97C17C18-F05E-49B4-BE11-E89B972E2A02">SDO_RELATE documentation</a>, from the Oracle Spatial and
+Graph Developer’s Guide.</p>
+</aside>
+<aside class="footnote brackets" id="fncovers" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>For an explanation of this routine, read <a class="reference external" href="https://lin-ear-th-inking.blogspot.com/2007/06/subtleties-of-ogc-covers-spatial.html">Quirks of the “Contains” Spatial Predicate</a> by Martin Davis (a PostGIS developer).</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="functions.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Geographic Database Functions</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="forms-api.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">GeoGinger Forms API</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">GIS QuerySet API Reference</a><ul>
+<li><a class="reference internal" href="#spatial-lookups">Spatial Lookups</a><ul>
+<li><a class="reference internal" href="#lookups-with-rasters">Lookups with rasters</a></li>
+<li><a class="reference internal" href="#bbcontains"><code class="docutils literal notranslate"><span class="pre">bbcontains</span></code></a></li>
+<li><a class="reference internal" href="#bboverlaps"><code class="docutils literal notranslate"><span class="pre">bboverlaps</span></code></a></li>
+<li><a class="reference internal" href="#contained"><code class="docutils literal notranslate"><span class="pre">contained</span></code></a></li>
+<li><a class="reference internal" href="#contains"><code class="docutils literal notranslate"><span class="pre">contains</span></code></a></li>
+<li><a class="reference internal" href="#contains-properly"><code class="docutils literal notranslate"><span class="pre">contains_properly</span></code></a></li>
+<li><a class="reference internal" href="#coveredby"><code class="docutils literal notranslate"><span class="pre">coveredby</span></code></a></li>
+<li><a class="reference internal" href="#covers"><code class="docutils literal notranslate"><span class="pre">covers</span></code></a></li>
+<li><a class="reference internal" href="#crosses"><code class="docutils literal notranslate"><span class="pre">crosses</span></code></a></li>
+<li><a class="reference internal" href="#disjoint"><code class="docutils literal notranslate"><span class="pre">disjoint</span></code></a></li>
+<li><a class="reference internal" href="#equals"><code class="docutils literal notranslate"><span class="pre">equals</span></code></a></li>
+<li><a class="reference internal" href="#exact-same-as"><code class="docutils literal notranslate"><span class="pre">exact</span></code>, <code class="docutils literal notranslate"><span class="pre">same_as</span></code></a></li>
+<li><a class="reference internal" href="#intersects"><code class="docutils literal notranslate"><span class="pre">intersects</span></code></a></li>
+<li><a class="reference internal" href="#isempty"><code class="docutils literal notranslate"><span class="pre">isempty</span></code></a></li>
+<li><a class="reference internal" href="#isvalid"><code class="docutils literal notranslate"><span class="pre">isvalid</span></code></a></li>
+<li><a class="reference internal" href="#overlaps"><code class="docutils literal notranslate"><span class="pre">overlaps</span></code></a></li>
+<li><a class="reference internal" href="#relate"><code class="docutils literal notranslate"><span class="pre">relate</span></code></a><ul>
+<li><a class="reference internal" href="#mariadb-postgis-and-spatialite">MariaDB, PostGIS, and SpatiaLite</a></li>
+<li><a class="reference internal" href="#oracle">Oracle</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#touches"><code class="docutils literal notranslate"><span class="pre">touches</span></code></a></li>
+<li><a class="reference internal" href="#within"><code class="docutils literal notranslate"><span class="pre">within</span></code></a></li>
+<li><a class="reference internal" href="#left"><code class="docutils literal notranslate"><span class="pre">left</span></code></a></li>
+<li><a class="reference internal" href="#right"><code class="docutils literal notranslate"><span class="pre">right</span></code></a></li>
+<li><a class="reference internal" href="#overlaps-left"><code class="docutils literal notranslate"><span class="pre">overlaps_left</span></code></a></li>
+<li><a class="reference internal" href="#overlaps-right"><code class="docutils literal notranslate"><span class="pre">overlaps_right</span></code></a></li>
+<li><a class="reference internal" href="#overlaps-above"><code class="docutils literal notranslate"><span class="pre">overlaps_above</span></code></a></li>
+<li><a class="reference internal" href="#overlaps-below"><code class="docutils literal notranslate"><span class="pre">overlaps_below</span></code></a></li>
+<li><a class="reference internal" href="#strictly-above"><code class="docutils literal notranslate"><span class="pre">strictly_above</span></code></a></li>
+<li><a class="reference internal" href="#strictly-below"><code class="docutils literal notranslate"><span class="pre">strictly_below</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distance-lookups">Distance Lookups</a><ul>
+<li><a class="reference internal" href="#distance-gt"><code class="docutils literal notranslate"><span class="pre">distance_gt</span></code></a></li>
+<li><a class="reference internal" href="#distance-gte"><code class="docutils literal notranslate"><span class="pre">distance_gte</span></code></a></li>
+<li><a class="reference internal" href="#distance-lt"><code class="docutils literal notranslate"><span class="pre">distance_lt</span></code></a></li>
+<li><a class="reference internal" href="#distance-lte"><code class="docutils literal notranslate"><span class="pre">distance_lte</span></code></a></li>
+<li><a class="reference internal" href="#dwithin"><code class="docutils literal notranslate"><span class="pre">dwithin</span></code></a></li>
+<li><a class="reference internal" href="#aggregate-functions">Aggregate Functions</a><ul>
+<li><a class="reference internal" href="#collect"><code class="docutils literal notranslate"><span class="pre">Collect</span></code></a></li>
+<li><a class="reference internal" href="#extent"><code class="docutils literal notranslate"><span class="pre">Extent</span></code></a></li>
+<li><a class="reference internal" href="#extent3d"><code class="docutils literal notranslate"><span class="pre">Extent3D</span></code></a></li>
+<li><a class="reference internal" href="#makeline"><code class="docutils literal notranslate"><span class="pre">MakeLine</span></code></a></li>
+<li><a class="reference internal" href="#union"><code class="docutils literal notranslate"><span class="pre">Union</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

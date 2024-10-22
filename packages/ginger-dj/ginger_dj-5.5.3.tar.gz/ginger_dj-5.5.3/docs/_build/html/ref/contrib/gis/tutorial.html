@@ -1,0 +1,1612 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="GeoGinger Installation" href="install/index.html" /><link rel="prev" title="GeoGinger" href="index.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>GeoGinger Tutorial - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="index.html">GeoGinger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/ref/contrib/gis/tutorial.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-geoginger-tutorial">
+<span id="geoginger-tutorial"></span><h1>GeoGinger Tutorial<a class="headerlink" href="#geoginger-tutorial" title="Link to this heading">¶</a></h1>
+<section id="s-introduction">
+<span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>GeoGinger is an included contrib module for Ginger that turns it into a
+world-class geographic web framework. GeoGinger strives to make it as simple
+as possible to create geographic web applications, like location-based services.
+Its features include:</p>
+<ul class="simple">
+<li><p>Ginger model fields for <a class="reference external" href="https://www.ogc.org/">OGC</a> geometries and raster data.</p></li>
+<li><p>Extensions to Ginger’s ORM for querying and manipulating spatial data.</p></li>
+<li><p>Loosely-coupled, high-level Python interfaces for GIS geometry and raster
+operations and data manipulation in different formats.</p></li>
+<li><p>Editing geometry fields from the admin.</p></li>
+</ul>
+<p>This tutorial assumes familiarity with Ginger; thus, if you’re brand new to
+Ginger, please read through the <a class="reference internal" href="../../../intro/tutorial01.html"><span class="doc">regular tutorial</span></a> to
+familiarize yourself with Ginger first.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GeoGinger has additional requirements beyond what Ginger requires –
+please consult the <a class="reference internal" href="install/index.html"><span class="doc">installation documentation</span></a>
+for more details.</p>
+</div>
+<p>This tutorial will guide you through the creation of a geographic web
+application for viewing the <a class="reference external" href="https://web.archive.org/web/20240123190237/https://thematicmapping.org/downloads/world_borders.php">world borders</a>. <a class="footnote-reference brackets" href="#id11" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Some of the code
+used in this tutorial is taken from and/or inspired by the <a class="reference external" href="https://code.google.com/archive/p/geoginger-basic-apps">GeoGinger
+basic apps</a> project. <a class="footnote-reference brackets" href="#id12" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Proceed through the tutorial sections sequentially for step-by-step
+instructions.</p>
+</div>
+</section>
+<section id="s-setting-up">
+<span id="setting-up"></span><h2>Setting Up<a class="headerlink" href="#setting-up" title="Link to this heading">¶</a></h2>
+<section id="s-create-a-spatial-database">
+<span id="create-a-spatial-database"></span><h3>Create a Spatial Database<a class="headerlink" href="#create-a-spatial-database" title="Link to this heading">¶</a></h3>
+<p>Typically no special setup is required, so you can create a database as you
+would for any other project. We provide some tips for selected databases:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="install/postgis.html"><span class="doc">Installing PostGIS</span></a></p></li>
+<li><p><a class="reference internal" href="install/spatialite.html"><span class="doc">Installing SpatiaLite</span></a></p></li>
+</ul>
+</section>
+<section id="s-create-a-new-project">
+<span id="create-a-new-project"></span><h3>Create a New Project<a class="headerlink" href="#create-a-new-project" title="Link to this heading">¶</a></h3>
+<p>Use the standard <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> script to create a project called
+<code class="docutils literal notranslate"><span class="pre">geoginger</span></code>:</p>
+<div class="console-block" id="console-block-0">
+<input class="c-tab-unix" id="c-tab-0-unix" type="radio" name="console-0" checked>
+<label for="c-tab-0-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-0-win" type="radio" name="console-0">
+<label for="c-tab-0-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-0-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ginger-admin<span class="w"> </span>startproject<span class="w"> </span>geoginger
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-0-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> ginger-admin startproject geoginger
+</pre></div>
+</section>
+</div>
+<p>This will initialize a new project. Now, create a <code class="docutils literal notranslate"><span class="pre">world</span></code> Ginger application
+within the <code class="docutils literal notranslate"><span class="pre">geoginger</span></code> project:</p>
+<div class="console-block" id="console-block-1">
+<input class="c-tab-unix" id="c-tab-1-unix" type="radio" name="console-1" checked>
+<label for="c-tab-1-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-1-win" type="radio" name="console-1">
+<label for="c-tab-1-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-1-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>geoginger
+<span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>startapp<span class="w"> </span>world
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-1-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> <span class="k">cd</span> geoginger
+<span class="gp">...\&gt;</span> py manage.py startapp world
+</pre></div>
+</section>
+</div>
+</section>
+<section id="s-configure-settings-py">
+<span id="configure-settings-py"></span><h3>Configure <code class="docutils literal notranslate"><span class="pre">settings.py</span></code><a class="headerlink" href="#configure-settings-py" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">geoginger</span></code> project settings are stored in the <code class="docutils literal notranslate"><span class="pre">geoginger/settings.py</span></code>
+file. Edit the database connection settings to match your setup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;ENGINE&quot;</span><span class="p">:</span> <span class="s2">&quot;ginger.contrib.gis.db.backends.postgis&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;geoginger&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;USER&quot;</span><span class="p">:</span> <span class="s2">&quot;geo&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In addition, modify the <a class="reference internal" href="../../settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> setting to include
+<a class="reference internal" href="../admin/index.html#module-ginger.contrib.admin" title="ginger.contrib.admin: Ginger's admin site."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.admin</span></code></a>, <a class="reference internal" href="index.html#module-ginger.contrib.gis" title="ginger.contrib.gis: Geographic Information System (GIS) extensions for Ginger"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.gis</span></code></a>,
+and <code class="docutils literal notranslate"><span class="pre">world</span></code> (your newly created application):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ginger.contrib.admin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.messages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.staticfiles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.gis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;world&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-geographic-data">
+<span id="geographic-data"></span><h2>Geographic Data<a class="headerlink" href="#geographic-data" title="Link to this heading">¶</a></h2>
+<section id="s-worldborders">
+<span id="s-id3"></span><span id="worldborders"></span><span id="id3"></span><h3>World Borders<a class="headerlink" href="#worldborders" title="Link to this heading">¶</a></h3>
+<p>The world borders data is available in this <a class="reference external" href="https://web.archive.org/web/20231220150759/https://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip">zip file</a>.  Create a <code class="docutils literal notranslate"><span class="pre">data</span></code>
+directory in the <code class="docutils literal notranslate"><span class="pre">world</span></code> application, download the world borders data, and
+unzip. On GNU/Linux platforms, use the following commands:</p>
+<div class="console-block" id="console-block-2">
+<input class="c-tab-unix" id="c-tab-2-unix" type="radio" name="console-2" checked>
+<label for="c-tab-2-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-2-win" type="radio" name="console-2">
+<label for="c-tab-2-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-2-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>world/data
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>world/data
+<span class="gp">$ </span>wget<span class="w"> </span>https://web.archive.org/web/20231220150759/https://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
+<span class="gp">$ </span>unzip<span class="w"> </span>TM_WORLD_BORDERS-0.3.zip
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>../..
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-2-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> <span class="k">mkdir</span> world\data
+<span class="gp">...\&gt;</span> <span class="k">cd</span> world\data
+<span class="gp">...\&gt;</span> wget https://web.archive.org/web/20231220150759/https://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
+<span class="gp">...\&gt;</span> unzip TM_WORLD_BORDERS-0.3.zip
+<span class="gp">...\&gt;</span> <span class="k">cd</span> ..\..
+</pre></div>
+</section>
+</div>
+<p>The world borders ZIP file contains a set of data files collectively known as
+an <a class="reference external" href="https://en.wikipedia.org/wiki/Shapefile">ESRI Shapefile</a>, one of the most popular geospatial data formats.  When
+unzipped, the world borders dataset includes files with the following
+extensions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.shp</span></code>: Holds the vector data for the world borders geometries.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.shx</span></code>: Spatial index file for geometries stored in the <code class="docutils literal notranslate"><span class="pre">.shp</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dbf</span></code>: Database file for holding non-geometric attribute data
+(e.g., integer and character fields).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.prj</span></code>: Contains the spatial reference information for the geographic
+data stored in the shapefile.</p></li>
+</ul>
+</section>
+<section id="s-use-ogrinfo-to-examine-spatial-data">
+<span id="use-ogrinfo-to-examine-spatial-data"></span><h3>Use <code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code> to examine spatial data<a class="headerlink" href="#use-ogrinfo-to-examine-spatial-data" title="Link to this heading">¶</a></h3>
+<p>The GDAL <code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code> utility allows examining the metadata of shapefiles or
+other vector data sources:</p>
+<div class="console-block" id="console-block-3">
+<input class="c-tab-unix" id="c-tab-3-unix" type="radio" name="console-3" checked>
+<label for="c-tab-3-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-3-win" type="radio" name="console-3">
+<label for="c-tab-3-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-3-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ogrinfo<span class="w"> </span>world/data/TM_WORLD_BORDERS-0.3.shp
+<span class="go">INFO: Open of `world/data/TM_WORLD_BORDERS-0.3.shp&#39;</span>
+<span class="go">      using driver `ESRI Shapefile&#39; successful.</span>
+<span class="go">1: TM_WORLD_BORDERS-0.3 (Polygon)</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-3-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> ogrinfo world\data\TM_WORLD_BORDERS-0.3.shp
+<span class="go">INFO: Open of `world/data/TM_WORLD_BORDERS-0.3.shp&#39;</span>
+<span class="go">      using driver `ESRI Shapefile&#39; successful.</span>
+<span class="go">1: TM_WORLD_BORDERS-0.3 (Polygon)</span>
+</pre></div>
+</section>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code> tells us that the shapefile has one layer, and that this
+layer contains polygon data.  To find out more, we’ll specify the layer name
+and use the <code class="docutils literal notranslate"><span class="pre">-so</span></code> option to get only the important summary information:</p>
+<div class="console-block" id="console-block-4">
+<input class="c-tab-unix" id="c-tab-4-unix" type="radio" name="console-4" checked>
+<label for="c-tab-4-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-4-win" type="radio" name="console-4">
+<label for="c-tab-4-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-4-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ogrinfo<span class="w"> </span>-so<span class="w"> </span>world/data/TM_WORLD_BORDERS-0.3.shp<span class="w"> </span>TM_WORLD_BORDERS-0.3
+<span class="go">INFO: Open of `world/data/TM_WORLD_BORDERS-0.3.shp&#39;</span>
+<span class="go">      using driver `ESRI Shapefile&#39; successful.</span>
+
+<span class="go">Layer name: TM_WORLD_BORDERS-0.3</span>
+<span class="go">Geometry: Polygon</span>
+<span class="go">Feature Count: 246</span>
+<span class="go">Extent: (-180.000000, -90.000000) - (180.000000, 83.623596)</span>
+<span class="go">Layer SRS WKT:</span>
+<span class="go">GEOGCS[&quot;GCS_WGS_1984&quot;,</span>
+<span class="go">    DATUM[&quot;WGS_1984&quot;,</span>
+<span class="go">        SPHEROID[&quot;WGS_1984&quot;,6378137.0,298.257223563]],</span>
+<span class="go">    PRIMEM[&quot;Greenwich&quot;,0.0],</span>
+<span class="go">    UNIT[&quot;Degree&quot;,0.0174532925199433]]</span>
+<span class="go">FIPS: String (2.0)</span>
+<span class="go">ISO2: String (2.0)</span>
+<span class="go">ISO3: String (3.0)</span>
+<span class="go">UN: Integer (3.0)</span>
+<span class="go">NAME: String (50.0)</span>
+<span class="go">AREA: Integer (7.0)</span>
+<span class="go">POP2005: Integer (10.0)</span>
+<span class="go">REGION: Integer (3.0)</span>
+<span class="go">SUBREGION: Integer (3.0)</span>
+<span class="go">LON: Real (8.3)</span>
+<span class="go">LAT: Real (7.3)</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-4-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> ogrinfo -so world\data\TM_WORLD_BORDERS-0.3.shp TM_WORLD_BORDERS-0.3
+<span class="go">INFO: Open of `world/data/TM_WORLD_BORDERS-0.3.shp&#39;</span>
+<span class="go">      using driver `ESRI Shapefile&#39; successful.</span>
+
+<span class="go">Layer name: TM_WORLD_BORDERS-0.3</span>
+<span class="go">Geometry: Polygon</span>
+<span class="go">Feature Count: 246</span>
+<span class="go">Extent: (-180.000000, -90.000000) - (180.000000, 83.623596)</span>
+<span class="go">Layer SRS WKT:</span>
+<span class="go">GEOGCS[&quot;GCS_WGS_1984&quot;,</span>
+<span class="go">    DATUM[&quot;WGS_1984&quot;,</span>
+<span class="go">        SPHEROID[&quot;WGS_1984&quot;,6378137.0,298.257223563]],</span>
+<span class="go">    PRIMEM[&quot;Greenwich&quot;,0.0],</span>
+<span class="go">    UNIT[&quot;Degree&quot;,0.0174532925199433]]</span>
+<span class="go">FIPS: String (2.0)</span>
+<span class="go">ISO2: String (2.0)</span>
+<span class="go">ISO3: String (3.0)</span>
+<span class="go">UN: Integer (3.0)</span>
+<span class="go">NAME: String (50.0)</span>
+<span class="go">AREA: Integer (7.0)</span>
+<span class="go">POP2005: Integer (10.0)</span>
+<span class="go">REGION: Integer (3.0)</span>
+<span class="go">SUBREGION: Integer (3.0)</span>
+<span class="go">LON: Real (8.3)</span>
+<span class="go">LAT: Real (7.3)</span>
+</pre></div>
+</section>
+</div>
+<p>This detailed summary information tells us the number of features in the layer
+(246), the geographic bounds of the data, the spatial reference system
+(“SRS WKT”), as well as type information for each attribute field. For example,
+<code class="docutils literal notranslate"><span class="pre">FIPS:</span> <span class="pre">String</span> <span class="pre">(2.0)</span></code> indicates that the <code class="docutils literal notranslate"><span class="pre">FIPS</span></code> character field has
+a maximum length of 2.  Similarly, <code class="docutils literal notranslate"><span class="pre">LON:</span> <span class="pre">Real</span> <span class="pre">(8.3)</span></code> is a floating-point
+field that holds a maximum of 8 digits up to three decimal places.</p>
+</section>
+</section>
+<section id="s-geographic-models">
+<span id="geographic-models"></span><h2>Geographic Models<a class="headerlink" href="#geographic-models" title="Link to this heading">¶</a></h2>
+<section id="s-defining-a-geographic-model">
+<span id="defining-a-geographic-model"></span><h3>Defining a Geographic Model<a class="headerlink" href="#defining-a-geographic-model" title="Link to this heading">¶</a></h3>
+<p>Now that you’ve examined your dataset using <code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code>, create a GeoGinger
+model to represent this data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">WorldBorder</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># Regular Ginger fields corresponding to the attributes in the</span>
+    <span class="c1"># world borders shapefile.</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">pop2005</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s2">&quot;Population 2005&quot;</span><span class="p">)</span>
+    <span class="n">fips</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s2">&quot;FIPS Code&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">iso2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s2">&quot;2 Digit ISO&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">iso3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="s2">&quot;3 Digit ISO&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s2">&quot;United Nations Code&quot;</span><span class="p">)</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s2">&quot;Region Code&quot;</span><span class="p">)</span>
+    <span class="n">subregion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="s2">&quot;Sub-Region Code&quot;</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+
+    <span class="c1"># GeoGinger-specific: a geometry field (MultiPolygonField)</span>
+    <span class="n">mpoly</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MultiPolygonField</span><span class="p">()</span>
+
+    <span class="c1"># Returns the string representation of the model.</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">models</span></code> module is imported from <code class="docutils literal notranslate"><span class="pre">ginger.contrib.gis.db</span></code>.</p>
+<p>The default spatial reference system for geometry fields is WGS84 (meaning
+the <a class="reference external" href="https://en.wikipedia.org/wiki/SRID">SRID</a> is 4326) – in other words, the field coordinates are in
+longitude, latitude pairs in units of degrees.  To use a different
+coordinate system, set the SRID of the geometry field with the <code class="docutils literal notranslate"><span class="pre">srid</span></code>
+argument. Use an integer representing the coordinate system’s EPSG code.</p>
+</section>
+<section id="s-run-migrate">
+<span id="run-migrate"></span><h3>Run <code class="docutils literal notranslate"><span class="pre">migrate</span></code><a class="headerlink" href="#run-migrate" title="Link to this heading">¶</a></h3>
+<p>After defining your model, you need to sync it with the database. First,
+create a database migration:</p>
+<div class="console-block" id="console-block-5">
+<input class="c-tab-unix" id="c-tab-5-unix" type="radio" name="console-5" checked>
+<label for="c-tab-5-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-5-win" type="radio" name="console-5">
+<label for="c-tab-5-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-5-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations
+<span class="go">Migrations for &#39;world&#39;:</span>
+<span class="go">  world/migrations/0001_initial.py:</span>
+<span class="go">    + Create model WorldBorder</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-5-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py makemigrations
+<span class="go">Migrations for &#39;world&#39;:</span>
+<span class="go">  world/migrations/0001_initial.py:</span>
+<span class="go">    + Create model WorldBorder</span>
+</pre></div>
+</section>
+</div>
+<p>Let’s look at the SQL that will generate the table for the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code>
+model:</p>
+<div class="console-block" id="console-block-6">
+<input class="c-tab-unix" id="c-tab-6-unix" type="radio" name="console-6" checked>
+<label for="c-tab-6-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-6-win" type="radio" name="console-6">
+<label for="c-tab-6-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-6-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>sqlmigrate<span class="w"> </span>world<span class="w"> </span><span class="m">0001</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-6-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py sqlmigrate world 0001
+</pre></div>
+</section>
+</div>
+<p>This command should produce the following output:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span><span class="p">;</span>
+<span class="c1">--</span>
+<span class="c1">-- Create model WorldBorder</span>
+<span class="c1">--</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">&quot;world_worldborder&quot;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="ss">&quot;id&quot;</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;name&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;area&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;pop2005&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;fips&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;iso2&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;iso3&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;un&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;region&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;subregion&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;lon&quot;</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;lat&quot;</span><span class="w"> </span><span class="n">double</span><span class="w"> </span><span class="k">precision</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="w">    </span><span class="ss">&quot;mpoly&quot;</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">MULTIPOLYGON</span><span class="p">,</span><span class="mi">4326</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">)</span>
+<span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="ss">&quot;world_worldborder_mpoly_id&quot;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">&quot;world_worldborder&quot;</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;mpoly&quot;</span><span class="p">);</span>
+<span class="k">COMMIT</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If this looks correct, run <a class="reference internal" href="../../ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> to create this table in the
+database:</p>
+<div class="console-block" id="console-block-7">
+<input class="c-tab-unix" id="c-tab-7-unix" type="radio" name="console-7" checked>
+<label for="c-tab-7-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-7-win" type="radio" name="console-7">
+<label for="c-tab-7-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-7-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+<span class="go">Operations to perform:</span>
+<span class="go">  Apply all migrations: admin, auth, contenttypes, sessions, world</span>
+<span class="go">Running migrations:</span>
+<span class="go">  ...</span>
+<span class="go">  Applying world.0001_initial... OK</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-7-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py migrate
+<span class="go">Operations to perform:</span>
+<span class="go">  Apply all migrations: admin, auth, contenttypes, sessions, world</span>
+<span class="go">Running migrations:</span>
+<span class="go">  ...</span>
+<span class="go">  Applying world.0001_initial... OK</span>
+</pre></div>
+</section>
+</div>
+</section>
+</section>
+<section id="s-importing-spatial-data">
+<span id="importing-spatial-data"></span><h2>Importing Spatial Data<a class="headerlink" href="#importing-spatial-data" title="Link to this heading">¶</a></h2>
+<p>This section will show you how to import the world borders shapefile into the
+database via GeoGinger models using the <a class="reference internal" href="layermapping.html"><span class="doc">LayerMapping data import utility</span></a>.</p>
+<p>There are many different ways to import data into a spatial database –
+besides the tools included within GeoGinger, you may also use the following:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gdal.org/programs/ogr2ogr.html">ogr2ogr</a>: A command-line utility included with GDAL that
+can import many vector data formats into PostGIS, MySQL, and Oracle databases.</p></li>
+<li><p><a class="reference external" href="https://postgis.net/docs/using_postgis_dbmanagement.html#shp2pgsql_usage">shp2pgsql</a>: This utility included with PostGIS imports ESRI shapefiles into
+PostGIS.</p></li>
+</ul>
+<section id="s-gdal-interface">
+<span id="s-gdalinterface"></span><span id="gdal-interface"></span><span id="gdalinterface"></span><h3>GDAL Interface<a class="headerlink" href="#gdal-interface" title="Link to this heading">¶</a></h3>
+<p>Earlier, you used <code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code> to examine the contents of the world borders
+shapefile.  GeoGinger also includes a Pythonic interface to GDAL’s powerful OGR
+library that can work with all the vector data sources that OGR supports.</p>
+<p>First, invoke the Ginger shell:</p>
+<div class="console-block" id="console-block-8">
+<input class="c-tab-unix" id="c-tab-8-unix" type="radio" name="console-8" checked>
+<label for="c-tab-8-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-8-win" type="radio" name="console-8">
+<label for="c-tab-8-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-8-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-8-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<p>If you downloaded the <a class="reference internal" href="#worldborders"><span class="std std-ref">World Borders</span></a> data earlier in the tutorial, then
+you can determine its path using Python’s <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">world</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">world_shp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">world</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;TM_WORLD_BORDERS-0.3.shp&quot;</span>
+</pre></div>
+</div>
+<p>Now, open the world borders shapefile using GeoGinger’s
+<a class="reference internal" href="gdal.html#ginger.contrib.gis.gdal.DataSource" title="ginger.contrib.gis.gdal.DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataSource</span></code></a> interface:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.gdal</span> <span class="kn">import</span> <span class="n">DataSource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">DataSource</span><span class="p">(</span><span class="n">world_shp</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="go">/ ... /geoginger/world/data/TM_WORLD_BORDERS-0.3.shp (ESRI Shapefile)</span>
+</pre></div>
+</div>
+<p>Data source objects can have different layers of geospatial features; however,
+shapefiles are only allowed to have one layer:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="p">))</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lyr</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lyr</span><span class="p">)</span>
+<span class="go">TM_WORLD_BORDERS-0.3</span>
+</pre></div>
+</div>
+<p>You can see the layer’s geometry type and how many features it contains:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lyr</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+<span class="go">Polygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lyr</span><span class="p">))</span>
+<span class="go">246</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unfortunately, the shapefile data format does not allow for greater
+specificity with regards to geometry types.  This shapefile, like
+many others, actually includes <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> geometries, not Polygons.
+It’s important to use a more general field type in models: a
+GeoGinger <code class="docutils literal notranslate"><span class="pre">MultiPolygonField</span></code> will accept a <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> geometry, but a
+<code class="docutils literal notranslate"><span class="pre">PolygonField</span></code> will not accept a <code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code> type geometry.  This
+is why the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> model defined above uses a <code class="docutils literal notranslate"><span class="pre">MultiPolygonField</span></code>.</p>
+</div>
+<p>The <a class="reference internal" href="gdal.html#ginger.contrib.gis.gdal.Layer" title="ginger.contrib.gis.gdal.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a> may also have a spatial reference
+system associated with it.  If it does, the <code class="docutils literal notranslate"><span class="pre">srs</span></code> attribute will return a
+<a class="reference internal" href="gdal.html#ginger.contrib.gis.gdal.SpatialReference" title="ginger.contrib.gis.gdal.SpatialReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpatialReference</span></code></a> object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">srs</span> <span class="o">=</span> <span class="n">lyr</span><span class="o">.</span><span class="n">srs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">srs</span><span class="p">)</span>
+<span class="go">GEOGCS[&quot;WGS 84&quot;,</span>
+<span class="go">DATUM[&quot;WGS_1984&quot;,</span>
+<span class="go">    SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,</span>
+<span class="go">        AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],</span>
+<span class="go">    AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],</span>
+<span class="go">PRIMEM[&quot;Greenwich&quot;,0,</span>
+<span class="go">    AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],</span>
+<span class="go">UNIT[&quot;degree&quot;,0.0174532925199433,</span>
+<span class="go">    AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],</span>
+<span class="go">AXIS[&quot;Latitude&quot;,NORTH],</span>
+<span class="go">AXIS[&quot;Longitude&quot;,EAST],</span>
+<span class="go">AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">srs</span><span class="o">.</span><span class="n">proj</span>  <span class="c1"># PROJ representation</span>
+<span class="go">&#39;+proj=longlat +datum=WGS84 +no_defs&#39;</span>
+</pre></div>
+</div>
+<p>This shapefile is in the popular WGS84 spatial reference
+system – in other words, the data uses longitude, latitude pairs in
+units of degrees.</p>
+<p>In addition, shapefiles also support attribute fields that may contain
+additional data.  Here are the fields on the World Borders layer:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lyr</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+<span class="go">[&#39;FIPS&#39;, &#39;ISO2&#39;, &#39;ISO3&#39;, &#39;UN&#39;, &#39;NAME&#39;, &#39;AREA&#39;, &#39;POP2005&#39;, &#39;REGION&#39;, &#39;SUBREGION&#39;, &#39;LON&#39;, &#39;LAT&#39;]</span>
+</pre></div>
+</div>
+<p>The following code will let you examine the OGR types (e.g. integer or
+string) associated with each of the fields:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">fld</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">fld</span> <span class="ow">in</span> <span class="n">lyr</span><span class="o">.</span><span class="n">field_types</span><span class="p">]</span>
+<span class="go">[&#39;OFTString&#39;, &#39;OFTString&#39;, &#39;OFTString&#39;, &#39;OFTInteger&#39;, &#39;OFTString&#39;, &#39;OFTInteger&#39;, &#39;OFTInteger64&#39;, &#39;OFTInteger&#39;, &#39;OFTInteger&#39;, &#39;OFTReal&#39;, &#39;OFTReal&#39;]</span>
+</pre></div>
+</div>
+<p>You can iterate over each feature in the layer and extract information from both
+the feature’s geometry (accessed via the <code class="docutils literal notranslate"><span class="pre">geom</span></code> attribute) as well as the
+feature’s attribute fields (whose <strong>values</strong> are accessed via <code class="docutils literal notranslate"><span class="pre">get()</span></code>
+method):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">lyr</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NAME&quot;</span><span class="p">),</span> <span class="n">feat</span><span class="o">.</span><span class="n">geom</span><span class="o">.</span><span class="n">num_points</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Guernsey 18</span>
+<span class="go">Jersey 26</span>
+<span class="go">South Georgia South Sandwich Islands 338</span>
+<span class="go">Taiwan 363</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="gdal.html#ginger.contrib.gis.gdal.Layer" title="ginger.contrib.gis.gdal.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a> objects may be sliced:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lyr</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">[&lt;ginger.contrib.gis.gdal.feature.Feature object at 0x2f47690&gt;, &lt;ginger.contrib.gis.gdal.feature.Feature object at 0x2f47650&gt;]</span>
+</pre></div>
+</div>
+<p>And individual features may be retrieved by their feature ID:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feat</span> <span class="o">=</span> <span class="n">lyr</span><span class="p">[</span><span class="mi">234</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NAME&quot;</span><span class="p">))</span>
+<span class="go">San Marino</span>
+</pre></div>
+</div>
+<p>Boundary geometries may be exported as WKT and GeoJSON:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">geom</span> <span class="o">=</span> <span class="n">feat</span><span class="o">.</span><span class="n">geom</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">wkt</span><span class="p">)</span>
+<span class="go">POLYGON ((12.415798 43.957954,12.450554 ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
+<span class="go">{ &quot;type&quot;: &quot;Polygon&quot;, &quot;coordinates&quot;: [ [ [ 12.415798, 43.957954 ], [ 12.450554, 43.979721 ], ...</span>
+</pre></div>
+</div>
+</section>
+<section id="s-layermapping">
+<span id="layermapping"></span><h3><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code><a class="headerlink" href="#layermapping" title="Link to this heading">¶</a></h3>
+<p>To import the data, use a <code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> in a Python script.
+Create a file called <code class="docutils literal notranslate"><span class="pre">load.py</span></code> inside the <code class="docutils literal notranslate"><span class="pre">world</span></code> application,
+with the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">ginger.contrib.gis.utils</span> <span class="kn">import</span> <span class="n">LayerMapping</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">WorldBorder</span>
+
+<span class="n">world_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fips&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2&quot;</span><span class="p">:</span> <span class="s2">&quot;ISO2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso3&quot;</span><span class="p">:</span> <span class="s2">&quot;ISO3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;un&quot;</span><span class="p">:</span> <span class="s2">&quot;UN&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NAME&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="s2">&quot;AREA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pop2005&quot;</span><span class="p">:</span> <span class="s2">&quot;POP2005&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;REGION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subregion&quot;</span><span class="p">:</span> <span class="s2">&quot;SUBREGION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="s2">&quot;LON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="s2">&quot;LAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mpoly&quot;</span><span class="p">:</span> <span class="s2">&quot;MULTIPOLYGON&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">world_shp</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;TM_WORLD_BORDERS-0.3.shp&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">lm</span> <span class="o">=</span> <span class="n">LayerMapping</span><span class="p">(</span><span class="n">WorldBorder</span><span class="p">,</span> <span class="n">world_shp</span><span class="p">,</span> <span class="n">world_mapping</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">lm</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A few notes about what’s going on:</p>
+<ul class="simple">
+<li><p>Each key in the <code class="docutils literal notranslate"><span class="pre">world_mapping</span></code> dictionary corresponds to a field in the
+<code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> model.  The value is the name of the shapefile field
+that data will be loaded from.</p></li>
+<li><p>The key <code class="docutils literal notranslate"><span class="pre">mpoly</span></code> for the geometry field is <code class="docutils literal notranslate"><span class="pre">MULTIPOLYGON</span></code>, the
+geometry type GeoGinger will import the field as.  Even simple polygons in
+the shapefile will automatically be converted into collections prior to
+insertion into the database.</p></li>
+<li><p>The path to the shapefile is not absolute – in other words, if you move the
+<code class="docutils literal notranslate"><span class="pre">world</span></code> application (with <code class="docutils literal notranslate"><span class="pre">data</span></code> subdirectory) to a different location,
+the script will still work.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">transform</span></code> keyword is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> because the data in the
+shapefile does not need to be converted – it’s already in WGS84 (SRID=4326).</p></li>
+</ul>
+<p>Afterward, invoke the Ginger shell from the <code class="docutils literal notranslate"><span class="pre">geoginger</span></code> project directory:</p>
+<div class="console-block" id="console-block-9">
+<input class="c-tab-unix" id="c-tab-9-unix" type="radio" name="console-9" checked>
+<label for="c-tab-9-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-9-win" type="radio" name="console-9">
+<label for="c-tab-9-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-9-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-9-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<p>Next, import the <code class="docutils literal notranslate"><span class="pre">load</span></code> module, call the <code class="docutils literal notranslate"><span class="pre">run</span></code> routine, and watch
+<code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> do the work:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">world</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">load</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="s-try-ogrinspect">
+<span id="s-ogrinspect-intro"></span><span id="try-ogrinspect"></span><span id="ogrinspect-intro"></span><h3>Try <code class="docutils literal notranslate"><span class="pre">ogrinspect</span></code><a class="headerlink" href="#try-ogrinspect" title="Link to this heading">¶</a></h3>
+<p>Now that you’ve seen how to define geographic models and import data with the
+<a class="reference internal" href="layermapping.html"><span class="doc">LayerMapping data import utility</span></a>, it’s possible to further automate this process with
+use of the <a class="reference internal" href="commands.html#ginger-admin-ogrinspect"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">ogrinspect</span></code></a> management command.  The <a class="reference internal" href="commands.html#ginger-admin-ogrinspect"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">ogrinspect</span></code></a>
+command  introspects a GDAL-supported vector data source (e.g., a shapefile)
+and generates a model definition and <code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> dictionary automatically.</p>
+<p>The general usage of the command goes as follows:</p>
+<div class="console-block" id="console-block-10">
+<input class="c-tab-unix" id="c-tab-10-unix" type="radio" name="console-10" checked>
+<label for="c-tab-10-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-10-win" type="radio" name="console-10">
+<label for="c-tab-10-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-10-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>ogrinspect<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span>&lt;data_source&gt;<span class="w"> </span>&lt;model_name&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-10-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py ogrinspect [options] <span class="p">&lt;</span>data_source<span class="p">&gt;</span> &lt;model_name<span class="p">&gt;</span> [options]
+</pre></div>
+</section>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">data_source</span></code> is the path to the GDAL-supported data source and
+<code class="docutils literal notranslate"><span class="pre">model_name</span></code> is the name to use for the model.  Command-line options may
+be used to further define how the model is generated.</p>
+<p>For example, the following command nearly reproduces the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> model
+and mapping dictionary created above, automatically:</p>
+<div class="console-block" id="console-block-11">
+<input class="c-tab-unix" id="c-tab-11-unix" type="radio" name="console-11" checked>
+<label for="c-tab-11-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-11-win" type="radio" name="console-11">
+<label for="c-tab-11-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-11-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>ogrinspect<span class="w"> </span>world/data/TM_WORLD_BORDERS-0.3.shp<span class="w"> </span>WorldBorder<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--srid<span class="o">=</span><span class="m">4326</span><span class="w"> </span>--mapping<span class="w"> </span>--multi
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-11-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py ogrinspect world\data\TM_WORLD_BORDERS-0.3.shp WorldBorder \
+    --srid=4326 --mapping --multi
+</pre></div>
+</section>
+</div>
+<p>A few notes about the command-line options given above:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">--srid=4326</span></code> option sets the SRID for the geographic field.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">--mapping</span></code> option tells <code class="docutils literal notranslate"><span class="pre">ogrinspect</span></code> to also generate a
+mapping dictionary for use with
+<a class="reference internal" href="layermapping.html#ginger.contrib.gis.utils.LayerMapping" title="ginger.contrib.gis.utils.LayerMapping"><code class="xref py py-class docutils literal notranslate"><span class="pre">LayerMapping</span></code></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">--multi</span></code> option is specified so that the geographic field is a
+<a class="reference internal" href="model-api.html#ginger.contrib.gis.db.models.MultiPolygonField" title="ginger.contrib.gis.db.models.MultiPolygonField"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiPolygonField</span></code></a> instead of just a
+<a class="reference internal" href="model-api.html#ginger.contrib.gis.db.models.PolygonField" title="ginger.contrib.gis.db.models.PolygonField"><code class="xref py py-class docutils literal notranslate"><span class="pre">PolygonField</span></code></a>.</p></li>
+</ul>
+<p>The command produces the following output, which may be copied
+directly into the <code class="docutils literal notranslate"><span class="pre">models.py</span></code> of a GeoGinger application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is an auto-generated Ginger model module created by ogrinspect.</span>
+<span class="kn">from</span> <span class="nn">ginger.contrib.gis.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">WorldBorder</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">fips</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">iso2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">iso3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">pop2005</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">subregion</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">()</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">MultiPolygonField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+
+
+<span class="c1"># Auto-generated `LayerMapping` dictionary for WorldBorder model</span>
+<span class="n">worldborders_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fips&quot;</span><span class="p">:</span> <span class="s2">&quot;FIPS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2&quot;</span><span class="p">:</span> <span class="s2">&quot;ISO2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso3&quot;</span><span class="p">:</span> <span class="s2">&quot;ISO3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;un&quot;</span><span class="p">:</span> <span class="s2">&quot;UN&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;NAME&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="s2">&quot;AREA&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pop2005&quot;</span><span class="p">:</span> <span class="s2">&quot;POP2005&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;REGION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;subregion&quot;</span><span class="p">:</span> <span class="s2">&quot;SUBREGION&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="s2">&quot;LON&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="s2">&quot;LAT&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="s2">&quot;MULTIPOLYGON&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-spatial-queries">
+<span id="spatial-queries"></span><h2>Spatial Queries<a class="headerlink" href="#spatial-queries" title="Link to this heading">¶</a></h2>
+<section id="s-spatial-lookups">
+<span id="spatial-lookups"></span><h3>Spatial Lookups<a class="headerlink" href="#spatial-lookups" title="Link to this heading">¶</a></h3>
+<p>GeoGinger adds spatial lookups to the Ginger ORM.  For example, you
+can find the country in the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> table that contains
+a particular point.  First, fire up the management shell:</p>
+<div class="console-block" id="console-block-12">
+<input class="c-tab-unix" id="c-tab-12-unix" type="radio" name="console-12" checked>
+<label for="c-tab-12-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-12-win" type="radio" name="console-12">
+<label for="c-tab-12-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-12-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-12-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<p>Now, define a point of interest <a class="footnote-reference brackets" href="#id13" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pnt_wkt</span> <span class="o">=</span> <span class="s2">&quot;POINT(-95.3385 29.7245)&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">pnt_wkt</span></code> string represents the point at -95.3385 degrees longitude,
+29.7245 degrees latitude.  The geometry is in a format known as
+Well Known Text (WKT), a standard issued by the Open Geospatial
+Consortium (OGC). <a class="footnote-reference brackets" href="#id14" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>  Import the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> model, and perform
+a <code class="docutils literal notranslate"><span class="pre">contains</span></code> lookup using the <code class="docutils literal notranslate"><span class="pre">pnt_wkt</span></code> as the parameter:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">world.models</span> <span class="kn">import</span> <span class="n">WorldBorder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WorldBorder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mpoly__contains</span><span class="o">=</span><span class="n">pnt_wkt</span><span class="p">)</span>
+<span class="go">&lt;QuerySet [&lt;WorldBorder: United States&gt;]&gt;</span>
+</pre></div>
+</div>
+<p>Here, you retrieved a <code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> with only one model: the border of the
+United States (exactly what you would expect).</p>
+<p>Similarly, you may also use a <a class="reference internal" href="geos.html"><span class="doc">GEOS geometry object</span></a>.
+Here, you can combine the <code class="docutils literal notranslate"><span class="pre">intersects</span></code> spatial lookup with the <code class="docutils literal notranslate"><span class="pre">get</span></code>
+method to retrieve only the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> instance for San Marino instead
+of a queryset:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.geos</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">12.4604</span><span class="p">,</span> <span class="mf">43.9420</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">WorldBorder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mpoly__intersects</span><span class="o">=</span><span class="n">pnt</span><span class="p">)</span>
+<span class="go">&lt;WorldBorder: San Marino&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">contains</span></code> and <code class="docutils literal notranslate"><span class="pre">intersects</span></code> lookups are just a subset of the
+available queries – the <a class="reference internal" href="db-api.html"><span class="doc">GeoGinger Database API</span></a> documentation has more.</p>
+</section>
+<section id="s-automatic-spatial-transformations">
+<span id="s-id9"></span><span id="automatic-spatial-transformations"></span><span id="id9"></span><h3>Automatic Spatial Transformations<a class="headerlink" href="#automatic-spatial-transformations" title="Link to this heading">¶</a></h3>
+<p>When doing spatial queries, GeoGinger automatically transforms
+geometries if they’re in a different coordinate system.  In the following
+example, coordinates will be expressed in <a class="reference external" href="https://spatialreference.org/ref/epsg/32140/">EPSG SRID 32140</a>,
+a coordinate system specific to south Texas <strong>only</strong> and in units of
+<strong>meters</strong>, not degrees:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.geos</span> <span class="kn">import</span> <span class="n">GEOSGeometry</span><span class="p">,</span> <span class="n">Point</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">954158.1</span><span class="p">,</span> <span class="mf">4215137.1</span><span class="p">,</span> <span class="n">srid</span><span class="o">=</span><span class="mi">32140</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">pnt</span></code> may also be constructed with EWKT, an “extended” form of
+WKT that includes the SRID:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span> <span class="o">=</span> <span class="n">GEOSGeometry</span><span class="p">(</span><span class="s2">&quot;SRID=32140;POINT(954158.1 4215137.1)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>GeoGinger’s ORM will automatically wrap geometry values
+in transformation SQL, allowing the developer to work at a higher level
+of abstraction:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">WorldBorder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mpoly__intersects</span><span class="o">=</span><span class="n">pnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># Generating the SQL</span>
+<span class="go">SELECT &quot;world_worldborder&quot;.&quot;id&quot;, &quot;world_worldborder&quot;.&quot;name&quot;, &quot;world_worldborder&quot;.&quot;area&quot;,</span>
+<span class="go">&quot;world_worldborder&quot;.&quot;pop2005&quot;, &quot;world_worldborder&quot;.&quot;fips&quot;, &quot;world_worldborder&quot;.&quot;iso2&quot;,</span>
+<span class="go">&quot;world_worldborder&quot;.&quot;iso3&quot;, &quot;world_worldborder&quot;.&quot;un&quot;, &quot;world_worldborder&quot;.&quot;region&quot;,</span>
+<span class="go">&quot;world_worldborder&quot;.&quot;subregion&quot;, &quot;world_worldborder&quot;.&quot;lon&quot;, &quot;world_worldborder&quot;.&quot;lat&quot;,</span>
+<span class="go">&quot;world_worldborder&quot;.&quot;mpoly&quot; FROM &quot;world_worldborder&quot;</span>
+<span class="go">WHERE ST_Intersects(&quot;world_worldborder&quot;.&quot;mpoly&quot;, ST_Transform(%s, 4326))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span>  <span class="c1"># printing evaluates the queryset</span>
+<span class="go">&lt;QuerySet [&lt;WorldBorder: United States&gt;]&gt;</span>
+</pre></div>
+</div>
+<div class="admonition-raw-queries admonition" id="gis-raw-sql">
+<p class="admonition-title">Raw queries</p>
+<p>When using <a class="reference internal" href="../../../topics/db/sql.html"><span class="doc">raw queries</span></a>, you must wrap your geometry
+fields so that the field value can be recognized by GEOS:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">connection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># or if you&#39;re querying a non-default database:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">connections</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="s2">&quot;your_gis_db_alias&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">raw</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;SELECT id, name, </span><span class="si">%s</span><span class="s2"> as point from myapp_city&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">select</span> <span class="o">%</span> <span class="s2">&quot;point&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You should only use raw queries when you know exactly what you’re doing.</p>
+</div>
+</section>
+<section id="s-lazy-geometries">
+<span id="lazy-geometries"></span><h3>Lazy Geometries<a class="headerlink" href="#lazy-geometries" title="Link to this heading">¶</a></h3>
+<p>GeoGinger loads geometries in a standardized textual representation.  When the
+geometry field is first accessed, GeoGinger creates a
+<a class="reference internal" href="geos.html#ginger.contrib.gis.geos.GEOSGeometry" title="ginger.contrib.gis.geos.GEOSGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">GEOSGeometry</span></code></a> object, exposing powerful
+functionality, such as serialization properties for popular geospatial
+formats:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">WorldBorder</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;San Marino&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span>
+<span class="go">&lt;MultiPolygon object at 0x24c6798&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span><span class="o">.</span><span class="n">wkt</span>  <span class="c1"># WKT</span>
+<span class="go">MULTIPOLYGON (((12.4157980000000006 43.9579540000000009, 12.4505540000000003 43.9797209999999978, ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span><span class="o">.</span><span class="n">wkb</span>  <span class="c1"># WKB (as Python binary buffer)</span>
+<span class="go">&lt;read-only buffer for 0x1fe2c70, size -1, offset 0 at 0x2564c40&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span><span class="o">.</span><span class="n">geojson</span>  <span class="c1"># GeoJSON</span>
+<span class="go">&#39;{ &quot;type&quot;: &quot;MultiPolygon&quot;, &quot;coordinates&quot;: [ [ [ [ 12.415798, 43.957954 ], [ 12.450554, 43.979721 ], ...</span>
+</pre></div>
+</div>
+<p>This includes access to all of the advanced geometric operations provided by
+the GEOS library:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mf">12.4604</span><span class="p">,</span> <span class="mf">43.9420</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pnt</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">mpoly</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</section>
+<section id="s-geographic-annotations">
+<span id="geographic-annotations"></span><h3>Geographic annotations<a class="headerlink" href="#geographic-annotations" title="Link to this heading">¶</a></h3>
+<p>GeoGinger also offers a set of geographic annotations to compute distances and
+several other operations (intersection, difference, etc.). See the
+<a class="reference internal" href="functions.html"><span class="doc">Geographic Database Functions</span></a> documentation.</p>
+</section>
+</section>
+<section id="s-putting-your-data-on-the-map">
+<span id="putting-your-data-on-the-map"></span><h2>Putting your data on the map<a class="headerlink" href="#putting-your-data-on-the-map" title="Link to this heading">¶</a></h2>
+<section id="s-geographic-admin">
+<span id="geographic-admin"></span><h3>Geographic Admin<a class="headerlink" href="#geographic-admin" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../admin/index.html"><span class="doc">Ginger’s admin application</span></a> supports editing
+geometry fields.</p>
+<section id="s-basics">
+<span id="basics"></span><h4>Basics<a class="headerlink" href="#basics" title="Link to this heading">¶</a></h4>
+<p>The Ginger admin allows users to create and modify geometries on a JavaScript
+slippy map (powered by <a class="reference external" href="https://openlayers.org/">OpenLayers</a>).</p>
+<p>Let’s dive right in. Create a file called <code class="docutils literal notranslate"><span class="pre">admin.py</span></code> inside the <code class="docutils literal notranslate"><span class="pre">world</span></code>
+application with the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.gis</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">WorldBorder</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">WorldBorder</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, edit your <code class="docutils literal notranslate"><span class="pre">urls.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">geoginger</span></code> application folder as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">path</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;admin/&quot;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Create an admin user:</p>
+<div class="console-block" id="console-block-13">
+<input class="c-tab-unix" id="c-tab-13-unix" type="radio" name="console-13" checked>
+<label for="c-tab-13-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-13-win" type="radio" name="console-13">
+<label for="c-tab-13-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-13-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-13-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py createsuperuser
+</pre></div>
+</section>
+</div>
+<p>Next, start up the Ginger development server:</p>
+<div class="console-block" id="console-block-14">
+<input class="c-tab-unix" id="c-tab-14-unix" type="radio" name="console-14" checked>
+<label for="c-tab-14-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-14-win" type="radio" name="console-14">
+<label for="c-tab-14-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-14-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>runserver
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-14-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py runserver
+</pre></div>
+</section>
+</div>
+<p>Finally, browse to <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/admin/</span></code>, and log in with the user
+you just created. Browse to any of the <code class="docutils literal notranslate"><span class="pre">WorldBorder</span></code> entries – the borders
+may be edited by clicking on a polygon and dragging the vertices to the desired
+position.</p>
+</section>
+<section id="s-gismodeladmin">
+<span id="gismodeladmin"></span><h4><code class="docutils literal notranslate"><span class="pre">GISModelAdmin</span></code><a class="headerlink" href="#gismodeladmin" title="Link to this heading">¶</a></h4>
+<p>With the <a class="reference internal" href="admin.html#ginger.contrib.gis.admin.GISModelAdmin" title="ginger.contrib.gis.admin.GISModelAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">GISModelAdmin</span></code></a>, GeoGinger uses an
+<a class="reference external" href="https://www.openstreetmap.org/">OpenStreetMap</a> layer in the admin.
+This provides more context (including street and thoroughfare details) than
+available with the <a class="reference internal" href="../admin/index.html#ginger.contrib.admin.ModelAdmin" title="ginger.contrib.admin.ModelAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelAdmin</span></code></a> (which uses the
+<a class="reference external" href="http://web.archive.org/web/20201024202709/https://earth-info.nga.mil/publications/vmap0.html">Vector Map Level 0</a> WMS dataset hosted at <a class="reference external" href="https://www.osgeo.org/">OSGeo</a>).</p>
+<p>The PROJ datum shifting files must be installed (see the <a class="reference internal" href="install/geolibs.html#proj4"><span class="std std-ref">PROJ
+installation instructions</span></a> for more details).</p>
+<p>If you meet this requirement, then use the <code class="docutils literal notranslate"><span class="pre">GISModelAdmin</span></code> option class
+in your <code class="docutils literal notranslate"><span class="pre">admin.py</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">WorldBorder</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">GISModelAdmin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Special thanks to Bjørn Sandvik of <a class="reference external" href="https://mastermaps.net/">mastermaps.net</a> for providing and maintaining this dataset.</p>
+</aside>
+<aside class="footnote brackets" id="id12" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>GeoGinger basic apps was written by Dane Springmeyer, Josh Livni, and
+Christopher Schmidt.</p>
+</aside>
+<aside class="footnote brackets" id="id13" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">3</a><span class="fn-bracket">]</span></span>
+<p>This point is the <a class="reference external" href="https://www.law.uh.edu/">University of Houston Law Center</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id14" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">4</a><span class="fn-bracket">]</span></span>
+<p>Open Geospatial Consortium, Inc., <a class="reference external" href="https://www.ogc.org/standards/sfs">OpenGIS Simple Feature Specification
+For SQL</a>.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="install/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">GeoGinger Installation</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">GeoGinger</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">GeoGinger Tutorial</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#setting-up">Setting Up</a><ul>
+<li><a class="reference internal" href="#create-a-spatial-database">Create a Spatial Database</a></li>
+<li><a class="reference internal" href="#create-a-new-project">Create a New Project</a></li>
+<li><a class="reference internal" href="#configure-settings-py">Configure <code class="docutils literal notranslate"><span class="pre">settings.py</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geographic-data">Geographic Data</a><ul>
+<li><a class="reference internal" href="#worldborders">World Borders</a></li>
+<li><a class="reference internal" href="#use-ogrinfo-to-examine-spatial-data">Use <code class="docutils literal notranslate"><span class="pre">ogrinfo</span></code> to examine spatial data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geographic-models">Geographic Models</a><ul>
+<li><a class="reference internal" href="#defining-a-geographic-model">Defining a Geographic Model</a></li>
+<li><a class="reference internal" href="#run-migrate">Run <code class="docutils literal notranslate"><span class="pre">migrate</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#importing-spatial-data">Importing Spatial Data</a><ul>
+<li><a class="reference internal" href="#gdal-interface">GDAL Interface</a></li>
+<li><a class="reference internal" href="#layermapping"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code></a></li>
+<li><a class="reference internal" href="#try-ogrinspect">Try <code class="docutils literal notranslate"><span class="pre">ogrinspect</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spatial-queries">Spatial Queries</a><ul>
+<li><a class="reference internal" href="#spatial-lookups">Spatial Lookups</a></li>
+<li><a class="reference internal" href="#automatic-spatial-transformations">Automatic Spatial Transformations</a></li>
+<li><a class="reference internal" href="#lazy-geometries">Lazy Geometries</a></li>
+<li><a class="reference internal" href="#geographic-annotations">Geographic annotations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#putting-your-data-on-the-map">Putting your data on the map</a><ul>
+<li><a class="reference internal" href="#geographic-admin">Geographic Admin</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a></li>
+<li><a class="reference internal" href="#gismodeladmin"><code class="docutils literal notranslate"><span class="pre">GISModelAdmin</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

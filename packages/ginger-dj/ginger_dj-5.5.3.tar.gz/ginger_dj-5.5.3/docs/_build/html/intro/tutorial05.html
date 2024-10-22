@@ -1,0 +1,1331 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Writing your first Ginger app, part 6" href="tutorial06.html" /><link rel="prev" title="Writing your first Ginger app, part 4" href="tutorial04.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Writing your first Ginger app, part 5 - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Getting started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/intro/tutorial05.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-writing-your-first-ginger-app-part-5">
+<span id="writing-your-first-ginger-app-part-5"></span><h1>Writing your first Ginger app, part 5<a class="headerlink" href="#writing-your-first-ginger-app-part-5" title="Link to this heading">¶</a></h1>
+<p>This tutorial begins where <a class="reference internal" href="tutorial04.html"><span class="doc">Tutorial 4</span></a> left off.
+We’ve built a web-poll application, and we’ll now create some automated tests
+for it.</p>
+<div class="admonition-where-to-get-help admonition">
+<p class="admonition-title">Where to get help:</p>
+<p>If you’re having trouble going through this tutorial, please head over to
+the <a class="reference internal" href="../faq/help.html"><span class="doc">Getting Help</span></a> section of the FAQ.</p>
+</div>
+<section id="s-introducing-automated-testing">
+<span id="introducing-automated-testing"></span><h2>Introducing automated testing<a class="headerlink" href="#introducing-automated-testing" title="Link to this heading">¶</a></h2>
+<section id="s-what-are-automated-tests">
+<span id="what-are-automated-tests"></span><h3>What are automated tests?<a class="headerlink" href="#what-are-automated-tests" title="Link to this heading">¶</a></h3>
+<p>Tests are routines that check the operation of your code.</p>
+<p>Testing operates at different levels. Some tests might apply to a tiny detail
+(<em>does a particular model method return values as expected?</em>) while others
+examine the overall operation of the software (<em>does a sequence of user inputs
+on the site produce the desired result?</em>). That’s no different from the kind of
+testing you did earlier in <a class="reference internal" href="tutorial02.html"><span class="doc">Tutorial 2</span></a>, using the
+<a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a> to examine the behavior of a method, or running the
+application and entering data to check how it behaves.</p>
+<p>What’s different in <em>automated</em> tests is that the testing work is done for
+you by the system. You create a set of tests once, and then as you make changes
+to your app, you can check that your code still works as you originally
+intended, without having to perform time consuming manual testing.</p>
+</section>
+<section id="s-why-you-need-to-create-tests">
+<span id="why-you-need-to-create-tests"></span><h3>Why you need to create tests<a class="headerlink" href="#why-you-need-to-create-tests" title="Link to this heading">¶</a></h3>
+<p>So why create tests, and why now?</p>
+<p>You may feel that you have quite enough on your plate just learning
+Python/Ginger, and having yet another thing to learn and do may seem
+overwhelming and perhaps unnecessary. After all, our polls application is
+working quite happily now; going through the trouble of creating automated
+tests is not going to make it work any better. If creating the polls
+application is the last bit of Ginger programming you will ever do, then true,
+you don’t need to know how to create automated tests. But, if that’s not the
+case, now is an excellent time to learn.</p>
+<section id="s-tests-will-save-you-time">
+<span id="tests-will-save-you-time"></span><h4>Tests will save you time<a class="headerlink" href="#tests-will-save-you-time" title="Link to this heading">¶</a></h4>
+<p>Up to a certain point, ‘checking that it seems to work’ will be a satisfactory
+test. In a more sophisticated application, you might have dozens of complex
+interactions between components.</p>
+<p>A change in any of those components could have unexpected consequences on the
+application’s behavior. Checking that it still ‘seems to work’ could mean
+running through your code’s functionality with twenty different variations of
+your test data to make sure you haven’t broken something - not a good use
+of your time.</p>
+<p>That’s especially true when automated tests could do this for you in seconds.
+If something’s gone wrong, tests will also assist in identifying the code
+that’s causing the unexpected behavior.</p>
+<p>Sometimes it may seem a chore to tear yourself away from your productive,
+creative programming work to face the unglamorous and unexciting business
+of writing tests, particularly when you know your code is working properly.</p>
+<p>However, the task of writing tests is a lot more fulfilling than spending hours
+testing your application manually or trying to identify the cause of a
+newly-introduced problem.</p>
+</section>
+<section id="s-tests-don-t-just-identify-problems-they-prevent-them">
+<span id="tests-don-t-just-identify-problems-they-prevent-them"></span><h4>Tests don’t just identify problems, they prevent them<a class="headerlink" href="#tests-don-t-just-identify-problems-they-prevent-them" title="Link to this heading">¶</a></h4>
+<p>It’s a mistake to think of tests merely as a negative aspect of development.</p>
+<p>Without tests, the purpose or intended behavior of an application might be
+rather opaque. Even when it’s your own code, you will sometimes find yourself
+poking around in it trying to find out what exactly it’s doing.</p>
+<p>Tests change that; they light up your code from the inside, and when something
+goes wrong, they focus light on the part that has gone wrong - <em>even if you
+hadn’t even realized it had gone wrong</em>.</p>
+</section>
+<section id="s-tests-make-your-code-more-attractive">
+<span id="tests-make-your-code-more-attractive"></span><h4>Tests make your code more attractive<a class="headerlink" href="#tests-make-your-code-more-attractive" title="Link to this heading">¶</a></h4>
+<p>You might have created a brilliant piece of software, but you will find that
+many other developers will refuse to look at it because it lacks tests; without
+tests, they won’t trust it. Jacob Kaplan-Moss, one of Ginger’s original
+developers, says “Code without tests is broken by design.”</p>
+<p>That other developers want to see tests in your software before they take it
+seriously is yet another reason for you to start writing tests.</p>
+</section>
+<section id="s-tests-help-teams-work-together">
+<span id="tests-help-teams-work-together"></span><h4>Tests help teams work together<a class="headerlink" href="#tests-help-teams-work-together" title="Link to this heading">¶</a></h4>
+<p>The previous points are written from the point of view of a single developer
+maintaining an application. Complex applications will be maintained by teams.
+Tests guarantee that colleagues don’t inadvertently break your code (and that
+you don’t break theirs without knowing). If you want to make a living as a
+Ginger programmer, you must be good at writing tests!</p>
+</section>
+</section>
+</section>
+<section id="s-basic-testing-strategies">
+<span id="basic-testing-strategies"></span><h2>Basic testing strategies<a class="headerlink" href="#basic-testing-strategies" title="Link to this heading">¶</a></h2>
+<p>There are many ways to approach writing tests.</p>
+<p>Some programmers follow a discipline called “<a class="reference external" href="https://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a>”; they
+actually write their tests before they write their code. This might seem
+counter-intuitive, but in fact it’s similar to what most people will often do
+anyway: they describe a problem, then create some code to solve it. Test-driven
+development formalizes the problem in a Python test case.</p>
+<p>More often, a newcomer to testing will create some code and later decide that
+it should have some tests. Perhaps it would have been better to write some
+tests earlier, but it’s never too late to get started.</p>
+<p>Sometimes it’s difficult to figure out where to get started with writing tests.
+If you have written several thousand lines of Python, choosing something to
+test might not be easy. In such a case, it’s fruitful to write your first test
+the next time you make a change, either when you add a new feature or fix a bug.</p>
+<p>So let’s do that right away.</p>
+</section>
+<section id="s-writing-our-first-test">
+<span id="writing-our-first-test"></span><h2>Writing our first test<a class="headerlink" href="#writing-our-first-test" title="Link to this heading">¶</a></h2>
+<section id="s-we-identify-a-bug">
+<span id="we-identify-a-bug"></span><h3>We identify a bug<a class="headerlink" href="#we-identify-a-bug" title="Link to this heading">¶</a></h3>
+<p>Fortunately, there’s a little bug in the <code class="docutils literal notranslate"><span class="pre">polls</span></code> application for us to fix
+right away: the <code class="docutils literal notranslate"><span class="pre">Question.was_published_recently()</span></code> method returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if
+the <code class="docutils literal notranslate"><span class="pre">Question</span></code> was published within the last day (which is correct) but also if
+the <code class="docutils literal notranslate"><span class="pre">Question</span></code>’s <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> field is in the future (which certainly isn’t).</p>
+<p>Confirm the bug by using the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a> to check the method on a question
+whose date lies in the future:</p>
+<div class="console-block" id="console-block-0">
+<input class="c-tab-unix" id="c-tab-0-unix" type="radio" name="console-0" checked>
+<label for="c-tab-0-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-0-win" type="radio" name="console-0">
+<label for="c-tab-0-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-0-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-0-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Question</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># create a Question instance with pub_date 30 days in the future</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">future_question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">pub_date</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># was it published recently?</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">future_question</span><span class="o">.</span><span class="n">was_published_recently</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Since things in the future are not ‘recent’, this is clearly wrong.</p>
+</section>
+<section id="s-create-a-test-to-expose-the-bug">
+<span id="create-a-test-to-expose-the-bug"></span><h3>Create a test to expose the bug<a class="headerlink" href="#create-a-test-to-expose-the-bug" title="Link to this heading">¶</a></h3>
+<p>What we’ve just done in the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a> to test for the problem is exactly
+what we can do in an automated test, so let’s turn that into an automated test.</p>
+<p>A conventional place for an application’s tests is in the application’s
+<code class="docutils literal notranslate"><span class="pre">tests.py</span></code> file; the testing system will automatically find tests in any file
+whose name begins with <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
+<p>Put the following in the <code class="docutils literal notranslate"><span class="pre">tests.py</span></code> file in the <code class="docutils literal notranslate"><span class="pre">polls</span></code> application:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code></span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">ginger.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Question</span>
+
+
+<span class="k">class</span> <span class="nc">QuestionModelTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_was_published_recently_with_future_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        was_published_recently() returns False for questions whose pub_date</span>
+<span class="sd">        is in the future.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">future_question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">pub_date</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">future_question</span><span class="o">.</span><span class="n">was_published_recently</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here we have created a <a class="reference internal" href="../topics/testing/tools.html#ginger.test.TestCase" title="ginger.test.TestCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.test.TestCase</span></code></a> subclass with a method that
+creates a <code class="docutils literal notranslate"><span class="pre">Question</span></code> instance with a <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> in the future. We then check
+the output of <code class="docutils literal notranslate"><span class="pre">was_published_recently()</span></code> - which <em>ought</em> to be False.</p>
+</section>
+<section id="s-running-tests">
+<span id="running-tests"></span><h3>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h3>
+<p>In the terminal, we can run our test:</p>
+<div class="console-block" id="console-block-1">
+<input class="c-tab-unix" id="c-tab-1-unix" type="radio" name="console-1" checked>
+<label for="c-tab-1-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-1-win" type="radio" name="console-1">
+<label for="c-tab-1-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-1-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>polls
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-1-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py test polls
+</pre></div>
+</section>
+</div>
+<p>and you’ll see something like:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Creating<span class="w"> </span><span class="nb">test</span><span class="w"> </span>database<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="s1">&#39;default&#39;</span>...
+System<span class="w"> </span>check<span class="w"> </span>identified<span class="w"> </span>no<span class="w"> </span>issues<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="w"> </span>silenced<span class="o">)</span>.
+<span class="nv">F</span>
+<span class="o">======================================================================</span>
+FAIL:<span class="w"> </span>test_was_published_recently_with_future_question<span class="w"> </span><span class="o">(</span>polls.tests.QuestionModelTests<span class="o">)</span>
+----------------------------------------------------------------------
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/path/to/mysite/polls/tests.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">16</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>test_was_published_recently_with_future_question
+<span class="w">    </span>self.assertIs<span class="o">(</span>future_question.was_published_recently<span class="o">()</span>,<span class="w"> </span>False<span class="o">)</span>
+AssertionError:<span class="w"> </span>True<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>False
+
+----------------------------------------------------------------------
+Ran<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.001s
+
+FAILED<span class="w"> </span><span class="o">(</span><span class="nv">failures</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+Destroying<span class="w"> </span><span class="nb">test</span><span class="w"> </span>database<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="s1">&#39;default&#39;</span>...
+</pre></div>
+</div>
+<div class="admonition-different-error admonition">
+<p class="admonition-title">Different error?</p>
+<p>If instead you’re getting a <code class="docutils literal notranslate"><span class="pre">NameError</span></code> here, you may have missed a step
+in <a class="reference internal" href="tutorial02.html#tutorial02-import-timezone"><span class="std std-ref">Part 2</span></a> where we added imports of
+<code class="docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="docutils literal notranslate"><span class="pre">timezone</span></code> to <code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code>. Copy the imports from
+that section, and try running your tests again.</p>
+</div>
+<p>What happened is this:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">manage.py</span> <span class="pre">test</span> <span class="pre">polls</span></code> looked for tests in the <code class="docutils literal notranslate"><span class="pre">polls</span></code> application</p></li>
+<li><p>it found a subclass of the <a class="reference internal" href="../topics/testing/tools.html#ginger.test.TestCase" title="ginger.test.TestCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.test.TestCase</span></code></a> class</p></li>
+<li><p>it created a special database for the purpose of testing</p></li>
+<li><p>it looked for test methods - ones whose names begin with <code class="docutils literal notranslate"><span class="pre">test</span></code></p></li>
+<li><p>in <code class="docutils literal notranslate"><span class="pre">test_was_published_recently_with_future_question</span></code> it created a <code class="docutils literal notranslate"><span class="pre">Question</span></code>
+instance whose <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> field is 30 days in the future</p></li>
+<li><p>… and using the <code class="docutils literal notranslate"><span class="pre">assertIs()</span></code> method, it discovered that its
+<code class="docutils literal notranslate"><span class="pre">was_published_recently()</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code>, though we wanted it to return
+<code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ul>
+<p>The test informs us which test failed and even the line on which the failure
+occurred.</p>
+</section>
+<section id="s-fixing-the-bug">
+<span id="fixing-the-bug"></span><h3>Fixing the bug<a class="headerlink" href="#fixing-the-bug" title="Link to this heading">¶</a></h3>
+<p>We already know what the problem is: <code class="docutils literal notranslate"><span class="pre">Question.was_published_recently()</span></code> should
+return <code class="docutils literal notranslate"><span class="pre">False</span></code> if its <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> is in the future. Amend the method in
+<code class="docutils literal notranslate"><span class="pre">models.py</span></code>, so that it will only return <code class="docutils literal notranslate"><span class="pre">True</span></code> if the date is also in the
+past:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">was_published_recently</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">now</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">&lt;=</span> <span class="n">now</span>
+</pre></div>
+</div>
+</div>
+<p>and run the test again:</p>
+<div class="highlight-pytb notranslate"><div class="highlight"><pre><span></span><span class="x">Creating test database for alias &#39;default&#39;...</span>
+<span class="x">System check identified no issues (0 silenced).</span>
+<span class="x">.</span>
+<span class="x">----------------------------------------------------------------------</span>
+<span class="x">Ran 1 test in 0.001s</span>
+
+<span class="x">OK</span>
+<span class="x">Destroying test database for alias &#39;default&#39;...</span>
+</pre></div>
+</div>
+<p>After identifying a bug, we wrote a test that exposes it and corrected the bug
+in the code so our test passes.</p>
+<p>Many other things might go wrong with our application in the future, but we can
+be sure that we won’t inadvertently reintroduce this bug, because running the
+test will warn us immediately. We can consider this little portion of the
+application pinned down safely forever.</p>
+</section>
+<section id="s-more-comprehensive-tests">
+<span id="more-comprehensive-tests"></span><h3>More comprehensive tests<a class="headerlink" href="#more-comprehensive-tests" title="Link to this heading">¶</a></h3>
+<p>While we’re here, we can further pin down the <code class="docutils literal notranslate"><span class="pre">was_published_recently()</span></code>
+method; in fact, it would be positively embarrassing if in fixing one bug we had
+introduced another.</p>
+<p>Add two more test methods to the same class, to test the behavior of the method
+more comprehensively:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code></span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_was_published_recently_with_old_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    was_published_recently() returns False for questions whose pub_date</span>
+<span class="sd">    is older than 1 day.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">old_question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">pub_date</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">old_question</span><span class="o">.</span><span class="n">was_published_recently</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">test_was_published_recently_with_recent_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    was_published_recently() returns True for questions whose pub_date</span>
+<span class="sd">    is within the last day.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">59</span><span class="p">)</span>
+    <span class="n">recent_question</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">pub_date</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">assertIs</span><span class="p">(</span><span class="n">recent_question</span><span class="o">.</span><span class="n">was_published_recently</span><span class="p">(),</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>And now we have three tests that confirm that <code class="docutils literal notranslate"><span class="pre">Question.was_published_recently()</span></code>
+returns sensible values for past, recent, and future questions.</p>
+<p>Again, <code class="docutils literal notranslate"><span class="pre">polls</span></code> is a minimal application, but however complex it grows in the
+future and whatever other code it interacts with, we now have some guarantee
+that the method we have written tests for will behave in expected ways.</p>
+</section>
+</section>
+<section id="s-test-a-view">
+<span id="test-a-view"></span><h2>Test a view<a class="headerlink" href="#test-a-view" title="Link to this heading">¶</a></h2>
+<p>The polls application is fairly undiscriminating: it will publish any question,
+including ones whose <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> field lies in the future. We should improve
+this. Setting a <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> in the future should mean that the Question is
+published at that moment, but invisible until then.</p>
+<section id="s-a-test-for-a-view">
+<span id="a-test-for-a-view"></span><h3>A test for a view<a class="headerlink" href="#a-test-for-a-view" title="Link to this heading">¶</a></h3>
+<p>When we fixed the bug above, we wrote the test first and then the code to fix
+it. In fact that was an example of test-driven development, but it doesn’t
+really matter in which order we do the work.</p>
+<p>In our first test, we focused closely on the internal behavior of the code. For
+this test, we want to check its behavior as it would be experienced by a user
+through a web browser.</p>
+<p>Before we try to fix anything, let’s have a look at the tools at our disposal.</p>
+</section>
+<section id="s-the-ginger-test-client">
+<span id="the-ginger-test-client"></span><h3>The Ginger test client<a class="headerlink" href="#the-ginger-test-client" title="Link to this heading">¶</a></h3>
+<p>Ginger provides a test <a class="reference internal" href="../topics/testing/tools.html#ginger.test.Client" title="ginger.test.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a> to simulate a user
+interacting with the code at the view level.  We can use it in <code class="docutils literal notranslate"><span class="pre">tests.py</span></code>
+or even in the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a>.</p>
+<p>We will start again with the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a>, where we need to do a couple of
+things that won’t be necessary in <code class="docutils literal notranslate"><span class="pre">tests.py</span></code>. The first is to set up the test
+environment in the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a>:</p>
+<div class="console-block" id="console-block-2">
+<input class="c-tab-unix" id="c-tab-2-unix" type="radio" name="console-2" checked>
+<label for="c-tab-2-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-2-win" type="radio" name="console-2">
+<label for="c-tab-2-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-2-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-2-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.test.utils</span> <span class="kn">import</span> <span class="n">setup_test_environment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setup_test_environment</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../topics/testing/advanced.html#ginger.test.utils.setup_test_environment" title="ginger.test.utils.setup_test_environment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_test_environment()</span></code></a> installs a template renderer
+which will allow us to examine some additional attributes on responses such as
+<code class="docutils literal notranslate"><span class="pre">response.context</span></code> that otherwise wouldn’t be available. Note that this
+method <em>does not</em> set up a test database, so the following will be run against
+the existing database and the output may differ slightly depending on what
+questions you already created. You might get unexpected results if your
+<code class="docutils literal notranslate"><span class="pre">TIME_ZONE</span></code> in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> isn’t correct. If you don’t remember setting
+it earlier, check it before continuing.</p>
+<p>Next we need to import the test client class (later in <code class="docutils literal notranslate"><span class="pre">tests.py</span></code> we will use
+the <a class="reference internal" href="../topics/testing/tools.html#ginger.test.TestCase" title="ginger.test.TestCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.test.TestCase</span></code></a> class, which comes with its own client, so
+this won’t be required):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.test</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># create an instance of the client for our use</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With that ready, we can ask the client to do some work for us:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># get a response from &#39;/&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="go">Not Found: /</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># we should expect a 404 from that address; if you instead see an</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># &quot;Invalid HTTP_HOST header&quot; error and a 400 response, you probably</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># omitted the setup_test_environment() call described earlier.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="go">404</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># on the other hand we should expect to find something at &#39;/polls/&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># we&#39;ll use &#39;reverse()&#39; rather than a hardcoded URL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="go">200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="go">b&#39;\n    &lt;ul&gt;\n    \n        &lt;li&gt;&lt;a href=&quot;/polls/1/&quot;&gt;What&amp;#x27;s up?&lt;/a&gt;&lt;/li&gt;\n    \n    &lt;/ul&gt;\n\n&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">]</span>
+<span class="go">&lt;QuerySet [&lt;Question: What&#39;s up?&gt;]&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-improving-our-view">
+<span id="improving-our-view"></span><h3>Improving our view<a class="headerlink" href="#improving-our-view" title="Link to this heading">¶</a></h3>
+<p>The list of polls shows polls that aren’t published yet (i.e. those that have a
+<code class="docutils literal notranslate"><span class="pre">pub_date</span></code> in the future). Let’s fix that.</p>
+<p>In <a class="reference internal" href="tutorial04.html"><span class="doc">Tutorial 4</span></a> we introduced a class-based view,
+based on <a class="reference internal" href="../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a>:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/views.py</span></code></span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">IndexView</span><span class="p">(</span><span class="n">generic</span><span class="o">.</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;polls/index.html&quot;</span>
+    <span class="n">context_object_name</span> <span class="o">=</span> <span class="s2">&quot;latest_question_list&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the last five published questions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-pub_date&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>We need to amend the <code class="docutils literal notranslate"><span class="pre">get_queryset()</span></code> method and change it so that it also
+checks the date by comparing it with <code class="docutils literal notranslate"><span class="pre">timezone.now()</span></code>. First we need to add
+an import:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/views.py</span></code></span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+</pre></div>
+</div>
+</div>
+<p>and then we must amend the <code class="docutils literal notranslate"><span class="pre">get_queryset</span></code> method like so:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/views.py</span></code></span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the last five published questions (not including those set to be</span>
+<span class="sd">    published in the future).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pub_date__lte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-pub_date&quot;</span><span class="p">)[</span>
+        <span class="p">:</span><span class="mi">5</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Question.objects.filter(pub_date__lte=timezone.now())</span></code> returns a queryset
+containing <code class="docutils literal notranslate"><span class="pre">Question</span></code>s whose <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> is less than or equal to - that
+is, earlier than or equal to - <code class="docutils literal notranslate"><span class="pre">timezone.now</span></code>.</p>
+</section>
+<section id="s-testing-our-new-view">
+<span id="testing-our-new-view"></span><h3>Testing our new view<a class="headerlink" href="#testing-our-new-view" title="Link to this heading">¶</a></h3>
+<p>Now you can satisfy yourself that this behaves as expected by firing up
+<code class="docutils literal notranslate"><span class="pre">runserver</span></code>, loading the site in your browser, creating <code class="docutils literal notranslate"><span class="pre">Questions</span></code> with
+dates in the past and future, and checking that only those that have been
+published are listed. You don’t want to have to do that <em>every single time you
+make any change that might affect this</em> - so let’s also create a test, based on
+our <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-shell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">shell</span></code></a> session above.</p>
+<p>Add the following to <code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code></span><a class="headerlink" href="#id7" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+</pre></div>
+</div>
+</div>
+<p>and we’ll create a shortcut function to create questions as well as a new test
+class:</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code></span><a class="headerlink" href="#id8" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="p">,</span> <span class="n">days</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a question with the given `question_text` and published the</span>
+<span class="sd">    given number of `days` offset to now (negative for questions published</span>
+<span class="sd">    in the past, positive for questions that have yet to be published).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="n">question_text</span><span class="p">,</span> <span class="n">pub_date</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">QuestionIndexViewTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_no_questions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If no questions exist, an appropriate message is displayed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;No polls are available.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertQuerySetEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">],</span> <span class="p">[])</span>
+
+    <span class="k">def</span> <span class="nf">test_past_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Questions with a pub_date in the past are displayed on the</span>
+<span class="sd">        index page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Past question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertQuerySetEqual</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">question</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_future_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Questions with a pub_date in the future aren&#39;t displayed on</span>
+<span class="sd">        the index page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Future question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">&quot;No polls are available.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertQuerySetEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">],</span> <span class="p">[])</span>
+
+    <span class="k">def</span> <span class="nf">test_future_question_and_past_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Even if both past and future questions exist, only past questions</span>
+<span class="sd">        are displayed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Past question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Future question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertQuerySetEqual</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">question</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_two_past_questions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The questions index page may display multiple questions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">question1</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Past question 1.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">question2</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Past question 2.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:index&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertQuerySetEqual</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;latest_question_list&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">question2</span><span class="p">,</span> <span class="n">question1</span><span class="p">],</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s look at some of these more closely.</p>
+<p>First is a question shortcut function, <code class="docutils literal notranslate"><span class="pre">create_question</span></code>, to take some
+repetition out of the process of creating questions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">test_no_questions</span></code> doesn’t create any questions, but checks the message:
+“No polls are available.” and verifies the <code class="docutils literal notranslate"><span class="pre">latest_question_list</span></code> is empty.
+Note that the <a class="reference internal" href="../topics/testing/tools.html#ginger.test.TestCase" title="ginger.test.TestCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.test.TestCase</span></code></a> class provides some additional
+assertion methods. In these examples, we use
+<a class="reference internal" href="../topics/testing/tools.html#ginger.test.SimpleTestCase.assertContains" title="ginger.test.SimpleTestCase.assertContains"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertContains()</span></code></a> and
+<a class="reference internal" href="../topics/testing/tools.html#ginger.test.TransactionTestCase.assertQuerySetEqual" title="ginger.test.TransactionTestCase.assertQuerySetEqual"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assertQuerySetEqual()</span></code></a>.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">test_past_question</span></code>, we create a question and verify that it appears in
+the list.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">test_future_question</span></code>, we create a question with a <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> in the
+future. The database is reset for each test method, so the first question is no
+longer there, and so again the index shouldn’t have any questions in it.</p>
+<p>And so on. In effect, we are using the tests to tell a story of admin input
+and user experience on the site, and checking that at every state and for every
+new change in the state of the system, the expected results are published.</p>
+</section>
+<section id="s-testing-the-detailview">
+<span id="testing-the-detailview"></span><h3>Testing the <code class="docutils literal notranslate"><span class="pre">DetailView</span></code><a class="headerlink" href="#testing-the-detailview" title="Link to this heading">¶</a></h3>
+<p>What we have works well; however, even though future questions don’t appear in
+the <em>index</em>, users can still reach them if they know or guess the right URL. So
+we need to add a similar  constraint to <code class="docutils literal notranslate"><span class="pre">DetailView</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/views.py</span></code></span><a class="headerlink" href="#id9" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DetailView</span><span class="p">(</span><span class="n">generic</span><span class="o">.</span><span class="n">DetailView</span><span class="p">):</span>
+    <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Excludes any questions that aren&#39;t published yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pub_date__lte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<p>We should then add some tests, to check that a <code class="docutils literal notranslate"><span class="pre">Question</span></code> whose <code class="docutils literal notranslate"><span class="pre">pub_date</span></code>
+is in the past can be displayed, and that one with a <code class="docutils literal notranslate"><span class="pre">pub_date</span></code> in the future
+is not:</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/tests.py</span></code></span><a class="headerlink" href="#id10" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">QuestionDetailViewTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_future_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The detail view of a question with a pub_date in the future</span>
+<span class="sd">        returns a 404 not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">future_question</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Future question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:detail&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">future_question</span><span class="o">.</span><span class="n">id</span><span class="p">,))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">404</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_past_question</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The detail view of a question with a pub_date in the past</span>
+<span class="sd">        displays the question&#39;s text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">past_question</span> <span class="o">=</span> <span class="n">create_question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;Past Question.&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=-</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;polls:detail&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">past_question</span><span class="o">.</span><span class="n">id</span><span class="p">,))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">past_question</span><span class="o">.</span><span class="n">question_text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="s-ideas-for-more-tests">
+<span id="ideas-for-more-tests"></span><h3>Ideas for more tests<a class="headerlink" href="#ideas-for-more-tests" title="Link to this heading">¶</a></h3>
+<p>We ought to add a similar <code class="docutils literal notranslate"><span class="pre">get_queryset</span></code> method to <code class="docutils literal notranslate"><span class="pre">ResultsView</span></code> and
+create a new test class for that view. It’ll be very similar to what we have
+just created; in fact there will be a lot of repetition.</p>
+<p>We could also improve our application in other ways, adding tests along the
+way. For example, it’s silly that <code class="docutils literal notranslate"><span class="pre">Questions</span></code> can be published on the site
+that have no <code class="docutils literal notranslate"><span class="pre">Choices</span></code>. So, our views could check for this, and exclude such
+<code class="docutils literal notranslate"><span class="pre">Questions</span></code>. Our tests would create a <code class="docutils literal notranslate"><span class="pre">Question</span></code> without <code class="docutils literal notranslate"><span class="pre">Choices</span></code> and
+then test that it’s not published, as well as create a similar <code class="docutils literal notranslate"><span class="pre">Question</span></code>
+<em>with</em> <code class="docutils literal notranslate"><span class="pre">Choices</span></code>, and test that it <em>is</em> published.</p>
+<p>Perhaps logged-in admin users should be allowed to see unpublished
+<code class="docutils literal notranslate"><span class="pre">Questions</span></code>, but not ordinary visitors. Again: whatever needs to be added to
+the software to accomplish this should be accompanied by a test, whether you
+write the test first and then make the code pass the test, or work out the
+logic in your code first and then write a test to prove it.</p>
+<p>At a certain point you are bound to look at your tests and wonder whether your
+code is suffering from test bloat, which brings us to:</p>
+</section>
+</section>
+<section id="s-when-testing-more-is-better">
+<span id="when-testing-more-is-better"></span><h2>When testing, more is better<a class="headerlink" href="#when-testing-more-is-better" title="Link to this heading">¶</a></h2>
+<p>It might seem that our tests are growing out of control. At this rate there will
+soon be more code in our tests than in our application, and the repetition
+is unaesthetic, compared to the elegant conciseness of the rest of our code.</p>
+<p><strong>It doesn’t matter</strong>. Let them grow. For the most part, you can write a test
+once and then forget about it. It will continue performing its useful function
+as you continue to develop your program.</p>
+<p>Sometimes tests will need to be updated. Suppose that we amend our views so that
+only <code class="docutils literal notranslate"><span class="pre">Questions</span></code> with <code class="docutils literal notranslate"><span class="pre">Choices</span></code> are published. In that case, many of our
+existing tests will fail - <em>telling us exactly which tests need to be amended to
+bring them up to date</em>, so to that extent tests help look after themselves.</p>
+<p>At worst, as you continue developing, you might find that you have some tests
+that are now redundant. Even that’s not a problem; in testing redundancy is
+a <em>good</em> thing.</p>
+<p>As long as your tests are sensibly arranged, they won’t become unmanageable.
+Good rules-of-thumb include having:</p>
+<ul class="simple">
+<li><p>a separate <code class="docutils literal notranslate"><span class="pre">TestClass</span></code> for each model or view</p></li>
+<li><p>a separate test method for each set of conditions you want to test</p></li>
+<li><p>test method names that describe their function</p></li>
+</ul>
+</section>
+<section id="s-further-testing">
+<span id="further-testing"></span><h2>Further testing<a class="headerlink" href="#further-testing" title="Link to this heading">¶</a></h2>
+<p>This tutorial only introduces some of the basics of testing. There’s a great
+deal more you can do, and a number of very useful tools at your disposal to
+achieve some very clever things.</p>
+<p>For example, while our tests here have covered some of the internal logic of a
+model and the way our views publish information, you can use an “in-browser”
+framework such as <a class="reference external" href="https://www.selenium.dev/">Selenium</a> to test the way your HTML actually renders in a
+browser. These tools allow you to check not just the behavior of your Ginger
+code, but also, for example, of your JavaScript. It’s quite something to see
+the tests launch a browser, and start interacting with your site, as if a human
+being were driving it! Ginger includes <a class="reference internal" href="../topics/testing/tools.html#ginger.test.LiveServerTestCase" title="ginger.test.LiveServerTestCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">LiveServerTestCase</span></code></a>
+to facilitate integration with tools like Selenium.</p>
+<p>If you have a complex application, you may want to run tests automatically
+with every commit for the purposes of <a class="reference external" href="https://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a>, so that
+quality control is itself - at least partially - automated.</p>
+<p>A good way to spot untested parts of your application is to check code
+coverage. This also helps identify fragile or even dead code. If you can’t test
+a piece of code, it usually means that code should be refactored or removed.
+Coverage will help to identify dead code. See
+<a class="reference internal" href="../topics/testing/advanced.html#topics-testing-code-coverage"><span class="std std-ref">Integration with coverage.py</span></a> for details.</p>
+<p><a class="reference internal" href="../topics/testing/index.html"><span class="doc">Testing in Ginger</span></a> has comprehensive
+information about testing.</p>
+</section>
+<section id="s-what-s-next">
+<span id="what-s-next"></span><h2>What’s next?<a class="headerlink" href="#what-s-next" title="Link to this heading">¶</a></h2>
+<p>For full details on testing, see <a class="reference internal" href="../topics/testing/index.html"><span class="doc">Testing in Ginger</span></a>.</p>
+<p>When you’re comfortable with testing Ginger views, read
+<a class="reference internal" href="tutorial06.html"><span class="doc">part 6 of this tutorial</span></a> to learn about
+static files management.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="tutorial06.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Writing your first Ginger app, part 6</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="tutorial04.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Writing your first Ginger app, part 4</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Writing your first Ginger app, part 5</a><ul>
+<li><a class="reference internal" href="#introducing-automated-testing">Introducing automated testing</a><ul>
+<li><a class="reference internal" href="#what-are-automated-tests">What are automated tests?</a></li>
+<li><a class="reference internal" href="#why-you-need-to-create-tests">Why you need to create tests</a><ul>
+<li><a class="reference internal" href="#tests-will-save-you-time">Tests will save you time</a></li>
+<li><a class="reference internal" href="#tests-don-t-just-identify-problems-they-prevent-them">Tests don’t just identify problems, they prevent them</a></li>
+<li><a class="reference internal" href="#tests-make-your-code-more-attractive">Tests make your code more attractive</a></li>
+<li><a class="reference internal" href="#tests-help-teams-work-together">Tests help teams work together</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#basic-testing-strategies">Basic testing strategies</a></li>
+<li><a class="reference internal" href="#writing-our-first-test">Writing our first test</a><ul>
+<li><a class="reference internal" href="#we-identify-a-bug">We identify a bug</a></li>
+<li><a class="reference internal" href="#create-a-test-to-expose-the-bug">Create a test to expose the bug</a></li>
+<li><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li><a class="reference internal" href="#fixing-the-bug">Fixing the bug</a></li>
+<li><a class="reference internal" href="#more-comprehensive-tests">More comprehensive tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#test-a-view">Test a view</a><ul>
+<li><a class="reference internal" href="#a-test-for-a-view">A test for a view</a></li>
+<li><a class="reference internal" href="#the-ginger-test-client">The Ginger test client</a></li>
+<li><a class="reference internal" href="#improving-our-view">Improving our view</a></li>
+<li><a class="reference internal" href="#testing-our-new-view">Testing our new view</a></li>
+<li><a class="reference internal" href="#testing-the-detailview">Testing the <code class="docutils literal notranslate"><span class="pre">DetailView</span></code></a></li>
+<li><a class="reference internal" href="#ideas-for-more-tests">Ideas for more tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#when-testing-more-is-better">When testing, more is better</a></li>
+<li><a class="reference internal" href="#further-testing">Further testing</a></li>
+<li><a class="reference internal" href="#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

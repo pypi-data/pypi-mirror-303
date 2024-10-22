@@ -1,0 +1,1675 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Creating forms from models" href="modelforms.html" /><link rel="prev" title="Working with forms" href="index.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Formsets - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Working with forms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/topics/forms/formsets.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-formsets">
+<span id="formsets"></span><h1>Formsets<a class="headerlink" href="#formsets" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BaseFormSet</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A formset is a layer of abstraction to work with multiple forms on the same
+page. It can be best compared to a data grid. Let’s say you have the following
+form:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ArticleForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">title</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>You might want to allow the user to create several articles at once. To create
+a formset out of an <code class="docutils literal notranslate"><span class="pre">ArticleForm</span></code> you would do:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You now have created a formset class named <code class="docutils literal notranslate"><span class="pre">ArticleFormSet</span></code>.
+Instantiating the formset gives you the ability to iterate over the forms
+in the formset and display them as you would with a regular form:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p>As you can see it only displayed one empty form. The number of empty forms
+that is displayed is controlled by the <code class="docutils literal notranslate"><span class="pre">extra</span></code> parameter. By default,
+<a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a> defines one extra form; the
+following example will create a formset class to display two blank forms:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Iterating over a formset will render the forms in the order they were
+created. You can change this order by providing an alternate implementation for
+the <code class="docutils literal notranslate"><span class="pre">__iter__()</span></code> method.</p>
+<p>Formsets can also be indexed into, which returns the corresponding form. If you
+override <code class="docutils literal notranslate"><span class="pre">__iter__</span></code>, you will need to also override <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> to have
+matching behavior.</p>
+<section id="s-using-initial-data-with-a-formset">
+<span id="s-formsets-initial-data"></span><span id="using-initial-data-with-a-formset"></span><span id="formsets-initial-data"></span><h2>Using initial data with a formset<a class="headerlink" href="#using-initial-data-with-a-formset" title="Link to this heading">¶</a></h2>
+<p>Initial data is what drives the main usability of a formset. As shown above
+you can define the number of extra forms. What this means is that you are
+telling the formset how many additional forms to show in addition to the
+number of forms it generates from the initial data. Let’s take a look at an
+example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">initial</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Ginger is now open source&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+<span class="gp">... </span>        <span class="p">}</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; value=&quot;Ginger is now open source&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; value=&quot;2023-02-11&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-title&quot; id=&quot;id_form-1-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-pub_date&quot; id=&quot;id_form-1-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-title&quot; id=&quot;id_form-2-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-pub_date&quot; id=&quot;id_form-2-pub_date&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p>There are now a total of three forms showing above. One for the initial data
+that was passed in and two extra forms. Also note that we are passing in a
+list of dictionaries as the initial data.</p>
+<p>If you use an <code class="docutils literal notranslate"><span class="pre">initial</span></code> for displaying a formset, you should pass the same
+<code class="docutils literal notranslate"><span class="pre">initial</span></code> when processing that formset’s submission so that the formset can
+detect which forms were changed by the user. For example, you might have
+something like: <code class="docutils literal notranslate"><span class="pre">ArticleFormSet(request.POST,</span> <span class="pre">initial=[...])</span></code>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="modelforms.html#model-formsets"><span class="std std-ref">Creating formsets from models with model formsets</span></a>.</p>
+</div>
+</section>
+<section id="s-limiting-the-maximum-number-of-forms">
+<span id="s-formsets-max-num"></span><span id="limiting-the-maximum-number-of-forms"></span><span id="formsets-max-num"></span><h2>Limiting the maximum number of forms<a class="headerlink" href="#limiting-the-maximum-number-of-forms" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">max_num</span></code> parameter to <a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a>
+gives you the ability to limit the number of forms the formset will display:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_num</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p>If the value of <code class="docutils literal notranslate"><span class="pre">max_num</span></code> is greater than the number of existing items in the
+initial data, up to <code class="docutils literal notranslate"><span class="pre">extra</span></code> additional blank forms will be added to the
+formset, so long as the total number of forms does not exceed <code class="docutils literal notranslate"><span class="pre">max_num</span></code>. For
+example, if <code class="docutils literal notranslate"><span class="pre">extra=2</span></code> and <code class="docutils literal notranslate"><span class="pre">max_num=2</span></code> and the formset is initialized with
+one <code class="docutils literal notranslate"><span class="pre">initial</span></code> item, a form for the initial item and one blank form will be
+displayed.</p>
+<p>If the number of items in the initial data exceeds <code class="docutils literal notranslate"><span class="pre">max_num</span></code>, all initial
+data forms will be displayed regardless of the value of <code class="docutils literal notranslate"><span class="pre">max_num</span></code> and no
+extra forms will be displayed. For example, if <code class="docutils literal notranslate"><span class="pre">extra=3</span></code> and <code class="docutils literal notranslate"><span class="pre">max_num=1</span></code>
+and the formset is initialized with two initial items, two forms with the
+initial data will be displayed.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">max_num</span></code> value of <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default) puts a high limit on the number
+of forms displayed (1000). In practice this is equivalent to no limit.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">max_num</span></code> only affects how many forms are displayed and does not
+affect validation.  If <code class="docutils literal notranslate"><span class="pre">validate_max=True</span></code> is passed to the
+<a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a>, then <code class="docutils literal notranslate"><span class="pre">max_num</span></code> will affect
+validation.  See <a class="reference internal" href="#validate-max"><span class="std std-ref">validate_max</span></a>.</p>
+</section>
+<section id="s-limiting-the-maximum-number-of-instantiated-forms">
+<span id="s-formsets-absolute-max"></span><span id="limiting-the-maximum-number-of-instantiated-forms"></span><span id="formsets-absolute-max"></span><h2>Limiting the maximum number of instantiated forms<a class="headerlink" href="#limiting-the-maximum-number-of-instantiated-forms" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">absolute_max</span></code> parameter to <a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a> allows limiting the
+number of forms that can be instantiated when supplying <code class="docutils literal notranslate"><span class="pre">POST</span></code> data. This
+protects against memory exhaustion attacks using forged <code class="docutils literal notranslate"><span class="pre">POST</span></code> requests:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms.formsets</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">absolute_max</span><span class="o">=</span><span class="mi">1500</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;1501&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">)</span>
+<span class="go">1500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;Please submit at most 1000 forms.&#39;]</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">absolute_max</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it defaults to <code class="docutils literal notranslate"><span class="pre">max_num</span> <span class="pre">+</span> <span class="pre">1000</span></code>. (If
+<code class="docutils literal notranslate"><span class="pre">max_num</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it defaults to <code class="docutils literal notranslate"><span class="pre">2000</span></code>).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">absolute_max</span></code> is less than <code class="docutils literal notranslate"><span class="pre">max_num</span></code>, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> will be raised.</p>
+</section>
+<section id="s-formset-validation">
+<span id="formset-validation"></span><h2>Formset validation<a class="headerlink" href="#formset-validation" title="Link to this heading">¶</a></h2>
+<p>Validation with a formset is almost identical to a regular <code class="docutils literal notranslate"><span class="pre">Form</span></code>. There is
+an <code class="docutils literal notranslate"><span class="pre">is_valid</span></code> method on the formset to provide a convenient way to validate
+all forms in the formset:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>We passed in no data to the formset which is resulting in a valid form. The
+formset is smart enough to ignore extra forms that were not changed. If we
+provide an invalid article:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1904-06-16&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1"># &lt;-- this date is missing but required</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span>
+<span class="go">[{}, {&#39;pub_date&#39;: [&#39;This field is required.&#39;]}]</span>
+</pre></div>
+</div>
+<p>As we can see, <code class="docutils literal notranslate"><span class="pre">formset.errors</span></code> is a list whose entries correspond to the
+forms in the formset. Validation was performed for each of the two forms, and
+the expected error message appears for the second item.</p>
+<p>Just like when using a normal <code class="docutils literal notranslate"><span class="pre">Form</span></code>, each field in a formset’s forms may
+include HTML attributes such as <code class="docutils literal notranslate"><span class="pre">maxlength</span></code> for browser validation. However,
+form fields of formsets won’t include the <code class="docutils literal notranslate"><span class="pre">required</span></code> attribute as that
+validation may be incorrect when adding and deleting forms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.total_error_count">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">total_error_count</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.total_error_count" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>To check how many errors there are in the formset, we can use the
+<code class="docutils literal notranslate"><span class="pre">total_error_count</span></code> method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using the previous example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span>
+<span class="go">[{}, {&#39;pub_date&#39;: [&#39;This field is required.&#39;]}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">total_error_count</span><span class="p">()</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>We can also check if form data differs from the initial data (i.e. the form was
+sent without any data):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">has_changed</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<section id="s-understanding-the-managementform">
+<span id="s-id1"></span><span id="understanding-the-managementform"></span><span id="id1"></span><h3>Understanding the <code class="docutils literal notranslate"><span class="pre">ManagementForm</span></code><a class="headerlink" href="#understanding-the-managementform" title="Link to this heading">¶</a></h3>
+<p>You may have noticed the additional data (<code class="docutils literal notranslate"><span class="pre">form-TOTAL_FORMS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">form-INITIAL_FORMS</span></code>) that was required in the formset’s data above. This
+data is required for the <code class="docutils literal notranslate"><span class="pre">ManagementForm</span></code>. This form is used by the formset
+to manage the collection of forms contained in the formset. If you don’t
+provide this management data, the formset will be invalid:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>It is used to keep track of how many form instances are being displayed. If
+you are adding new forms via JavaScript, you should increment the count fields
+in this form as well. On the other hand, if you are using JavaScript to allow
+deletion of existing objects, then you need to ensure the ones being removed
+are properly marked for deletion by including <code class="docutils literal notranslate"><span class="pre">form-#-DELETE</span></code> in the <code class="docutils literal notranslate"><span class="pre">POST</span></code>
+data. It is expected that all forms are present in the <code class="docutils literal notranslate"><span class="pre">POST</span></code> data regardless.</p>
+<p>The management form is available as an attribute of the formset
+itself. When rendering a formset in a template, you can include all
+the management data by rendering <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">my_formset.management_form</span> <span class="pre">}}</span></code>
+(substituting the name of your formset as appropriate).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As well as the <code class="docutils literal notranslate"><span class="pre">form-TOTAL_FORMS</span></code> and <code class="docutils literal notranslate"><span class="pre">form-INITIAL_FORMS</span></code> fields shown
+in the examples here, the management form also includes
+<code class="docutils literal notranslate"><span class="pre">form-MIN_NUM_FORMS</span></code> and <code class="docutils literal notranslate"><span class="pre">form-MAX_NUM_FORMS</span></code> fields. They are output
+with the rest of the management form, but only for the convenience of
+client-side code. These fields are not required and so are not shown in
+the example <code class="docutils literal notranslate"><span class="pre">POST</span></code> data.</p>
+</div>
+</section>
+<section id="s-total-form-count-and-initial-form-count">
+<span id="total-form-count-and-initial-form-count"></span><h3><code class="docutils literal notranslate"><span class="pre">total_form_count</span></code> and <code class="docutils literal notranslate"><span class="pre">initial_form_count</span></code><a class="headerlink" href="#total-form-count-and-initial-form-count" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BaseFormSet</span></code> has a couple of methods that are closely related to the
+<code class="docutils literal notranslate"><span class="pre">ManagementForm</span></code>, <code class="docutils literal notranslate"><span class="pre">total_form_count</span></code> and <code class="docutils literal notranslate"><span class="pre">initial_form_count</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">total_form_count</span></code> returns the total number of forms in this formset.
+<code class="docutils literal notranslate"><span class="pre">initial_form_count</span></code> returns the number of forms in the formset that were
+pre-filled, and is also used to determine how many forms are required. You
+will probably never need to override either of these methods, so please be
+sure you understand what they do before doing so.</p>
+</section>
+<section id="s-empty-form">
+<span id="s-id2"></span><span id="empty-form"></span><span id="id2"></span><h3><code class="docutils literal notranslate"><span class="pre">empty_form</span></code><a class="headerlink" href="#empty-form" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BaseFormSet</span></code> provides an additional attribute <code class="docutils literal notranslate"><span class="pre">empty_form</span></code> which returns
+a form instance with a prefix of <code class="docutils literal notranslate"><span class="pre">__prefix__</span></code> for easier use in dynamic
+forms with JavaScript.</p>
+</section>
+<section id="s-error-messages">
+<span id="s-formsets-error-messages"></span><span id="error-messages"></span><span id="formsets-error-messages"></span><h3><code class="docutils literal notranslate"><span class="pre">error_messages</span></code><a class="headerlink" href="#error-messages" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">error_messages</span></code> argument lets you override the default messages that the
+formset will raise. Pass in a dictionary with keys matching the error messages
+you want to override. Error message keys include <code class="docutils literal notranslate"><span class="pre">'too_few_forms'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'too_many_forms'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'missing_management_form'</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">'too_few_forms'</span></code> and <code class="docutils literal notranslate"><span class="pre">'too_many_forms'</span></code> error messages may contain
+<code class="docutils literal notranslate"><span class="pre">%(num)d</span></code>, which will be replaced with <code class="docutils literal notranslate"><span class="pre">min_num</span></code> and <code class="docutils literal notranslate"><span class="pre">max_num</span></code>,
+respectively.</p>
+<p>For example, here is the default error message when the
+management form is missing:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">({})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;ManagementForm data is missing or has been tampered with. Missing fields: form-TOTAL_FORMS, form-INITIAL_FORMS. You may need to file a bug report if the issue persists.&#39;]</span>
+</pre></div>
+</div>
+<p>And here is a custom error message:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{},</span> <span class="n">error_messages</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;missing_management_form&quot;</span><span class="p">:</span> <span class="s2">&quot;Sorry, something went wrong.&quot;</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;Sorry, something went wrong.&#39;]</span>
+</pre></div>
+</div>
+</section>
+<section id="s-custom-formset-validation">
+<span id="custom-formset-validation"></span><h3>Custom formset validation<a class="headerlink" href="#custom-formset-validation" title="Link to this heading">¶</a></h3>
+<p>A formset has a <code class="docutils literal notranslate"><span class="pre">clean</span></code> method similar to the one on a <code class="docutils literal notranslate"><span class="pre">Form</span></code> class. This
+is where you define your own validation that works at the formset level:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span><span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks that no two articles have the same title.&quot;&quot;&quot;</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="c1"># Don&#39;t bother validating the formset unless each form is valid on its own</span>
+<span class="gp">... </span>            <span class="k">return</span>
+<span class="gp">... </span>        <span class="n">titles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_delete</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_delete_form</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+<span class="gp">... </span>                <span class="k">continue</span>
+<span class="gp">... </span>            <span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">title</span> <span class="ow">in</span> <span class="n">titles</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Articles in a set must have distinct titles.&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="n">titles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1904-06-16&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1912-06-23&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span>
+<span class="go">[{}, {}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;Articles in a set must have distinct titles.&#39;]</span>
+</pre></div>
+</div>
+<p>The formset <code class="docutils literal notranslate"><span class="pre">clean</span></code> method is called after all the <code class="docutils literal notranslate"><span class="pre">Form.clean</span></code> methods
+have been called. The errors will be found using the <code class="docutils literal notranslate"><span class="pre">non_form_errors()</span></code>
+method on the formset.</p>
+<p>Non-form errors will be rendered with an additional class of <code class="docutils literal notranslate"><span class="pre">nonform</span></code> to
+help distinguish them from form-specific errors. For example,
+<code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">formset.non_form_errors</span> <span class="pre">}}</span></code> would look like:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;errorlist nonform&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Articles in a set must have distinct titles.<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-validating-the-number-of-forms-in-a-formset">
+<span id="validating-the-number-of-forms-in-a-formset"></span><h2>Validating the number of forms in a formset<a class="headerlink" href="#validating-the-number-of-forms-in-a-formset" title="Link to this heading">¶</a></h2>
+<p>Ginger provides a couple ways to validate the minimum or maximum number of
+submitted forms. Applications which need more customizable validation of the
+number of forms should use custom formset validation.</p>
+<section id="s-validate-max">
+<span id="s-id3"></span><span id="validate-max"></span><span id="id3"></span><h3><code class="docutils literal notranslate"><span class="pre">validate_max</span></code><a class="headerlink" href="#validate-max" title="Link to this heading">¶</a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">validate_max=True</span></code> is passed to
+<a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a>, validation will also check
+that the number of forms in the data set, minus those marked for
+deletion, is less than or equal to <code class="docutils literal notranslate"><span class="pre">max_num</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">max_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">validate_max</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1904-06-16&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test 2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1912-06-23&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span>
+<span class="go">[{}, {}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;Please submit at most 1 form.&#39;]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">validate_max=True</span></code> validates against <code class="docutils literal notranslate"><span class="pre">max_num</span></code> strictly even if
+<code class="docutils literal notranslate"><span class="pre">max_num</span></code> was exceeded because the amount of initial data supplied was
+excessive.</p>
+<p>The error message can be customized by passing the <code class="docutils literal notranslate"><span class="pre">'too_many_forms'</span></code> message
+to the <a class="reference internal" href="#formsets-error-messages"><span class="std std-ref">error_messages</span></a> argument.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regardless of <code class="docutils literal notranslate"><span class="pre">validate_max</span></code>, if the number of forms in a data set
+exceeds <code class="docutils literal notranslate"><span class="pre">absolute_max</span></code>, then the form will fail to validate as if
+<code class="docutils literal notranslate"><span class="pre">validate_max</span></code> were set, and additionally only the first <code class="docutils literal notranslate"><span class="pre">absolute_max</span></code>
+forms will be validated. The remainder will be truncated entirely. This is
+to protect against memory exhaustion attacks using forged POST requests.
+See <a class="reference internal" href="#formsets-absolute-max"><span class="std std-ref">Limiting the maximum number of instantiated forms</span></a>.</p>
+</div>
+</section>
+<section id="s-validate-min">
+<span id="validate-min"></span><h3><code class="docutils literal notranslate"><span class="pre">validate_min</span></code><a class="headerlink" href="#validate-min" title="Link to this heading">¶</a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">validate_min=True</span></code> is passed to
+<a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a>, validation will also check
+that the number of forms in the data set, minus those marked for
+deletion, is greater than or equal to <code class="docutils literal notranslate"><span class="pre">min_num</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">min_num</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">validate_min</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1904-06-16&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Test 2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1912-06-23&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">errors</span>
+<span class="go">[{}, {}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">non_form_errors</span><span class="p">()</span>
+<span class="go">[&#39;Please submit at least 3 forms.&#39;]</span>
+</pre></div>
+</div>
+<p>The error message can be customized by passing the <code class="docutils literal notranslate"><span class="pre">'too_few_forms'</span></code> message
+to the <a class="reference internal" href="#formsets-error-messages"><span class="std std-ref">error_messages</span></a> argument.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Regardless of <code class="docutils literal notranslate"><span class="pre">validate_min</span></code>, if a formset contains no data, then
+<code class="docutils literal notranslate"><span class="pre">extra</span> <span class="pre">+</span> <span class="pre">min_num</span></code> empty forms will be displayed.</p>
+</div>
+</section>
+</section>
+<section id="s-dealing-with-ordering-and-deletion-of-forms">
+<span id="dealing-with-ordering-and-deletion-of-forms"></span><h2>Dealing with ordering and deletion of forms<a class="headerlink" href="#dealing-with-ordering-and-deletion-of-forms" title="Link to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="../../ref/forms/formsets.html#ginger.forms.formsets.formset_factory" title="ginger.forms.formsets.formset_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">formset_factory()</span></code></a> provides two optional
+parameters <code class="docutils literal notranslate"><span class="pre">can_order</span></code> and <code class="docutils literal notranslate"><span class="pre">can_delete</span></code> to help with ordering of forms in
+formsets and deletion of forms from a formset.</p>
+<section id="s-can-order">
+<span id="can-order"></span><h3><code class="docutils literal notranslate"><span class="pre">can_order</span></code><a class="headerlink" href="#can-order" title="Link to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.can_order">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">can_order</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.can_order" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Lets you create a formset with the ability to order:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">can_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">initial</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">)},</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; value=&quot;Article #1&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; value=&quot;2008-05-10&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-ORDER&quot;&gt;Order:&lt;/label&gt;&lt;input type=&quot;number&quot; name=&quot;form-0-ORDER&quot; value=&quot;1&quot; id=&quot;id_form-0-ORDER&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-title&quot; value=&quot;Article #2&quot; id=&quot;id_form-1-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-pub_date&quot; value=&quot;2008-05-11&quot; id=&quot;id_form-1-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-ORDER&quot;&gt;Order:&lt;/label&gt;&lt;input type=&quot;number&quot; name=&quot;form-1-ORDER&quot; value=&quot;2&quot; id=&quot;id_form-1-ORDER&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-title&quot; id=&quot;id_form-2-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-pub_date&quot; id=&quot;id_form-2-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-ORDER&quot;&gt;Order:&lt;/label&gt;&lt;input type=&quot;number&quot; name=&quot;form-2-ORDER&quot; id=&quot;id_form-2-ORDER&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p>This adds an additional field to each form. This new field is named <code class="docutils literal notranslate"><span class="pre">ORDER</span></code>
+and is an <code class="docutils literal notranslate"><span class="pre">forms.IntegerField</span></code>. For the forms that came from the initial
+data it automatically assigned them a numeric value. Let’s look at what will
+happen when the user changes these values:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2008-05-10&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-ORDER&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2008-05-11&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-ORDER&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #3&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2008-05-01&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-ORDER&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">initial</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">)},</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">ordered_forms</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">{&#39;pub_date&#39;: datetime.date(2008, 5, 1), &#39;ORDER&#39;: 0, &#39;title&#39;: &#39;Article #3&#39;}</span>
+<span class="go">{&#39;pub_date&#39;: datetime.date(2008, 5, 11), &#39;ORDER&#39;: 1, &#39;title&#39;: &#39;Article #2&#39;}</span>
+<span class="go">{&#39;pub_date&#39;: datetime.date(2008, 5, 10), &#39;ORDER&#39;: 2, &#39;title&#39;: &#39;Article #1&#39;}</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#ginger.forms.formsets.BaseFormSet" title="ginger.forms.formsets.BaseFormSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFormSet</span></code></a> also provides an
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.ordering_widget" title="ginger.forms.formsets.BaseFormSet.ordering_widget"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ordering_widget</span></code></a> attribute and
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.get_ordering_widget" title="ginger.forms.formsets.BaseFormSet.get_ordering_widget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_ordering_widget()</span></code></a> method that
+control the widget used with
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.can_order" title="ginger.forms.formsets.BaseFormSet.can_order"><code class="xref py py-attr docutils literal notranslate"><span class="pre">can_order</span></code></a>.</p>
+<section id="s-ordering-widget">
+<span id="ordering-widget"></span><h4><code class="docutils literal notranslate"><span class="pre">ordering_widget</span></code><a class="headerlink" href="#ordering-widget" title="Link to this heading">¶</a></h4>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.ordering_widget">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">ordering_widget</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.ordering_widget" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Default: <a class="reference internal" href="../../ref/forms/widgets.html#ginger.forms.NumberInput" title="ginger.forms.NumberInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberInput</span></code></a></p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">ordering_widget</span></code> to specify the widget class to be used with
+<code class="docutils literal notranslate"><span class="pre">can_order</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span><span class="p">,</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">ordering_widget</span> <span class="o">=</span> <span class="n">HiddenInput</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">,</span> <span class="n">can_order</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-get-ordering-widget">
+<span id="get-ordering-widget"></span><h4><code class="docutils literal notranslate"><span class="pre">get_ordering_widget</span></code><a class="headerlink" href="#get-ordering-widget" title="Link to this heading">¶</a></h4>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.get_ordering_widget">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">get_ordering_widget</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.get_ordering_widget" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Override <code class="docutils literal notranslate"><span class="pre">get_ordering_widget()</span></code> if you need to provide a widget instance for
+use with <code class="docutils literal notranslate"><span class="pre">can_order</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span><span class="p">,</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">get_ordering_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">HiddenInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;ordering&quot;</span><span class="p">})</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">,</span> <span class="n">can_order</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-can-delete">
+<span id="can-delete"></span><h3><code class="docutils literal notranslate"><span class="pre">can_delete</span></code><a class="headerlink" href="#can-delete" title="Link to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.can_delete">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">can_delete</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.can_delete" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+<p>Lets you create a formset with the ability to select forms for deletion:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">can_delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">initial</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">)},</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; value=&quot;Article #1&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; value=&quot;2008-05-10&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-DELETE&quot;&gt;Delete:&lt;/label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;form-0-DELETE&quot; id=&quot;id_form-0-DELETE&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-title&quot; value=&quot;Article #2&quot; id=&quot;id_form-1-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-1-pub_date&quot; value=&quot;2008-05-11&quot; id=&quot;id_form-1-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-1-DELETE&quot;&gt;Delete:&lt;/label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;form-1-DELETE&quot; id=&quot;id_form-1-DELETE&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-title&quot; id=&quot;id_form-2-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-2-pub_date&quot; id=&quot;id_form-2-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-2-DELETE&quot;&gt;Delete:&lt;/label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;form-2-DELETE&quot; id=&quot;id_form-2-DELETE&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p>Similar to <code class="docutils literal notranslate"><span class="pre">can_order</span></code> this adds a new field to each form named <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>
+and is a <code class="docutils literal notranslate"><span class="pre">forms.BooleanField</span></code>. When data comes through marking any of the
+delete fields you can access them with <code class="docutils literal notranslate"><span class="pre">deleted_forms</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-TOTAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-INITIAL_FORMS&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2008-05-10&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-0-DELETE&quot;</span><span class="p">:</span> <span class="s2">&quot;on&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2008-05-11&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-1-DELETE&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-title&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-pub_date&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;form-2-DELETE&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">initial</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #1&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Article #2&quot;</span><span class="p">,</span> <span class="s2">&quot;pub_date&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">)},</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">deleted_forms</span><span class="p">]</span>
+<span class="go">[{&#39;DELETE&#39;: True, &#39;pub_date&#39;: datetime.date(2008, 5, 10), &#39;title&#39;: &#39;Article #1&#39;}]</span>
+</pre></div>
+</div>
+<p>If you are using a <a class="reference internal" href="modelforms.html#ginger.forms.models.BaseModelFormSet" title="ginger.forms.models.BaseModelFormSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelFormSet</span></code></a>,
+model instances for deleted forms will be deleted when you call
+<code class="docutils literal notranslate"><span class="pre">formset.save()</span></code>.</p>
+<p>If you call <code class="docutils literal notranslate"><span class="pre">formset.save(commit=False)</span></code>, objects will not be deleted
+automatically.  You’ll need to call <code class="docutils literal notranslate"><span class="pre">delete()</span></code> on each of the
+<a class="reference internal" href="modelforms.html#ginger.forms.models.BaseModelFormSet.deleted_objects" title="ginger.forms.models.BaseModelFormSet.deleted_objects"><code class="xref py py-attr docutils literal notranslate"><span class="pre">formset.deleted_objects</span></code></a> to actually delete
+them:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">instances</span> <span class="o">=</span> <span class="n">formset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">deleted_objects</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">obj</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>On the other hand, if you are using a plain <code class="docutils literal notranslate"><span class="pre">FormSet</span></code>, it’s up to you to
+handle <code class="docutils literal notranslate"><span class="pre">formset.deleted_forms</span></code>, perhaps in your formset’s <code class="docutils literal notranslate"><span class="pre">save()</span></code> method,
+as there’s no general notion of what it means to delete a form.</p>
+<p><a class="reference internal" href="#ginger.forms.formsets.BaseFormSet" title="ginger.forms.formsets.BaseFormSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseFormSet</span></code></a> also provides a
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.deletion_widget" title="ginger.forms.formsets.BaseFormSet.deletion_widget"><code class="xref py py-attr docutils literal notranslate"><span class="pre">deletion_widget</span></code></a> attribute and
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.get_deletion_widget" title="ginger.forms.formsets.BaseFormSet.get_deletion_widget"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_deletion_widget()</span></code></a> method that
+control the widget used with
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.can_delete" title="ginger.forms.formsets.BaseFormSet.can_delete"><code class="xref py py-attr docutils literal notranslate"><span class="pre">can_delete</span></code></a>.</p>
+<section id="s-deletion-widget">
+<span id="deletion-widget"></span><h4><code class="docutils literal notranslate"><span class="pre">deletion_widget</span></code><a class="headerlink" href="#deletion-widget" title="Link to this heading">¶</a></h4>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.deletion_widget">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">deletion_widget</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.deletion_widget" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Default: <a class="reference internal" href="../../ref/forms/widgets.html#ginger.forms.CheckboxInput" title="ginger.forms.CheckboxInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">CheckboxInput</span></code></a></p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">deletion_widget</span></code> to specify the widget class to be used with
+<code class="docutils literal notranslate"><span class="pre">can_delete</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span><span class="p">,</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">deletion_widget</span> <span class="o">=</span> <span class="n">HiddenInput</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">,</span> <span class="n">can_delete</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-get-deletion-widget">
+<span id="get-deletion-widget"></span><h4><code class="docutils literal notranslate"><span class="pre">get_deletion_widget</span></code><a class="headerlink" href="#get-deletion-widget" title="Link to this heading">¶</a></h4>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.get_deletion_widget">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">get_deletion_widget</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.get_deletion_widget" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Override <code class="docutils literal notranslate"><span class="pre">get_deletion_widget()</span></code> if you need to provide a widget instance for
+use with <code class="docutils literal notranslate"><span class="pre">can_delete</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span><span class="p">,</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">get_deletion_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">HiddenInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;deletion&quot;</span><span class="p">})</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">,</span> <span class="n">can_delete</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-can-delete-extra">
+<span id="can-delete-extra"></span><h3><code class="docutils literal notranslate"><span class="pre">can_delete_extra</span></code><a class="headerlink" href="#can-delete-extra" title="Link to this heading">¶</a></h3>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.can_delete_extra">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">can_delete_extra</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.can_delete_extra" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<p>While setting <code class="docutils literal notranslate"><span class="pre">can_delete=True</span></code>, specifying <code class="docutils literal notranslate"><span class="pre">can_delete_extra=False</span></code> will
+remove the option to delete extra forms.</p>
+</section>
+</section>
+<section id="s-adding-additional-fields-to-a-formset">
+<span id="adding-additional-fields-to-a-formset"></span><h2>Adding additional fields to a formset<a class="headerlink" href="#adding-additional-fields-to-a-formset" title="Link to this heading">¶</a></h2>
+<p>If you need to add additional fields to the formset this can be easily
+accomplished. The formset base class provides an <code class="docutils literal notranslate"><span class="pre">add_fields</span></code> method. You
+can override this method to add your own fields or even redefine the default
+fields/attributes of the order and deletion fields:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">add_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_fields</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;my_field&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-title&quot;&gt;Title:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-title&quot; id=&quot;id_form-0-title&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-pub_date&quot;&gt;Pub date:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-pub_date&quot; id=&quot;id_form-0-pub_date&quot;&gt;&lt;/div&gt;</span>
+<span class="go">&lt;div&gt;&lt;label for=&quot;id_form-0-my_field&quot;&gt;My field:&lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;form-0-my_field&quot; id=&quot;id_form-0-my_field&quot;&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-passing-custom-parameters-to-formset-forms">
+<span id="s-custom-formset-form-kwargs"></span><span id="passing-custom-parameters-to-formset-forms"></span><span id="custom-formset-form-kwargs"></span><h2>Passing custom parameters to formset forms<a class="headerlink" href="#passing-custom-parameters-to-formset-forms" title="Link to this heading">¶</a></h2>
+<p>Sometimes your form class takes custom parameters, like <code class="docutils literal notranslate"><span class="pre">MyArticleForm</span></code>.
+You can pass this parameter when instantiating the formset:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyArticleForm</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+<span class="gp">... </span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">MyArticleForm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">form_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">form_kwargs</span></code> may also depend on the specific form instance. The formset
+base class provides a <code class="docutils literal notranslate"><span class="pre">get_form_kwargs</span></code> method. The method takes a single
+argument - the index of the form in the formset. The index is <code class="docutils literal notranslate"><span class="pre">None</span></code> for the
+<a class="reference internal" href="#empty-form"><span class="std std-ref">empty_form</span></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">BaseFormSet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">BaseArticleFormSet</span><span class="p">(</span><span class="n">BaseFormSet</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">get_form_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_form_kwargs</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;custom_kwarg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">kwargs</span>
+<span class="gp">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">MyArticleForm</span><span class="p">,</span> <span class="n">formset</span><span class="o">=</span><span class="n">BaseArticleFormSet</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="s-customizing-a-formset-s-prefix">
+<span id="s-formset-prefix"></span><span id="customizing-a-formset-s-prefix"></span><span id="formset-prefix"></span><h2>Customizing a formset’s prefix<a class="headerlink" href="#customizing-a-formset-s-prefix" title="Link to this heading">¶</a></h2>
+<p>In the rendered HTML, formsets include a prefix on each field’s name. By
+default, the prefix is <code class="docutils literal notranslate"><span class="pre">'form'</span></code>, but it can be customized using the formset’s
+<code class="docutils literal notranslate"><span class="pre">prefix</span></code> argument.</p>
+<p>For example, in the default case, you might see:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;id_form-0-title&quot;</span><span class="p">&gt;</span>Title:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;form-0-title&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;id_form-0-title&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>But with <code class="docutils literal notranslate"><span class="pre">ArticleFormset(prefix='article')</span></code> that becomes:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;id_article-0-title&quot;</span><span class="p">&gt;</span>Title:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;article-0-title&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;id_article-0-title&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>This is useful if you want to <a class="reference internal" href="#multiple-formsets-in-view"><span class="std std-ref">use more than one formset in a view</span></a>.</p>
+</section>
+<section id="s-using-a-formset-in-views-and-templates">
+<span id="s-formset-rendering"></span><span id="using-a-formset-in-views-and-templates"></span><span id="formset-rendering"></span><h2>Using a formset in views and templates<a class="headerlink" href="#using-a-formset-in-views-and-templates" title="Link to this heading">¶</a></h2>
+<p>Formsets have the following attributes and methods associated with rendering:</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.renderer">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">renderer</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.renderer" title="Link to this definition">¶</a></dt>
+<dd><p>Specifies the <a class="reference internal" href="../../ref/forms/renderers.html"><span class="doc">renderer</span></a> to use for the
+formset. Defaults to the renderer specified by the <a class="reference internal" href="../../ref/settings.html#std-setting-FORM_RENDERER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">FORM_RENDERER</span></code></a>
+setting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.template_name">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">template_name</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.template_name" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the template rendered if the formset is cast into a string,
+e.g. via <code class="docutils literal notranslate"><span class="pre">print(formset)</span></code> or in a template via <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">formset</span> <span class="pre">}}</span></code>.</p>
+<p>By default, a property returning the value of the renderer’s
+<a class="reference internal" href="../../ref/forms/renderers.html#ginger.forms.renderers.BaseRenderer.formset_template_name" title="ginger.forms.renderers.BaseRenderer.formset_template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">formset_template_name</span></code></a>. You may
+set it as a string template name in order to override that for a particular
+formset class.</p>
+<p>This template will be used to render the formset’s management form, and
+then each form in the formset as per the template defined by the form’s
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.template_name" title="ginger.forms.Form.template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.template_name_div">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">template_name_div</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.template_name_div" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the template used when calling <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_div" title="ginger.forms.formsets.BaseFormSet.as_div"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_div()</span></code></a>. By default this
+is <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/formsets/div.html&quot;</span></code>. This template renders the
+formset’s management form and then each form in the formset as per the
+form’s <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.as_div" title="ginger.forms.Form.as_div"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_div()</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.template_name_p">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">template_name_p</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.template_name_p" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the template used when calling <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_p" title="ginger.forms.formsets.BaseFormSet.as_p"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_p()</span></code></a>. By default this
+is <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/formsets/p.html&quot;</span></code>. This template renders the formset’s
+management form and then each form in the formset as per the form’s
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.as_p" title="ginger.forms.Form.as_p"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_p()</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.template_name_table">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">template_name_table</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.template_name_table" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the template used when calling <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_table" title="ginger.forms.formsets.BaseFormSet.as_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_table()</span></code></a>. By default
+this is <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/formsets/table.html&quot;</span></code>. This template renders the
+formset’s management form and then each form in the formset as per the
+form’s <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.as_table" title="ginger.forms.Form.as_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_table()</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.template_name_ul">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">template_name_ul</span></span><a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.template_name_ul" title="Link to this definition">¶</a></dt>
+<dd><p>The name of the template used when calling <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_ul" title="ginger.forms.formsets.BaseFormSet.as_ul"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_ul()</span></code></a>. By default this
+is <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/formsets/ul.html&quot;</span></code>. This template renders the formset’s
+management form and then each form in the formset as per the form’s
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.as_ul" title="ginger.forms.Form.as_ul"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_ul()</span></code></a> method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.get_context">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">get_context</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.get_context" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the context for rendering a formset in a template.</p>
+<p>The available context is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">formset</span></code> : The instance of the formset.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.render">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">render</span></span>(<em class="sig-param"><span class="n"><span class="pre">template_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.render" title="Link to this definition">¶</a></dt>
+<dd><p>The render method is called by <code class="docutils literal notranslate"><span class="pre">__str__</span></code> as well as the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_div" title="ginger.forms.formsets.BaseFormSet.as_div"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_div()</span></code></a>,
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_p" title="ginger.forms.formsets.BaseFormSet.as_p"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_p()</span></code></a>, <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_ul" title="ginger.forms.formsets.BaseFormSet.as_ul"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_ul()</span></code></a>, and <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.as_table" title="ginger.forms.formsets.BaseFormSet.as_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_table()</span></code></a> methods. All arguments
+are optional and will default to:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">template_name</span></code>: <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name" title="ginger.forms.formsets.BaseFormSet.template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">context</span></code>: Value returned by <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.get_context" title="ginger.forms.formsets.BaseFormSet.get_context"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_context()</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">renderer</span></code>: Value returned by <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.renderer" title="ginger.forms.formsets.BaseFormSet.renderer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">renderer</span></code></a></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.as_div">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">as_div</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.as_div" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the formset with the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name_div" title="ginger.forms.formsets.BaseFormSet.template_name_div"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_div</span></code></a> template.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.as_p">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">as_p</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.as_p" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the formset with the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name_p" title="ginger.forms.formsets.BaseFormSet.template_name_p"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_p</span></code></a> template.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.as_table">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">as_table</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.as_table" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the formset with the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name_table" title="ginger.forms.formsets.BaseFormSet.template_name_table"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_table</span></code></a> template.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.forms.formsets.BaseFormSet.as_ul">
+<span class="sig-prename descclassname"><span class="pre">BaseFormSet.</span></span><span class="sig-name descname"><span class="pre">as_ul</span></span>()<a class="headerlink" href="#ginger.forms.formsets.BaseFormSet.as_ul" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the formset with the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name_ul" title="ginger.forms.formsets.BaseFormSet.template_name_ul"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_ul</span></code></a> template.</p>
+</dd></dl>
+
+<p>Using a formset inside a view is not very different from using a regular
+<code class="docutils literal notranslate"><span class="pre">Form</span></code> class. The only thing you will want to be aware of is making sure to
+use the management form inside the template. Let’s look at a sample view:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="kn">from</span> <span class="nn">ginger.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span>
+
+
+<span class="k">def</span> <span class="nf">manage_articles</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># do something with the formset.cleaned_data</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;manage_articles.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;formset&quot;</span><span class="p">:</span> <span class="n">formset</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">manage_articles.html</span></code> template might look like this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">formset.management_form</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">form</span> <span class="k">in</span> <span class="nv">formset</span> <span class="cp">%}</span>
+        <span class="cp">{{</span> <span class="nv">form</span> <span class="cp">}}</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>However there’s a slight shortcut for the above by letting the formset itself
+deal with the management form:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+        <span class="cp">{{</span> <span class="nv">formset</span> <span class="cp">}}</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The above ends up calling the <a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.render" title="ginger.forms.formsets.BaseFormSet.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseFormSet.render()</span></code></a> method on the formset
+class. This renders the formset using the template specified by the
+<a class="reference internal" href="#ginger.forms.formsets.BaseFormSet.template_name" title="ginger.forms.formsets.BaseFormSet.template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name</span></code></a> attribute. Similar to forms, by default the
+formset will be rendered <code class="docutils literal notranslate"><span class="pre">as_table</span></code>, with other helper methods of <code class="docutils literal notranslate"><span class="pre">as_p</span></code>
+and <code class="docutils literal notranslate"><span class="pre">as_ul</span></code> being available. The rendering of the formset can be customized
+by specifying the <code class="docutils literal notranslate"><span class="pre">template_name</span></code> attribute, or more generally by
+<a class="reference internal" href="../../ref/forms/renderers.html#overriding-built-in-formset-templates"><span class="std std-ref">overriding the default template</span></a>.</p>
+<section id="s-manually-rendered-can-delete-and-can-order">
+<span id="s-id4"></span><span id="manually-rendered-can-delete-and-can-order"></span><span id="id4"></span><h3>Manually rendered <code class="docutils literal notranslate"><span class="pre">can_delete</span></code> and <code class="docutils literal notranslate"><span class="pre">can_order</span></code><a class="headerlink" href="#manually-rendered-can-delete-and-can-order" title="Link to this heading">¶</a></h3>
+<p>If you manually render fields in the template, you can render
+<code class="docutils literal notranslate"><span class="pre">can_delete</span></code> parameter with <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.DELETE</span> <span class="pre">}}</span></code>:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">formset.management_form</span> <span class="cp">}}</span>
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">form</span> <span class="k">in</span> <span class="nv">formset</span> <span class="cp">%}</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">form.title</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">form.pub_date</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">if</span> <span class="nv">formset.can_delete</span> <span class="cp">%}</span>
+                <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">form.DELETE</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+        <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Similarly, if the formset has the ability to order (<code class="docutils literal notranslate"><span class="pre">can_order=True</span></code>), it is
+possible to render it with <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.ORDER</span> <span class="pre">}}</span></code>.</p>
+</section>
+<section id="s-using-more-than-one-formset-in-a-view">
+<span id="s-multiple-formsets-in-view"></span><span id="using-more-than-one-formset-in-a-view"></span><span id="multiple-formsets-in-view"></span><h3>Using more than one formset in a view<a class="headerlink" href="#using-more-than-one-formset-in-a-view" title="Link to this heading">¶</a></h3>
+<p>You are able to use more than one formset in a view if you like. Formsets
+borrow much of its behavior from forms. With that said you are able to use
+<code class="docutils literal notranslate"><span class="pre">prefix</span></code> to prefix formset form field names with a given value to allow
+more than one formset to be sent to a view without name clashing. Let’s take
+a look at how this might be accomplished:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.forms</span> <span class="kn">import</span> <span class="n">formset_factory</span>
+<span class="kn">from</span> <span class="nn">ginger.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">myapp.forms</span> <span class="kn">import</span> <span class="n">ArticleForm</span><span class="p">,</span> <span class="n">BookForm</span>
+
+
+<span class="k">def</span> <span class="nf">manage_articles</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">ArticleFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">ArticleForm</span><span class="p">)</span>
+    <span class="n">BookFormSet</span> <span class="o">=</span> <span class="n">formset_factory</span><span class="p">(</span><span class="n">BookForm</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">article_formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;articles&quot;</span><span class="p">)</span>
+        <span class="n">book_formset</span> <span class="o">=</span> <span class="n">BookFormSet</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;books&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">article_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">book_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># do something with the cleaned_data on the formsets.</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">article_formset</span> <span class="o">=</span> <span class="n">ArticleFormSet</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;articles&quot;</span><span class="p">)</span>
+        <span class="n">book_formset</span> <span class="o">=</span> <span class="n">BookFormSet</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;books&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s2">&quot;manage_articles.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;article_formset&quot;</span><span class="p">:</span> <span class="n">article_formset</span><span class="p">,</span>
+            <span class="s2">&quot;book_formset&quot;</span><span class="p">:</span> <span class="n">book_formset</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>You would then render the formsets as normal. It is important to point out
+that you need to pass <code class="docutils literal notranslate"><span class="pre">prefix</span></code> on both the POST and non-POST cases so that
+it is rendered and processed correctly.</p>
+<p>Each formset’s <a class="reference internal" href="#formset-prefix"><span class="std std-ref">prefix</span></a> replaces the default <code class="docutils literal notranslate"><span class="pre">form</span></code>
+prefix that’s added to each field’s <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">id</span></code> HTML attributes.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="modelforms.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Creating forms from models</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Working with forms</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Formsets</a><ul>
+<li><a class="reference internal" href="#using-initial-data-with-a-formset">Using initial data with a formset</a></li>
+<li><a class="reference internal" href="#limiting-the-maximum-number-of-forms">Limiting the maximum number of forms</a></li>
+<li><a class="reference internal" href="#limiting-the-maximum-number-of-instantiated-forms">Limiting the maximum number of instantiated forms</a></li>
+<li><a class="reference internal" href="#formset-validation">Formset validation</a><ul>
+<li><a class="reference internal" href="#understanding-the-managementform">Understanding the <code class="docutils literal notranslate"><span class="pre">ManagementForm</span></code></a></li>
+<li><a class="reference internal" href="#total-form-count-and-initial-form-count"><code class="docutils literal notranslate"><span class="pre">total_form_count</span></code> and <code class="docutils literal notranslate"><span class="pre">initial_form_count</span></code></a></li>
+<li><a class="reference internal" href="#empty-form"><code class="docutils literal notranslate"><span class="pre">empty_form</span></code></a></li>
+<li><a class="reference internal" href="#error-messages"><code class="docutils literal notranslate"><span class="pre">error_messages</span></code></a></li>
+<li><a class="reference internal" href="#custom-formset-validation">Custom formset validation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validating-the-number-of-forms-in-a-formset">Validating the number of forms in a formset</a><ul>
+<li><a class="reference internal" href="#validate-max"><code class="docutils literal notranslate"><span class="pre">validate_max</span></code></a></li>
+<li><a class="reference internal" href="#validate-min"><code class="docutils literal notranslate"><span class="pre">validate_min</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dealing-with-ordering-and-deletion-of-forms">Dealing with ordering and deletion of forms</a><ul>
+<li><a class="reference internal" href="#can-order"><code class="docutils literal notranslate"><span class="pre">can_order</span></code></a><ul>
+<li><a class="reference internal" href="#ordering-widget"><code class="docutils literal notranslate"><span class="pre">ordering_widget</span></code></a></li>
+<li><a class="reference internal" href="#get-ordering-widget"><code class="docutils literal notranslate"><span class="pre">get_ordering_widget</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#can-delete"><code class="docutils literal notranslate"><span class="pre">can_delete</span></code></a><ul>
+<li><a class="reference internal" href="#deletion-widget"><code class="docutils literal notranslate"><span class="pre">deletion_widget</span></code></a></li>
+<li><a class="reference internal" href="#get-deletion-widget"><code class="docutils literal notranslate"><span class="pre">get_deletion_widget</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#can-delete-extra"><code class="docutils literal notranslate"><span class="pre">can_delete_extra</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-additional-fields-to-a-formset">Adding additional fields to a formset</a></li>
+<li><a class="reference internal" href="#passing-custom-parameters-to-formset-forms">Passing custom parameters to formset forms</a></li>
+<li><a class="reference internal" href="#customizing-a-formset-s-prefix">Customizing a formset’s prefix</a></li>
+<li><a class="reference internal" href="#using-a-formset-in-views-and-templates">Using a formset in views and templates</a><ul>
+<li><a class="reference internal" href="#manually-rendered-can-delete-and-can-order">Manually rendered <code class="docutils literal notranslate"><span class="pre">can_delete</span></code> and <code class="docutils literal notranslate"><span class="pre">can_order</span></code></a></li>
+<li><a class="reference internal" href="#using-more-than-one-formset-in-a-view">Using more than one formset in a view</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

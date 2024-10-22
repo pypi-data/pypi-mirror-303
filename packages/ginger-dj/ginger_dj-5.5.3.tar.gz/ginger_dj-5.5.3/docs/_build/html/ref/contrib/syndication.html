@@ -1,0 +1,1696 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Cross Site Request Forgery protection" href="../csrf.html" /><link rel="prev" title="The staticfiles app" href="staticfiles.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>The syndication feed framework - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/ref/contrib/syndication.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.contrib.syndication">
+<span id="s-the-syndication-feed-framework"></span><span id="module-ginger.contrib.syndication"></span><span id="the-syndication-feed-framework"></span><h1>The syndication feed framework<a class="headerlink" href="#module-ginger.contrib.syndication" title="Link to this heading">¶</a></h1>
+<p>Ginger comes with a high-level syndication-feed-generating framework for
+creating <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Glossary/RSS">RSS</a> and <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc4287.html"><strong>Atom</strong></a> feeds.</p>
+<p>To create any syndication feed, all you have to do is write a short
+Python class. You can create as many feeds as you want.</p>
+<p>Ginger also comes with a lower-level feed-generating API. Use this if
+you want to generate feeds outside of a web context, or in some other
+lower-level way.</p>
+<section id="s-the-high-level-framework">
+<span id="the-high-level-framework"></span><h2>The high-level framework<a class="headerlink" href="#the-high-level-framework" title="Link to this heading">¶</a></h2>
+<section id="s-overview">
+<span id="overview"></span><h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h3>
+<p>The high-level feed-generating framework is supplied by the
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class. To create a
+feed, write a <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class
+and point to an instance of it in your <a class="reference internal" href="../../topics/http/urls.html"><span class="doc">URLconf</span></a>.</p>
+</section>
+<section id="s-feed-classes">
+<span id="feed-classes"></span><h3><code class="docutils literal notranslate"><span class="pre">Feed</span></code> classes<a class="headerlink" href="#feed-classes" title="Link to this heading">¶</a></h3>
+<p>A <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class is a Python
+class that represents a syndication feed. A feed can be simple (e.g.,
+a “site news” feed, or a basic feed displaying the latest entries of a
+blog) or more complex (e.g., a feed displaying all the blog entries in
+a particular category, where the category is variable).</p>
+<p>Feed classes subclass <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.contrib.syndication.views.Feed</span></code></a>.
+They can live anywhere in your codebase.</p>
+<p>Instances of <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> classes
+are views which can be used in your <a class="reference internal" href="../../topics/http/urls.html"><span class="doc">URLconf</span></a>.</p>
+</section>
+<section id="s-a-simple-example">
+<span id="a-simple-example"></span><h3>A simple example<a class="headerlink" href="#a-simple-example" title="Link to this heading">¶</a></h3>
+<p>This simple example, taken from a hypothetical police beat news site describes
+a feed of the latest five news items:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.syndication.views</span> <span class="kn">import</span> <span class="n">Feed</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">policebeat.models</span> <span class="kn">import</span> <span class="n">NewsItem</span>
+
+
+<span class="k">class</span> <span class="nc">LatestEntriesFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Police beat site news&quot;</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="s2">&quot;/sitenews/&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Updates on changes and additions to police beat central.&quot;</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">NewsItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-pub_date&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">item_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">title</span>
+
+    <span class="k">def</span> <span class="nf">item_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">description</span>
+
+    <span class="c1"># item_link is only needed if NewsItem has no get_absolute_url method.</span>
+    <span class="k">def</span> <span class="nf">item_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;news-item&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To connect a URL to this feed, put an instance of the Feed object in
+your <a class="reference internal" href="../../topics/http/urls.html"><span class="doc">URLconf</span></a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">myproject.feeds</span> <span class="kn">import</span> <span class="n">LatestEntriesFeed</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;latest/feed/&quot;</span><span class="p">,</span> <span class="n">LatestEntriesFeed</span><span class="p">()),</span>
+    <span class="c1"># ...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>The Feed class subclasses <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.contrib.syndication.views.Feed</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">link</span></code> and <code class="docutils literal notranslate"><span class="pre">description</span></code> correspond to the
+standard RSS <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;link&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;description&gt;</span></code> elements,
+respectively.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">items()</span></code> is, a method that returns a list of objects that should be
+included in the feed as <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> elements. Although this example returns
+<code class="docutils literal notranslate"><span class="pre">NewsItem</span></code> objects using Ginger’s <a class="reference internal" href="../models/querysets.html"><span class="doc">object-relational mapper</span></a>, <code class="docutils literal notranslate"><span class="pre">items()</span></code> doesn’t have to return model instances.
+Although you get a few bits of functionality “for free” by using Ginger
+models, <code class="docutils literal notranslate"><span class="pre">items()</span></code> can return any type of object you want.</p></li>
+<li><p>If you’re creating an Atom feed, rather than an RSS feed, set the
+<code class="docutils literal notranslate"><span class="pre">subtitle</span></code> attribute instead of the <code class="docutils literal notranslate"><span class="pre">description</span></code> attribute.
+See <a class="reference internal" href="#publishing-atom-and-rss-feeds-in-tandem">Publishing Atom and RSS feeds in tandem</a>, later, for an example.</p></li>
+</ul>
+<p>One thing is left to do. In an RSS feed, each <code class="docutils literal notranslate"><span class="pre">&lt;item&gt;</span></code> has a <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&lt;link&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;description&gt;</span></code>. We need to tell the framework what data to put
+into those elements.</p>
+<ul>
+<li><p>For the contents of <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;description&gt;</span></code>, Ginger tries
+calling the methods <code class="docutils literal notranslate"><span class="pre">item_title()</span></code> and <code class="docutils literal notranslate"><span class="pre">item_description()</span></code> on
+the <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class. They are passed
+a single parameter, <code class="docutils literal notranslate"><span class="pre">item</span></code>, which is the object itself. These are
+optional; by default, the string representation of the object is used for
+both.</p>
+<p>If you want to do any special formatting for either the title or
+description, <a class="reference internal" href="../templates/language.html"><span class="doc">Ginger templates</span></a> can be used
+instead. Their paths can be specified with the <code class="docutils literal notranslate"><span class="pre">title_template</span></code> and
+<code class="docutils literal notranslate"><span class="pre">description_template</span></code> attributes on the
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class. The templates are
+rendered for each item and are passed two template context variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">obj</span> <span class="pre">}}</span></code> – The current object (one of whichever objects you
+returned in <code class="docutils literal notranslate"><span class="pre">items()</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">site</span> <span class="pre">}}</span></code> – A <a class="reference internal" href="sites.html#ginger.contrib.sites.models.Site" title="ginger.contrib.sites.models.Site"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.contrib.sites.models.Site</span></code></a> object
+representing the current site. This is useful for <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">site.domain</span>
+<span class="pre">}}</span></code> or <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">site.name</span> <span class="pre">}}</span></code>. If you do <em>not</em> have the Ginger sites
+framework installed, this will be set to a
+<a class="reference internal" href="sites.html#ginger.contrib.sites.requests.RequestSite" title="ginger.contrib.sites.requests.RequestSite"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestSite</span></code></a> object. See the
+<a class="reference internal" href="sites.html#id3"><span class="std std-ref">RequestSite section of the sites framework documentation</span></a> for more.</p></li>
+</ul>
+<p>See <a class="reference internal" href="#a-complex-example">a complex example</a> below that uses a description template.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.contrib.syndication.Feed.get_context_data">
+<span class="sig-prename descclassname"><span class="pre">Feed.</span></span><span class="sig-name descname"><span class="pre">get_context_data</span></span>(<em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em>)<a class="headerlink" href="#ginger.contrib.syndication.Feed.get_context_data" title="Link to this definition">¶</a></dt>
+<dd><p>There is also a way to pass additional information to title and description
+templates, if you need to supply more than the two variables mentioned
+before. You can provide your implementation of <code class="docutils literal notranslate"><span class="pre">get_context_data</span></code> method
+in your <code class="docutils literal notranslate"><span class="pre">Feed</span></code> subclass. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mysite.models</span> <span class="kn">import</span> <span class="n">Article</span>
+<span class="kn">from</span> <span class="nn">ginger.contrib.syndication.views</span> <span class="kn">import</span> <span class="n">Feed</span>
+
+
+<span class="k">class</span> <span class="nc">ArticlesFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;My articles&quot;</span>
+    <span class="n">description_template</span> <span class="o">=</span> <span class="s2">&quot;feeds/articles.html&quot;</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-pub_date&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;bar&quot;</span>
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>And the template:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span>Something about <span class="cp">{{</span> <span class="nv">foo</span> <span class="cp">}}</span>: <span class="cp">{{</span> <span class="nv">obj.description</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>This method will be called once per each item in the list returned by
+<code class="docutils literal notranslate"><span class="pre">items()</span></code> with the following keyword arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">item</span></code>: the current item. For backward compatibility reasons, the name
+of this context variable is <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">obj</span> <span class="pre">}}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">obj</span></code>: the object returned by <code class="docutils literal notranslate"><span class="pre">get_object()</span></code>. By default this is not
+exposed to the templates to avoid confusion with <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">obj</span> <span class="pre">}}</span></code> (see above),
+but you can use it in your implementation of <code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">site</span></code>: current site as described above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">request</span></code>: current request.</p></li>
+</ul>
+<p>The behavior of <code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code> mimics that of
+<a class="reference internal" href="../../topics/class-based-views/generic-display.html#adding-extra-context"><span class="std std-ref">generic views</span></a> - you’re supposed to call
+<code class="docutils literal notranslate"><span class="pre">super()</span></code> to retrieve context data from parent class, add your data
+and return the modified dictionary.</p>
+</li>
+<li><p>To specify the contents of <code class="docutils literal notranslate"><span class="pre">&lt;link&gt;</span></code>, you have two options. For each item
+in <code class="docutils literal notranslate"><span class="pre">items()</span></code>, Ginger first tries calling the
+<code class="docutils literal notranslate"><span class="pre">item_link()</span></code> method on the
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class. In a similar way to
+the title and description, it is passed it a single parameter,
+<code class="docutils literal notranslate"><span class="pre">item</span></code>. If that method doesn’t exist, Ginger tries executing a
+<code class="docutils literal notranslate"><span class="pre">get_absolute_url()</span></code> method on that object. Both
+<code class="docutils literal notranslate"><span class="pre">get_absolute_url()</span></code> and <code class="docutils literal notranslate"><span class="pre">item_link()</span></code> should return the
+item’s URL as a normal Python string. As with <code class="docutils literal notranslate"><span class="pre">get_absolute_url()</span></code>, the
+result of <code class="docutils literal notranslate"><span class="pre">item_link()</span></code> will be included directly in the URL, so you
+are responsible for doing all necessary URL quoting and conversion to
+ASCII inside the method itself.</p></li>
+</ul>
+</section>
+<section id="s-a-complex-example">
+<span id="a-complex-example"></span><h3>A complex example<a class="headerlink" href="#a-complex-example" title="Link to this heading">¶</a></h3>
+<p>The framework also supports more complex feeds, via arguments.</p>
+<p>For example, a website could offer an RSS feed of recent crimes for every
+police beat in a city. It’d be silly to create a separate
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class for each police beat; that
+would violate the <a class="reference internal" href="../../misc/design-philosophies.html#dry"><span class="std std-ref">DRY principle</span></a> and would couple data to
+programming logic. Instead, the syndication framework lets you access the
+arguments passed from your <a class="reference internal" href="../../topics/http/urls.html"><span class="doc">URLconf</span></a> so feeds can output
+items based on information in the feed’s URL.</p>
+<p>The police beat feeds could be accessible via URLs like this:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/beats/613/rss/</span></code> – Returns recent crimes for beat 613.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/beats/1424/rss/</span></code> – Returns recent crimes for beat 1424.</p></li>
+</ul>
+<p>These can be matched with a <a class="reference internal" href="../../topics/http/urls.html"><span class="doc">URLconf</span></a> line such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;beats/&lt;int:beat_id&gt;/rss/&quot;</span><span class="p">,</span> <span class="n">BeatFeed</span><span class="p">()),</span>
+</pre></div>
+</div>
+<p>Like a view, the arguments in the URL are passed to the <code class="docutils literal notranslate"><span class="pre">get_object()</span></code>
+method along with the request object.</p>
+<p>Here’s the code for these beat-specific feeds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.syndication.views</span> <span class="kn">import</span> <span class="n">Feed</span>
+
+
+<span class="k">class</span> <span class="nc">BeatFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="n">description_template</span> <span class="o">=</span> <span class="s2">&quot;feeds/beat_description.html&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">beat_id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Beat</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">beat_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Police beat central: Crimes for beat </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">obj</span><span class="o">.</span><span class="n">beat</span>
+
+    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_absolute_url</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Crimes recently reported in police beat </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">obj</span><span class="o">.</span><span class="n">beat</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Crime</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">beat</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-crime_date&quot;</span><span class="p">)[:</span><span class="mi">30</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To generate the feed’s <code class="docutils literal notranslate"><span class="pre">&lt;title&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;link&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;description&gt;</span></code>, Ginger
+uses the <code class="docutils literal notranslate"><span class="pre">title()</span></code>, <code class="docutils literal notranslate"><span class="pre">link()</span></code> and <code class="docutils literal notranslate"><span class="pre">description()</span></code> methods. In
+the previous example, they were string class attributes, but this example
+illustrates that they can be either strings <em>or</em> methods. For each of
+<code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">link</span></code> and <code class="docutils literal notranslate"><span class="pre">description</span></code>, Ginger follows this
+algorithm:</p>
+<ul class="simple">
+<li><p>First, it tries to call a method, passing the <code class="docutils literal notranslate"><span class="pre">obj</span></code> argument, where
+<code class="docutils literal notranslate"><span class="pre">obj</span></code> is the object returned by <code class="docutils literal notranslate"><span class="pre">get_object()</span></code>.</p></li>
+<li><p>Failing that, it tries to call a method with no arguments.</p></li>
+<li><p>Failing that, it uses the class attribute.</p></li>
+</ul>
+<p>Also note that <code class="docutils literal notranslate"><span class="pre">items()</span></code> also follows the same algorithm – first, it
+tries <code class="docutils literal notranslate"><span class="pre">items(obj)</span></code>, then <code class="docutils literal notranslate"><span class="pre">items()</span></code>, then finally an <code class="docutils literal notranslate"><span class="pre">items</span></code>
+class attribute (which should be a list).</p>
+<p>We are using a template for the item descriptions. It can be as minimal as
+this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">obj.description</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>However, you are free to add formatting as desired.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ExampleFeed</span></code> class below gives full documentation on methods and
+attributes of <a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> classes.</p>
+</section>
+<section id="s-specifying-the-type-of-feed">
+<span id="specifying-the-type-of-feed"></span><h3>Specifying the type of feed<a class="headerlink" href="#specifying-the-type-of-feed" title="Link to this heading">¶</a></h3>
+<p>By default, feeds produced in this framework use RSS 2.0.</p>
+<p>To change that, add a <code class="docutils literal notranslate"><span class="pre">feed_type</span></code> attribute to your
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.utils.feedgenerator</span> <span class="kn">import</span> <span class="n">Atom1Feed</span>
+
+
+<span class="k">class</span> <span class="nc">MyFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="n">feed_type</span> <span class="o">=</span> <span class="n">Atom1Feed</span>
+</pre></div>
+</div>
+<p>Note that you set <code class="docutils literal notranslate"><span class="pre">feed_type</span></code> to a class object, not an instance.</p>
+<p>Currently available feed types are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.Rss201rev2Feed" title="ginger.utils.feedgenerator.Rss201rev2Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.Rss201rev2Feed</span></code></a> (RSS 2.01. Default.)</p></li>
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.RssUserland091Feed" title="ginger.utils.feedgenerator.RssUserland091Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.RssUserland091Feed</span></code></a> (RSS 0.91.)</p></li>
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.Atom1Feed" title="ginger.utils.feedgenerator.Atom1Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.Atom1Feed</span></code></a> (Atom 1.0.)</p></li>
+</ul>
+</section>
+<section id="s-enclosures">
+<span id="enclosures"></span><h3>Enclosures<a class="headerlink" href="#enclosures" title="Link to this heading">¶</a></h3>
+<p>To specify enclosures, such as those used in creating podcast feeds, use the
+<code class="docutils literal notranslate"><span class="pre">item_enclosures</span></code> hook or, alternatively and if you only have a single
+enclosure per item, the <code class="docutils literal notranslate"><span class="pre">item_enclosure_url</span></code>, <code class="docutils literal notranslate"><span class="pre">item_enclosure_length</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">item_enclosure_mime_type</span></code> hooks. See the <code class="docutils literal notranslate"><span class="pre">ExampleFeed</span></code> class below for
+usage examples.</p>
+</section>
+<section id="s-language">
+<span id="language"></span><h3>Language<a class="headerlink" href="#language" title="Link to this heading">¶</a></h3>
+<p>Feeds created by the syndication framework automatically include the
+appropriate <code class="docutils literal notranslate"><span class="pre">&lt;language&gt;</span></code> tag (RSS 2.0) or <code class="docutils literal notranslate"><span class="pre">xml:lang</span></code> attribute (Atom). By
+default, this is <a class="reference internal" href="../utils.html#ginger.utils.translation.get_language" title="ginger.utils.translation.get_language"><code class="xref py py-func docutils literal notranslate"><span class="pre">ginger.utils.translation.get_language()</span></code></a>. You can change it
+by setting the <code class="docutils literal notranslate"><span class="pre">language</span></code> class attribute.</p>
+</section>
+<section id="s-urls">
+<span id="urls"></span><h3>URLs<a class="headerlink" href="#urls" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">link</span></code> method/attribute can return either an absolute path (e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;/blog/&quot;</span></code>) or a URL with the fully-qualified domain and protocol (e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;https://www.example.com/blog/&quot;</span></code>). If <code class="docutils literal notranslate"><span class="pre">link</span></code> doesn’t return the domain,
+the syndication framework will insert the domain of the current site, according
+to your <a class="reference internal" href="../settings.html#std-setting-SITE_ID"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SITE_ID</span> <span class="pre">setting</span></code></a>.</p>
+<p>Atom feeds require a <code class="docutils literal notranslate"><span class="pre">&lt;link</span> <span class="pre">rel=&quot;self&quot;&gt;</span></code> that defines the feed’s current
+location. The syndication framework populates this automatically, using the
+domain of the current site according to the <a class="reference internal" href="../settings.html#std-setting-SITE_ID"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SITE_ID</span></code></a> setting.</p>
+</section>
+<section id="s-publishing-atom-and-rss-feeds-in-tandem">
+<span id="publishing-atom-and-rss-feeds-in-tandem"></span><h3>Publishing Atom and RSS feeds in tandem<a class="headerlink" href="#publishing-atom-and-rss-feeds-in-tandem" title="Link to this heading">¶</a></h3>
+<p>Some developers like to make available both Atom <em>and</em> RSS versions of their
+feeds. To do that, you can create a subclass of your
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class and set the <code class="docutils literal notranslate"><span class="pre">feed_type</span></code>
+to something different. Then update your URLconf to add the extra versions.</p>
+<p>Here’s a full example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.syndication.views</span> <span class="kn">import</span> <span class="n">Feed</span>
+<span class="kn">from</span> <span class="nn">policebeat.models</span> <span class="kn">import</span> <span class="n">NewsItem</span>
+<span class="kn">from</span> <span class="nn">ginger.utils.feedgenerator</span> <span class="kn">import</span> <span class="n">Atom1Feed</span>
+
+
+<span class="k">class</span> <span class="nc">RssSiteNewsFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Police beat site news&quot;</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="s2">&quot;/sitenews/&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Updates on changes and additions to police beat central.&quot;</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">NewsItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-pub_date&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">AtomSiteNewsFeed</span><span class="p">(</span><span class="n">RssSiteNewsFeed</span><span class="p">):</span>
+    <span class="n">feed_type</span> <span class="o">=</span> <span class="n">Atom1Feed</span>
+    <span class="n">subtitle</span> <span class="o">=</span> <span class="n">RssSiteNewsFeed</span><span class="o">.</span><span class="n">description</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this example, the RSS feed uses a <code class="docutils literal notranslate"><span class="pre">description</span></code> while the Atom
+feed uses a <code class="docutils literal notranslate"><span class="pre">subtitle</span></code>. That’s because Atom feeds don’t provide for
+a feed-level “description,” but they <em>do</em> provide for a “subtitle.”</p>
+<p>If you provide a <code class="docutils literal notranslate"><span class="pre">description</span></code> in your
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class, Ginger will <em>not</em>
+automatically put that into the <code class="docutils literal notranslate"><span class="pre">subtitle</span></code> element, because a
+subtitle and description are not necessarily the same thing. Instead, you
+should define a <code class="docutils literal notranslate"><span class="pre">subtitle</span></code> attribute.</p>
+<p>In the above example, we set the Atom feed’s <code class="docutils literal notranslate"><span class="pre">subtitle</span></code> to the RSS feed’s
+<code class="docutils literal notranslate"><span class="pre">description</span></code>, because it’s quite short already.</p>
+</div>
+<p>And the accompanying URLconf:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">myproject.feeds</span> <span class="kn">import</span> <span class="n">AtomSiteNewsFeed</span><span class="p">,</span> <span class="n">RssSiteNewsFeed</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;sitenews/rss/&quot;</span><span class="p">,</span> <span class="n">RssSiteNewsFeed</span><span class="p">()),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;sitenews/atom/&quot;</span><span class="p">,</span> <span class="n">AtomSiteNewsFeed</span><span class="p">()),</span>
+    <span class="c1"># ...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="s-feed-class-reference">
+<span id="feed-class-reference"></span><h3><code class="docutils literal notranslate"><span class="pre">Feed</span></code> class reference<a class="headerlink" href="#feed-class-reference" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.syndication.views.Feed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">views.</span></span><span class="sig-name descname"><span class="pre">Feed</span></span><a class="headerlink" href="#ginger.contrib.syndication.views.Feed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This example illustrates all possible attributes and methods for a
+<a class="reference internal" href="#ginger.contrib.syndication.views.Feed" title="ginger.contrib.syndication.views.Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">Feed</span></code></a> class:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib.syndication.views</span> <span class="kn">import</span> <span class="n">Feed</span>
+<span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">feedgenerator</span>
+
+
+<span class="k">class</span> <span class="nc">ExampleFeed</span><span class="p">(</span><span class="n">Feed</span><span class="p">):</span>
+    <span class="c1"># FEED TYPE -- Optional. This should be a class that subclasses</span>
+    <span class="c1"># ginger.utils.feedgenerator.SyndicationFeed. This designates</span>
+    <span class="c1"># which type of feed this should be: RSS 2.0, Atom 1.0, etc. If</span>
+    <span class="c1"># you don&#39;t specify feed_type, your feed will be RSS 2.0. This</span>
+    <span class="c1"># should be a class, not an instance of the class.</span>
+
+    <span class="n">feed_type</span> <span class="o">=</span> <span class="n">feedgenerator</span><span class="o">.</span><span class="n">Rss201rev2Feed</span>
+
+    <span class="c1"># TEMPLATE NAMES -- Optional. These should be strings</span>
+    <span class="c1"># representing names of Ginger templates that the system should</span>
+    <span class="c1"># use in rendering the title and description of your feed items.</span>
+    <span class="c1"># Both are optional. If a template is not specified, the</span>
+    <span class="c1"># item_title() or item_description() methods are used instead.</span>
+
+    <span class="n">title_template</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">description_template</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># LANGUAGE -- Optional. This should be a string specifying a language</span>
+    <span class="c1"># code. Defaults to ginger.utils.translation.get_language().</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="s2">&quot;de&quot;</span>
+
+    <span class="c1"># TITLE -- One of the following three is required. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the</span>
+<span class="sd">        feed&#39;s title as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s title as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>  <span class="c1"># Hard-coded title.</span>
+
+    <span class="c1"># LINK -- One of the following three is required. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # Takes the object returned by get_object() and returns the URL</span>
+<span class="sd">        # of the HTML version of the feed as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the URL of the HTML version of the feed as a normal Python</span>
+<span class="sd">        string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">link</span> <span class="o">=</span> <span class="s2">&quot;/blog/&quot;</span>  <span class="c1"># Hard-coded URL.</span>
+
+    <span class="c1"># FEED_URL -- One of the following three is optional. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">feed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        # own URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">feed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s own URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">feed_url</span> <span class="o">=</span> <span class="s2">&quot;/blog/rss/&quot;</span>  <span class="c1"># Hard-coded URL.</span>
+
+    <span class="c1"># GUID -- One of the following three is optional. The framework looks</span>
+    <span class="c1"># for them in this order. This property is only used for Atom feeds</span>
+    <span class="c1"># (where it is the feed-level ID element). If not provided, the feed</span>
+    <span class="c1"># link is used as the ID.</span>
+
+    <span class="k">def</span> <span class="nf">feed_guid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the globally</span>
+<span class="sd">        unique ID for the feed as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">feed_guid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s globally unique ID as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">feed_guid</span> <span class="o">=</span> <span class="s2">&quot;/foo/bar/1234&quot;</span>  <span class="c1"># Hard-coded guid.</span>
+
+    <span class="c1"># DESCRIPTION -- One of the following three is required. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        description as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s description as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Foo bar baz.&quot;</span>  <span class="c1"># Hard-coded description.</span>
+
+    <span class="c1"># AUTHOR NAME --One of the following three is optional. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">author_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        author&#39;s name as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">author_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s author&#39;s name as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">author_name</span> <span class="o">=</span> <span class="s2">&quot;Sally Smith&quot;</span>  <span class="c1"># Hard-coded author name.</span>
+
+    <span class="c1"># AUTHOR EMAIL --One of the following three is optional. The framework</span>
+    <span class="c1"># looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">author_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        author&#39;s email as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">author_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s author&#39;s email as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">author_email</span> <span class="o">=</span> <span class="s2">&quot;test@example.com&quot;</span>  <span class="c1"># Hard-coded author email.</span>
+
+    <span class="c1"># AUTHOR LINK --One of the following three is optional. The framework</span>
+    <span class="c1"># looks for them in this order. In each case, the URL should include</span>
+    <span class="c1"># the scheme (such as &quot;https://&quot;) and domain name.</span>
+
+    <span class="k">def</span> <span class="nf">author_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        author&#39;s URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">author_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s author&#39;s URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">author_link</span> <span class="o">=</span> <span class="s2">&quot;https://www.example.com/&quot;</span>  <span class="c1"># Hard-coded author URL.</span>
+
+    <span class="c1"># CATEGORIES -- One of the following three is optional. The framework</span>
+    <span class="c1"># looks for them in this order. In each case, the method/attribute</span>
+    <span class="c1"># should return an iterable object that returns strings.</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        categories as iterable over strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s categories as iterable over strings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;ginger&quot;</span><span class="p">]</span>  <span class="c1"># Hard-coded list of categories.</span>
+
+    <span class="c1"># COPYRIGHT NOTICE -- One of the following three is optional. The</span>
+    <span class="c1"># framework looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">feed_copyright</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        copyright notice as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">feed_copyright</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s copyright notice as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">feed_copyright</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2007, Sally Smith&quot;</span>  <span class="c1"># Hard-coded copyright notice.</span>
+
+    <span class="c1"># TTL -- One of the following three is optional. The framework looks</span>
+    <span class="c1"># for them in this order. Ignored for Atom feeds.</span>
+
+    <span class="k">def</span> <span class="nf">ttl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns the feed&#39;s</span>
+<span class="sd">        TTL (Time To Live) as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">ttl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the feed&#39;s TTL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">ttl</span> <span class="o">=</span> <span class="mi">600</span>  <span class="c1"># Hard-coded Time To Live.</span>
+
+    <span class="c1"># ITEMS -- One of the following three is required. The framework looks</span>
+    <span class="c1"># for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the object returned by get_object() and returns a list of</span>
+<span class="sd">        items to publish in this feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of items to publish in this feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Item 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Item 2&quot;</span><span class="p">]</span>  <span class="c1"># Hard-coded items.</span>
+
+    <span class="c1"># GET_OBJECT -- This is required for feeds that publish different data</span>
+    <span class="c1"># for different URL parameters. (See &quot;A complex example&quot; above.)</span>
+
+    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes the current request and the arguments from the URL, and</span>
+<span class="sd">        returns an object represented by this feed. Raises</span>
+<span class="sd">        ginger.core.exceptions.ObjectDoesNotExist on error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="c1"># ITEM TITLE AND DESCRIPTION -- If title_template or</span>
+    <span class="c1"># description_template are not defined, these are used instead. Both are</span>
+    <span class="c1"># optional, by default they will use the string representation of the</span>
+    <span class="c1"># item.</span>
+
+    <span class="k">def</span> <span class="nf">item_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        title as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the title for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_title</span> <span class="o">=</span> <span class="s2">&quot;Breaking News: Nothing Happening&quot;</span>  <span class="c1"># Hard-coded title.</span>
+
+    <span class="k">def</span> <span class="nf">item_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        description as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the description for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_description</span> <span class="o">=</span> <span class="s2">&quot;A description of the item.&quot;</span>  <span class="c1"># Hard-coded description.</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary to use as extra context if either</span>
+<span class="sd">        description_template or item_template are used.</span>
+
+<span class="sd">        Default implementation preserves the old behavior</span>
+<span class="sd">        of using {&#39;obj&#39;: item, &#39;site&#39;: current_site} as the context.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="c1"># ITEM LINK -- One of these three is required. The framework looks for</span>
+    <span class="c1"># them in this order.</span>
+
+    <span class="c1"># First, the framework tries the two methods below, in</span>
+    <span class="c1"># order. Failing that, it falls back to the get_absolute_url()</span>
+    <span class="c1"># method on each item returned by items().</span>
+
+    <span class="k">def</span> <span class="nf">item_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the URL for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="c1"># ITEM_GUID -- The following method is optional. If not provided, the</span>
+    <span class="c1"># item&#39;s link is used by default.</span>
+
+    <span class="k">def</span> <span class="nf">item_guid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as return by items(), and returns the item&#39;s ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="c1"># ITEM_GUID_IS_PERMALINK -- The following method is optional. If</span>
+    <span class="c1"># provided, it sets the &#39;isPermaLink&#39; attribute of an item&#39;s</span>
+    <span class="c1"># GUID element. This method is used only when &#39;item_guid&#39; is</span>
+    <span class="c1"># specified.</span>
+
+    <span class="k">def</span> <span class="nf">item_guid_is_permalink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns a boolean.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_guid_is_permalink</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Hard coded value</span>
+
+    <span class="c1"># ITEM AUTHOR NAME -- One of the following three is optional. The</span>
+    <span class="c1"># framework looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">item_author_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        author&#39;s name as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_author_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the author name for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_author_name</span> <span class="o">=</span> <span class="s2">&quot;Sally Smith&quot;</span>  <span class="c1"># Hard-coded author name.</span>
+
+    <span class="c1"># ITEM AUTHOR EMAIL --One of the following three is optional. The</span>
+    <span class="c1"># framework looks for them in this order.</span>
+    <span class="c1">#</span>
+    <span class="c1"># If you specify this, you must specify item_author_name.</span>
+
+    <span class="k">def</span> <span class="nf">item_author_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        author&#39;s email as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_author_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the author email for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_author_email</span> <span class="o">=</span> <span class="s2">&quot;test@example.com&quot;</span>  <span class="c1"># Hard-coded author email.</span>
+
+    <span class="c1"># ITEM AUTHOR LINK -- One of the following three is optional. The</span>
+    <span class="c1"># framework looks for them in this order. In each case, the URL should</span>
+    <span class="c1"># include the scheme (such as &quot;https://&quot;) and domain name.</span>
+    <span class="c1">#</span>
+    <span class="c1"># If you specify this, you must specify item_author_name.</span>
+
+    <span class="k">def</span> <span class="nf">item_author_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        author&#39;s URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_author_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the author URL for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_author_link</span> <span class="o">=</span> <span class="s2">&quot;https://www.example.com/&quot;</span>  <span class="c1"># Hard-coded author URL.</span>
+
+    <span class="c1"># ITEM ENCLOSURES -- One of the following three is optional. The</span>
+    <span class="c1"># framework looks for them in this order. If one of them is defined,</span>
+    <span class="c1"># ``item_enclosure_url``, ``item_enclosure_length``, and</span>
+    <span class="c1"># ``item_enclosure_mime_type`` will have no effect.</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns a list of</span>
+<span class="sd">        ``ginger.utils.feedgenerator.Enclosure`` objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the ``ginger.utils.feedgenerator.Enclosure`` list for every</span>
+<span class="sd">        item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_enclosures</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Hard-coded enclosure list</span>
+
+    <span class="c1"># ITEM ENCLOSURE URL -- One of these three is required if you&#39;re</span>
+    <span class="c1"># publishing enclosures and you&#39;re not using ``item_enclosures``. The</span>
+    <span class="c1"># framework looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        enclosure URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the enclosure URL for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_enclosure_url</span> <span class="o">=</span> <span class="s2">&quot;/foo/bar.mp3&quot;</span>  <span class="c1"># Hard-coded enclosure link.</span>
+
+    <span class="c1"># ITEM ENCLOSURE LENGTH -- One of these three is required if you&#39;re</span>
+    <span class="c1"># publishing enclosures and you&#39;re not using ``item_enclosures``. The</span>
+    <span class="c1"># framework looks for them in this order. In each case, the returned</span>
+    <span class="c1"># value should be either an integer, or a string representation of the</span>
+    <span class="c1"># integer, in bytes.</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        enclosure length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the enclosure length for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_enclosure_length</span> <span class="o">=</span> <span class="mi">32000</span>  <span class="c1"># Hard-coded enclosure length.</span>
+
+    <span class="c1"># ITEM ENCLOSURE MIME TYPE -- One of these three is required if you&#39;re</span>
+    <span class="c1"># publishing enclosures and you&#39;re not using ``item_enclosures``. The</span>
+    <span class="c1"># framework looks for them in this order.</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_mime_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        enclosure MIME type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_enclosure_mime_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the enclosure MIME type for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_enclosure_mime_type</span> <span class="o">=</span> <span class="s2">&quot;audio/mpeg&quot;</span>  <span class="c1"># Hard-coded enclosure MIME type.</span>
+
+    <span class="c1"># ITEM PUBDATE -- It&#39;s optional to use one of these three. This is a</span>
+    <span class="c1"># hook that specifies how to get the pubdate for a given item.</span>
+    <span class="c1"># In each case, the method/attribute should return a Python</span>
+    <span class="c1"># datetime.datetime object.</span>
+
+    <span class="k">def</span> <span class="nf">item_pubdate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        pubdate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_pubdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the pubdate for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_pubdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Hard-coded pubdate.</span>
+
+    <span class="c1"># ITEM UPDATED -- It&#39;s optional to use one of these three. This is a</span>
+    <span class="c1"># hook that specifies how to get the updateddate for a given item.</span>
+    <span class="c1"># In each case, the method/attribute should return a Python</span>
+    <span class="c1"># datetime.datetime object.</span>
+
+    <span class="k">def</span> <span class="nf">item_updateddate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        updateddate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_updateddate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the updateddate for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_updateddate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Hard-coded updateddate.</span>
+
+    <span class="c1"># ITEM CATEGORIES -- It&#39;s optional to use one of these three. This is</span>
+    <span class="c1"># a hook that specifies how to get the list of categories for a given</span>
+    <span class="c1"># item. In each case, the method/attribute should return an iterable</span>
+    <span class="c1"># object that returns strings.</span>
+
+    <span class="k">def</span> <span class="nf">item_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        categories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the categories for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;ginger&quot;</span><span class="p">]</span>  <span class="c1"># Hard-coded categories.</span>
+
+    <span class="c1"># ITEM COPYRIGHT NOTICE (only applicable to Atom feeds) -- One of the</span>
+    <span class="c1"># following three is optional. The framework looks for them in this</span>
+    <span class="c1"># order.</span>
+
+    <span class="k">def</span> <span class="nf">item_copyright</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        copyright notice as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_copyright</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the copyright notice for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_copyright</span> <span class="o">=</span> <span class="s2">&quot;Copyright (c) 2007, Sally Smith&quot;</span>  <span class="c1"># Hard-coded copyright notice.</span>
+
+    <span class="c1"># ITEM COMMENTS URL -- It&#39;s optional to use one of these three. This is</span>
+    <span class="c1"># a hook that specifies how to get the URL of a page for comments for a</span>
+    <span class="c1"># given item.</span>
+
+    <span class="k">def</span> <span class="nf">item_comments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes an item, as returned by items(), and returns the item&#39;s</span>
+<span class="sd">        comments URL as a normal Python string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">item_comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the comments URL for every item in the feed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">item_comments</span> <span class="o">=</span> <span class="s2">&quot;https://www.example.com/comments&quot;</span>  <span class="c1"># Hard-coded comments URL</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-the-low-level-framework">
+<span id="the-low-level-framework"></span><h2>The low-level framework<a class="headerlink" href="#the-low-level-framework" title="Link to this heading">¶</a></h2>
+<p>Behind the scenes, the high-level RSS framework uses a lower-level framework
+for generating feeds’ XML. This framework lives in a single module:
+<a class="extlink-source reference external" href="https://github.com/ginger/ginger/blob/main/ginger/utils/feedgenerator.py">ginger/utils/feedgenerator.py</a>.</p>
+<p>You use this framework on your own, for lower-level feed generation. You can
+also create custom feed generator subclasses for use with the <code class="docutils literal notranslate"><span class="pre">feed_type</span></code>
+<code class="docutils literal notranslate"><span class="pre">Feed</span></code> option.</p>
+<section id="s-syndicationfeed-classes">
+<span id="syndicationfeed-classes"></span><h3><code class="docutils literal notranslate"><span class="pre">SyndicationFeed</span></code> classes<a class="headerlink" href="#syndicationfeed-classes" title="Link to this heading">¶</a></h3>
+<p>The <a class="reference internal" href="../utils.html#module-ginger.utils.feedgenerator" title="ginger.utils.feedgenerator: Syndication feed generation library -- used for generating RSS, etc."><code class="xref py py-mod docutils literal notranslate"><span class="pre">feedgenerator</span></code></a> module contains a base class:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.SyndicationFeed" title="ginger.utils.feedgenerator.SyndicationFeed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.SyndicationFeed</span></code></a></p></li>
+</ul>
+<p>and several subclasses:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.RssUserland091Feed" title="ginger.utils.feedgenerator.RssUserland091Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.RssUserland091Feed</span></code></a></p></li>
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.Rss201rev2Feed" title="ginger.utils.feedgenerator.Rss201rev2Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.Rss201rev2Feed</span></code></a></p></li>
+<li><p><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.Atom1Feed" title="ginger.utils.feedgenerator.Atom1Feed"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.Atom1Feed</span></code></a></p></li>
+</ul>
+<p>Each of these three classes knows how to render a certain type of feed as XML.
+They share this interface:</p>
+<dl>
+<dt><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.SyndicationFeed.__init__" title="ginger.utils.feedgenerator.SyndicationFeed.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SyndicationFeed.__init__()</span></code></a></dt><dd><p>Initialize the feed with the given dictionary of metadata, which applies to
+the entire feed. Required keyword arguments are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></li>
+</ul>
+<p>There’s also a bunch of other optional keywords:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">author_email</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">author_name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">author_link</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subtitle</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">categories</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_url</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_copyright</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feed_guid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ttl</span></code></p></li>
+</ul>
+<p>Any extra keyword arguments you pass to <code class="docutils literal notranslate"><span class="pre">__init__</span></code> will be stored in
+<code class="docutils literal notranslate"><span class="pre">self.feed</span></code> for use with <a class="reference internal" href="#custom-feed-generators">custom feed generators</a>.</p>
+<p>All parameters should be strings, except <code class="docutils literal notranslate"><span class="pre">categories</span></code>, which should be a
+sequence of strings. Beware that some control characters
+are <a class="reference external" href="https://www.w3.org/International/questions/qa-controls">not allowed</a>
+in XML documents. If your content has some of them, you might encounter a
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> when producing the feed.</p>
+</dd>
+<dt><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.SyndicationFeed.add_item" title="ginger.utils.feedgenerator.SyndicationFeed.add_item"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SyndicationFeed.add_item()</span></code></a></dt><dd><p>Add an item to the feed with the given parameters.</p>
+<p>Required keyword arguments are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></li>
+</ul>
+<p>Optional keyword arguments are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">author_email</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">author_name</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">author_link</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pubdate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comments</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unique_id</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enclosures</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">categories</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">item_copyright</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ttl</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">updateddate</span></code></p></li>
+</ul>
+<p>Extra keyword arguments will be stored for <a class="reference internal" href="#custom-feed-generators">custom feed generators</a>.</p>
+<p>All parameters, if given, should be strings, except:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pubdate</span></code> should be a Python  <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">updateddate</span></code> should be a Python  <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enclosures</span></code> should be a list of
+<a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.Enclosure" title="ginger.utils.feedgenerator.Enclosure"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator.Enclosure</span></code></a> instances.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">categories</span></code> should be a sequence of strings.</p></li>
+</ul>
+</dd>
+<dt><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.SyndicationFeed.write" title="ginger.utils.feedgenerator.SyndicationFeed.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SyndicationFeed.write()</span></code></a></dt><dd><p>Outputs the feed in the given encoding to outfile, which is a file-like object.</p>
+</dd>
+<dt><a class="reference internal" href="../utils.html#ginger.utils.feedgenerator.SyndicationFeed.writeString" title="ginger.utils.feedgenerator.SyndicationFeed.writeString"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SyndicationFeed.writeString()</span></code></a></dt><dd><p>Returns the feed as a string in the given encoding.</p>
+</dd>
+</dl>
+<p>For example, to create an Atom 1.0 feed and print it to standard output:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">feedgenerator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">feedgenerator</span><span class="o">.</span><span class="n">Atom1Feed</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Blog&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.example.com/&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;In which I write about what I ate today.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">language</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">author_name</span><span class="o">=</span><span class="s2">&quot;Myself&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">feed_url</span><span class="o">=</span><span class="s2">&quot;https://example.com/atom.xml&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Hot dog today&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">link</span><span class="o">=</span><span class="s2">&quot;https://www.example.com/entries/1/&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">pubdate</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&lt;p&gt;Today I had a Vienna Beef hot dog. It was pink, plump and perfect.&lt;/p&gt;&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">writeString</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">))</span>
+<span class="go">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="go">&lt;feed xmlns=&quot;http://www.w3.org/2005/Atom&quot; xml:lang=&quot;en&quot;&gt;</span>
+<span class="go">...</span>
+<span class="go">&lt;/feed&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-custom-feed-generators">
+<span id="custom-feed-generators"></span><h3>Custom feed generators<a class="headerlink" href="#custom-feed-generators" title="Link to this heading">¶</a></h3>
+<p>If you need to produce a custom feed format, you’ve got a couple of options.</p>
+<p>If the feed format is totally custom, you’ll want to subclass
+<code class="docutils literal notranslate"><span class="pre">SyndicationFeed</span></code> and completely replace the <code class="docutils literal notranslate"><span class="pre">write()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">writeString()</span></code> methods.</p>
+<p>However, if the feed format is a spin-off of RSS or Atom (i.e. <a class="reference external" href="https://georss.org">GeoRSS</a>, Apple’s
+<a class="reference external" href="https://help.apple.com/itc/podcasts_connect/#/itcb54353390">iTunes podcast format</a>, etc.), you’ve got a better choice. These types of
+feeds typically add extra elements and/or attributes to the underlying format,
+and there are a set of methods that <code class="docutils literal notranslate"><span class="pre">SyndicationFeed</span></code> calls to get these extra
+attributes. Thus, you can subclass the appropriate feed generator class
+(<code class="docutils literal notranslate"><span class="pre">Atom1Feed</span></code> or <code class="docutils literal notranslate"><span class="pre">Rss201rev2Feed</span></code>) and extend these callbacks. They are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">SyndicationFeed.root_attributes(self)</span></code></dt><dd><p>Return a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of attributes to add to the root feed element
+(<code class="docutils literal notranslate"><span class="pre">feed</span></code>/<code class="docutils literal notranslate"><span class="pre">channel</span></code>).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SyndicationFeed.add_root_elements(self,</span> <span class="pre">handler)</span></code></dt><dd><p>Callback to add elements inside the root feed element
+(<code class="docutils literal notranslate"><span class="pre">feed</span></code>/<code class="docutils literal notranslate"><span class="pre">channel</span></code>). <code class="docutils literal notranslate"><span class="pre">handler</span></code> is an
+<a class="reference external" href="https://docs.python.org/3/library/xml.sax.utils.html#xml.sax.saxutils.XMLGenerator" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">XMLGenerator</span></code></a> from Python’s built-in SAX library;
+you’ll call methods on it to add to the XML document in process.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SyndicationFeed.item_attributes(self,</span> <span class="pre">item)</span></code></dt><dd><p>Return a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of attributes to add to each item (<code class="docutils literal notranslate"><span class="pre">item</span></code>/<code class="docutils literal notranslate"><span class="pre">entry</span></code>)
+element. The argument, <code class="docutils literal notranslate"><span class="pre">item</span></code>, is a dictionary of all the data passed to
+<code class="docutils literal notranslate"><span class="pre">SyndicationFeed.add_item()</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SyndicationFeed.add_item_elements(self,</span> <span class="pre">handler,</span> <span class="pre">item)</span></code></dt><dd><p>Callback to add elements to each item (<code class="docutils literal notranslate"><span class="pre">item</span></code>/<code class="docutils literal notranslate"><span class="pre">entry</span></code>) element.
+<code class="docutils literal notranslate"><span class="pre">handler</span></code> and <code class="docutils literal notranslate"><span class="pre">item</span></code> are as above.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you override any of these methods, be sure to call the superclass methods
+since they add the required elements for each feed format.</p>
+</div>
+<p>For example, you might start implementing an iTunes RSS feed generator like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">iTunesFeed</span><span class="p">(</span><span class="n">Rss201rev2Feed</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">root_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">root_attributes</span><span class="p">()</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;xmlns:itunes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http://www.itunes.com/dtds/podcast-1.0.dtd&quot;</span>
+        <span class="k">return</span> <span class="n">attrs</span>
+
+    <span class="k">def</span> <span class="nf">add_root_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_root_elements</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">.</span><span class="n">addQuickElement</span><span class="p">(</span><span class="s2">&quot;itunes:explicit&quot;</span><span class="p">,</span> <span class="s2">&quot;clean&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There’s a lot more work to be done for a complete custom feed class, but the
+above example should demonstrate the basic idea.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../csrf.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Cross Site Request Forgery protection</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="staticfiles.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">The syndication feed framework</a><ul>
+<li><a class="reference internal" href="#the-high-level-framework">The high-level framework</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#feed-classes"><code class="docutils literal notranslate"><span class="pre">Feed</span></code> classes</a></li>
+<li><a class="reference internal" href="#a-simple-example">A simple example</a></li>
+<li><a class="reference internal" href="#a-complex-example">A complex example</a></li>
+<li><a class="reference internal" href="#specifying-the-type-of-feed">Specifying the type of feed</a></li>
+<li><a class="reference internal" href="#enclosures">Enclosures</a></li>
+<li><a class="reference internal" href="#language">Language</a></li>
+<li><a class="reference internal" href="#urls">URLs</a></li>
+<li><a class="reference internal" href="#publishing-atom-and-rss-feeds-in-tandem">Publishing Atom and RSS feeds in tandem</a></li>
+<li><a class="reference internal" href="#feed-class-reference"><code class="docutils literal notranslate"><span class="pre">Feed</span></code> class reference</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-low-level-framework">The low-level framework</a><ul>
+<li><a class="reference internal" href="#syndicationfeed-classes"><code class="docutils literal notranslate"><span class="pre">SyndicationFeed</span></code> classes</a></li>
+<li><a class="reference internal" href="#custom-feed-generators">Custom feed generators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

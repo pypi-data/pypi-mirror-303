@@ -1,0 +1,1353 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Writing your first Ginger app, part 3" href="tutorial03.html" /><link rel="prev" title="Writing your first Ginger app, part 1" href="tutorial01.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Writing your first Ginger app, part 2 - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Getting started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/intro/tutorial02.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-writing-your-first-ginger-app-part-2">
+<span id="writing-your-first-ginger-app-part-2"></span><h1>Writing your first Ginger app, part 2<a class="headerlink" href="#writing-your-first-ginger-app-part-2" title="Link to this heading">¶</a></h1>
+<p>This tutorial begins where <a class="reference internal" href="tutorial01.html"><span class="doc">Tutorial 1</span></a> left off.
+We’ll set up the database, create your first model, and get a quick
+introduction to Ginger’s automatically-generated admin site.</p>
+<div class="admonition-where-to-get-help admonition">
+<p class="admonition-title">Where to get help:</p>
+<p>If you’re having trouble going through this tutorial, please head over to
+the <a class="reference internal" href="../faq/help.html"><span class="doc">Getting Help</span></a> section of the FAQ.</p>
+</div>
+<section id="s-database-setup">
+<span id="database-setup"></span><h2>Database setup<a class="headerlink" href="#database-setup" title="Link to this heading">¶</a></h2>
+<p>Now, open up <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code>. It’s a normal Python module with
+module-level variables representing Ginger settings.</p>
+<p>By default, the configuration uses SQLite. If you’re new to databases, or
+you’re just interested in trying Ginger, this is the easiest choice. SQLite is
+included in Python, so you won’t need to install anything else to support your
+database. When starting your first real project, however, you may want to use a
+more scalable database like PostgreSQL, to avoid database-switching headaches
+down the road.</p>
+<p>If you wish to use another database, install the appropriate <a class="reference internal" href="../topics/install.html#database-installation"><span class="std std-ref">database
+bindings</span></a> and change the following keys in the
+<a class="reference internal" href="../ref/settings.html#std-setting-DATABASES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DATABASES</span></code></a> <code class="docutils literal notranslate"><span class="pre">'default'</span></code> item to match your database connection
+settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../ref/settings.html#std-setting-DATABASE-ENGINE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">ENGINE</span></code></a> – Either
+<code class="docutils literal notranslate"><span class="pre">'ginger.db.backends.sqlite3'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'ginger.db.backends.postgresql'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'ginger.db.backends.mysql'</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">'ginger.db.backends.oracle'</span></code>. Other backends are <a class="reference internal" href="../ref/databases.html#third-party-notes"><span class="std std-ref">also available</span></a>.</p></li>
+<li><p><a class="reference internal" href="../ref/settings.html#std-setting-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a> – The name of your database. If you’re using SQLite, the
+database will be a file on your computer; in that case, <a class="reference internal" href="../ref/settings.html#std-setting-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a>
+should be the full absolute path, including filename, of that file. The
+default value, <code class="docutils literal notranslate"><span class="pre">BASE_DIR</span> <span class="pre">/</span> <span class="pre">'db.sqlite3'</span></code>, will store the file in your
+project directory.</p></li>
+</ul>
+<p>If you are not using SQLite as your database, additional settings such as
+<a class="reference internal" href="../ref/settings.html#std-setting-USER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">USER</span></code></a>, <a class="reference internal" href="../ref/settings.html#std-setting-PASSWORD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">PASSWORD</span></code></a>, and <a class="reference internal" href="../ref/settings.html#std-setting-HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">HOST</span></code></a> must be added.
+For more details, see the reference documentation for <a class="reference internal" href="../ref/settings.html#std-setting-DATABASES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DATABASES</span></code></a>.</p>
+<div class="admonition-for-databases-other-than-sqlite admonition">
+<p class="admonition-title">For databases other than SQLite</p>
+<p>If you’re using a database besides SQLite, make sure you’ve created a
+database by this point. Do that with “<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">DATABASE</span> <span class="pre">database_name;</span></code>”
+within your database’s interactive prompt.</p>
+<p>Also make sure that the database user provided in <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code>
+has “create database” privileges. This allows automatic creation of a
+<a class="reference internal" href="../topics/testing/overview.html#the-test-database"><span class="std std-ref">test database</span></a> which will be needed in a later
+tutorial.</p>
+<p>If you’re using SQLite, you don’t need to create anything beforehand - the
+database file will be created automatically when it is needed.</p>
+</div>
+<p>While you’re editing <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code>, set <a class="reference internal" href="../ref/settings.html#std-setting-TIME_ZONE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TIME_ZONE</span></code></a> to
+your time zone.</p>
+<p>Also, note the <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> setting at the top of the file. That
+holds the names of all Ginger applications that are activated in this Ginger
+instance. Apps can be used in multiple projects, and you can package and
+distribute them for use by others in their projects.</p>
+<p>By default, <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> contains the following apps, all of which
+come with Ginger:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../ref/contrib/admin/index.html#module-ginger.contrib.admin" title="ginger.contrib.admin: Ginger's admin site."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.admin</span></code></a> – The admin site. You’ll use it shortly.</p></li>
+<li><p><a class="reference internal" href="../topics/http/sessions.html#module-ginger.contrib.sessions" title="ginger.contrib.sessions: Provides session management for Ginger projects."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.sessions</span></code></a> – A session framework.</p></li>
+<li><p><a class="reference internal" href="../ref/contrib/messages.html#module-ginger.contrib.messages" title="ginger.contrib.messages: Provides cookie- and session-based temporary message storage."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.messages</span></code></a> – A messaging framework.</p></li>
+<li><p><a class="reference internal" href="../ref/contrib/staticfiles.html#module-ginger.contrib.staticfiles" title="ginger.contrib.staticfiles: An app for handling static files."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.contrib.staticfiles</span></code></a> – A framework for managing
+static files.</p></li>
+</ul>
+<p>These applications are included by default as a convenience for the common case.</p>
+<p>Some of these applications make use of at least one database table, though,
+so we need to create the tables in the database before we can use them. To do
+that, run the following command:</p>
+<div class="console-block" id="console-block-0">
+<input class="c-tab-unix" id="c-tab-0-unix" type="radio" name="console-0" checked>
+<label for="c-tab-0-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-0-win" type="radio" name="console-0">
+<label for="c-tab-0-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-0-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-0-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py migrate
+</pre></div>
+</section>
+</div>
+<p>The <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> command looks at the <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> setting
+and creates any necessary database tables according to the database settings
+in your <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code> file and the database migrations shipped
+with the app (we’ll cover those later). You’ll see a message for each
+migration it applies. If you’re interested, run the command-line client for your
+database and type <code class="docutils literal notranslate"><span class="pre">\dt</span></code> (PostgreSQL), <code class="docutils literal notranslate"><span class="pre">SHOW</span> <span class="pre">TABLES;</span></code> (MariaDB, MySQL),
+<code class="docutils literal notranslate"><span class="pre">.tables</span></code> (SQLite), or <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">TABLE_NAME</span> <span class="pre">FROM</span> <span class="pre">USER_TABLES;</span></code> (Oracle) to
+display the tables Ginger created.</p>
+<div class="admonition-for-the-minimalists admonition">
+<p class="admonition-title">For the minimalists</p>
+<p>Like we said above, the default applications are included for the common
+case, but not everybody needs them. If you don’t need any or all of them,
+feel free to comment-out or delete the appropriate line(s) from
+<a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> before running <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a>. The
+<a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> command will only run migrations for apps in
+<a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a>.</p>
+</div>
+</section>
+<section id="s-creating-models">
+<span id="s-id1"></span><span id="creating-models"></span><span id="id1"></span><h2>Creating models<a class="headerlink" href="#creating-models" title="Link to this heading">¶</a></h2>
+<p>Now we’ll define your models – essentially, your database layout, with
+additional metadata.</p>
+<div class="admonition-philosophy admonition">
+<p class="admonition-title">Philosophy</p>
+<p>A model is the single, definitive source of information about your data. It
+contains the essential fields and behaviors of the data you’re storing.
+Ginger follows the <a class="reference internal" href="../misc/design-philosophies.html#dry"><span class="std std-ref">DRY Principle</span></a>. The goal is to define your
+data model in one place and automatically derive things from it.</p>
+<p>This includes the migrations - unlike in Ruby On Rails, for example, migrations
+are entirely derived from your models file, and are essentially a
+history that Ginger can roll through to update your database schema to
+match your current models.</p>
+</div>
+<p>In our poll app, we’ll create two models: <code class="docutils literal notranslate"><span class="pre">Question</span></code> and <code class="docutils literal notranslate"><span class="pre">Choice</span></code>. A
+<code class="docutils literal notranslate"><span class="pre">Question</span></code> has a question and a publication date. A <code class="docutils literal notranslate"><span class="pre">Choice</span></code> has two
+fields: the text of the choice and a vote tally. Each <code class="docutils literal notranslate"><span class="pre">Choice</span></code> is associated
+with a <code class="docutils literal notranslate"><span class="pre">Question</span></code>.</p>
+<p>These concepts are represented by Python classes. Edit the
+<code class="file docutils literal notranslate"><span class="pre">polls/models.py</span></code> file so it looks like this:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">Question</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">question_text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="s2">&quot;date published&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Question</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">choice_text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">votes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Here, each model is represented by a class that subclasses
+<a class="reference internal" href="../ref/models/instances.html#ginger.db.models.Model" title="ginger.db.models.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.db.models.Model</span></code></a>. Each model has a number of class variables,
+each of which represents a database field in the model.</p>
+<p>Each field is represented by an instance of a <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a>
+class – e.g., <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.CharField" title="ginger.db.models.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a> for character fields and
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.DateTimeField" title="ginger.db.models.DateTimeField"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateTimeField</span></code></a> for datetimes. This tells Ginger what
+type of data each field holds.</p>
+<p>The name of each <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> instance (e.g.
+<code class="docutils literal notranslate"><span class="pre">question_text</span></code> or <code class="docutils literal notranslate"><span class="pre">pub_date</span></code>) is the field’s name, in machine-friendly
+format. You’ll use this value in your Python code, and your database will use
+it as the column name.</p>
+<p>You can use an optional first positional argument to a
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> to designate a human-readable name. That’s used
+in a couple of introspective parts of Ginger, and it doubles as documentation.
+If this field isn’t provided, Ginger will use the machine-readable name. In this
+example, we’ve only defined a human-readable name for <code class="docutils literal notranslate"><span class="pre">Question.pub_date</span></code>.
+For all other fields in this model, the field’s machine-readable name will
+suffice as its human-readable name.</p>
+<p>Some <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> classes have required arguments.
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.CharField" title="ginger.db.models.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a>, for example, requires that you give it a
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.CharField.max_length" title="ginger.db.models.CharField.max_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_length</span></code></a>. That’s used not only in the
+database schema, but in validation, as we’ll soon see.</p>
+<p>A <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> can also have various optional arguments; in
+this case, we’ve set the <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.Field.default" title="ginger.db.models.Field.default"><code class="xref py py-attr docutils literal notranslate"><span class="pre">default</span></code></a> value of
+<code class="docutils literal notranslate"><span class="pre">votes</span></code> to 0.</p>
+<p>Finally, note a relationship is defined, using
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.ForeignKey" title="ginger.db.models.ForeignKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForeignKey</span></code></a>. That tells Ginger each <code class="docutils literal notranslate"><span class="pre">Choice</span></code> is
+related to a single <code class="docutils literal notranslate"><span class="pre">Question</span></code>. Ginger supports all the common database
+relationships: many-to-one, many-to-many, and one-to-one.</p>
+</section>
+<section id="s-activating-models">
+<span id="activating-models"></span><h2>Activating models<a class="headerlink" href="#activating-models" title="Link to this heading">¶</a></h2>
+<p>That small bit of model code gives Ginger a lot of information. With it, Ginger
+is able to:</p>
+<ul class="simple">
+<li><p>Create a database schema (<code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">TABLE</span></code> statements) for this app.</p></li>
+<li><p>Create a Python database-access API for accessing <code class="docutils literal notranslate"><span class="pre">Question</span></code> and <code class="docutils literal notranslate"><span class="pre">Choice</span></code> objects.</p></li>
+</ul>
+<p>But first we need to tell our project that the <code class="docutils literal notranslate"><span class="pre">polls</span></code> app is installed.</p>
+<div class="admonition-philosophy admonition">
+<p class="admonition-title">Philosophy</p>
+<p>Ginger apps are “pluggable”: You can use an app in multiple projects, and
+you can distribute apps, because they don’t have to be tied to a given
+Ginger installation.</p>
+</div>
+<p>To include the app in our project, we need to add a reference to its
+configuration class in the <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> setting. The
+<code class="docutils literal notranslate"><span class="pre">PollsConfig</span></code> class is in the <code class="file docutils literal notranslate"><span class="pre">polls/apps.py</span></code> file, so its dotted path
+is <code class="docutils literal notranslate"><span class="pre">'polls.apps.PollsConfig'</span></code>. Edit the <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code> file and
+add that dotted path to the <a class="reference internal" href="../ref/settings.html#std-setting-INSTALLED_APPS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code></a> setting. It’ll look like
+this:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">mysite/settings.py</span></code></span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;polls.apps.PollsConfig&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.admin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.contenttypes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.sessions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.messages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ginger.contrib.staticfiles&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Now Ginger knows to include the <code class="docutils literal notranslate"><span class="pre">polls</span></code> app. Let’s run another command:</p>
+<div class="console-block" id="console-block-1">
+<input class="c-tab-unix" id="c-tab-1-unix" type="radio" name="console-1" checked>
+<label for="c-tab-1-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-1-win" type="radio" name="console-1">
+<label for="c-tab-1-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-1-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>polls
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-1-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py makemigrations polls
+</pre></div>
+</section>
+</div>
+<p>You should see something similar to the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Migrations for &#39;polls&#39;:
+  polls/migrations/0001_initial.py
+    + Create model Question
+    + Create model Choice
+</pre></div>
+</div>
+<p>By running <code class="docutils literal notranslate"><span class="pre">makemigrations</span></code>, you’re telling Ginger that you’ve made
+some changes to your models (in this case, you’ve made new ones) and that
+you’d like the changes to be stored as a <em>migration</em>.</p>
+<p>Migrations are how Ginger stores changes to your models (and thus your
+database schema) - they’re files on disk. You can read the migration for your
+new model if you like; it’s the file <code class="docutils literal notranslate"><span class="pre">polls/migrations/0001_initial.py</span></code>.
+Don’t worry, you’re not expected to read them every time Ginger makes one, but
+they’re designed to be human-editable in case you want to manually tweak how
+Ginger changes things.</p>
+<p>There’s a command that will run the migrations for you and manage your database
+schema automatically - that’s called <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a>, and we’ll come to it in a
+moment - but first, let’s see what SQL that migration would run. The
+<a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-sqlmigrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">sqlmigrate</span></code></a> command takes migration names and returns their SQL:</p>
+<div class="console-block" id="console-block-2">
+<input class="c-tab-unix" id="c-tab-2-unix" type="radio" name="console-2" checked>
+<label for="c-tab-2-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-2-win" type="radio" name="console-2">
+<label for="c-tab-2-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-2-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>sqlmigrate<span class="w"> </span>polls<span class="w"> </span><span class="m">0001</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-2-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py sqlmigrate polls 0001
+</pre></div>
+</section>
+</div>
+<p>You should see something similar to the following (we’ve reformatted it for
+readability):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span><span class="p">;</span>
+<span class="c1">--</span>
+<span class="c1">-- Create model Question</span>
+<span class="c1">--</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">&quot;polls_question&quot;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="ss">&quot;id&quot;</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;question_text&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;pub_date&quot;</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="k">time</span><span class="w"> </span><span class="k">zone</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+<span class="c1">--</span>
+<span class="c1">-- Create model Choice</span>
+<span class="c1">--</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">&quot;polls_choice&quot;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="ss">&quot;id&quot;</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">IDENTITY</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;choice_text&quot;</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;votes&quot;</span><span class="w"> </span><span class="nb">integer</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="ss">&quot;question_id&quot;</span><span class="w"> </span><span class="nb">bigint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="ss">&quot;polls_choice&quot;</span>
+<span class="w">  </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="ss">&quot;polls_choice_question_id_c5b4b260_fk_polls_question_id&quot;</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;question_id&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">REFERENCES</span><span class="w"> </span><span class="ss">&quot;polls_question&quot;</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;id&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">DEFERRABLE</span><span class="w"> </span><span class="k">INITIALLY</span><span class="w"> </span><span class="k">DEFERRED</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="ss">&quot;polls_choice_question_id_c5b4b260&quot;</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="ss">&quot;polls_choice&quot;</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;question_id&quot;</span><span class="p">);</span>
+
+<span class="k">COMMIT</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note the following:</p>
+<ul class="simple">
+<li><p>The exact output will vary depending on the database you are using. The
+example above is generated for PostgreSQL.</p></li>
+<li><p>Table names are automatically generated by combining the name of the app
+(<code class="docutils literal notranslate"><span class="pre">polls</span></code>) and the lowercase name of the model – <code class="docutils literal notranslate"><span class="pre">question</span></code> and
+<code class="docutils literal notranslate"><span class="pre">choice</span></code>. (You can override this behavior.)</p></li>
+<li><p>Primary keys (IDs) are added automatically. (You can override this, too.)</p></li>
+<li><p>By convention, Ginger appends <code class="docutils literal notranslate"><span class="pre">&quot;_id&quot;</span></code> to the foreign key field name.
+(Yes, you can override this, as well.)</p></li>
+<li><p>The foreign key relationship is made explicit by a <code class="docutils literal notranslate"><span class="pre">FOREIGN</span> <span class="pre">KEY</span></code>
+constraint. Don’t worry about the <code class="docutils literal notranslate"><span class="pre">DEFERRABLE</span></code> parts; it’s telling
+PostgreSQL to not enforce the foreign key until the end of the transaction.</p></li>
+<li><p>It’s tailored to the database you’re using, so database-specific field types
+such as <code class="docutils literal notranslate"><span class="pre">auto_increment</span></code> (MySQL), <code class="docutils literal notranslate"><span class="pre">bigint</span> <span class="pre">PRIMARY</span> <span class="pre">KEY</span> <span class="pre">GENERATED</span> <span class="pre">BY</span> <span class="pre">DEFAULT</span>
+<span class="pre">AS</span> <span class="pre">IDENTITY</span></code> (PostgreSQL), or <code class="docutils literal notranslate"><span class="pre">integer</span> <span class="pre">primary</span> <span class="pre">key</span> <span class="pre">autoincrement</span></code> (SQLite)
+are handled for you automatically. Same goes for the quoting of field names
+– e.g., using double quotes or single quotes.</p></li>
+<li><p>The <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-sqlmigrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">sqlmigrate</span></code></a> command doesn’t actually run the migration on your
+database - instead, it prints it to the screen so that you can see what SQL
+Ginger thinks is required. It’s useful for checking what Ginger is going to
+do or if you have database administrators who require SQL scripts for
+changes.</p></li>
+</ul>
+<p>If you’re interested, you can also run
+<a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-check"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">check</span></code></a>; this checks for any problems in
+your project without making migrations or touching the database.</p>
+<p>Now, run <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> again to create those model tables in your database:</p>
+<div class="console-block" id="console-block-3">
+<input class="c-tab-unix" id="c-tab-3-unix" type="radio" name="console-3" checked>
+<label for="c-tab-3-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-3-win" type="radio" name="console-3">
+<label for="c-tab-3-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-3-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+<span class="go">Operations to perform:</span>
+<span class="go">  Apply all migrations: admin, auth, contenttypes, polls, sessions</span>
+<span class="go">Running migrations:</span>
+<span class="go">  Rendering model states... DONE</span>
+<span class="go">  Applying polls.0001_initial... OK</span>
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-3-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py migrate
+<span class="go">Operations to perform:</span>
+<span class="go">  Apply all migrations: admin, auth, contenttypes, polls, sessions</span>
+<span class="go">Running migrations:</span>
+<span class="go">  Rendering model states... DONE</span>
+<span class="go">  Applying polls.0001_initial... OK</span>
+</pre></div>
+</section>
+</div>
+<p>The <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> command takes all the migrations that haven’t been
+applied (Ginger tracks which ones are applied using a special table in your
+database called <code class="docutils literal notranslate"><span class="pre">ginger_migrations</span></code>) and runs them against your database -
+essentially, synchronizing the changes you made to your models with the schema
+in the database.</p>
+<p>Migrations are very powerful and let you change your models over time, as you
+develop your project, without the need to delete your database or tables and
+make new ones - it specializes in upgrading your database live, without
+losing data. We’ll cover them in more depth in a later part of the tutorial,
+but for now, remember the three-step guide to making model changes:</p>
+<ul class="simple">
+<li><p>Change your models (in <code class="docutils literal notranslate"><span class="pre">models.py</span></code>).</p></li>
+<li><p>Run <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">makemigrations</span></code></a> to create
+migrations for those changes</p></li>
+<li><p>Run <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">migrate</span></code></a> to apply those changes to
+the database.</p></li>
+</ul>
+<p>The reason that there are separate commands to make and apply migrations is
+because you’ll commit migrations to your version control system and ship them
+with your app; they not only make your development easier, they’re also
+usable by other developers and in production.</p>
+<p>Read the <a class="reference internal" href="../ref/ginger-admin.html"><span class="doc">ginger-admin documentation</span></a> for full
+information on what the <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> utility can do.</p>
+</section>
+<section id="s-playing-with-the-api">
+<span id="playing-with-the-api"></span><h2>Playing with the API<a class="headerlink" href="#playing-with-the-api" title="Link to this heading">¶</a></h2>
+<p>Now, let’s hop into the interactive Python shell and play around with the free
+API Ginger gives you. To invoke the Python shell, use this command:</p>
+<div class="console-block" id="console-block-4">
+<input class="c-tab-unix" id="c-tab-4-unix" type="radio" name="console-4" checked>
+<label for="c-tab-4-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-4-win" type="radio" name="console-4">
+<label for="c-tab-4-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-4-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>shell
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-4-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py shell
+</pre></div>
+</section>
+</div>
+<p>We’re using this instead of simply typing “python”, because <code class="file docutils literal notranslate"><span class="pre">manage.py</span></code>
+sets the <span class="target" id="index-0"></span><a class="reference internal" href="../topics/settings.html#envvar-GINGER_SETTINGS_MODULE"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">GINGER_SETTINGS_MODULE</span></code></a> environment variable, which gives
+Ginger the Python import path to your <code class="file docutils literal notranslate"><span class="pre">mysite/settings.py</span></code> file.</p>
+<p>Once you’re in the shell, explore the <a class="reference internal" href="../topics/db/queries.html"><span class="doc">database API</span></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Choice</span><span class="p">,</span> <span class="n">Question</span>  <span class="c1"># Import the model classes we just wrote.</span>
+
+<span class="go"># No questions are in the system yet.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">&lt;QuerySet []&gt;</span>
+
+<span class="go"># Create a new Question.</span>
+<span class="go"># Support for time zones is enabled in the default settings file, so</span>
+<span class="go"># Ginger expects a datetime with tzinfo for pub_date. Use timezone.now()</span>
+<span class="go"># instead of datetime.datetime.now() and it will do the right thing.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Question</span><span class="p">(</span><span class="n">question_text</span><span class="o">=</span><span class="s2">&quot;What&#39;s new?&quot;</span><span class="p">,</span> <span class="n">pub_date</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="go"># Save the object into the database. You have to call save() explicitly.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="go"># Now it has an ID.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">id</span>
+<span class="go">1</span>
+
+<span class="go"># Access model field values via Python attributes.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">question_text</span>
+<span class="go">&quot;What&#39;s new?&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">pub_date</span>
+<span class="go">datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=datetime.timezone.utc)</span>
+
+<span class="go"># Change values by changing the attributes, then calling save().</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">question_text</span> <span class="o">=</span> <span class="s2">&quot;What&#39;s up?&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="go"># objects.all() displays all the questions in the database.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">&lt;QuerySet [&lt;Question: Question object (1)&gt;]&gt;</span>
+</pre></div>
+</div>
+<p>Wait a minute. <code class="docutils literal notranslate"><span class="pre">&lt;Question:</span> <span class="pre">Question</span> <span class="pre">object</span> <span class="pre">(1)&gt;</span></code> isn’t a helpful
+representation of this object. Let’s fix that by editing the <code class="docutils literal notranslate"><span class="pre">Question</span></code> model
+(in the <code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code> file) and adding a
+<a class="reference internal" href="../ref/models/instances.html#ginger.db.models.Model.__str__" title="ginger.db.models.Model.__str__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code></a> method to both <code class="docutils literal notranslate"><span class="pre">Question</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Choice</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code></span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">Question</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">question_text</span>
+
+
+<span class="k">class</span> <span class="nc">Choice</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice_text</span>
+</pre></div>
+</div>
+</div>
+<p>It’s important to add <a class="reference internal" href="../ref/models/instances.html#ginger.db.models.Model.__str__" title="ginger.db.models.Model.__str__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code></a> methods to your
+models, not only for your own convenience when dealing with the interactive
+prompt, but also because objects’ representations are used throughout Ginger’s
+automatically-generated admin.</p>
+<p id="tutorial02-import-timezone">Let’s also add a custom method to this model:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/models.py</span></code></span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+
+<span class="k">class</span> <span class="nc">Question</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="k">def</span> <span class="nf">was_published_recently</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_date</span> <span class="o">&gt;=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note the addition of <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">datetime</span></code> and <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">ginger.utils</span> <span class="pre">import</span>
+<span class="pre">timezone</span></code>, to reference Python’s standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#module-datetime" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datetime</span></code></a> module and Ginger’s
+time-zone-related utilities in <a class="reference internal" href="../ref/utils.html#module-ginger.utils.timezone" title="ginger.utils.timezone: Timezone support."><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger.utils.timezone</span></code></a>, respectively. If
+you aren’t familiar with time zone handling in Python, you can learn more in
+the <a class="reference internal" href="../topics/i18n/timezones.html"><span class="doc">time zone support docs</span></a>.</p>
+<p>Save these changes and start a new Python interactive shell by running
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">shell</span></code> again:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">polls.models</span> <span class="kn">import</span> <span class="n">Choice</span><span class="p">,</span> <span class="n">Question</span>
+
+<span class="go"># Make sure our __str__() addition worked.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">&lt;QuerySet [&lt;Question: What&#39;s up?&gt;]&gt;</span>
+
+<span class="go"># Ginger provides a rich database lookup API that&#39;s entirely driven by</span>
+<span class="go"># keyword arguments.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&lt;QuerySet [&lt;Question: What&#39;s up?&gt;]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">question_text__startswith</span><span class="o">=</span><span class="s2">&quot;What&quot;</span><span class="p">)</span>
+<span class="go">&lt;QuerySet [&lt;Question: What&#39;s up?&gt;]&gt;</span>
+
+<span class="go"># Get the question that was published this year.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">current_year</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pub_date__year</span><span class="o">=</span><span class="n">current_year</span><span class="p">)</span>
+<span class="go">&lt;Question: What&#39;s up?&gt;</span>
+
+<span class="go"># Request an ID that doesn&#39;t exist, this will raise an exception.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="gr">DoesNotExist</span>: <span class="n">Question matching query does not exist.</span>
+
+<span class="x"># Lookup by a primary key is the most common case, so Ginger provides a</span>
+<span class="x"># shortcut for primary-key exact lookups.</span>
+<span class="x"># The following is identical to Question.objects.get(id=1).</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&lt;Question: What&#39;s up?&gt;</span>
+
+<span class="go"># Make sure our custom method worked.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">was_published_recently</span><span class="p">()</span>
+<span class="go">True</span>
+
+<span class="go"># Give the Question a couple of Choices. The create call constructs a new</span>
+<span class="go"># Choice object, does the INSERT statement, adds the choice to the set</span>
+<span class="go"># of available choices and returns the new Choice object. Ginger creates</span>
+<span class="go"># a set (defined as &quot;choice_set&quot;) to hold the &quot;other side&quot; of a ForeignKey</span>
+<span class="go"># relation (e.g. a question&#39;s choice) which can be accessed via the API.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Question</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="go"># Display any choices from the related object set -- none so far.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">&lt;QuerySet []&gt;</span>
+
+<span class="go"># Create three choices.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice_text</span><span class="o">=</span><span class="s2">&quot;Not much&quot;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;Choice: Not much&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice_text</span><span class="o">=</span><span class="s2">&quot;The sky&quot;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&lt;Choice: The sky&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">choice_text</span><span class="o">=</span><span class="s2">&quot;Just hacking again&quot;</span><span class="p">,</span> <span class="n">votes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="go"># Choice objects have API access to their related Question objects.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">question</span>
+<span class="go">&lt;Question: What&#39;s up?&gt;</span>
+
+<span class="go"># And vice versa: Question objects get access to Choice objects.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="go">&lt;QuerySet [&lt;Choice: Not much&gt;, &lt;Choice: The sky&gt;, &lt;Choice: Just hacking again&gt;]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="go">3</span>
+
+<span class="go"># The API automatically follows relationships as far as you need.</span>
+<span class="go"># Use double underscores to separate relationships.</span>
+<span class="go"># This works as many levels deep as you want; there&#39;s no limit.</span>
+<span class="go"># Find all Choices for any question whose pub_date is in this year</span>
+<span class="go"># (reusing the &#39;current_year&#39; variable we created above).</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Choice</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">question__pub_date__year</span><span class="o">=</span><span class="n">current_year</span><span class="p">)</span>
+<span class="go">&lt;QuerySet [&lt;Choice: Not much&gt;, &lt;Choice: The sky&gt;, &lt;Choice: Just hacking again&gt;]&gt;</span>
+
+<span class="go"># Let&#39;s delete one of the choices. Use delete() for that.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">choice_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">choice_text__startswith</span><span class="o">=</span><span class="s2">&quot;Just hacking&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more information on model relations, see <a class="reference internal" href="../ref/models/relations.html"><span class="doc">Accessing related objects</span></a>. For more on how to use double underscores to perform
+field lookups via the API, see <a class="reference internal" href="../topics/db/queries.html#field-lookups-intro"><span class="std std-ref">Field lookups</span></a>. For
+full details on the database API, see our <a class="reference internal" href="../topics/db/queries.html"><span class="doc">Database API reference</span></a>.</p>
+</section>
+<section id="s-introducing-the-ginger-admin">
+<span id="introducing-the-ginger-admin"></span><h2>Introducing the Ginger Admin<a class="headerlink" href="#introducing-the-ginger-admin" title="Link to this heading">¶</a></h2>
+<div class="admonition-philosophy admonition">
+<p class="admonition-title">Philosophy</p>
+<p>Generating admin sites for your staff or clients to add, change, and delete
+content is tedious work that doesn’t require much creativity. For that
+reason, Ginger entirely automates creation of admin interfaces for models.</p>
+<p>Ginger was written in a newsroom environment, with a very clear separation
+between “content publishers” and the “public” site. Site managers use the
+system to add news stories, events, sports scores, etc., and that content is
+displayed on the public site. Ginger solves the problem of creating a
+unified interface for site administrators to edit content.</p>
+<p>The admin isn’t intended to be used by site visitors. It’s for site
+managers.</p>
+</div>
+<section id="s-creating-an-admin-user">
+<span id="creating-an-admin-user"></span><h3>Creating an admin user<a class="headerlink" href="#creating-an-admin-user" title="Link to this heading">¶</a></h3>
+<p>First we’ll need to create a user who can login to the admin site. Run the
+following command:</p>
+<div class="console-block" id="console-block-5">
+<input class="c-tab-unix" id="c-tab-5-unix" type="radio" name="console-5" checked>
+<label for="c-tab-5-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-5-win" type="radio" name="console-5">
+<label for="c-tab-5-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-5-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-5-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py createsuperuser
+</pre></div>
+</section>
+</div>
+<p>Enter your desired username and press enter.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Username: admin
+</pre></div>
+</div>
+<p>You will then be prompted for your desired email address:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Email address: admin@example.com
+</pre></div>
+</div>
+<p>The final step is to enter your password. You will be asked to enter your
+password twice, the second time as a confirmation of the first.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Password: **********
+Password (again): *********
+Superuser created successfully.
+</pre></div>
+</div>
+</section>
+<section id="s-start-the-development-server">
+<span id="start-the-development-server"></span><h3>Start the development server<a class="headerlink" href="#start-the-development-server" title="Link to this heading">¶</a></h3>
+<p>The Ginger admin site is activated by default. Let’s start the development
+server and explore it.</p>
+<p>If the server is not running start it like so:</p>
+<div class="console-block" id="console-block-6">
+<input class="c-tab-unix" id="c-tab-6-unix" type="radio" name="console-6" checked>
+<label for="c-tab-6-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-6-win" type="radio" name="console-6">
+<label for="c-tab-6-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-6-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>manage.py<span class="w"> </span>runserver
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-6-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py manage.py runserver
+</pre></div>
+</section>
+</div>
+<p>Now, open a web browser and go to “/admin/” on your local domain – e.g.,
+<a class="reference external" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a>. You should see the admin’s login screen:</p>
+<img alt="Ginger admin login screen" src="../_images/admin01.png" />
+<p>Since <a class="reference internal" href="../topics/i18n/translation.html"><span class="doc">translation</span></a> is turned on by default, if
+you set <a class="reference internal" href="../ref/settings.html#std-setting-LANGUAGE_CODE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">LANGUAGE_CODE</span></code></a>, the login screen will be displayed in the
+given language (if Ginger has appropriate translations).</p>
+</section>
+<section id="s-enter-the-admin-site">
+<span id="enter-the-admin-site"></span><h3>Enter the admin site<a class="headerlink" href="#enter-the-admin-site" title="Link to this heading">¶</a></h3>
+<p>Now, try logging in with the superuser account you created in the previous step.
+You should see the Ginger admin index page:</p>
+<img alt="Ginger admin index page" src="../_images/admin02.png" />
+</section>
+<section id="s-make-the-poll-app-modifiable-in-the-admin">
+<span id="make-the-poll-app-modifiable-in-the-admin"></span><h3>Make the poll app modifiable in the admin<a class="headerlink" href="#make-the-poll-app-modifiable-in-the-admin" title="Link to this heading">¶</a></h3>
+<p>But where’s our poll app? It’s not displayed on the admin index page.</p>
+<p>Only one more thing to do: we need to tell the admin that <code class="docutils literal notranslate"><span class="pre">Question</span></code> objects
+have an admin interface. To do this, open the <code class="file docutils literal notranslate"><span class="pre">polls/admin.py</span></code> file, and
+edit it to look like this:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">polls/admin.py</span></code></span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Question</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Question</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="s-explore-the-free-admin-functionality">
+<span id="explore-the-free-admin-functionality"></span><h3>Explore the free admin functionality<a class="headerlink" href="#explore-the-free-admin-functionality" title="Link to this heading">¶</a></h3>
+<p>Now that we’ve registered <code class="docutils literal notranslate"><span class="pre">Question</span></code>, Ginger knows that it should be displayed on
+the admin index page:</p>
+<img alt="Ginger admin index page, now with polls displayed" src="../_images/admin03t.png" />
+<p>Click “Questions”. Now you’re at the “change list” page for questions. This page
+displays all the questions in the database and lets you choose one to change it.
+There’s the “What’s up?” question we created earlier:</p>
+<img alt="Polls change list page" src="../_images/admin04t.png" />
+<p>Click the “What’s up?” question to edit it:</p>
+<img alt="Editing form for question object" src="../_images/admin05t.png" />
+<p>Things to note here:</p>
+<ul class="simple">
+<li><p>The form is automatically generated from the <code class="docutils literal notranslate"><span class="pre">Question</span></code> model.</p></li>
+<li><p>The different model field types (<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.DateTimeField" title="ginger.db.models.DateTimeField"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateTimeField</span></code></a>,
+<a class="reference internal" href="../ref/models/fields.html#ginger.db.models.CharField" title="ginger.db.models.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a>) correspond to the appropriate HTML
+input widget. Each type of field knows how to display itself in the Ginger
+admin.</p></li>
+<li><p>Each <a class="reference internal" href="../ref/models/fields.html#ginger.db.models.DateTimeField" title="ginger.db.models.DateTimeField"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateTimeField</span></code></a> gets free JavaScript
+shortcuts. Dates get a “Today” shortcut and calendar popup, and times get
+a “Now” shortcut and a convenient popup that lists commonly entered times.</p></li>
+</ul>
+<p>The bottom part of the page gives you a couple of options:</p>
+<ul class="simple">
+<li><p>Save – Saves changes and returns to the change-list page for this type of
+object.</p></li>
+<li><p>Save and continue editing – Saves changes and reloads the admin page for
+this object.</p></li>
+<li><p>Save and add another – Saves changes and loads a new, blank form for this
+type of object.</p></li>
+<li><p>Delete – Displays a delete confirmation page.</p></li>
+</ul>
+<p>If the value of “Date published” doesn’t match the time when you created the
+question in <a class="reference internal" href="tutorial01.html"><span class="doc">Tutorial 1</span></a>, it probably
+means you forgot to set the correct value for the <a class="reference internal" href="../ref/settings.html#std-setting-TIME_ZONE"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TIME_ZONE</span></code></a> setting.
+Change it, reload the page and check that the correct value appears.</p>
+<p>Change the “Date published” by clicking the “Today” and “Now” shortcuts. Then
+click “Save and continue editing.” Then click “History” in the upper right.
+You’ll see a page listing all changes made to this object via the Ginger admin,
+with the timestamp and username of the person who made the change:</p>
+<img alt="History page for question object" src="../_images/admin06t.png" />
+<p>When you’re comfortable with the models API and have familiarized yourself with
+the admin site, read <a class="reference internal" href="tutorial03.html"><span class="doc">part 3 of this tutorial</span></a> to learn
+about how to add more views to our polls app.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="tutorial03.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Writing your first Ginger app, part 3</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="tutorial01.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Writing your first Ginger app, part 1</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Writing your first Ginger app, part 2</a><ul>
+<li><a class="reference internal" href="#database-setup">Database setup</a></li>
+<li><a class="reference internal" href="#creating-models">Creating models</a></li>
+<li><a class="reference internal" href="#activating-models">Activating models</a></li>
+<li><a class="reference internal" href="#playing-with-the-api">Playing with the API</a></li>
+<li><a class="reference internal" href="#introducing-the-ginger-admin">Introducing the Ginger Admin</a><ul>
+<li><a class="reference internal" href="#creating-an-admin-user">Creating an admin user</a></li>
+<li><a class="reference internal" href="#start-the-development-server">Start the development server</a></li>
+<li><a class="reference internal" href="#enter-the-admin-site">Enter the admin site</a></li>
+<li><a class="reference internal" href="#make-the-poll-app-modifiable-in-the-admin">Make the poll app modifiable in the admin</a></li>
+<li><a class="reference internal" href="#explore-the-free-admin-functionality">Explore the free admin functionality</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

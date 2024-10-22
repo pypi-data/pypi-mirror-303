@@ -1,0 +1,1162 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Migration Operations" href="migration-operations.html" /><link rel="prev" title="Logging" href="logging.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Middleware - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/ref/middleware.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.middleware">
+<span id="s-middleware"></span><span id="module-ginger.middleware"></span><span id="middleware"></span><h1>Middleware<a class="headerlink" href="#module-ginger.middleware" title="Link to this heading">¶</a></h1>
+<p>This document explains all middleware components that come with Ginger. For
+information on how to use them and how to write your own middleware, see
+the <a class="reference internal" href="../topics/http/middleware.html"><span class="doc">middleware usage guide</span></a>.</p>
+<section id="s-available-middleware">
+<span id="available-middleware"></span><h2>Available middleware<a class="headerlink" href="#available-middleware" title="Link to this heading">¶</a></h2>
+<section id="s-module-ginger.middleware.cache">
+<span id="s-cache-middleware"></span><span id="module-ginger.middleware.cache"></span><span id="cache-middleware"></span><h3>Cache middleware<a class="headerlink" href="#module-ginger.middleware.cache" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.cache.UpdateCacheMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UpdateCacheMiddleware</span></span><a class="headerlink" href="#ginger.middleware.cache.UpdateCacheMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.cache.FetchFromCacheMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FetchFromCacheMiddleware</span></span><a class="headerlink" href="#ginger.middleware.cache.FetchFromCacheMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enable the site-wide cache. If these are enabled, each Ginger-powered page will
+be cached for as long as the <a class="reference internal" href="settings.html#std-setting-CACHE_MIDDLEWARE_SECONDS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CACHE_MIDDLEWARE_SECONDS</span></code></a> setting
+defines. See the <a class="reference internal" href="../topics/cache.html"><span class="doc">cache documentation</span></a>.</p>
+</section>
+<section id="s-module-ginger.middleware.common">
+<span id="s-common-middleware"></span><span id="module-ginger.middleware.common"></span><span id="common-middleware"></span><h3>“Common” middleware<a class="headerlink" href="#module-ginger.middleware.common" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.common.CommonMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CommonMiddleware</span></span><a class="headerlink" href="#ginger.middleware.common.CommonMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Adds a few conveniences for perfectionists:</p>
+<ul>
+<li><p>Forbids access to user agents in the <a class="reference internal" href="settings.html#std-setting-DISALLOWED_USER_AGENTS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DISALLOWED_USER_AGENTS</span></code></a>
+setting, which should be a list of compiled regular expression objects.</p></li>
+<li><p>Performs URL rewriting based on the <a class="reference internal" href="settings.html#std-setting-APPEND_SLASH"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APPEND_SLASH</span></code></a> and
+<a class="reference internal" href="settings.html#std-setting-PREPEND_WWW"><code class="xref std std-setting docutils literal notranslate"><span class="pre">PREPEND_WWW</span></code></a> settings.</p>
+<p>If <a class="reference internal" href="settings.html#std-setting-APPEND_SLASH"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APPEND_SLASH</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and the initial URL doesn’t end
+with a slash, and it is not found in the URLconf, then a new URL is
+formed by appending a slash at the end. If this new URL is found in the
+URLconf, then Ginger redirects the request to this new URL. Otherwise,
+the initial URL is processed as usual.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">foo.com/bar</span></code> will be redirected to <code class="docutils literal notranslate"><span class="pre">foo.com/bar/</span></code> if
+you don’t have a valid URL pattern for <code class="docutils literal notranslate"><span class="pre">foo.com/bar</span></code> but <em>do</em> have a
+valid pattern for <code class="docutils literal notranslate"><span class="pre">foo.com/bar/</span></code>.</p>
+<p>If <a class="reference internal" href="settings.html#std-setting-PREPEND_WWW"><code class="xref std std-setting docutils literal notranslate"><span class="pre">PREPEND_WWW</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, URLs that lack a leading “www.”
+will be redirected to the same URL with a leading “www.”</p>
+<p>Both of these options are meant to normalize URLs. The philosophy is that
+each URL should exist in one, and only one, place. Technically a URL
+<code class="docutils literal notranslate"><span class="pre">foo.com/bar</span></code> is distinct from <code class="docutils literal notranslate"><span class="pre">foo.com/bar/</span></code> – a search-engine
+indexer would treat them as separate URLs – so it’s best practice to
+normalize URLs.</p>
+<p>If necessary, individual views may be excluded from the <code class="docutils literal notranslate"><span class="pre">APPEND_SLASH</span></code>
+behavior using the <a class="reference internal" href="../topics/http/decorators.html#ginger.views.decorators.common.no_append_slash" title="ginger.views.decorators.common.no_append_slash"><code class="xref py py-func docutils literal notranslate"><span class="pre">no_append_slash()</span></code></a>
+decorator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views.decorators.common</span> <span class="kn">import</span> <span class="n">no_append_slash</span>
+
+
+<span class="nd">@no_append_slash</span>
+<span class="k">def</span> <span class="nf">sensitive_fbv</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;View to be excluded from APPEND_SLASH.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Sets the <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> header for non-streaming responses.</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.middleware.common.CommonMiddleware.response_redirect_class">
+<span class="sig-prename descclassname"><span class="pre">CommonMiddleware.</span></span><span class="sig-name descname"><span class="pre">response_redirect_class</span></span><a class="headerlink" href="#ginger.middleware.common.CommonMiddleware.response_redirect_class" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Defaults to <a class="reference internal" href="request-response.html#ginger.http.HttpResponsePermanentRedirect" title="ginger.http.HttpResponsePermanentRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpResponsePermanentRedirect</span></code></a>. Subclass
+<code class="docutils literal notranslate"><span class="pre">CommonMiddleware</span></code> and override the attribute to customize the redirects
+issued by the middleware.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.common.BrokenLinkEmailsMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BrokenLinkEmailsMiddleware</span></span><a class="headerlink" href="#ginger.middleware.common.BrokenLinkEmailsMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<ul class="simple">
+<li><p>Sends broken link notification emails to <a class="reference internal" href="settings.html#std-setting-MANAGERS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">MANAGERS</span></code></a> (see
+<a class="reference internal" href="../howto/error-reporting.html"><span class="doc">How to manage error reporting</span></a>).</p></li>
+</ul>
+</section>
+<section id="s-module-ginger.middleware.gzip">
+<span id="s-gzip-middleware"></span><span id="module-ginger.middleware.gzip"></span><span id="gzip-middleware"></span><h3>GZip middleware<a class="headerlink" href="#module-ginger.middleware.gzip" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.gzip.GZipMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GZipMiddleware</span></span><a class="headerlink" href="#ginger.middleware.gzip.GZipMiddleware" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.middleware.gzip.GZipMiddleware.max_random_bytes">
+<span class="sig-name descname"><span class="pre">max_random_bytes</span></span><a class="headerlink" href="#ginger.middleware.gzip.GZipMiddleware.max_random_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Defaults to 100. Subclass <code class="docutils literal notranslate"><span class="pre">GZipMiddleware</span></code> and override the attribute
+to change the maximum number of random bytes that is included with
+compressed responses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Security researchers revealed that when compression techniques (including
+<code class="docutils literal notranslate"><span class="pre">GZipMiddleware</span></code>) are used on a website, the site may become exposed to a
+number of possible attacks.</p>
+<p>To mitigate attacks, Ginger implements a technique called <em>Heal The Breach
+(HTB)</em>. It adds up to 100 bytes (see
+<a class="reference internal" href="#ginger.middleware.gzip.GZipMiddleware.max_random_bytes" title="ginger.middleware.gzip.GZipMiddleware.max_random_bytes"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_random_bytes</span></code></a>) of random bytes to each response
+to make the attacks less effective.</p>
+<p>For more details, see the <a class="reference external" href="https://www.breachattack.com/resources/BREACH%20-%20SSL,%20gone%20in%2030%20seconds.pdf">BREACH paper (PDF)</a>, <a class="reference external" href="https://www.breachattack.com/">breachattack.com</a>, and
+the <a class="reference external" href="https://ieeexplore.ieee.org/document/9754554">Heal The Breach (HTB) paper</a>.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ginger.middleware.gzip.GZipMiddleware</span></code> compresses content for browsers
+that understand GZip compression (all modern browsers).</p>
+<p>This middleware should be placed before any other middleware that need to
+read or write the response body so that compression happens afterward.</p>
+<p>It will NOT compress content if any of the following are true:</p>
+<ul class="simple">
+<li><p>The content body is less than 200 bytes long.</p></li>
+<li><p>The response has already set the <code class="docutils literal notranslate"><span class="pre">Content-Encoding</span></code> header.</p></li>
+<li><p>The request (the browser) hasn’t sent an <code class="docutils literal notranslate"><span class="pre">Accept-Encoding</span></code> header
+containing <code class="docutils literal notranslate"><span class="pre">gzip</span></code>.</p></li>
+</ul>
+<p>If the response has an <code class="docutils literal notranslate"><span class="pre">ETag</span></code> header, the ETag is made weak to comply with
+<span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc9110.html#section-8.8.1"><strong>RFC 9110 Section 8.8.1</strong></a>.</p>
+<p>You can apply GZip compression to individual views using the
+<a class="reference internal" href="../topics/http/decorators.html#ginger.views.decorators.gzip.gzip_page" title="ginger.views.decorators.gzip.gzip_page"><code class="xref py py-func docutils literal notranslate"><span class="pre">gzip_page()</span></code></a> decorator.</p>
+</section>
+<section id="s-module-ginger.middleware.http">
+<span id="s-conditional-get-middleware"></span><span id="module-ginger.middleware.http"></span><span id="conditional-get-middleware"></span><h3>Conditional GET middleware<a class="headerlink" href="#module-ginger.middleware.http" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.http.ConditionalGetMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ConditionalGetMiddleware</span></span><a class="headerlink" href="#ginger.middleware.http.ConditionalGetMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Handles conditional GET operations. If the response doesn’t have an <code class="docutils literal notranslate"><span class="pre">ETag</span></code>
+header, the middleware adds one if needed. If the response has an <code class="docutils literal notranslate"><span class="pre">ETag</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Last-Modified</span></code> header, and the request has <code class="docutils literal notranslate"><span class="pre">If-None-Match</span></code> or
+<code class="docutils literal notranslate"><span class="pre">If-Modified-Since</span></code>, the response is replaced by an
+<a class="reference internal" href="request-response.html#ginger.http.HttpResponseNotModified" title="ginger.http.HttpResponseNotModified"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpResponseNotModified</span></code></a>.</p>
+</section>
+<section id="s-module-ginger.middleware.locale">
+<span id="s-locale-middleware"></span><span id="module-ginger.middleware.locale"></span><span id="locale-middleware"></span><h3>Locale middleware<a class="headerlink" href="#module-ginger.middleware.locale" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.locale.LocaleMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LocaleMiddleware</span></span><a class="headerlink" href="#ginger.middleware.locale.LocaleMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enables language selection based on data from the request. It customizes
+content for each user. See the <a class="reference internal" href="../topics/i18n/translation.html"><span class="doc">internationalization documentation</span></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.middleware.locale.LocaleMiddleware.response_redirect_class">
+<span class="sig-prename descclassname"><span class="pre">LocaleMiddleware.</span></span><span class="sig-name descname"><span class="pre">response_redirect_class</span></span><a class="headerlink" href="#ginger.middleware.locale.LocaleMiddleware.response_redirect_class" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Defaults to <a class="reference internal" href="request-response.html#ginger.http.HttpResponseRedirect" title="ginger.http.HttpResponseRedirect"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpResponseRedirect</span></code></a>. Subclass
+<code class="docutils literal notranslate"><span class="pre">LocaleMiddleware</span></code> and override the attribute to customize the redirects
+issued by the middleware.</p>
+</section>
+<section id="s-module-ginger.contrib.messages.middleware">
+<span id="s-message-middleware"></span><span id="module-ginger.contrib.messages.middleware"></span><span id="message-middleware"></span><h3>Message middleware<a class="headerlink" href="#module-ginger.contrib.messages.middleware" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.messages.middleware.MessageMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MessageMiddleware</span></span><a class="headerlink" href="#ginger.contrib.messages.middleware.MessageMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enables cookie- and session-based message support. See the
+<a class="reference internal" href="contrib/messages.html"><span class="doc">messages documentation</span></a>.</p>
+</section>
+<section id="s-module-ginger.middleware.security">
+<span id="s-id1"></span><span id="s-security-middleware"></span><span id="module-ginger.middleware.security"></span><span id="id1"></span><span id="security-middleware"></span><h3>Security middleware<a class="headerlink" href="#module-ginger.middleware.security" title="Link to this heading">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If your deployment situation allows, it’s usually a good idea to have your
+front-end web server perform the functionality provided by the
+<code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code>. That way, if there are requests that aren’t served
+by Ginger (such as static media or user-uploaded files), they will have
+the same protections as requests to your Ginger application.</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.security.SecurityMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SecurityMiddleware</span></span><a class="headerlink" href="#ginger.middleware.security.SecurityMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The <code class="docutils literal notranslate"><span class="pre">ginger.middleware.security.SecurityMiddleware</span></code> provides several security
+enhancements to the request/response cycle. Each one can be independently
+enabled or disabled with a setting.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_CONTENT_TYPE_NOSNIFF"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_CONTENT_TYPE_NOSNIFF</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_CROSS_ORIGIN_OPENER_POLICY"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_CROSS_ORIGIN_OPENER_POLICY</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_INCLUDE_SUBDOMAINS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_INCLUDE_SUBDOMAINS</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_PRELOAD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_PRELOAD</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_SECONDS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_SECONDS</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_REDIRECT_EXEMPT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_REDIRECT_EXEMPT</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_REFERRER_POLICY"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_REFERRER_POLICY</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_SSL_HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_SSL_HOST</span></code></a></p></li>
+<li><p><a class="reference internal" href="settings.html#std-setting-SECURE_SSL_REDIRECT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_SSL_REDIRECT</span></code></a></p></li>
+</ul>
+<section id="s-http-strict-transport-security">
+<span id="s-id2"></span><span id="http-strict-transport-security"></span><span id="id2"></span><h4>HTTP Strict Transport Security<a class="headerlink" href="#http-strict-transport-security" title="Link to this heading">¶</a></h4>
+<p>For sites that should only be accessed over HTTPS, you can instruct modern
+browsers to refuse to connect to your domain name via an insecure connection
+(for a given period of time) by setting the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">“Strict-Transport-Security”
+header</a>. This reduces your exposure to some SSL-stripping man-in-the-middle
+(MITM) attacks.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> will set this header for you on all HTTPS responses if
+you set the <a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_SECONDS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_SECONDS</span></code></a> setting to a non-zero integer value.</p>
+<p>When enabling HSTS, it’s a good idea to first use a small value for testing,
+for example, <a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_SECONDS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_SECONDS</span> <span class="pre">=</span> <span class="pre">3600</span></code></a> for one
+hour. Each time a web browser sees the HSTS header from your site, it will
+refuse to communicate non-securely (using HTTP) with your domain for the given
+period of time. Once you confirm that all assets are served securely on your
+site (i.e. HSTS didn’t break anything), it’s a good idea to increase this value
+so that infrequent visitors will be protected (31536000 seconds, i.e. 1 year,
+is common).</p>
+<p>Additionally, if you set the <a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_INCLUDE_SUBDOMAINS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_INCLUDE_SUBDOMAINS</span></code></a> setting
+to <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> will add the <code class="docutils literal notranslate"><span class="pre">includeSubDomains</span></code> directive
+to the <code class="docutils literal notranslate"><span class="pre">Strict-Transport-Security</span></code> header. This is recommended (assuming all
+subdomains are served exclusively using HTTPS), otherwise your site may still
+be vulnerable via an insecure connection to a subdomain.</p>
+<p>If you wish to submit your site to the <a class="reference external" href="https://hstspreload.org/">browser preload list</a>, set the
+<a class="reference internal" href="settings.html#std-setting-SECURE_HSTS_PRELOAD"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_HSTS_PRELOAD</span></code></a> setting to <code class="docutils literal notranslate"><span class="pre">True</span></code>. That appends the
+<code class="docutils literal notranslate"><span class="pre">preload</span></code> directive to the <code class="docutils literal notranslate"><span class="pre">Strict-Transport-Security</span></code> header.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The HSTS policy applies to your entire domain, not just the URL of the
+response that you set the header on. Therefore, you should only use it if
+your entire domain is served via HTTPS only.</p>
+<p>Browsers properly respecting the HSTS header will refuse to allow users to
+bypass warnings and connect to a site with an expired, self-signed, or
+otherwise invalid SSL certificate. If you use HSTS, make sure your
+certificates are in good shape and stay that way!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are deployed behind a load-balancer or reverse-proxy server, and the
+<code class="docutils literal notranslate"><span class="pre">Strict-Transport-Security</span></code> header is not being added to your responses,
+it may be because Ginger doesn’t realize that it’s on a secure connection;
+you may need to set the <a class="reference internal" href="settings.html#std-setting-SECURE_PROXY_SSL_HEADER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_PROXY_SSL_HEADER</span></code></a> setting.</p>
+</div>
+</section>
+<section id="s-referrer-policy">
+<span id="s-id4"></span><span id="referrer-policy"></span><span id="id4"></span><h4>Referrer Policy<a class="headerlink" href="#referrer-policy" title="Link to this heading">¶</a></h4>
+<p>Browsers use <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">the Referer header</a> as a way to send information to a site
+about how users got there. When a user clicks a link, the browser will send the
+full URL of the linking page as the referrer. While this can be useful for some
+purposes – like figuring out who’s linking to your site – it also can cause
+privacy concerns by informing one site that a user was visiting another site.</p>
+<p>Some browsers have the ability to accept hints about whether they should send
+the HTTP <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header when a user clicks a link; this hint is provided
+via <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">the Referrer-Policy header</a>. This header can suggest any of three
+behaviors to browsers:</p>
+<ul class="simple">
+<li><p>Full URL: send the entire URL in the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header. For example, if the
+user is visiting <code class="docutils literal notranslate"><span class="pre">https://example.com/page.html</span></code>, the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header
+would contain <code class="docutils literal notranslate"><span class="pre">&quot;https://example.com/page.html&quot;</span></code>.</p></li>
+<li><p>Origin only: send only the “origin” in the referrer. The origin consists of
+the scheme, host and (optionally) port number. For example, if the user is
+visiting <code class="docutils literal notranslate"><span class="pre">https://example.com/page.html</span></code>, the origin would be
+<code class="docutils literal notranslate"><span class="pre">https://example.com/</span></code>.</p></li>
+<li><p>No referrer: do not send a <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header at all.</p></li>
+</ul>
+<p>There are two types of conditions this header can tell a browser to watch out
+for:</p>
+<ul class="simple">
+<li><p>Same-origin versus cross-origin: a link from <code class="docutils literal notranslate"><span class="pre">https://example.com/1.html</span></code>
+to <code class="docutils literal notranslate"><span class="pre">https://example.com/2.html</span></code> is same-origin. A link from
+<code class="docutils literal notranslate"><span class="pre">https://example.com/page.html</span></code> to <code class="docutils literal notranslate"><span class="pre">https://not.example.com/page.html</span></code> is
+cross-origin.</p></li>
+<li><p>Protocol downgrade: a downgrade occurs if the page containing the link is
+served via HTTPS, but the page being linked to is not served via HTTPS.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When your site is served via HTTPS, <a class="reference internal" href="csrf.html#how-csrf-works"><span class="std std-ref">Ginger’s CSRF protection system</span></a> requires the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header to be present, so
+completely disabling the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header will interfere with CSRF
+protection. To gain most of the benefits of disabling <code class="docutils literal notranslate"><span class="pre">Referer</span></code> headers
+while also keeping CSRF protection, consider enabling only same-origin
+referrers.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> can set the <code class="docutils literal notranslate"><span class="pre">Referrer-Policy</span></code> header for you, based on
+the <a class="reference internal" href="settings.html#std-setting-SECURE_REFERRER_POLICY"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_REFERRER_POLICY</span></code></a> setting (note spelling: browsers send a
+<code class="docutils literal notranslate"><span class="pre">Referer</span></code> header when a user clicks a link, but the header instructing a
+browser whether to do so is spelled <code class="docutils literal notranslate"><span class="pre">Referrer-Policy</span></code>). The valid values for
+this setting are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">no-referrer</span></code></dt><dd><p>Instructs the browser to send no referrer for links clicked on this site.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">no-referrer-when-downgrade</span></code></dt><dd><p>Instructs the browser to send a full URL as the referrer, but only when no
+protocol downgrade occurs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">origin</span></code></dt><dd><p>Instructs the browser to send only the origin, not the full URL, as the
+referrer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">origin-when-cross-origin</span></code></dt><dd><p>Instructs the browser to send the full URL as the referrer for same-origin
+links, and only the origin for cross-origin links.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">same-origin</span></code></dt><dd><p>Instructs the browser to send a full URL, but only for same-origin links. No
+referrer will be sent for cross-origin links.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">strict-origin</span></code></dt><dd><p>Instructs the browser to send only the origin, not the full URL, and to send
+no referrer when a protocol downgrade occurs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">strict-origin-when-cross-origin</span></code></dt><dd><p>Instructs the browser to send the full URL when the link is same-origin and
+no protocol downgrade occurs; send only the origin when the link is
+cross-origin and no protocol downgrade occurs; and no referrer when a
+protocol downgrade occurs.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsafe-url</span></code></dt><dd><p>Instructs the browser to always send the full URL as the referrer.</p>
+</dd>
+</dl>
+<div class="admonition-unknown-policy-values admonition">
+<p class="admonition-title">Unknown Policy Values</p>
+<p>Where a policy value is <a class="reference external" href="https://w3c.github.io/webappsec-referrer-policy/#unknown-policy-values">unknown</a> by a user agent, it is possible to
+specify multiple policy values to provide a fallback. The last specified
+value that is understood takes precedence. To support this, an iterable or
+comma-separated string can be used with <a class="reference internal" href="settings.html#std-setting-SECURE_REFERRER_POLICY"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_REFERRER_POLICY</span></code></a>.</p>
+</div>
+</section>
+<section id="s-cross-origin-opener-policy">
+<span id="s-id8"></span><span id="cross-origin-opener-policy"></span><span id="id8"></span><h4>Cross-Origin Opener Policy<a class="headerlink" href="#cross-origin-opener-policy" title="Link to this heading">¶</a></h4>
+<p>Some browsers have the ability to isolate top-level windows from other
+documents by putting them in a separate browsing context group based on the
+value of the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy">Cross-Origin Opener Policy</a> (COOP) header. If a document that
+is isolated in this way opens a cross-origin popup window, the popup’s
+<code class="docutils literal notranslate"><span class="pre">window.opener</span></code> property will be <code class="docutils literal notranslate"><span class="pre">null</span></code>. Isolating windows using COOP is a
+defense-in-depth protection against cross-origin attacks, especially those like
+Spectre which allowed exfiltration of data loaded into a shared browsing
+context.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> can set the <code class="docutils literal notranslate"><span class="pre">Cross-Origin-Opener-Policy</span></code> header for
+you, based on the <a class="reference internal" href="settings.html#std-setting-SECURE_CROSS_ORIGIN_OPENER_POLICY"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_CROSS_ORIGIN_OPENER_POLICY</span></code></a> setting. The
+valid values for this setting are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">same-origin</span></code></dt><dd><p>Isolates the browsing context exclusively to same-origin documents.
+Cross-origin documents are not loaded in the same browsing context. This
+is the default and most secure option.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">same-origin-allow-popups</span></code></dt><dd><p>Isolates the browsing context to same-origin documents or those which
+either don’t set COOP or which opt out of isolation by setting a COOP of
+<code class="docutils literal notranslate"><span class="pre">unsafe-none</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unsafe-none</span></code></dt><dd><p>Allows the document to be added to its opener’s browsing context group
+unless the opener itself has a COOP of <code class="docutils literal notranslate"><span class="pre">same-origin</span></code> or
+<code class="docutils literal notranslate"><span class="pre">same-origin-allow-popups</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="s-x-content-type-options-nosniff">
+<span id="s-x-content-type-options"></span><span id="x-content-type-options-nosniff"></span><span id="x-content-type-options"></span><h4><code class="docutils literal notranslate"><span class="pre">X-Content-Type-Options:</span> <span class="pre">nosniff</span></code><a class="headerlink" href="#x-content-type-options-nosniff" title="Link to this heading">¶</a></h4>
+<p>Some browsers will try to guess the content types of the assets that they
+fetch, overriding the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header. While this can help display
+sites with improperly configured servers, it can also pose a security
+risk.</p>
+<p>If your site serves user-uploaded files, a malicious user could upload a
+specially-crafted file that would be interpreted as HTML or JavaScript by
+the browser when you expected it to be something harmless.</p>
+<p>To prevent the browser from guessing the content type and force it to
+always use the type provided in the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header, you can pass
+the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">X-Content-Type-Options: nosniff</a> header.  <code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> will
+do this for all responses if the <a class="reference internal" href="settings.html#std-setting-SECURE_CONTENT_TYPE_NOSNIFF"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_CONTENT_TYPE_NOSNIFF</span></code></a> setting
+is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Note that in most deployment situations where Ginger isn’t involved in serving
+user-uploaded files, this setting won’t help you. For example, if your
+<a class="reference internal" href="settings.html#std-setting-MEDIA_URL"><code class="xref std std-setting docutils literal notranslate"><span class="pre">MEDIA_URL</span></code></a> is served directly by your front-end web server (nginx,
+Apache, etc.) then you’d want to set this header there. On the other hand, if
+you are using Ginger to do something like require authorization in order to
+download files and you cannot set the header using your web server, this
+setting will be useful.</p>
+</section>
+<section id="s-ssl-redirect">
+<span id="s-id11"></span><span id="ssl-redirect"></span><span id="id11"></span><h4>SSL Redirect<a class="headerlink" href="#ssl-redirect" title="Link to this heading">¶</a></h4>
+<p>If your site offers both HTTP and HTTPS connections, most users will end up
+with an unsecured connection by default. For best security, you should redirect
+all HTTP connections to HTTPS.</p>
+<p>If you set the <a class="reference internal" href="settings.html#std-setting-SECURE_SSL_REDIRECT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_SSL_REDIRECT</span></code></a> setting to True,
+<code class="docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code> will permanently (HTTP 301) redirect all HTTP
+connections to HTTPS.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For performance reasons, it’s preferable to do these redirects outside of
+Ginger, in a front-end load balancer or reverse-proxy server such as
+<a class="reference external" href="https://nginx.org/">nginx</a>. <a class="reference internal" href="settings.html#std-setting-SECURE_SSL_REDIRECT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_SSL_REDIRECT</span></code></a> is intended for the deployment
+situations where this isn’t an option.</p>
+</div>
+<p>If the <a class="reference internal" href="settings.html#std-setting-SECURE_SSL_HOST"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_SSL_HOST</span></code></a> setting has a value, all redirects will be
+sent to that host instead of the originally-requested host.</p>
+<p>If there are a few pages on your site that should be available over HTTP, and
+not redirected to HTTPS, you can list regular expressions to match those URLs
+in the <a class="reference internal" href="settings.html#std-setting-SECURE_REDIRECT_EXEMPT"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_REDIRECT_EXEMPT</span></code></a> setting.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are deployed behind a load-balancer or reverse-proxy server and
+Ginger can’t seem to tell when a request actually is already secure, you
+may need to set the <a class="reference internal" href="settings.html#std-setting-SECURE_PROXY_SSL_HEADER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">SECURE_PROXY_SSL_HEADER</span></code></a> setting.</p>
+</div>
+</section>
+</section>
+<section id="s-module-ginger.contrib.sessions.middleware">
+<span id="s-session-middleware"></span><span id="module-ginger.contrib.sessions.middleware"></span><span id="session-middleware"></span><h3>Session middleware<a class="headerlink" href="#module-ginger.contrib.sessions.middleware" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.sessions.middleware.SessionMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SessionMiddleware</span></span><a class="headerlink" href="#ginger.contrib.sessions.middleware.SessionMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enables session support. See the <a class="reference internal" href="../topics/http/sessions.html"><span class="doc">session documentation</span></a>.</p>
+</section>
+<section id="s-module-ginger.contrib.sites.middleware">
+<span id="s-site-middleware"></span><span id="module-ginger.contrib.sites.middleware"></span><span id="site-middleware"></span><h3>Site middleware<a class="headerlink" href="#module-ginger.contrib.sites.middleware" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.sites.middleware.CurrentSiteMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CurrentSiteMiddleware</span></span><a class="headerlink" href="#ginger.contrib.sites.middleware.CurrentSiteMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Adds the <code class="docutils literal notranslate"><span class="pre">site</span></code> attribute representing the current site to every incoming
+<code class="docutils literal notranslate"><span class="pre">HttpRequest</span></code> object. See the <a class="reference internal" href="contrib/sites.html#site-middleware"><span class="std std-ref">sites documentation</span></a>.</p>
+</section>
+<section id="s-csrf-protection-middleware">
+<span id="csrf-protection-middleware"></span><h3>CSRF protection middleware<a class="headerlink" href="#csrf-protection-middleware" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.csrf.CsrfViewMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CsrfViewMiddleware</span></span><a class="headerlink" href="#ginger.middleware.csrf.CsrfViewMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Adds protection against Cross Site Request Forgeries by adding hidden form
+fields to POST forms and checking requests for the correct value. See the
+<a class="reference internal" href="csrf.html"><span class="doc">Cross Site Request Forgery protection documentation</span></a>.</p>
+</section>
+<section id="s-x-frame-options-middleware">
+<span id="x-frame-options-middleware"></span><h3><code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code> middleware<a class="headerlink" href="#x-frame-options-middleware" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.middleware.clickjacking.XFrameOptionsMiddleware">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">XFrameOptionsMiddleware</span></span><a class="headerlink" href="#ginger.middleware.clickjacking.XFrameOptionsMiddleware" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Simple <a class="reference internal" href="clickjacking.html"><span class="doc">clickjacking protection via the X-Frame-Options header</span></a>.</p>
+</section>
+</section>
+<section id="s-middleware-ordering">
+<span id="s-id12"></span><span id="middleware-ordering"></span><span id="id12"></span><h2>Middleware ordering<a class="headerlink" href="#middleware-ordering" title="Link to this heading">¶</a></h2>
+<p>Here are some hints about the ordering of various Ginger middleware classes:</p>
+<ol class="arabic">
+<li><p><a class="reference internal" href="#ginger.middleware.security.SecurityMiddleware" title="ginger.middleware.security.SecurityMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">SecurityMiddleware</span></code></a></p>
+<p>It should go near the top of the list if you’re going to turn on the SSL
+redirect as that avoids running through a bunch of other unnecessary
+middleware.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.cache.UpdateCacheMiddleware" title="ginger.middleware.cache.UpdateCacheMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateCacheMiddleware</span></code></a></p>
+<p>Before those that modify the <code class="docutils literal notranslate"><span class="pre">Vary</span></code> header (<code class="docutils literal notranslate"><span class="pre">SessionMiddleware</span></code>,
+<code class="docutils literal notranslate"><span class="pre">GZipMiddleware</span></code>, <code class="docutils literal notranslate"><span class="pre">LocaleMiddleware</span></code>).</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.gzip.GZipMiddleware" title="ginger.middleware.gzip.GZipMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">GZipMiddleware</span></code></a></p>
+<p>Before any middleware that may change or use the response body.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">UpdateCacheMiddleware</span></code>: Modifies <code class="docutils literal notranslate"><span class="pre">Vary</span></code> header.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.contrib.sessions.middleware.SessionMiddleware" title="ginger.contrib.sessions.middleware.SessionMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">SessionMiddleware</span></code></a></p>
+<p>Before any middleware that may raise an exception to trigger an error
+view (such as <a class="reference internal" href="exceptions.html#ginger.core.exceptions.PermissionDenied" title="ginger.core.exceptions.PermissionDenied"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PermissionDenied</span></code></a>) if you’re
+using <a class="reference internal" href="settings.html#std-setting-CSRF_USE_SESSIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CSRF_USE_SESSIONS</span></code></a>.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">UpdateCacheMiddleware</span></code>: Modifies <code class="docutils literal notranslate"><span class="pre">Vary</span></code> header.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.http.ConditionalGetMiddleware" title="ginger.middleware.http.ConditionalGetMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConditionalGetMiddleware</span></code></a></p>
+<p>Before any middleware that may change the response (it sets the <code class="docutils literal notranslate"><span class="pre">ETag</span></code>
+header).</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">GZipMiddleware</span></code> so it won’t calculate an <code class="docutils literal notranslate"><span class="pre">ETag</span></code> header on gzipped
+contents.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.locale.LocaleMiddleware" title="ginger.middleware.locale.LocaleMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">LocaleMiddleware</span></code></a></p>
+<p>One of the topmost, after <code class="docutils literal notranslate"><span class="pre">SessionMiddleware</span></code> (uses session data) and
+<code class="docutils literal notranslate"><span class="pre">UpdateCacheMiddleware</span></code> (modifies <code class="docutils literal notranslate"><span class="pre">Vary</span></code> header).</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.common.CommonMiddleware" title="ginger.middleware.common.CommonMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommonMiddleware</span></code></a></p>
+<p>Before any middleware that may change the response (it sets the
+<code class="docutils literal notranslate"><span class="pre">Content-Length</span></code> header). A middleware that appears before
+<code class="docutils literal notranslate"><span class="pre">CommonMiddleware</span></code> and changes the response must reset <code class="docutils literal notranslate"><span class="pre">Content-Length</span></code>.</p>
+<p>Close to the top: it redirects when <a class="reference internal" href="settings.html#std-setting-APPEND_SLASH"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APPEND_SLASH</span></code></a> or
+<a class="reference internal" href="settings.html#std-setting-PREPEND_WWW"><code class="xref std std-setting docutils literal notranslate"><span class="pre">PREPEND_WWW</span></code></a> are set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">SessionMiddleware</span></code> if you’re using <a class="reference internal" href="settings.html#std-setting-CSRF_USE_SESSIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CSRF_USE_SESSIONS</span></code></a>.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.csrf.CsrfViewMiddleware" title="ginger.middleware.csrf.CsrfViewMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">CsrfViewMiddleware</span></code></a></p>
+<p>Before any view middleware that assumes that CSRF attacks have been dealt
+with.</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">SessionMiddleware</span></code> if you’re using <a class="reference internal" href="settings.html#std-setting-CSRF_USE_SESSIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">CSRF_USE_SESSIONS</span></code></a>.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.contrib.messages.middleware.MessageMiddleware" title="ginger.contrib.messages.middleware.MessageMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">MessageMiddleware</span></code></a></p>
+<p>After <code class="docutils literal notranslate"><span class="pre">SessionMiddleware</span></code>: can use session-based storage.</p>
+</li>
+<li><p><a class="reference internal" href="#ginger.middleware.cache.FetchFromCacheMiddleware" title="ginger.middleware.cache.FetchFromCacheMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">FetchFromCacheMiddleware</span></code></a></p>
+<p>After any middleware that modifies the <code class="docutils literal notranslate"><span class="pre">Vary</span></code> header: that header is used
+to pick a value for the cache hash-key.</p>
+</li>
+<li><p><a class="reference internal" href="contrib/flatpages.html#ginger.contrib.flatpages.middleware.FlatpageFallbackMiddleware" title="ginger.contrib.flatpages.middleware.FlatpageFallbackMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlatpageFallbackMiddleware</span></code></a></p>
+<p>Should be near the bottom as it’s a last-resort type of middleware.</p>
+</li>
+<li><p><a class="reference internal" href="contrib/redirects.html#ginger.contrib.redirects.middleware.RedirectFallbackMiddleware" title="ginger.contrib.redirects.middleware.RedirectFallbackMiddleware"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedirectFallbackMiddleware</span></code></a></p>
+<p>Should be near the bottom as it’s a last-resort type of middleware.</p>
+</li>
+</ol>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="migration-operations.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Migration Operations</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="logging.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Logging</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Middleware</a><ul>
+<li><a class="reference internal" href="#available-middleware">Available middleware</a><ul>
+<li><a class="reference internal" href="#module-ginger.middleware.cache">Cache middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.middleware.common">“Common” middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.middleware.gzip">GZip middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.middleware.http">Conditional GET middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.middleware.locale">Locale middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.contrib.messages.middleware">Message middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.middleware.security">Security middleware</a><ul>
+<li><a class="reference internal" href="#http-strict-transport-security">HTTP Strict Transport Security</a></li>
+<li><a class="reference internal" href="#referrer-policy">Referrer Policy</a></li>
+<li><a class="reference internal" href="#cross-origin-opener-policy">Cross-Origin Opener Policy</a></li>
+<li><a class="reference internal" href="#x-content-type-options-nosniff"><code class="docutils literal notranslate"><span class="pre">X-Content-Type-Options:</span> <span class="pre">nosniff</span></code></a></li>
+<li><a class="reference internal" href="#ssl-redirect">SSL Redirect</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ginger.contrib.sessions.middleware">Session middleware</a></li>
+<li><a class="reference internal" href="#module-ginger.contrib.sites.middleware">Site middleware</a></li>
+<li><a class="reference internal" href="#csrf-protection-middleware">CSRF protection middleware</a></li>
+<li><a class="reference internal" href="#x-frame-options-middleware"><code class="docutils literal notranslate"><span class="pre">X-Frame-Options</span></code> middleware</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#middleware-ordering">Middleware ordering</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

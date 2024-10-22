@@ -1,0 +1,1461 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Formsets" href="formsets.html" /><link rel="prev" title="How to use sessions" href="../http/sessions.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Working with forms - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Working with forms</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/topics/forms/index.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-working-with-forms">
+<span id="working-with-forms"></span><h1>Working with forms<a class="headerlink" href="#working-with-forms" title="Link to this heading">¶</a></h1>
+<div class="admonition-about-this-document admonition">
+<p class="admonition-title">About this document</p>
+<p>This document provides an introduction to the basics of web forms and how
+they are handled in Ginger. For a more detailed look at specific areas of
+the forms API, see <a class="reference internal" href="../../ref/forms/api.html"><span class="doc">The Forms API</span></a>, <a class="reference internal" href="../../ref/forms/fields.html"><span class="doc">Form fields</span></a>, and
+<a class="reference internal" href="../../ref/forms/validation.html"><span class="doc">Form and field validation</span></a>.</p>
+</div>
+<p>Unless you’re planning to build websites and applications that do nothing but
+publish content, and don’t accept input from your visitors, you’re going to
+need to understand and use forms.</p>
+<p>Ginger provides a range of tools and libraries to help you build forms to
+accept input from site visitors, and then process and respond to the input.</p>
+<section id="s-html-forms">
+<span id="html-forms"></span><h2>HTML forms<a class="headerlink" href="#html-forms" title="Link to this heading">¶</a></h2>
+<p>In HTML, a form is a collection of elements inside <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;...&lt;/form&gt;</span></code> that
+allow a visitor to do things like enter text, select options, manipulate
+objects or controls, and so on, and then send that information back to the
+server.</p>
+<p>Some of these form interface elements - text input or checkboxes - are built
+into HTML itself. Others are much more complex; an interface that pops up a
+date picker or allows you to move a slider or manipulate controls will
+typically use JavaScript and CSS as well as HTML form <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements to
+achieve these effects.</p>
+<p>As well as its <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements, a form must specify two things:</p>
+<ul class="simple">
+<li><p><em>where</em>: the URL to which the data corresponding to the user’s input should
+be returned</p></li>
+<li><p><em>how</em>: the HTTP method the data should be returned by</p></li>
+</ul>
+<p>As an example, the login form for the Ginger admin contains several
+<code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements: one of <code class="docutils literal notranslate"><span class="pre">type=&quot;text&quot;</span></code> for the username, one of
+<code class="docutils literal notranslate"><span class="pre">type=&quot;password&quot;</span></code> for the password, and one of <code class="docutils literal notranslate"><span class="pre">type=&quot;submit&quot;</span></code> for the
+“Log in” button. It also contains some hidden text fields that the user
+doesn’t see, which Ginger uses to determine what to do next.</p>
+<p>It also tells the browser that the form data should be sent to the URL
+specified in the <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code>’s <code class="docutils literal notranslate"><span class="pre">action</span></code> attribute - <code class="docutils literal notranslate"><span class="pre">/admin/</span></code> - and that it
+should be sent using the HTTP mechanism specified by the <code class="docutils literal notranslate"><span class="pre">method</span></code> attribute -
+<code class="docutils literal notranslate"><span class="pre">post</span></code>.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type=&quot;submit&quot;</span> <span class="pre">value=&quot;Log</span> <span class="pre">in&quot;&gt;</span></code> element is triggered, the
+data is returned to <code class="docutils literal notranslate"><span class="pre">/admin/</span></code>.</p>
+<section id="s-get-and-post">
+<span id="get-and-post"></span><h3><code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span></code><a class="headerlink" href="#get-and-post" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span></code> are the only HTTP methods to use when dealing with forms.</p>
+<p>Ginger’s login form is returned using the <code class="docutils literal notranslate"><span class="pre">POST</span></code> method, in which the browser
+bundles up the form data, encodes it for transmission, sends it to the server,
+and then receives back its response.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GET</span></code>, by contrast, bundles the submitted data into a string, and uses this
+to compose a URL. The URL contains the address where the data must be sent, as
+well as the data keys and values. You can see this in action if you do a search
+in the Ginger documentation, which will produce a URL of the form
+<code class="docutils literal notranslate"><span class="pre">https://docs.ginger.gloportal.dev/search/?q=forms&amp;release=1</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span></code> are typically used for different purposes.</p>
+<p>Any request that could be used to change the state of the system - for example,
+a request that makes changes in the database - should use <code class="docutils literal notranslate"><span class="pre">POST</span></code>. <code class="docutils literal notranslate"><span class="pre">GET</span></code>
+should be used only for requests that do not affect the state of the system.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GET</span></code> would also be unsuitable for a password form, because the password
+would appear in the URL, and thus, also in browser history and server logs,
+all in plain text. Neither would it be suitable for large quantities of data,
+or for binary data, such as an image. A web application that uses <code class="docutils literal notranslate"><span class="pre">GET</span></code>
+requests for admin forms is a security risk: it can be easy for an attacker to
+mimic a form’s request to gain access to sensitive parts of the system.
+<code class="docutils literal notranslate"><span class="pre">POST</span></code>, coupled with other protections like Ginger’s <a class="reference internal" href="../../ref/csrf.html"><span class="doc">CSRF protection</span></a> offers more control over access.</p>
+<p>On the other hand, <code class="docutils literal notranslate"><span class="pre">GET</span></code> is suitable for things like a web search form,
+because the URLs that represent a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request can easily be bookmarked,
+shared, or resubmitted.</p>
+</section>
+</section>
+<section id="s-ginger-s-role-in-forms">
+<span id="ginger-s-role-in-forms"></span><h2>Ginger’s role in forms<a class="headerlink" href="#ginger-s-role-in-forms" title="Link to this heading">¶</a></h2>
+<p>Handling forms is a complex business. Consider Ginger’s admin, where numerous
+items of data of several different types may need to be prepared for display in
+a form, rendered as HTML, edited using a convenient interface, returned to the
+server, validated and cleaned up, and then saved or passed on for further
+processing.</p>
+<p>Ginger’s form functionality can simplify and automate vast portions of this
+work, and can also do it more securely than most programmers would be able to
+do in code they wrote themselves.</p>
+<p>Ginger handles three distinct parts of the work involved in forms:</p>
+<ul class="simple">
+<li><p>preparing and restructuring data to make it ready for rendering</p></li>
+<li><p>creating HTML forms for the data</p></li>
+<li><p>receiving and processing submitted forms and data from the client</p></li>
+</ul>
+<p>It is <em>possible</em> to write code that does all of this manually, but Ginger can
+take care of it all for you.</p>
+</section>
+<section id="s-forms-in-ginger">
+<span id="forms-in-ginger"></span><h2>Forms in Ginger<a class="headerlink" href="#forms-in-ginger" title="Link to this heading">¶</a></h2>
+<p>We’ve described HTML forms briefly, but an HTML <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code> is just one part of
+the machinery required.</p>
+<p>In the context of a web application, ‘form’ might refer to that HTML
+<code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code>, or to the Ginger <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> that produces it, or to the
+structured data returned when it is submitted, or to the end-to-end working
+collection of these parts.</p>
+<section id="s-the-ginger-form-class">
+<span id="the-ginger-form-class"></span><h3>The Ginger <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> class<a class="headerlink" href="#the-ginger-form-class" title="Link to this heading">¶</a></h3>
+<p>At the heart of this system of components is Ginger’s <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> class. In
+much the same way that a Ginger model describes the logical structure of an
+object, its behavior, and the way its parts are represented to us, a
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> class describes a form and determines how it works and appears.</p>
+<p>In a similar way that a model class’s fields map to database fields, a form
+class’s fields map to HTML form <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements. (A <a class="reference internal" href="modelforms.html#ginger.forms.ModelForm" title="ginger.forms.ModelForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></a>
+maps a model class’s fields to HTML form <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements via a
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a>; this is what the Ginger admin is based upon.)</p>
+<p>A form’s fields are themselves classes; they manage form data and perform
+validation when a form is submitted. A <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.DateField" title="ginger.forms.DateField"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateField</span></code></a> and a
+<a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.FileField" title="ginger.forms.FileField"><code class="xref py py-class docutils literal notranslate"><span class="pre">FileField</span></code></a> handle very different kinds of data and have to do
+different things with it.</p>
+<p>A form field is represented to a user in the browser as an HTML “widget” - a
+piece of user interface machinery. Each field type has an appropriate default
+<a class="reference internal" href="../../ref/forms/widgets.html"><span class="doc">Widget class</span></a>, but these can be overridden as
+required.</p>
+</section>
+<section id="s-instantiating-processing-and-rendering-forms">
+<span id="instantiating-processing-and-rendering-forms"></span><h3>Instantiating, processing, and rendering forms<a class="headerlink" href="#instantiating-processing-and-rendering-forms" title="Link to this heading">¶</a></h3>
+<p>When rendering an object in Ginger, we generally:</p>
+<ol class="arabic simple">
+<li><p>get hold of it in the view (fetch it from the database, for example)</p></li>
+<li><p>pass it to the template context</p></li>
+<li><p>expand it to HTML markup using template variables</p></li>
+</ol>
+<p>Rendering a form in a template involves nearly the same work as rendering any
+other kind of object, but there are some key differences.</p>
+<p>In the case of a model instance that contained no data, it would rarely if ever
+be useful to do anything with it in a template. On the other hand, it makes
+perfect sense to render an unpopulated form - that’s what we do when we want
+the user to populate it.</p>
+<p>So when we handle a model instance in a view, we typically retrieve it from the
+database. When we’re dealing with a form we typically instantiate it in the
+view.</p>
+<p>When we instantiate a form, we can opt to leave it empty or prepopulate it, for
+example with:</p>
+<ul class="simple">
+<li><p>data from a saved model instance (as in the case of admin forms for editing)</p></li>
+<li><p>data that we have collated from other sources</p></li>
+<li><p>data received from a previous HTML form submission</p></li>
+</ul>
+<p>The last of these cases is the most interesting, because it’s what makes it
+possible for users not just to read a website, but to send information back
+to it too.</p>
+</section>
+</section>
+<section id="s-building-a-form">
+<span id="building-a-form"></span><h2>Building a form<a class="headerlink" href="#building-a-form" title="Link to this heading">¶</a></h2>
+<section id="s-the-work-that-needs-to-be-done">
+<span id="the-work-that-needs-to-be-done"></span><h3>The work that needs to be done<a class="headerlink" href="#the-work-that-needs-to-be-done" title="Link to this heading">¶</a></h3>
+<p>Suppose you want to create a simple form on your website, in order to obtain
+the user’s name. You’d need something like this in your template:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/your-name/&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span><span class="p">&gt;</span>Your name: <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">current_name</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;OK&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>This tells the browser to return the form data to the URL <code class="docutils literal notranslate"><span class="pre">/your-name/</span></code>, using
+the <code class="docutils literal notranslate"><span class="pre">POST</span></code> method. It will display a text field, labeled “Your name:”, and a
+button marked “OK”. If the template context contains a <code class="docutils literal notranslate"><span class="pre">current_name</span></code>
+variable, that will be used to pre-fill the <code class="docutils literal notranslate"><span class="pre">your_name</span></code> field.</p>
+<p>You’ll need a view that renders the template containing the HTML form, and
+that can supply the <code class="docutils literal notranslate"><span class="pre">current_name</span></code> field as appropriate.</p>
+<p>When the form is submitted, the <code class="docutils literal notranslate"><span class="pre">POST</span></code> request which is sent to the server
+will contain the form data.</p>
+<p>Now you’ll also need a view corresponding to that <code class="docutils literal notranslate"><span class="pre">/your-name/</span></code> URL which will
+find the appropriate key/value pairs in the request, and then process them.</p>
+<p>This is a very simple form. In practice, a form might contain dozens or
+hundreds of fields, many of which might need to be prepopulated, and we might
+expect the user to work through the edit-submit cycle several times before
+concluding the operation.</p>
+<p>We might require some validation to occur in the browser, even before the form
+is submitted; we might want to use much more complex fields, that allow the
+user to do things like pick dates from a calendar and so on.</p>
+<p>At this point it’s much easier to get Ginger to do most of this work for us.</p>
+</section>
+<section id="s-building-a-form-in-ginger">
+<span id="building-a-form-in-ginger"></span><h3>Building a form in Ginger<a class="headerlink" href="#building-a-form-in-ginger" title="Link to this heading">¶</a></h3>
+<section id="s-the-form-class">
+<span id="the-form-class"></span><h4>The <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> class<a class="headerlink" href="#the-form-class" title="Link to this heading">¶</a></h4>
+<p>We already know what we want our HTML form to look like. Our starting point for
+it in Ginger is this:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">forms.py</span></code></span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger</span> <span class="kn">import</span> <span class="n">forms</span>
+
+
+<span class="k">class</span> <span class="nc">NameForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">your_name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Your name&quot;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This defines a <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> class with a single field (<code class="docutils literal notranslate"><span class="pre">your_name</span></code>). We’ve
+applied a human-friendly label to the field, which will appear in the
+<code class="docutils literal notranslate"><span class="pre">&lt;label&gt;</span></code> when it’s rendered (although in this case, the <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.Field.label" title="ginger.forms.Field.label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code></a>
+we specified is actually the same one that would be generated automatically if
+we had omitted it).</p>
+<p>The field’s maximum allowable length is defined by
+<a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.CharField.max_length" title="ginger.forms.CharField.max_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_length</span></code></a>. This does two things. It puts a
+<code class="docutils literal notranslate"><span class="pre">maxlength=&quot;100&quot;</span></code> on the HTML <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> (so the browser should prevent the
+user from entering more than that number of characters in the first place). It
+also means that when Ginger receives the form back from the browser, it will
+validate the length of the data.</p>
+<p>A <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> instance has an <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.is_valid" title="ginger.forms.Form.is_valid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_valid()</span></code></a> method, which runs
+validation routines for all its fields. When this method is called, if all
+fields contain valid data, it will:</p>
+<ul class="simple">
+<li><p>return <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p>place the form’s data in its <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.cleaned_data" title="ginger.forms.Form.cleaned_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">cleaned_data</span></code></a> attribute.</p></li>
+</ul>
+<p>The whole form, when rendered for the first time, will look like:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span><span class="p">&gt;</span>Your name: <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;your_name&quot;</span> <span class="na">maxlength</span><span class="o">=</span><span class="s">&quot;100&quot;</span> <span class="na">required</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Note that it <strong>does not</strong> include the <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code> tags, or a submit button.
+We’ll have to provide those ourselves in the template.</p>
+</section>
+<section id="s-the-view">
+<span id="s-using-a-form-in-a-view"></span><span id="the-view"></span><span id="using-a-form-in-a-view"></span><h4>The view<a class="headerlink" href="#the-view" title="Link to this heading">¶</a></h4>
+<p>Form data sent back to a Ginger website is processed by a view, generally the
+same view which published the form. This allows us to reuse some of the same
+logic.</p>
+<p>To handle the form we need to instantiate it in the view for the URL where we
+want it to be published:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">views.py</span></code></span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">ginger.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">NameForm</span>
+
+
+<span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># if this is a POST request we need to process the form data</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="c1"># create a form instance and populate it with data from the request:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">NameForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="c1"># check whether it&#39;s valid:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># process the data in form.cleaned_data as required</span>
+            <span class="c1"># ...</span>
+            <span class="c1"># redirect to a new URL:</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/thanks/&quot;</span><span class="p">)</span>
+
+    <span class="c1"># if a GET (or any other method) we&#39;ll create a blank form</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">NameForm</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;name.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<p>If we arrive at this view with a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request, it will create an empty form
+instance and place it in the template context to be rendered. This is what we
+can expect to happen the first time we visit the URL.</p>
+<p>If the form is submitted using a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request, the view will once again
+create a form instance and populate it with data from the request: <code class="docutils literal notranslate"><span class="pre">form</span> <span class="pre">=</span>
+<span class="pre">NameForm(request.POST)</span></code> This is called “binding data to the form” (it is now
+a <em>bound</em> form).</p>
+<p>We call the form’s <code class="docutils literal notranslate"><span class="pre">is_valid()</span></code> method; if it’s not <code class="docutils literal notranslate"><span class="pre">True</span></code>, we go back to
+the template with the form. This time the form is no longer empty (<em>unbound</em>)
+so the HTML form will be populated with the data previously submitted, where it
+can be edited and corrected as required.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">is_valid()</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, we’ll now be able to find all the validated form
+data in its <code class="docutils literal notranslate"><span class="pre">cleaned_data</span></code> attribute. We can use this data to update the
+database or do other processing before sending an HTTP redirect to the browser
+telling it where to go next.</p>
+</section>
+<section id="s-the-template">
+<span id="s-topics-forms-index-basic-form-template"></span><span id="the-template"></span><span id="topics-forms-index-basic-form-template"></span><h4>The template<a class="headerlink" href="#the-template" title="Link to this heading">¶</a></h4>
+<p>We don’t need to do much in our <code class="docutils literal notranslate"><span class="pre">name.html</span></code> template:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;/your-name/&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span>
+    <span class="cp">{{</span> <span class="nv">form</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>All the form’s fields and their attributes will be unpacked into HTML markup
+from that <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form</span> <span class="pre">}}</span></code> by Ginger’s template language.</p>
+<div class="admonition-forms-and-cross-site-request-forgery-protection admonition">
+<p class="admonition-title">Forms and Cross Site Request Forgery protection</p>
+<p>Ginger ships with an easy-to-use <a class="reference internal" href="../../ref/csrf.html"><span class="doc">protection against Cross Site Request
+Forgeries</span></a>. When submitting a form via <code class="docutils literal notranslate"><span class="pre">POST</span></code> with
+CSRF protection enabled you must use the <a class="reference internal" href="../../ref/templates/builtins.html#std-templatetag-csrf_token"><code class="xref std std-ttag docutils literal notranslate"><span class="pre">csrf_token</span></code></a> template tag
+as in the preceding example. However, since CSRF protection is not
+directly tied to forms in templates, this tag is omitted from the
+following examples in this document.</p>
+</div>
+<div class="admonition-html5-input-types-and-browser-validation admonition">
+<p class="admonition-title">HTML5 input types and browser validation</p>
+<p>If your form includes a <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.URLField" title="ginger.forms.URLField"><code class="xref py py-class docutils literal notranslate"><span class="pre">URLField</span></code></a>, an
+<a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.EmailField" title="ginger.forms.EmailField"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailField</span></code></a> or any integer field type, Ginger will
+use the <code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code> and <code class="docutils literal notranslate"><span class="pre">number</span></code> HTML5 input types. By default,
+browsers may apply their own validation on these fields, which may be
+stricter than Ginger’s validation. If you would like to disable this
+behavior, set the <code class="docutils literal notranslate"><span class="pre">novalidate</span></code> attribute on the <code class="docutils literal notranslate"><span class="pre">form</span></code> tag, or specify
+a different widget on the field, like <a class="reference internal" href="../../ref/forms/widgets.html#ginger.forms.TextInput" title="ginger.forms.TextInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextInput</span></code></a>.</p>
+</div>
+<p>We now have a working web form, described by a Ginger <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a>, processed
+by a view, and rendered as an HTML <code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code>.</p>
+<p>That’s all you need to get started, but the forms framework puts a lot more at
+your fingertips. Once you understand the basics of the process described above,
+you should be prepared to understand other features of the forms system and
+ready to learn a bit more about the underlying machinery.</p>
+</section>
+</section>
+</section>
+<section id="s-more-about-ginger-form-classes">
+<span id="more-about-ginger-form-classes"></span><h2>More about Ginger <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> classes<a class="headerlink" href="#more-about-ginger-form-classes" title="Link to this heading">¶</a></h2>
+<p>All form classes are created as subclasses of either <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.forms.Form</span></code></a>
+or <a class="reference internal" href="modelforms.html#ginger.forms.ModelForm" title="ginger.forms.ModelForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.forms.ModelForm</span></code></a>. You can think of <code class="docutils literal notranslate"><span class="pre">ModelForm</span></code> as a
+subclass of <code class="docutils literal notranslate"><span class="pre">Form</span></code>. <code class="docutils literal notranslate"><span class="pre">Form</span></code> and <code class="docutils literal notranslate"><span class="pre">ModelForm</span></code> actually inherit common
+functionality from a (private) <code class="docutils literal notranslate"><span class="pre">BaseForm</span></code> class, but this implementation
+detail is rarely important.</p>
+<div class="admonition-models-and-forms admonition">
+<p class="admonition-title">Models and Forms</p>
+<p>In fact if your form is going to be used to directly add or edit a Ginger
+model, a <a class="reference internal" href="modelforms.html"><span class="doc">ModelForm</span></a> can save you a great
+deal of time, effort, and code, because it will build a form, along with the
+appropriate fields and their attributes, from a <code class="docutils literal notranslate"><span class="pre">Model</span></code> class.</p>
+</div>
+<section id="s-bound-and-unbound-form-instances">
+<span id="bound-and-unbound-form-instances"></span><h3>Bound and unbound form instances<a class="headerlink" href="#bound-and-unbound-form-instances" title="Link to this heading">¶</a></h3>
+<p>The distinction between <a class="reference internal" href="../../ref/forms/api.html#ref-forms-api-bound-unbound"><span class="std std-ref">Bound and unbound forms</span></a> is important:</p>
+<ul class="simple">
+<li><p>An unbound form has no data associated with it. When rendered to the user,
+it will be empty or will contain default values.</p></li>
+<li><p>A bound form has submitted data, and hence can be used to tell if that data
+is valid. If an invalid bound form is rendered, it can include inline error
+messages telling the user what data to correct.</p></li>
+</ul>
+<p>The form’s <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.is_bound" title="ginger.forms.Form.is_bound"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_bound</span></code></a> attribute will tell you whether a form has
+data bound to it or not.</p>
+</section>
+<section id="s-more-on-fields">
+<span id="more-on-fields"></span><h3>More on fields<a class="headerlink" href="#more-on-fields" title="Link to this heading">¶</a></h3>
+<p>Consider a more useful form than our minimal example above, which we could use
+to implement “contact me” functionality on a personal website:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">forms.py</span></code></span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger</span> <span class="kn">import</span> <span class="n">forms</span>
+
+
+<span class="k">class</span> <span class="nc">ContactForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">)</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">()</span>
+    <span class="n">cc_myself</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Our earlier form used a single field, <code class="docutils literal notranslate"><span class="pre">your_name</span></code>, a <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.CharField" title="ginger.forms.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a>. In
+this case, our form has four fields: <code class="docutils literal notranslate"><span class="pre">subject</span></code>, <code class="docutils literal notranslate"><span class="pre">message</span></code>, <code class="docutils literal notranslate"><span class="pre">sender</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cc_myself</span></code>. <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.CharField" title="ginger.forms.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a>, <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.EmailField" title="ginger.forms.EmailField"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailField</span></code></a> and
+<a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.BooleanField" title="ginger.forms.BooleanField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanField</span></code></a> are just three of the available field types; a full list
+can be found in <a class="reference internal" href="../../ref/forms/fields.html"><span class="doc">Form fields</span></a>.</p>
+<section id="s-widgets">
+<span id="widgets"></span><h4>Widgets<a class="headerlink" href="#widgets" title="Link to this heading">¶</a></h4>
+<p>Each form field has a corresponding <a class="reference internal" href="../../ref/forms/widgets.html"><span class="doc">Widget class</span></a>,
+which in turn corresponds to an HTML form widget such as <code class="docutils literal notranslate"><span class="pre">&lt;input</span>
+<span class="pre">type=&quot;text&quot;&gt;</span></code>.</p>
+<p>In most cases, the field will have a sensible default widget. For example, by
+default, a <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.CharField" title="ginger.forms.CharField"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a> will have a <a class="reference internal" href="../../ref/forms/widgets.html#ginger.forms.TextInput" title="ginger.forms.TextInput"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextInput</span></code></a> widget, that
+produces an <code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type=&quot;text&quot;&gt;</span></code> in the HTML. If you needed <code class="docutils literal notranslate"><span class="pre">&lt;textarea&gt;</span></code>
+instead, you’d specify the appropriate widget when defining your form field,
+as we have done for the <code class="docutils literal notranslate"><span class="pre">message</span></code> field.</p>
+</section>
+<section id="s-field-data">
+<span id="field-data"></span><h4>Field data<a class="headerlink" href="#field-data" title="Link to this heading">¶</a></h4>
+<p>Whatever the data submitted with a form, once it has been successfully
+validated by calling <code class="docutils literal notranslate"><span class="pre">is_valid()</span></code> (and <code class="docutils literal notranslate"><span class="pre">is_valid()</span></code> has returned <code class="docutils literal notranslate"><span class="pre">True</span></code>),
+the validated form data will be in the <code class="docutils literal notranslate"><span class="pre">form.cleaned_data</span></code> dictionary. This
+data will have been nicely converted into Python types for you.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can still access the unvalidated data directly from <code class="docutils literal notranslate"><span class="pre">request.POST</span></code> at
+this point, but the validated data is better.</p>
+</div>
+<p>In the contact form example above, <code class="docutils literal notranslate"><span class="pre">cc_myself</span></code> will be a boolean value.
+Likewise, fields such as <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.IntegerField" title="ginger.forms.IntegerField"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerField</span></code></a> and <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.FloatField" title="ginger.forms.FloatField"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloatField</span></code></a> convert
+values to a Python <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">float</span></code> respectively.</p>
+<p>Here’s how the form data could be processed in the view that handles this form:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">views.py</span></code></span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
+    <span class="n">sender</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;sender&quot;</span><span class="p">]</span>
+    <span class="n">cc_myself</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;cc_myself&quot;</span><span class="p">]</span>
+
+    <span class="n">recipients</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;info@example.com&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">cc_myself</span><span class="p">:</span>
+        <span class="n">recipients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+
+    <span class="n">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">recipients</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/thanks/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For more on sending email from Ginger, see <a class="reference internal" href="../email.html"><span class="doc">Sending email</span></a>.</p>
+</div>
+<p>Some field types need some extra handling. For example, files that are uploaded
+using a form need to be handled differently (they can be retrieved from
+<code class="docutils literal notranslate"><span class="pre">request.FILES</span></code>, rather than <code class="docutils literal notranslate"><span class="pre">request.POST</span></code>). For details of how to handle
+file uploads with your form, see <a class="reference internal" href="../../ref/forms/api.html#binding-uploaded-files"><span class="std std-ref">Binding uploaded files to a form</span></a>.</p>
+</section>
+</section>
+</section>
+<section id="s-working-with-form-templates">
+<span id="working-with-form-templates"></span><h2>Working with form templates<a class="headerlink" href="#working-with-form-templates" title="Link to this heading">¶</a></h2>
+<p>All you need to do to get your form into a template is to place the form
+instance into the template context. So if your form is called <code class="docutils literal notranslate"><span class="pre">form</span></code> in the
+context, <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form</span> <span class="pre">}}</span></code> will render its <code class="docutils literal notranslate"><span class="pre">&lt;label&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements
+appropriately.</p>
+<div class="admonition-additional-form-template-furniture admonition">
+<p class="admonition-title">Additional form template furniture</p>
+<p>Don’t forget that a form’s output does <em>not</em> include the surrounding
+<code class="docutils literal notranslate"><span class="pre">&lt;form&gt;</span></code> tags, or the form’s <code class="docutils literal notranslate"><span class="pre">submit</span></code> control. You will have to provide
+these yourself.</p>
+</div>
+<section id="s-reusable-form-templates">
+<span id="s-id1"></span><span id="reusable-form-templates"></span><span id="id1"></span><h3>Reusable form templates<a class="headerlink" href="#reusable-form-templates" title="Link to this heading">¶</a></h3>
+<p>The HTML output when rendering a form is itself generated via a template. You
+can control this by creating an appropriate template file and setting a custom
+<a class="reference internal" href="../../ref/settings.html#std-setting-FORM_RENDERER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">FORM_RENDERER</span></code></a> to use that
+<a class="reference internal" href="../../ref/forms/renderers.html#ginger.forms.renderers.BaseRenderer.form_template_name" title="ginger.forms.renderers.BaseRenderer.form_template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">form_template_name</span></code></a> site-wide. You
+can also customize per-form by overriding the form’s
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.template_name" title="ginger.forms.Form.template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name</span></code></a> attribute to render the form using the
+custom template, or by passing the template name directly to
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.render" title="ginger.forms.Form.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Form.render()</span></code></a>.</p>
+<p>The example below will result in <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form</span> <span class="pre">}}</span></code> being rendered as the output of
+the <code class="docutils literal notranslate"><span class="pre">form_snippet.html</span></code> template.</p>
+<p>In your templates:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span># In your template:
+<span class="cp">{{</span> <span class="nv">form</span> <span class="cp">}}</span>
+
+# In form_snippet.html:
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">field</span> <span class="k">in</span> <span class="nv">form</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+        <span class="cp">{{</span> <span class="nv">field.errors</span> <span class="cp">}}</span>
+        <span class="cp">{{</span> <span class="nv">field.label_tag</span> <span class="cp">}}</span> <span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Then you can configure the <a class="reference internal" href="../../ref/settings.html#std-setting-FORM_RENDERER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">FORM_RENDERER</span></code></a> setting:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">settings.py</span></code></span><a class="headerlink" href="#id7" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.forms.renderers</span> <span class="kn">import</span> <span class="n">TemplatesSetting</span>
+
+
+<span class="k">class</span> <span class="nc">CustomFormRenderer</span><span class="p">(</span><span class="n">TemplatesSetting</span><span class="p">):</span>
+    <span class="n">form_template_name</span> <span class="o">=</span> <span class="s2">&quot;form_snippet.html&quot;</span>
+
+
+<span class="n">FORM_RENDERER</span> <span class="o">=</span> <span class="s2">&quot;project.settings.CustomFormRenderer&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>… or for a single form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;form_snippet.html&quot;</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>… or for a single render of a form instance, passing in the template name to
+the <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.render" title="ginger.forms.Form.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Form.render()</span></code></a>. Here’s an example of this being used in a view:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">MyForm</span><span class="p">()</span>
+    <span class="n">rendered_form</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;form_snippet.html&quot;</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">rendered_form</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../../ref/forms/api.html#ref-forms-api-outputting-html"><span class="std std-ref">Outputting forms as HTML</span></a> for more details.</p>
+</section>
+<section id="s-reusable-field-group-templates">
+<span id="s-id2"></span><span id="reusable-field-group-templates"></span><span id="id2"></span><h3>Reusable field group templates<a class="headerlink" href="#reusable-field-group-templates" title="Link to this heading">¶</a></h3>
+<div class="versionadded">
+<span class="title">New in Ginger 5.0.</span> </div>
+<p>Each field is available as an attribute of the form, using
+<code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.name_of_field</span> <span class="pre">}}</span></code> in a template. A field has a
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.BoundField.as_field_group" title="ginger.forms.BoundField.as_field_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_field_group()</span></code></a> method which renders the
+related elements of the field as a group, its label, widget, errors, and help
+text.</p>
+<p>This allows generic templates to be written that arrange fields elements in the
+required layout. For example:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">form.non_field_errors</span> <span class="cp">}}</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+  <span class="cp">{{</span> <span class="nv">form.subject.as_field_group</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+  <span class="cp">{{</span> <span class="nv">form.message.as_field_group</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+  <span class="cp">{{</span> <span class="nv">form.sender.as_field_group</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+  <span class="cp">{{</span> <span class="nv">form.cc_myself.as_field_group</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>By default Ginger uses the <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/field.html&quot;</span></code> template which is
+designed for use with the default <code class="docutils literal notranslate"><span class="pre">&quot;ginger/forms/div.html&quot;</span></code> form style.</p>
+<p>The default template can be customized by setting
+<a class="reference internal" href="../../ref/forms/renderers.html#ginger.forms.renderers.BaseRenderer.field_template_name" title="ginger.forms.renderers.BaseRenderer.field_template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">field_template_name</span></code></a> in your
+project-level <a class="reference internal" href="../../ref/settings.html#std-setting-FORM_RENDERER"><code class="xref std std-setting docutils literal notranslate"><span class="pre">FORM_RENDERER</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.forms.renderers</span> <span class="kn">import</span> <span class="n">TemplatesSetting</span>
+
+
+<span class="k">class</span> <span class="nc">CustomFormRenderer</span><span class="p">(</span><span class="n">TemplatesSetting</span><span class="p">):</span>
+    <span class="n">field_template_name</span> <span class="o">=</span> <span class="s2">&quot;field_snippet.html&quot;</span>
+</pre></div>
+</div>
+<p>… or on a single field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s2">&quot;my_custom_template.html&quot;</span><span class="p">)</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>… or on a per-request basis by calling
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.BoundField.render" title="ginger.forms.BoundField.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BoundField.render()</span></code></a> and supplying a template name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">ContactForm</span><span class="p">()</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;subject&quot;</span><span class="p">:</span> <span class="n">subject</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;my_custom_template.html&quot;</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-rendering-fields-manually">
+<span id="rendering-fields-manually"></span><h3>Rendering fields manually<a class="headerlink" href="#rendering-fields-manually" title="Link to this heading">¶</a></h3>
+<p>More fine grained control over field rendering is also possible. Likely this
+will be in a custom field template, to allow the template to be written once
+and reused for each field. However, it can also be directly accessed from the
+field attribute on the form. For example:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">form.non_field_errors</span> <span class="cp">}}</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.subject.errors</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">form.subject.id_for_label</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>Email subject:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.subject</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.message.errors</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">form.message.id_for_label</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>Your message:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.message</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.sender.errors</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">form.sender.id_for_label</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>Your email address:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.sender</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.cc_myself.errors</span> <span class="cp">}}</span>
+    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">form.cc_myself.id_for_label</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>CC yourself?<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.cc_myself</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Complete <code class="docutils literal notranslate"><span class="pre">&lt;label&gt;</span></code> elements can also be generated using the
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.BoundField.label_tag" title="ginger.forms.BoundField.label_tag"><code class="xref py py-meth docutils literal notranslate"><span class="pre">label_tag()</span></code></a>. For example:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+    <span class="cp">{{</span> <span class="nv">form.subject.errors</span> <span class="cp">}}</span>
+    <span class="cp">{{</span> <span class="nv">form.subject.label_tag</span> <span class="cp">}}</span>
+    <span class="cp">{{</span> <span class="nv">form.subject</span> <span class="cp">}}</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<section id="s-rendering-form-error-messages">
+<span id="rendering-form-error-messages"></span><h4>Rendering form error messages<a class="headerlink" href="#rendering-form-error-messages" title="Link to this heading">¶</a></h4>
+<p>The price of this flexibility is a bit more work. Until now we haven’t had to
+worry about how to display form errors, because that’s taken care of for us. In
+this example we have had to make sure we take care of any errors for each field
+and any errors for the form as a whole. Note <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.non_field_errors</span> <span class="pre">}}</span></code> at
+the top of the form and the template lookup for errors on each field.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.name_of_field.errors</span> <span class="pre">}}</span></code> displays a list of form errors,
+rendered as an unordered list. This might look like:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;errorlist&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Sender is required.<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The list has a CSS class of <code class="docutils literal notranslate"><span class="pre">errorlist</span></code> to allow you to style its appearance.
+If you wish to further customize the display of errors you can do so by looping
+over them:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">form.subject.errors</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">error</span> <span class="k">in</span> <span class="nv">form.subject.errors</span> <span class="cp">%}</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">error</span><span class="o">|</span><span class="nf">escape</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Non-field errors (and/or hidden field errors that are rendered at the top of
+the form when using helpers like <code class="docutils literal notranslate"><span class="pre">form.as_p()</span></code>) will be rendered with an
+additional class of <code class="docutils literal notranslate"><span class="pre">nonfield</span></code> to help distinguish them from field-specific
+errors. For example, <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">form.non_field_errors</span> <span class="pre">}}</span></code> would look like:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;errorlist nonfield&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Generic validation error<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../../ref/forms/api.html"><span class="doc">The Forms API</span></a> for more on errors, styling, and working with form
+attributes in templates.</p>
+</section>
+</section>
+<section id="s-looping-over-the-form-s-fields">
+<span id="looping-over-the-form-s-fields"></span><h3>Looping over the form’s fields<a class="headerlink" href="#looping-over-the-form-s-fields" title="Link to this heading">¶</a></h3>
+<p>If you’re using the same HTML for each of your form fields, you can reduce
+duplicate code by looping through each field in turn using a <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">%}</span></code>
+loop:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">field</span> <span class="k">in</span> <span class="nv">form</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+        <span class="cp">{{</span> <span class="nv">field.errors</span> <span class="cp">}}</span>
+        <span class="cp">{{</span> <span class="nv">field.label_tag</span> <span class="cp">}}</span> <span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span>
+        <span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.help_text</span> <span class="cp">%}</span>
+          <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;help&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">field.auto_id</span> <span class="cp">}}</span><span class="s">_helptext&quot;</span><span class="p">&gt;</span>
+            <span class="cp">{{</span> <span class="nv">field.help_text</span><span class="o">|</span><span class="nf">safe</span> <span class="cp">}}</span>
+          <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Useful attributes on <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field</span> <span class="pre">}}</span></code> include:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.errors</span> <span class="pre">}}</span></code></dt><dd><p>Outputs a <code class="docutils literal notranslate"><span class="pre">&lt;ul</span> <span class="pre">class=&quot;errorlist&quot;&gt;</span></code> containing any validation errors
+corresponding to this field. You can customize the presentation of
+the errors with a <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">for</span> <span class="pre">error</span> <span class="pre">in</span> <span class="pre">field.errors</span> <span class="pre">%}</span></code> loop. In this
+case, each object in the loop is a string containing the error message.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.field</span> <span class="pre">}}</span></code></dt><dd><p>The <a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.Field" title="ginger.forms.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> instance from the form class that
+this <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.BoundField" title="ginger.forms.BoundField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundField</span></code></a> wraps. You can use it to access
+<a class="reference internal" href="../../ref/forms/fields.html#ginger.forms.Field" title="ginger.forms.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> attributes, e.g.
+<code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">char_field.field.max_length</span> <span class="pre">}}</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.help_text</span> <span class="pre">}}</span></code></dt><dd><p>Any help text that has been associated with the field.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.html_name</span> <span class="pre">}}</span></code></dt><dd><p>The name of the field that will be used in the input element’s name
+field. This takes the form prefix into account, if it has been set.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.id_for_label</span> <span class="pre">}}</span></code></dt><dd><p>The ID that will be used for this field (<code class="docutils literal notranslate"><span class="pre">id_email</span></code> in the example
+above). If you are constructing the label manually, you may want to use
+this in lieu of <code class="docutils literal notranslate"><span class="pre">label_tag</span></code>. It’s also useful, for example, if you have
+some inline JavaScript and want to avoid hardcoding the field’s ID.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.is_hidden</span> <span class="pre">}}</span></code></dt><dd><p>This attribute is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the form field is a hidden field and
+<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise. It’s not particularly useful as a template
+variable, but could be useful in conditional tests such as:</p>
+</dd>
+</dl>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.is_hidden</span> <span class="cp">%}</span>
+   <span class="c">{# Do something special #}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.label</span> <span class="pre">}}</span></code></dt><dd><p>The label of the field, e.g. <code class="docutils literal notranslate"><span class="pre">Email</span> <span class="pre">address</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.label_tag</span> <span class="pre">}}</span></code></dt><dd><p>The field’s label wrapped in the appropriate HTML <code class="docutils literal notranslate"><span class="pre">&lt;label&gt;</span></code> tag. This
+includes the form’s <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form.label_suffix" title="ginger.forms.Form.label_suffix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_suffix</span></code></a>. For example,
+the default <code class="docutils literal notranslate"><span class="pre">label_suffix</span></code> is a colon:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;id_email&quot;</span><span class="p">&gt;</span>Email address:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.legend_tag</span> <span class="pre">}}</span></code></dt><dd><p>Similar to <code class="docutils literal notranslate"><span class="pre">field.label_tag</span></code> but uses a <code class="docutils literal notranslate"><span class="pre">&lt;legend&gt;</span></code> tag in place of
+<code class="docutils literal notranslate"><span class="pre">&lt;label&gt;</span></code>, for widgets with multiple inputs wrapped in a <code class="docutils literal notranslate"><span class="pre">&lt;fieldset&gt;</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.use_fieldset</span> <span class="pre">}}</span></code></dt><dd><p>This attribute is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the form field’s widget contains multiple
+inputs that should be semantically grouped in a <code class="docutils literal notranslate"><span class="pre">&lt;fieldset&gt;</span></code> with a
+<code class="docutils literal notranslate"><span class="pre">&lt;legend&gt;</span></code> to improve accessibility. An example use in a template:</p>
+</dd>
+</dl>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.use_fieldset</span> <span class="cp">%}</span>
+  <span class="p">&lt;</span><span class="nt">fieldset</span><span class="p">&gt;</span>
+  <span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.label</span> <span class="cp">%}{{</span> <span class="nv">field.legend_tag</span> <span class="cp">}}{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span>
+  <span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.label</span> <span class="cp">%}{{</span> <span class="nv">field.label_tag</span> <span class="cp">}}{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">field.use_fieldset</span> <span class="cp">%}</span><span class="p">&lt;/</span><span class="nt">fieldset</span><span class="p">&gt;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">field.value</span> <span class="pre">}}</span></code></dt><dd><p>The value of the field. e.g <code class="docutils literal notranslate"><span class="pre">someone&#64;example.com</span></code>.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For a complete list of attributes and methods, see
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.BoundField" title="ginger.forms.BoundField"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundField</span></code></a>.</p>
+</div>
+<section id="s-looping-over-hidden-and-visible-fields">
+<span id="looping-over-hidden-and-visible-fields"></span><h4>Looping over hidden and visible fields<a class="headerlink" href="#looping-over-hidden-and-visible-fields" title="Link to this heading">¶</a></h4>
+<p>If you’re manually laying out a form in a template, as opposed to relying on
+Ginger’s default form layout, you might want to treat <code class="docutils literal notranslate"><span class="pre">&lt;input</span> <span class="pre">type=&quot;hidden&quot;&gt;</span></code>
+fields differently from non-hidden fields. For example, because hidden fields
+don’t display anything, putting error messages “next to” the field could cause
+confusion for your users – so errors for those fields should be handled
+differently.</p>
+<p>Ginger provides two methods on a form that allow you to loop over the hidden
+and visible fields independently: <code class="docutils literal notranslate"><span class="pre">hidden_fields()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">visible_fields()</span></code>. Here’s a modification of an earlier example that uses
+these two methods:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="c">{# Include the hidden fields #}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">hidden</span> <span class="k">in</span> <span class="nv">form.hidden_fields</span> <span class="cp">%}</span>
+<span class="cp">{{</span> <span class="nv">hidden</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="c">{# Include the visible fields #}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">field</span> <span class="k">in</span> <span class="nv">form.visible_fields</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fieldWrapper&quot;</span><span class="p">&gt;</span>
+        <span class="cp">{{</span> <span class="nv">field.errors</span> <span class="cp">}}</span>
+        <span class="cp">{{</span> <span class="nv">field.label_tag</span> <span class="cp">}}</span> <span class="cp">{{</span> <span class="nv">field</span> <span class="cp">}}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>This example does not handle any errors in the hidden fields. Usually, an
+error in a hidden field is a sign of form tampering, since normal form
+interaction won’t alter them. However, you could easily insert some error
+displays for those form errors, as well.</p>
+</section>
+</section>
+</section>
+<section id="s-further-topics">
+<span id="further-topics"></span><h2>Further topics<a class="headerlink" href="#further-topics" title="Link to this heading">¶</a></h2>
+<p>This covers the basics, but forms can do a whole lot more:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="formsets.html">Formsets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#using-initial-data-with-a-formset">Using initial data with a formset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#limiting-the-maximum-number-of-forms">Limiting the maximum number of forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#limiting-the-maximum-number-of-instantiated-forms">Limiting the maximum number of instantiated forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#formset-validation">Formset validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#validating-the-number-of-forms-in-a-formset">Validating the number of forms in a formset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#dealing-with-ordering-and-deletion-of-forms">Dealing with ordering and deletion of forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#adding-additional-fields-to-a-formset">Adding additional fields to a formset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#passing-custom-parameters-to-formset-forms">Passing custom parameters to formset forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#customizing-a-formset-s-prefix">Customizing a formset’s prefix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formsets.html#using-a-formset-in-views-and-templates">Using a formset in views and templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modelforms.html">Creating forms from models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modelforms.html#modelform"><code class="docutils literal notranslate"><span class="pre">ModelForm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelforms.html#model-formsets">Model formsets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modelforms.html#inline-formsets">Inline formsets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="media.html#assets-as-a-static-definition">Assets as a static definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html#media-as-a-dynamic-property"><code class="docutils literal notranslate"><span class="pre">Media</span></code> as a dynamic property</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html#paths-in-asset-definitions">Paths in asset definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html#media-objects"><code class="docutils literal notranslate"><span class="pre">Media</span></code> objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="media.html#media-on-forms"><code class="docutils literal notranslate"><span class="pre">Media</span></code> on Forms</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="../../ref/forms/index.html"><span class="doc">The Forms Reference</span></a></dt><dd><p>Covers the full API reference, including form fields, form widgets,
+and form and field validation.</p>
+</dd>
+</dl>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="formsets.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Formsets</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../http/sessions.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">How to use sessions</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Working with forms</a><ul>
+<li><a class="reference internal" href="#html-forms">HTML forms</a><ul>
+<li><a class="reference internal" href="#get-and-post"><code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ginger-s-role-in-forms">Ginger’s role in forms</a></li>
+<li><a class="reference internal" href="#forms-in-ginger">Forms in Ginger</a><ul>
+<li><a class="reference internal" href="#the-ginger-form-class">The Ginger <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code> class</a></li>
+<li><a class="reference internal" href="#instantiating-processing-and-rendering-forms">Instantiating, processing, and rendering forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-a-form">Building a form</a><ul>
+<li><a class="reference internal" href="#the-work-that-needs-to-be-done">The work that needs to be done</a></li>
+<li><a class="reference internal" href="#building-a-form-in-ginger">Building a form in Ginger</a><ul>
+<li><a class="reference internal" href="#the-form-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code> class</a></li>
+<li><a class="reference internal" href="#the-view">The view</a></li>
+<li><a class="reference internal" href="#the-template">The template</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#more-about-ginger-form-classes">More about Ginger <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code> classes</a><ul>
+<li><a class="reference internal" href="#bound-and-unbound-form-instances">Bound and unbound form instances</a></li>
+<li><a class="reference internal" href="#more-on-fields">More on fields</a><ul>
+<li><a class="reference internal" href="#widgets">Widgets</a></li>
+<li><a class="reference internal" href="#field-data">Field data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-with-form-templates">Working with form templates</a><ul>
+<li><a class="reference internal" href="#reusable-form-templates">Reusable form templates</a></li>
+<li><a class="reference internal" href="#reusable-field-group-templates">Reusable field group templates</a></li>
+<li><a class="reference internal" href="#rendering-fields-manually">Rendering fields manually</a><ul>
+<li><a class="reference internal" href="#rendering-form-error-messages">Rendering form error messages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#looping-over-the-form-s-fields">Looping over the form’s fields</a><ul>
+<li><a class="reference internal" href="#looping-over-hidden-and-visible-fields">Looping over hidden and visible fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-topics">Further topics</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

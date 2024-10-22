@@ -1,0 +1,18 @@
+
+description = "easy to use microservices framework based on django"
+name = "ginger-dj"
+organization = "ginger-society"
+version = "5.5.3"
+
+[build-system]
+build-backend = 'setuptools.build_meta'
+requires = ['setuptools>=40.8.0']
+
+[tool.black]
+force-exclude = 'tests/test_runner_apps/tagged/tests_syntax_error.py'
+target-version = ['py310']
+
+[tool.isort]
+default_section = 'THIRDPARTY'
+known_first_party = 'ginger'
+profile = 'black'

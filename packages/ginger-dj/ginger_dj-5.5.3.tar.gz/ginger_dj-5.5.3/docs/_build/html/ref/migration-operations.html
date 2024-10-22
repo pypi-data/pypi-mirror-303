@@ -1,0 +1,1334 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Models" href="models/index.html" /><link rel="prev" title="Middleware" href="middleware.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Migration Operations - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware.html">Middleware</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/ref/migration-operations.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.db.migrations.operations">
+<span id="s-migration-operations"></span><span id="module-ginger.db.migrations.operations"></span><span id="migration-operations"></span><h1>Migration Operations<a class="headerlink" href="#module-ginger.db.migrations.operations" title="Link to this heading">¶</a></h1>
+<p>Migration files are composed of one or more <code class="docutils literal notranslate"><span class="pre">Operation</span></code>s, objects that
+declaratively record what the migration should do to your database.</p>
+<p>Ginger also uses these <code class="docutils literal notranslate"><span class="pre">Operation</span></code> objects to work out what your models
+looked like historically, and to calculate what changes you’ve made to
+your models since the last migration so it can automatically write
+your migrations; that’s why they’re declarative, as it means Ginger can
+easily load them all into memory and run through them without touching
+the database to work out what your project should look like.</p>
+<p>There are also more specialized <code class="docutils literal notranslate"><span class="pre">Operation</span></code> objects which are for things like
+<a class="reference internal" href="../topics/migrations.html#data-migrations"><span class="std std-ref">data migrations</span></a> and for advanced manual database
+manipulation. You can also write your own <code class="docutils literal notranslate"><span class="pre">Operation</span></code> classes if you want
+to encapsulate a custom change you commonly make.</p>
+<p>If you need an empty migration file to write your own <code class="docutils literal notranslate"><span class="pre">Operation</span></code> objects
+into, use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">makemigrations</span> <span class="pre">--empty</span> <span class="pre">yourappname</span></code>, but be aware
+that manually adding schema-altering operations can confuse the migration
+autodetector and make resulting runs of <a class="reference internal" href="ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">makemigrations</span></code></a> output
+incorrect code.</p>
+<p>All of the core Ginger operations are available from the
+<code class="docutils literal notranslate"><span class="pre">ginger.db.migrations.operations</span></code> module.</p>
+<p>For introductory material, see the <a class="reference internal" href="../topics/migrations.html"><span class="doc">migrations topic guide</span></a>.</p>
+<section id="s-schema-operations">
+<span id="schema-operations"></span><h2>Schema Operations<a class="headerlink" href="#schema-operations" title="Link to this heading">¶</a></h2>
+<section id="s-createmodel">
+<span id="createmodel"></span><h3><code class="docutils literal notranslate"><span class="pre">CreateModel</span></code><a class="headerlink" href="#createmodel" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.CreateModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreateModel</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.CreateModel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Creates a new model in the project history and a corresponding table in the
+database to match it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> is the model name, as would be written in the <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">fields</span></code> is a list of 2-tuples of <code class="docutils literal notranslate"><span class="pre">(field_name,</span> <span class="pre">field_instance)</span></code>.
+The field instance should be an unbound field (so just
+<code class="docutils literal notranslate"><span class="pre">models.CharField(...)</span></code>, rather than a field taken from another model).</p>
+<p><code class="docutils literal notranslate"><span class="pre">options</span></code> is an optional dictionary of values from the model’s <code class="docutils literal notranslate"><span class="pre">Meta</span></code> class.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bases</span></code> is an optional list of other classes to have this model inherit from;
+it can contain both class objects as well as strings in the format
+<code class="docutils literal notranslate"><span class="pre">&quot;appname.ModelName&quot;</span></code> if you want to depend on another model (so you inherit
+from the historical version). If it’s not supplied, it defaults to inheriting
+from the standard <code class="docutils literal notranslate"><span class="pre">models.Model</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">managers</span></code> takes a list of 2-tuples of <code class="docutils literal notranslate"><span class="pre">(manager_name,</span> <span class="pre">manager_instance)</span></code>.
+The first manager in the list will be the default manager for this model during
+migrations.</p>
+</section>
+<section id="s-deletemodel">
+<span id="deletemodel"></span><h3><code class="docutils literal notranslate"><span class="pre">DeleteModel</span></code><a class="headerlink" href="#deletemodel" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.DeleteModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeleteModel</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.DeleteModel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Deletes the model from the project history and its table from the database.</p>
+</section>
+<section id="s-renamemodel">
+<span id="renamemodel"></span><h3><code class="docutils literal notranslate"><span class="pre">RenameModel</span></code><a class="headerlink" href="#renamemodel" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RenameModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenameModel</span></span>(<em class="sig-param"><span class="n"><span class="pre">old_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RenameModel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Renames the model from an old name to a new one.</p>
+<p>You may have to manually add
+this if you change the model’s name and quite a few of its fields at once; to
+the autodetector, this will look like you deleted a model with the old name
+and added a new one with a different name, and the migration it creates will
+lose any data in the old table.</p>
+</section>
+<section id="s-altermodeltable">
+<span id="altermodeltable"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterModelTable</span></code><a class="headerlink" href="#altermodeltable" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterModelTable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterModelTable</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterModelTable" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Changes the model’s table name (the <a class="reference internal" href="models/options.html#ginger.db.models.Options.db_table" title="ginger.db.models.Options.db_table"><code class="xref py py-attr docutils literal notranslate"><span class="pre">db_table</span></code></a>
+option on the <code class="docutils literal notranslate"><span class="pre">Meta</span></code> subclass).</p>
+</section>
+<section id="s-altermodeltablecomment">
+<span id="altermodeltablecomment"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterModelTableComment</span></code><a class="headerlink" href="#altermodeltablecomment" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterModelTableComment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterModelTableComment</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_comment</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterModelTableComment" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Changes the model’s table comment (the
+<a class="reference internal" href="models/options.html#ginger.db.models.Options.db_table_comment" title="ginger.db.models.Options.db_table_comment"><code class="xref py py-attr docutils literal notranslate"><span class="pre">db_table_comment</span></code></a> option on the <code class="docutils literal notranslate"><span class="pre">Meta</span></code>
+subclass).</p>
+</section>
+<section id="s-alteruniquetogether">
+<span id="alteruniquetogether"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterUniqueTogether</span></code><a class="headerlink" href="#alteruniquetogether" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterUniqueTogether">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterUniqueTogether</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique_together</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterUniqueTogether" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Changes the model’s set of unique constraints (the
+<a class="reference internal" href="models/options.html#ginger.db.models.Options.unique_together" title="ginger.db.models.Options.unique_together"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unique_together</span></code></a> option on the <code class="docutils literal notranslate"><span class="pre">Meta</span></code>
+subclass).</p>
+</section>
+<section id="s-alterindextogether">
+<span id="alterindextogether"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterIndexTogether</span></code><a class="headerlink" href="#alterindextogether" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterIndexTogether">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterIndexTogether</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_together</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterIndexTogether" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Changes the model’s set of custom indexes (the <code class="docutils literal notranslate"><span class="pre">index_together</span></code> option on the
+<code class="docutils literal notranslate"><span class="pre">Meta</span></code> subclass).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">AlterIndexTogether</span></code> is officially supported only for pre-Ginger 4.2
+migration files. For backward compatibility reasons, it’s still part of the
+public API, and there’s no plan to deprecate or remove it, but it should
+not be used for new migrations. Use
+<a class="reference internal" href="#ginger.db.migrations.operations.AddIndex" title="ginger.db.migrations.operations.AddIndex"><code class="xref py py-class docutils literal notranslate"><span class="pre">AddIndex</span></code></a> and
+<a class="reference internal" href="#ginger.db.migrations.operations.RemoveIndex" title="ginger.db.migrations.operations.RemoveIndex"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoveIndex</span></code></a> operations instead.</p>
+</div>
+</section>
+<section id="s-alterorderwithrespectto">
+<span id="alterorderwithrespectto"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterOrderWithRespectTo</span></code><a class="headerlink" href="#alterorderwithrespectto" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterOrderWithRespectTo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterOrderWithRespectTo</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_with_respect_to</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterOrderWithRespectTo" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Makes or deletes the <code class="docutils literal notranslate"><span class="pre">_order</span></code> column needed for the
+<a class="reference internal" href="models/options.html#ginger.db.models.Options.order_with_respect_to" title="ginger.db.models.Options.order_with_respect_to"><code class="xref py py-attr docutils literal notranslate"><span class="pre">order_with_respect_to</span></code></a> option on the <code class="docutils literal notranslate"><span class="pre">Meta</span></code>
+subclass.</p>
+</section>
+<section id="s-altermodeloptions">
+<span id="altermodeloptions"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterModelOptions</span></code><a class="headerlink" href="#altermodeloptions" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterModelOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterModelOptions</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterModelOptions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Stores changes to miscellaneous model options (settings on a model’s <code class="docutils literal notranslate"><span class="pre">Meta</span></code>)
+like <code class="docutils literal notranslate"><span class="pre">permissions</span></code> and <code class="docutils literal notranslate"><span class="pre">verbose_name</span></code>. Does not affect the database, but
+persists these changes for <a class="reference internal" href="#ginger.db.migrations.operations.RunPython" title="ginger.db.migrations.operations.RunPython"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunPython</span></code></a> instances to use. <code class="docutils literal notranslate"><span class="pre">options</span></code>
+should be a dictionary mapping option names to values.</p>
+</section>
+<section id="s-altermodelmanagers">
+<span id="altermodelmanagers"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterModelManagers</span></code><a class="headerlink" href="#altermodelmanagers" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterModelManagers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterModelManagers</span></span>(<em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">managers</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterModelManagers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Alters the managers that are available during migrations.</p>
+</section>
+<section id="s-addfield">
+<span id="addfield"></span><h3><code class="docutils literal notranslate"><span class="pre">AddField</span></code><a class="headerlink" href="#addfield" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AddField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddField</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AddField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Adds a field to a model. <code class="docutils literal notranslate"><span class="pre">model_name</span></code> is the model’s name, <code class="docutils literal notranslate"><span class="pre">name</span></code> is
+the field’s name, and <code class="docutils literal notranslate"><span class="pre">field</span></code> is an unbound Field instance (the thing
+you would put in the field declaration in <code class="docutils literal notranslate"><span class="pre">models.py</span></code> - for example,
+<code class="docutils literal notranslate"><span class="pre">models.IntegerField(null=True)</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">preserve_default</span></code> argument indicates whether the field’s default
+value is permanent and should be baked into the project state (<code class="docutils literal notranslate"><span class="pre">True</span></code>),
+or if it is temporary and just for this migration (<code class="docutils literal notranslate"><span class="pre">False</span></code>) - usually
+because the migration is adding a non-nullable field to a table and needs
+a default value to put into existing rows. It does not affect the behavior
+of setting defaults in the database directly - Ginger never sets database
+defaults and always applies them in the Ginger ORM code.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>On older databases, adding a field with a default value may cause a full
+rewrite of the table. This happens even for nullable fields and may have a
+negative performance impact. To avoid that, the following steps should be
+taken.</p>
+<ul class="simple">
+<li><p>Add the nullable field without the default value and run the
+<a class="reference internal" href="ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">makemigrations</span></code></a> command. This should generate a migration with
+an <code class="docutils literal notranslate"><span class="pre">AddField</span></code> operation.</p></li>
+<li><p>Add the default value to your field and run the <a class="reference internal" href="ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">makemigrations</span></code></a>
+command. This should generate a migration with an <code class="docutils literal notranslate"><span class="pre">AlterField</span></code>
+operation.</p></li>
+</ul>
+</div>
+</section>
+<section id="s-removefield">
+<span id="removefield"></span><h3><code class="docutils literal notranslate"><span class="pre">RemoveField</span></code><a class="headerlink" href="#removefield" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RemoveField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RemoveField</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RemoveField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Removes a field from a model.</p>
+<p>Bear in mind that when reversed, this is actually adding a field to a model.
+The operation is reversible (apart from any data loss, which is irreversible)
+if the field is nullable or if it has a default value that can be used to
+populate the recreated column. If the field is not nullable and does not have a
+default value, the operation is irreversible.</p>
+<div class="admonition-postgresql admonition">
+<p class="admonition-title">PostgreSQL</p>
+<p><code class="docutils literal notranslate"><span class="pre">RemoveField</span></code> will also delete any additional database objects that are
+related to the removed field (like views, for example). This is because the
+resulting <code class="docutils literal notranslate"><span class="pre">DROP</span> <span class="pre">COLUMN</span></code> statement will include the <code class="docutils literal notranslate"><span class="pre">CASCADE</span></code> clause to
+ensure <a class="reference external" href="https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-PARMS-CASCADE">dependent objects outside the table are also dropped</a>.</p>
+</div>
+</section>
+<section id="s-alterfield">
+<span id="alterfield"></span><h3><code class="docutils literal notranslate"><span class="pre">AlterField</span></code><a class="headerlink" href="#alterfield" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AlterField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlterField</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AlterField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Alters a field’s definition, including changes to its type,
+<a class="reference internal" href="models/fields.html#ginger.db.models.Field.null" title="ginger.db.models.Field.null"><code class="xref py py-attr docutils literal notranslate"><span class="pre">null</span></code></a>, <a class="reference internal" href="models/fields.html#ginger.db.models.Field.unique" title="ginger.db.models.Field.unique"><code class="xref py py-attr docutils literal notranslate"><span class="pre">unique</span></code></a>,
+<a class="reference internal" href="models/fields.html#ginger.db.models.Field.db_column" title="ginger.db.models.Field.db_column"><code class="xref py py-attr docutils literal notranslate"><span class="pre">db_column</span></code></a> and other field attributes.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">preserve_default</span></code> argument indicates whether the field’s default
+value is permanent and should be baked into the project state (<code class="docutils literal notranslate"><span class="pre">True</span></code>),
+or if it is temporary and just for this migration (<code class="docutils literal notranslate"><span class="pre">False</span></code>) - usually
+because the migration is altering a nullable field to a non-nullable one and
+needs a default value to put into existing rows. It does not affect the
+behavior of setting defaults in the database directly - Ginger never sets
+database defaults and always applies them in the Ginger ORM code.</p>
+<p>Note that not all changes are possible on all databases - for example, you
+cannot change a text-type field like <code class="docutils literal notranslate"><span class="pre">models.TextField()</span></code> into a number-type
+field like <code class="docutils literal notranslate"><span class="pre">models.IntegerField()</span></code> on most databases.</p>
+</section>
+<section id="s-renamefield">
+<span id="renamefield"></span><h3><code class="docutils literal notranslate"><span class="pre">RenameField</span></code><a class="headerlink" href="#renamefield" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RenameField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenameField</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RenameField" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Changes a field’s name (and, unless <a class="reference internal" href="models/fields.html#ginger.db.models.Field.db_column" title="ginger.db.models.Field.db_column"><code class="xref py py-attr docutils literal notranslate"><span class="pre">db_column</span></code></a>
+is set, its column name).</p>
+</section>
+<section id="s-addindex">
+<span id="addindex"></span><h3><code class="docutils literal notranslate"><span class="pre">AddIndex</span></code><a class="headerlink" href="#addindex" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AddIndex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddIndex</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AddIndex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Creates an index in the database table for the model with <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.
+<code class="docutils literal notranslate"><span class="pre">index</span></code> is an instance of the <a class="reference internal" href="models/indexes.html#ginger.db.models.Index" title="ginger.db.models.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">Index</span></code></a> class.</p>
+</section>
+<section id="s-removeindex">
+<span id="removeindex"></span><h3><code class="docutils literal notranslate"><span class="pre">RemoveIndex</span></code><a class="headerlink" href="#removeindex" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RemoveIndex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RemoveIndex</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RemoveIndex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Removes the index named <code class="docutils literal notranslate"><span class="pre">name</span></code> from the model with <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
+</section>
+<section id="s-renameindex">
+<span id="renameindex"></span><h3><code class="docutils literal notranslate"><span class="pre">RenameIndex</span></code><a class="headerlink" href="#renameindex" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RenameIndex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RenameIndex</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RenameIndex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Renames an index in the database table for the model with <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.
+Exactly one of <code class="docutils literal notranslate"><span class="pre">old_name</span></code> and <code class="docutils literal notranslate"><span class="pre">old_fields</span></code> can be provided. <code class="docutils literal notranslate"><span class="pre">old_fields</span></code>
+is an iterable of the strings, often corresponding to fields of
+<code class="docutils literal notranslate"><span class="pre">index_together</span></code> (pre-Ginger 5.1 option).</p>
+<p>On databases that don’t support an index renaming statement (SQLite and MariaDB
+&lt; 10.5.2), the operation will drop and recreate the index, which can be
+expensive.</p>
+</section>
+<section id="s-addconstraint">
+<span id="addconstraint"></span><h3><code class="docutils literal notranslate"><span class="pre">AddConstraint</span></code><a class="headerlink" href="#addconstraint" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.AddConstraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AddConstraint</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.AddConstraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Creates a <a class="reference internal" href="models/constraints.html"><span class="doc">constraint</span></a> in the database table for
+the model with <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
+</section>
+<section id="s-removeconstraint">
+<span id="removeconstraint"></span><h3><code class="docutils literal notranslate"><span class="pre">RemoveConstraint</span></code><a class="headerlink" href="#removeconstraint" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RemoveConstraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RemoveConstraint</span></span>(<em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RemoveConstraint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Removes the constraint named <code class="docutils literal notranslate"><span class="pre">name</span></code> from the model with <code class="docutils literal notranslate"><span class="pre">model_name</span></code>.</p>
+</section>
+</section>
+<section id="s-special-operations">
+<span id="special-operations"></span><h2>Special Operations<a class="headerlink" href="#special-operations" title="Link to this heading">¶</a></h2>
+<section id="s-runsql">
+<span id="runsql"></span><h3><code class="docutils literal notranslate"><span class="pre">RunSQL</span></code><a class="headerlink" href="#runsql" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RunSQL">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RunSQL</span></span>(<em class="sig-param"><span class="n"><span class="pre">sql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_sql</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elidable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RunSQL" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Allows running of arbitrary SQL on the database - useful for more advanced
+features of database backends that Ginger doesn’t support directly.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sql</span></code>, and <code class="docutils literal notranslate"><span class="pre">reverse_sql</span></code> if provided, should be strings of SQL to run on
+the database. On most database backends (all but PostgreSQL), Ginger will
+split the SQL into individual statements prior to executing them.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>On PostgreSQL and SQLite, only use <code class="docutils literal notranslate"><span class="pre">BEGIN</span></code> or <code class="docutils literal notranslate"><span class="pre">COMMIT</span></code> in your SQL in
+<a class="reference internal" href="../howto/writing-migrations.html#non-atomic-migrations"><span class="std std-ref">non-atomic migrations</span></a>, to avoid breaking
+Ginger’s transaction state.</p>
+</div>
+<p>You can also pass a list of strings or 2-tuples. The latter is used for passing
+queries and parameters in the same way as <a class="reference internal" href="../topics/db/sql.html#executing-custom-sql"><span class="std std-ref">cursor.execute()</span></a>. These three operations are equivalent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s2">&quot;INSERT INTO musician (name) VALUES (&#39;Reinhardt&#39;);&quot;</span><span class="p">)</span>
+<span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">([(</span><span class="s2">&quot;INSERT INTO musician (name) VALUES (&#39;Reinhardt&#39;);&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
+<span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">([(</span><span class="s2">&quot;INSERT INTO musician (name) VALUES (</span><span class="si">%s</span><span class="s2">);&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Reinhardt&quot;</span><span class="p">])])</span>
+</pre></div>
+</div>
+<p>If you want to include literal percent signs in the query, you have to double
+them if you are passing parameters.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reverse_sql</span></code> queries are executed when the migration is unapplied. They
+should undo what is done by the <code class="docutils literal notranslate"><span class="pre">sql</span></code> queries. For example, to undo the above
+insertion with a deletion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span>
+    <span class="n">sql</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;INSERT INTO musician (name) VALUES (</span><span class="si">%s</span><span class="s2">);&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Reinhardt&quot;</span><span class="p">])],</span>
+    <span class="n">reverse_sql</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;DELETE FROM musician where name=</span><span class="si">%s</span><span class="s2">;&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Reinhardt&quot;</span><span class="p">])],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">reverse_sql</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), the <code class="docutils literal notranslate"><span class="pre">RunSQL</span></code> operation is
+irreversible.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">state_operations</span></code> argument allows you to supply operations that are
+equivalent to the SQL in terms of project state. For example, if you are
+manually creating a column, you should pass in a list containing an <code class="docutils literal notranslate"><span class="pre">AddField</span></code>
+operation here so that the autodetector still has an up-to-date state of the
+model. If you don’t, when you next run <code class="docutils literal notranslate"><span class="pre">makemigrations</span></code>, it won’t see any
+operation that adds that field and so will try to run it again. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span>
+    <span class="s2">&quot;ALTER TABLE musician ADD COLUMN name varchar(255) NOT NULL;&quot;</span><span class="p">,</span>
+    <span class="n">state_operations</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
+            <span class="s2">&quot;musician&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">hints</span></code> argument will be passed as <code class="docutils literal notranslate"><span class="pre">**hints</span></code> to the
+<a class="reference internal" href="../topics/db/multi-db.html#allow_migrate" title="allow_migrate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">allow_migrate()</span></code></a> method of database routers to assist them in making
+routing decisions. See <a class="reference internal" href="../topics/db/multi-db.html#topics-db-multi-db-hints"><span class="std std-ref">Hints</span></a> for more details on
+database hints.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">elidable</span></code> argument determines whether or not the operation will
+be removed (elided) when <a class="reference internal" href="../topics/migrations.html#migration-squashing"><span class="std std-ref">squashing migrations</span></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RunSQL.noop">
+<span class="sig-prename descclassname"><span class="pre">RunSQL.</span></span><span class="sig-name descname"><span class="pre">noop</span></span><a class="headerlink" href="#ginger.db.migrations.operations.RunSQL.noop" title="Link to this definition">¶</a></dt>
+<dd><p>Pass the <code class="docutils literal notranslate"><span class="pre">RunSQL.noop</span></code> attribute to <code class="docutils literal notranslate"><span class="pre">sql</span></code> or <code class="docutils literal notranslate"><span class="pre">reverse_sql</span></code> when you
+want the operation not to do anything in the given direction. This is
+especially useful in making the operation reversible.</p>
+</dd></dl>
+
+</section>
+<section id="s-runpython">
+<span id="runpython"></span><h3><code class="docutils literal notranslate"><span class="pre">RunPython</span></code><a class="headerlink" href="#runpython" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RunPython">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RunPython</span></span>(<em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elidable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.RunPython" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Runs custom Python code in a historical context. <code class="docutils literal notranslate"><span class="pre">code</span></code> (and <code class="docutils literal notranslate"><span class="pre">reverse_code</span></code>
+if supplied) should be callable objects that accept two arguments; the first is
+an instance of <code class="docutils literal notranslate"><span class="pre">ginger.apps.registry.Apps</span></code> containing historical models that
+match the operation’s place in the project history, and the second is an
+instance of <a class="reference internal" href="schema-editor.html#ginger.db.backends.base.schema.BaseDatabaseSchemaEditor" title="ginger.db.backends.base.schema.BaseDatabaseSchemaEditor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reverse_code</span></code> argument is called when unapplying migrations. This
+callable should undo what is done in the <code class="docutils literal notranslate"><span class="pre">code</span></code> callable so that the
+migration is reversible. If <code class="docutils literal notranslate"><span class="pre">reverse_code</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), the
+<code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operation is irreversible.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">hints</span></code> argument will be passed as <code class="docutils literal notranslate"><span class="pre">**hints</span></code> to the
+<a class="reference internal" href="../topics/db/multi-db.html#allow_migrate" title="allow_migrate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">allow_migrate()</span></code></a> method of database routers to assist them in making a
+routing decision. See <a class="reference internal" href="../topics/db/multi-db.html#topics-db-multi-db-hints"><span class="std std-ref">Hints</span></a> for more details on
+database hints.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">elidable</span></code> argument determines whether or not the operation will
+be removed (elided) when <a class="reference internal" href="../topics/migrations.html#migration-squashing"><span class="std std-ref">squashing migrations</span></a>.</p>
+<p>You are advised to write the code as a separate function above the <code class="docutils literal notranslate"><span class="pre">Migration</span></code>
+class in the migration file, and pass it to <code class="docutils literal notranslate"><span class="pre">RunPython</span></code>. Here’s an example of
+using <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> to create some initial objects on a <code class="docutils literal notranslate"><span class="pre">Country</span></code> model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">migrations</span>
+
+
+<span class="k">def</span> <span class="nf">forwards_func</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">):</span>
+    <span class="c1"># We get the model from the versioned app registry;</span>
+    <span class="c1"># if we directly import it, it&#39;ll be the wrong version</span>
+    <span class="n">Country</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="s2">&quot;myapp&quot;</span><span class="p">,</span> <span class="s2">&quot;Country&quot;</span><span class="p">)</span>
+    <span class="n">db_alias</span> <span class="o">=</span> <span class="n">schema_editor</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">alias</span>
+    <span class="n">Country</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">using</span><span class="p">(</span><span class="n">db_alias</span><span class="p">)</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">Country</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;USA&quot;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s2">&quot;us&quot;</span><span class="p">),</span>
+            <span class="n">Country</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s2">&quot;fr&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">reverse_func</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">):</span>
+    <span class="c1"># forwards_func() creates two Country instances,</span>
+    <span class="c1"># so reverse_func() should delete them.</span>
+    <span class="n">Country</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="s2">&quot;myapp&quot;</span><span class="p">,</span> <span class="s2">&quot;Country&quot;</span><span class="p">)</span>
+    <span class="n">db_alias</span> <span class="o">=</span> <span class="n">schema_editor</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">alias</span>
+    <span class="n">Country</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">using</span><span class="p">(</span><span class="n">db_alias</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;USA&quot;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s2">&quot;us&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="n">Country</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">using</span><span class="p">(</span><span class="n">db_alias</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;France&quot;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s2">&quot;fr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
+    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">migrations</span><span class="o">.</span><span class="n">RunPython</span><span class="p">(</span><span class="n">forwards_func</span><span class="p">,</span> <span class="n">reverse_func</span><span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>This is generally the operation you would use to create
+<a class="reference internal" href="../topics/migrations.html#data-migrations"><span class="std std-ref">data migrations</span></a>, run
+custom data updates and alterations, and anything else you need access to an
+ORM and/or Python code for.</p>
+<p>Much like <a class="reference internal" href="#ginger.db.migrations.operations.RunSQL" title="ginger.db.migrations.operations.RunSQL"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunSQL</span></code></a>, ensure that if you change schema inside here you’re
+either doing it outside the scope of the Ginger model system (e.g. triggers)
+or that you use <a class="reference internal" href="#ginger.db.migrations.operations.SeparateDatabaseAndState" title="ginger.db.migrations.operations.SeparateDatabaseAndState"><code class="xref py py-class docutils literal notranslate"><span class="pre">SeparateDatabaseAndState</span></code></a> to add in operations that will
+reflect your changes to the model state - otherwise, the versioned ORM and
+the autodetector will stop working correctly.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> will run its contents inside a transaction on
+databases that do not support DDL transactions (for example, MySQL and
+Oracle). This should be safe, but may cause a crash if you attempt to use
+the <code class="docutils literal notranslate"><span class="pre">schema_editor</span></code> provided on these backends; in this case, pass
+<code class="docutils literal notranslate"><span class="pre">atomic=False</span></code> to the <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operation.</p>
+<p>On databases that do support DDL transactions (SQLite and PostgreSQL),
+<code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operations do not have any transactions automatically added
+besides the transactions created for each migration. Thus, on PostgreSQL, for
+example, you should avoid combining schema changes and <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operations
+in the same migration or you may hit errors like <code class="docutils literal notranslate"><span class="pre">OperationalError:</span> <span class="pre">cannot</span>
+<span class="pre">ALTER</span> <span class="pre">TABLE</span> <span class="pre">&quot;mytable&quot;</span> <span class="pre">because</span> <span class="pre">it</span> <span class="pre">has</span> <span class="pre">pending</span> <span class="pre">trigger</span> <span class="pre">events</span></code>.</p>
+<p>If you have a different database and aren’t sure if it supports DDL
+transactions, check the <code class="docutils literal notranslate"><span class="pre">ginger.db.connection.features.can_rollback_ddl</span></code>
+attribute.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operation is part of a <a class="reference internal" href="../howto/writing-migrations.html#non-atomic-migrations"><span class="std std-ref">non-atomic migration</span></a>, the operation will only be executed in a transaction
+if <code class="docutils literal notranslate"><span class="pre">atomic=True</span></code> is passed to the <code class="docutils literal notranslate"><span class="pre">RunPython</span></code> operation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">RunPython</span></code> does not magically alter the connection of the models for you;
+any model methods you call will go to the default database unless you
+give them the current database alias (available from
+<code class="docutils literal notranslate"><span class="pre">schema_editor.connection.alias</span></code>, where <code class="docutils literal notranslate"><span class="pre">schema_editor</span></code> is the second
+argument to your function).</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.RunPython.noop">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RunPython.</span></span><span class="sig-name descname"><span class="pre">noop</span></span>()<a class="headerlink" href="#ginger.db.migrations.operations.RunPython.noop" title="Link to this definition">¶</a></dt>
+<dd><p>Pass the <code class="docutils literal notranslate"><span class="pre">RunPython.noop</span></code> method to <code class="docutils literal notranslate"><span class="pre">code</span></code> or <code class="docutils literal notranslate"><span class="pre">reverse_code</span></code> when
+you want the operation not to do anything in the given direction. This is
+especially useful in making the operation reversible.</p>
+</dd></dl>
+
+</section>
+<section id="s-separatedatabaseandstate">
+<span id="separatedatabaseandstate"></span><h3><code class="docutils literal notranslate"><span class="pre">SeparateDatabaseAndState</span></code><a class="headerlink" href="#separatedatabaseandstate" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.SeparateDatabaseAndState">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SeparateDatabaseAndState</span></span>(<em class="sig-param"><span class="n"><span class="pre">database_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_operations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.db.migrations.operations.SeparateDatabaseAndState" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A highly specialized operation that lets you mix and match the database
+(schema-changing) and state (autodetector-powering) aspects of operations.</p>
+<p>It accepts two lists of operations. When asked to apply state, it will use the
+<code class="docutils literal notranslate"><span class="pre">state_operations</span></code> list (this is a generalized version of <a class="reference internal" href="#ginger.db.migrations.operations.RunSQL" title="ginger.db.migrations.operations.RunSQL"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunSQL</span></code></a>’s
+<code class="docutils literal notranslate"><span class="pre">state_operations</span></code> argument). When asked to apply changes to the database, it
+will use the <code class="docutils literal notranslate"><span class="pre">database_operations</span></code> list.</p>
+<p>If the actual state of the database and Ginger’s view of the state get out of
+sync, this can break the migration framework, even leading to data loss. It’s
+worth exercising caution and checking your database and state operations
+carefully. You can use <a class="reference internal" href="ginger-admin.html#ginger-admin-sqlmigrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">sqlmigrate</span></code></a> and <a class="reference internal" href="ginger-admin.html#ginger-admin-dbshell"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">dbshell</span></code></a> to check
+your database operations. You can use <a class="reference internal" href="ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">makemigrations</span></code></a>, especially
+with <a class="reference internal" href="ginger-admin.html#cmdoption-makemigrations-dry-run"><code class="xref std std-option docutils literal notranslate"><span class="pre">--dry-run</span></code></a>, to check your state
+operations.</p>
+<p>For an example using <code class="docutils literal notranslate"><span class="pre">SeparateDatabaseAndState</span></code>, see
+<a class="reference internal" href="../howto/writing-migrations.html#changing-a-manytomanyfield-to-use-a-through-model"><span class="std std-ref">Changing a ManyToManyField to use a through model</span></a>.</p>
+</section>
+</section>
+<section id="s-operation-category">
+<span id="operation-category"></span><h2>Operation category<a class="headerlink" href="#operation-category" title="Link to this heading">¶</a></h2>
+<div class="versionadded">
+<span class="title">New in Ginger Development version.</span> </div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OperationCategory</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory" title="Link to this definition">¶</a></dt>
+<dd><p>Categories of migration operation used by the <a class="reference internal" href="ginger-admin.html#ginger-admin-makemigrations"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">makemigrations</span></code></a>
+command to display meaningful symbols.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.ADDITION">
+<span class="sig-name descname"><span class="pre">ADDITION</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.ADDITION" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">+</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.REMOVAL">
+<span class="sig-name descname"><span class="pre">REMOVAL</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.REMOVAL" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">-</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.ALTERATION">
+<span class="sig-name descname"><span class="pre">ALTERATION</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.ALTERATION" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">~</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.PYTHON">
+<span class="sig-name descname"><span class="pre">PYTHON</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.PYTHON" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">p</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.SQL">
+<span class="sig-name descname"><span class="pre">SQL</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.SQL" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">s</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ginger.db.migrations.operations.base.OperationCategory.MIXED">
+<span class="sig-name descname"><span class="pre">MIXED</span></span><a class="headerlink" href="#ginger.db.migrations.operations.base.OperationCategory.MIXED" title="Link to this definition">¶</a></dt>
+<dd><p><em>Symbol</em>: <code class="docutils literal notranslate"><span class="pre">?</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="s-writing-your-own">
+<span id="s-writing-your-own-migration-operation"></span><span id="writing-your-own"></span><span id="writing-your-own-migration-operation"></span><h2>Writing your own<a class="headerlink" href="#writing-your-own" title="Link to this heading">¶</a></h2>
+<p>Operations have a relatively simple API, and they’re designed so that you can
+easily write your own to supplement the built-in Ginger ones. The basic
+structure of an <code class="docutils literal notranslate"><span class="pre">Operation</span></code> looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db.migrations.operations.base</span> <span class="kn">import</span> <span class="n">Operation</span>
+
+
+<span class="k">class</span> <span class="nc">MyCustomOperation</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+    <span class="c1"># If this is False, it means that this operation will be ignored by</span>
+    <span class="c1"># sqlmigrate; if true, it will be run and the SQL collected for its output.</span>
+    <span class="n">reduces_to_sql</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># If this is False, Ginger will refuse to reverse past this operation.</span>
+    <span class="n">reversible</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># This categorizes the operation. The corresponding symbol will be</span>
+    <span class="c1"># displayed by the makemigrations command.</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">OperationCategory</span><span class="o">.</span><span class="n">ADDITION</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">):</span>
+        <span class="c1"># Operations are usually instantiated with arguments in migration</span>
+        <span class="c1"># files. Store the values of them on self for later use.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">state_forwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="c1"># The Operation should take the &#39;state&#39; parameter (an instance of</span>
+        <span class="c1"># ginger.db.migrations.state.ProjectState) and mutate it to match</span>
+        <span class="c1"># any schema changes that have occurred.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">database_forwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">,</span> <span class="n">from_state</span><span class="p">,</span> <span class="n">to_state</span><span class="p">):</span>
+        <span class="c1"># The Operation should use schema_editor to apply any changes it</span>
+        <span class="c1"># wants to make to the database.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">database_backwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">,</span> <span class="n">from_state</span><span class="p">,</span> <span class="n">to_state</span><span class="p">):</span>
+        <span class="c1"># If reversible is True, this is called when the operation is reversed.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This is used to describe what the operation does.</span>
+        <span class="k">return</span> <span class="s2">&quot;Custom Operation&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">migration_name_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Optional. A filename part suitable for automatically naming a</span>
+        <span class="c1"># migration containing this operation, or None if not applicable.</span>
+        <span class="k">return</span> <span class="s2">&quot;custom_operation_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can take this template and work from it, though we suggest looking at the
+built-in Ginger operations in <code class="docutils literal notranslate"><span class="pre">ginger.db.migrations.operations</span></code> - they cover
+a lot of the example usage of semi-internal aspects of the migration framework
+like <code class="docutils literal notranslate"><span class="pre">ProjectState</span></code> and the patterns used to get historical models, as well
+as <code class="docutils literal notranslate"><span class="pre">ModelState</span></code> and the patterns used to mutate historical models in
+<code class="docutils literal notranslate"><span class="pre">state_forwards()</span></code>.</p>
+<p>Some things to note:</p>
+<ul>
+<li><p>You don’t need to learn too much about <code class="docutils literal notranslate"><span class="pre">ProjectState</span></code> to write migrations;
+just know that it has an <code class="docutils literal notranslate"><span class="pre">apps</span></code> property that gives access to an app
+registry (which you can then call <code class="docutils literal notranslate"><span class="pre">get_model</span></code> on).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">database_forwards</span></code> and <code class="docutils literal notranslate"><span class="pre">database_backwards</span></code> both get two states passed
+to them; these represent the difference the <code class="docutils literal notranslate"><span class="pre">state_forwards</span></code> method would
+have applied, but are given to you for convenience and speed reasons.</p></li>
+<li><p>If you want to work with model classes or model instances from the
+<code class="docutils literal notranslate"><span class="pre">from_state</span></code> argument in <code class="docutils literal notranslate"><span class="pre">database_forwards()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">database_backwards()</span></code>, you must render model states using the
+<code class="docutils literal notranslate"><span class="pre">clear_delayed_apps_cache()</span></code> method to make related models available:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">database_forwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">,</span> <span class="n">from_state</span><span class="p">,</span> <span class="n">to_state</span><span class="p">):</span>
+    <span class="c1"># This operation should have access to all models. Ensure that all models are</span>
+    <span class="c1"># reloaded in case any are delayed.</span>
+    <span class="n">from_state</span><span class="o">.</span><span class="n">clear_delayed_apps_cache</span><span class="p">()</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">to_state</span></code> in the database_backwards method is the <em>older</em> state; that is,
+the one that will be the current state once the migration has finished reversing.</p></li>
+<li><p>You might see implementations of <code class="docutils literal notranslate"><span class="pre">references_model</span></code> on the built-in
+operations; this is part of the autodetection code and does not matter for
+custom operations.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For performance reasons, the <a class="reference internal" href="models/fields.html#ginger.db.models.Field" title="ginger.db.models.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a> instances in
+<code class="docutils literal notranslate"><span class="pre">ModelState.fields</span></code> are reused across migrations. You must never change
+the attributes on these instances. If you need to mutate a field in
+<code class="docutils literal notranslate"><span class="pre">state_forwards()</span></code>, you must remove the old instance from
+<code class="docutils literal notranslate"><span class="pre">ModelState.fields</span></code> and add a new instance in its place. The same is true
+for the <a class="reference internal" href="../topics/db/managers.html#ginger.db.models.Manager" title="ginger.db.models.Manager"><code class="xref py py-class docutils literal notranslate"><span class="pre">Manager</span></code></a> instances in
+<code class="docutils literal notranslate"><span class="pre">ModelState.managers</span></code>.</p>
+</div>
+<p>As an example, let’s make an operation that loads PostgreSQL extensions (which
+contain some of PostgreSQL’s more exciting features). Since there’s no model
+state changes, all it does is run one command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db.migrations.operations.base</span> <span class="kn">import</span> <span class="n">Operation</span>
+
+
+<span class="k">class</span> <span class="nc">LoadExtension</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+    <span class="n">reversible</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">state_forwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">database_forwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">,</span> <span class="n">from_state</span><span class="p">,</span> <span class="n">to_state</span><span class="p">):</span>
+        <span class="n">schema_editor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE EXTENSION IF NOT EXISTS </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">database_backwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">,</span> <span class="n">from_state</span><span class="p">,</span> <span class="n">to_state</span><span class="p">):</span>
+        <span class="n">schema_editor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP EXTENSION </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Creates extension </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">migration_name_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;create_extension_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="models/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Models</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="middleware.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Middleware</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Migration Operations</a><ul>
+<li><a class="reference internal" href="#schema-operations">Schema Operations</a><ul>
+<li><a class="reference internal" href="#createmodel"><code class="docutils literal notranslate"><span class="pre">CreateModel</span></code></a></li>
+<li><a class="reference internal" href="#deletemodel"><code class="docutils literal notranslate"><span class="pre">DeleteModel</span></code></a></li>
+<li><a class="reference internal" href="#renamemodel"><code class="docutils literal notranslate"><span class="pre">RenameModel</span></code></a></li>
+<li><a class="reference internal" href="#altermodeltable"><code class="docutils literal notranslate"><span class="pre">AlterModelTable</span></code></a></li>
+<li><a class="reference internal" href="#altermodeltablecomment"><code class="docutils literal notranslate"><span class="pre">AlterModelTableComment</span></code></a></li>
+<li><a class="reference internal" href="#alteruniquetogether"><code class="docutils literal notranslate"><span class="pre">AlterUniqueTogether</span></code></a></li>
+<li><a class="reference internal" href="#alterindextogether"><code class="docutils literal notranslate"><span class="pre">AlterIndexTogether</span></code></a></li>
+<li><a class="reference internal" href="#alterorderwithrespectto"><code class="docutils literal notranslate"><span class="pre">AlterOrderWithRespectTo</span></code></a></li>
+<li><a class="reference internal" href="#altermodeloptions"><code class="docutils literal notranslate"><span class="pre">AlterModelOptions</span></code></a></li>
+<li><a class="reference internal" href="#altermodelmanagers"><code class="docutils literal notranslate"><span class="pre">AlterModelManagers</span></code></a></li>
+<li><a class="reference internal" href="#addfield"><code class="docutils literal notranslate"><span class="pre">AddField</span></code></a></li>
+<li><a class="reference internal" href="#removefield"><code class="docutils literal notranslate"><span class="pre">RemoveField</span></code></a></li>
+<li><a class="reference internal" href="#alterfield"><code class="docutils literal notranslate"><span class="pre">AlterField</span></code></a></li>
+<li><a class="reference internal" href="#renamefield"><code class="docutils literal notranslate"><span class="pre">RenameField</span></code></a></li>
+<li><a class="reference internal" href="#addindex"><code class="docutils literal notranslate"><span class="pre">AddIndex</span></code></a></li>
+<li><a class="reference internal" href="#removeindex"><code class="docutils literal notranslate"><span class="pre">RemoveIndex</span></code></a></li>
+<li><a class="reference internal" href="#renameindex"><code class="docutils literal notranslate"><span class="pre">RenameIndex</span></code></a></li>
+<li><a class="reference internal" href="#addconstraint"><code class="docutils literal notranslate"><span class="pre">AddConstraint</span></code></a></li>
+<li><a class="reference internal" href="#removeconstraint"><code class="docutils literal notranslate"><span class="pre">RemoveConstraint</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#special-operations">Special Operations</a><ul>
+<li><a class="reference internal" href="#runsql"><code class="docutils literal notranslate"><span class="pre">RunSQL</span></code></a></li>
+<li><a class="reference internal" href="#runpython"><code class="docutils literal notranslate"><span class="pre">RunPython</span></code></a></li>
+<li><a class="reference internal" href="#separatedatabaseandstate"><code class="docutils literal notranslate"><span class="pre">SeparateDatabaseAndState</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#operation-category">Operation category</a></li>
+<li><a class="reference internal" href="#writing-your-own">Writing your own</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

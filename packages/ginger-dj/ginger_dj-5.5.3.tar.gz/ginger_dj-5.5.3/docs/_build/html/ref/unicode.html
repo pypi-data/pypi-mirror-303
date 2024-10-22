@@ -1,0 +1,962 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ginger.urls utility functions" href="urlresolvers.html" /><link rel="prev" title="TemplateResponse and SimpleTemplateResponse" href="template-response.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Unicode data - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/ref/unicode.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-unicode-data">
+<span id="unicode-data"></span><h1>Unicode data<a class="headerlink" href="#unicode-data" title="Link to this heading">¶</a></h1>
+<p>Ginger supports Unicode data everywhere.</p>
+<p>This document tells you what you need to know if you’re writing applications
+that use data or templates that are encoded in something other than ASCII.</p>
+<section id="s-creating-the-database">
+<span id="creating-the-database"></span><h2>Creating the database<a class="headerlink" href="#creating-the-database" title="Link to this heading">¶</a></h2>
+<p>Make sure your database is configured to be able to store arbitrary string
+data. Normally, this means giving it an encoding of UTF-8 or UTF-16. If you use
+a more restrictive encoding – for example, latin1 (iso8859-1) – you won’t be
+able to store certain characters in the database, and information will be lost.</p>
+<ul class="simple">
+<li><p>MySQL users, refer to the <a class="reference external" href="https://dev.mysql.com/doc/refman/en/charset-database.html">MySQL manual</a> for details on how to set or alter
+the database character set encoding.</p></li>
+<li><p>PostgreSQL users, refer to the <a class="reference external" href="https://www.postgresql.org/docs/current/multibyte.html#MULTIBYTE-SETTING">PostgreSQL manual</a> for details on creating
+databases with the correct encoding.</p></li>
+<li><p>Oracle users, refer to the <a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/nlspg/index.html">Oracle manual</a> for details on how to set
+(<a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/nlspg/choosing-character-set.html">section 2</a>) or alter (<a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/nlspg/character-set-migration.html">section 11</a>) the database character set encoding.</p></li>
+<li><p>SQLite users, there is nothing you need to do. SQLite always uses UTF-8
+for internal encoding.</p></li>
+</ul>
+<p>All of Ginger’s database backends automatically convert strings into
+the appropriate encoding for talking to the database. They also automatically
+convert strings retrieved from the database into strings. You don’t even need
+to tell Ginger what encoding your database uses: that is handled transparently.</p>
+<p>For more, see the section “The database API” below.</p>
+</section>
+<section id="s-general-string-handling">
+<span id="general-string-handling"></span><h2>General string handling<a class="headerlink" href="#general-string-handling" title="Link to this heading">¶</a></h2>
+<p>Whenever you use strings with Ginger – e.g., in database lookups, template
+rendering or anywhere else – you have two choices for encoding those strings.
+You can use normal strings or bytestrings (starting with a ‘b’).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A bytestring does not carry any information with it about its encoding.
+For that reason, we have to make an assumption, and Ginger assumes that all
+bytestrings are in UTF-8.</p>
+<p>If you pass a string to Ginger that has been encoded in some other format,
+things will go wrong in interesting ways. Usually, Ginger will raise a
+<code class="docutils literal notranslate"><span class="pre">UnicodeDecodeError</span></code> at some point.</p>
+</div>
+<p>If your code only uses ASCII data, it’s safe to use your normal strings,
+passing them around at will, because ASCII is a subset of UTF-8.</p>
+<p>Don’t be fooled into thinking that if your <a class="reference internal" href="settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> setting is set
+to something other than <code class="docutils literal notranslate"><span class="pre">'utf-8'</span></code> you can use that other encoding in your
+bytestrings! <a class="reference internal" href="settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> only applies to the strings generated as
+the result of template rendering (and email). Ginger will always assume UTF-8
+encoding for internal bytestrings. The reason for this is that the
+<a class="reference internal" href="settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> setting is not actually under your control (if you are the
+application developer). It’s under the control of the person installing and
+using your application – and if that person chooses a different setting, your
+code must still continue to work. Ergo, it cannot rely on that setting.</p>
+<p>In most cases when Ginger is dealing with strings, it will convert them to
+strings before doing anything else. So, as a general rule, if you pass
+in a bytestring, be prepared to receive a string back in the result.</p>
+<section id="s-translated-strings">
+<span id="translated-strings"></span><h3>Translated strings<a class="headerlink" href="#translated-strings" title="Link to this heading">¶</a></h3>
+<p>Aside from strings and bytestrings, there’s a third type of string-like
+object you may encounter when using Ginger. The framework’s
+internationalization features introduce the concept of a “lazy translation” –
+a string that has been marked as translated but whose actual translation result
+isn’t determined until the object is used in a string. This feature is useful
+in cases where the translation locale is unknown until the string is used, even
+though the string might have originally been created when the code was first
+imported.</p>
+<p>Normally, you won’t have to worry about lazy translations. Just be aware that
+if you examine an object and it claims to be a
+<code class="docutils literal notranslate"><span class="pre">ginger.utils.functional.__proxy__</span></code> object, it is a lazy translation.
+Calling <code class="docutils literal notranslate"><span class="pre">str()</span></code> with the lazy translation as the argument will generate a
+string in the current locale.</p>
+<p>For more details about lazy translation objects, refer to the
+<a class="reference internal" href="../topics/i18n/index.html"><span class="doc">internationalization</span></a> documentation.</p>
+</section>
+<section id="s-useful-utility-functions">
+<span id="useful-utility-functions"></span><h3>Useful utility functions<a class="headerlink" href="#useful-utility-functions" title="Link to this heading">¶</a></h3>
+<p>Because some string operations come up again and again, Ginger ships with a few
+useful functions that should make working with string and bytestring objects
+a bit easier.</p>
+<section id="s-conversion-functions">
+<span id="conversion-functions"></span><h4>Conversion functions<a class="headerlink" href="#conversion-functions" title="Link to this heading">¶</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">ginger.utils.encoding</span></code> module contains a few functions that are handy
+for converting back and forth between strings and bytestrings.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">smart_str(s,</span> <span class="pre">encoding='utf-8',</span> <span class="pre">strings_only=False,</span> <span class="pre">errors='strict')</span></code>
+converts its input to a string. The <code class="docutils literal notranslate"><span class="pre">encoding</span></code> parameter
+specifies the input encoding. (For example, Ginger uses this internally
+when processing form input data, which might not be UTF-8 encoded.) The
+<code class="docutils literal notranslate"><span class="pre">strings_only</span></code> parameter, if set to True, will result in Python
+numbers, booleans and <code class="docutils literal notranslate"><span class="pre">None</span></code> not being converted to a string (they keep
+their original types). The <code class="docutils literal notranslate"><span class="pre">errors</span></code> parameter takes any of the values
+that are accepted by Python’s <code class="docutils literal notranslate"><span class="pre">str()</span></code> function for its error
+handling.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">force_str(s,</span> <span class="pre">encoding='utf-8',</span> <span class="pre">strings_only=False,</span> <span class="pre">errors='strict')</span></code> is
+identical to <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code> in almost all cases. The difference is when the
+first argument is a <a class="reference internal" href="../topics/i18n/translation.html#lazy-translations"><span class="std std-ref">lazy translation</span></a> instance.
+While <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code> preserves lazy translations, <code class="docutils literal notranslate"><span class="pre">force_str()</span></code> forces
+those objects to a string (causing the translation to occur). Normally,
+you’ll want to use <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code>. However, <code class="docutils literal notranslate"><span class="pre">force_str()</span></code> is useful in
+template tags and filters that absolutely <em>must</em> have a string to work with,
+not just something that can be converted to a string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smart_bytes(s,</span> <span class="pre">encoding='utf-8',</span> <span class="pre">strings_only=False,</span> <span class="pre">errors='strict')</span></code>
+is essentially the opposite of <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code>. It forces the first
+argument to a bytestring. The <code class="docutils literal notranslate"><span class="pre">strings_only</span></code> parameter has the same
+behavior as for <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code> and <code class="docutils literal notranslate"><span class="pre">force_str()</span></code>. This is
+slightly different semantics from Python’s builtin <code class="docutils literal notranslate"><span class="pre">str()</span></code> function,
+but the difference is needed in a few places within Ginger’s internals.</p></li>
+</ul>
+<p>Normally, you’ll only need to use <code class="docutils literal notranslate"><span class="pre">force_str()</span></code>. Call it as early as
+possible on any input data that might be either a string or a bytestring, and
+from then on, you can treat the result as always being a string.</p>
+</section>
+<section id="s-uri-and-iri-handling">
+<span id="s-id1"></span><span id="uri-and-iri-handling"></span><span id="id1"></span><h4>URI and IRI handling<a class="headerlink" href="#uri-and-iri-handling" title="Link to this heading">¶</a></h4>
+<p>Web frameworks have to deal with URLs (which are a type of IRI). One
+requirement of URLs is that they are encoded using only ASCII characters.
+However, in an international environment, you might need to construct a
+URL from an <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3987.html"><strong>IRI</strong></a> – very loosely speaking, a <span class="target" id="index-1"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>URI</strong></a>
+that can contain Unicode characters. Use these functions for quoting and
+converting an IRI to a URI:</p>
+<ul class="simple">
+<li><p>The <a class="reference internal" href="utils.html#ginger.utils.encoding.iri_to_uri" title="ginger.utils.encoding.iri_to_uri"><code class="xref py py-func docutils literal notranslate"><span class="pre">ginger.utils.encoding.iri_to_uri()</span></code></a> function, which implements the
+conversion from IRI to URI as required by <span class="target" id="index-2"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3987.html#section-3.1"><strong>RFC 3987 Section 3.1</strong></a>.</p></li>
+<li><p>The <a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.parse.quote()</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote_plus" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.parse.quote_plus()</span></code></a>
+functions from Python’s standard library.</p></li>
+</ul>
+<p>These two groups of functions have slightly different purposes, and it’s
+important to keep them straight. Normally, you would use <code class="docutils literal notranslate"><span class="pre">quote()</span></code> on the
+individual portions of the IRI or URI path so that any reserved characters
+such as ‘&amp;’ or ‘%’ are correctly encoded. Then, you apply <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> to
+the full IRI and it converts any non-ASCII characters to the correct encoded
+values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically, it isn’t correct to say that <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> implements the
+full algorithm in the IRI specification. It doesn’t (yet) perform the
+international domain name encoding portion of the algorithm.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> function will not change ASCII characters that are
+otherwise permitted in a URL. So, for example, the character ‘%’ is not
+further encoded when passed to <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code>. This means you can pass a
+full URL to this function and it will not mess up the query string or anything
+like that.</p>
+<p>An example might clarify things here:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils.encoding</span> <span class="kn">import</span> <span class="n">iri_to_uri</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quote</span><span class="p">(</span><span class="s2">&quot;Paris &amp; Orléans&quot;</span><span class="p">)</span>
+<span class="go">&#39;Paris%20%26%20Orl%C3%A9ans&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iri_to_uri</span><span class="p">(</span><span class="s2">&quot;/favorites/François/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">quote</span><span class="p">(</span><span class="s2">&quot;Paris &amp; Orléans&quot;</span><span class="p">))</span>
+<span class="go">&#39;/favorites/Fran%C3%A7ois/Paris%20%26%20Orl%C3%A9ans&#39;</span>
+</pre></div>
+</div>
+<p>If you look carefully, you can see that the portion that was generated by
+<code class="docutils literal notranslate"><span class="pre">quote()</span></code> in the second example was not double-quoted when passed to
+<code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code>. This is a very important and useful feature. It means that
+you can construct your IRI without worrying about whether it contains
+non-ASCII characters and then, right at the end, call <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> on the
+result.</p>
+<p>Similarly, Ginger provides <a class="reference internal" href="utils.html#ginger.utils.encoding.uri_to_iri" title="ginger.utils.encoding.uri_to_iri"><code class="xref py py-func docutils literal notranslate"><span class="pre">ginger.utils.encoding.uri_to_iri()</span></code></a> which
+implements the conversion from URI to IRI as per <span class="target" id="index-3"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3987.html#section-3.2"><strong>RFC 3987 Section 3.2</strong></a>.</p>
+<p>An example to demonstrate:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.utils.encoding</span> <span class="kn">import</span> <span class="n">uri_to_iri</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uri_to_iri</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">%E</span><span class="s2">2</span><span class="si">%99%</span><span class="s2">A5</span><span class="si">%E</span><span class="s2">2</span><span class="si">%99%</span><span class="s2">A5/?utf8=</span><span class="si">%E</span><span class="s2">2%9C%93&quot;</span><span class="p">)</span>
+<span class="go">&#39;/♥♥/?utf8=✓&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uri_to_iri</span><span class="p">(</span><span class="s2">&quot;%A9hello</span><span class="si">%3F</span><span class="s2">world&quot;</span><span class="p">)</span>
+<span class="go">&#39;%A9hello%3Fworld&#39;</span>
+</pre></div>
+</div>
+<p>In the first example, the UTF-8 characters are unquoted. In the second, the
+percent-encodings remain unchanged because they lie outside the valid UTF-8
+range or represent a reserved character.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> and <code class="docutils literal notranslate"><span class="pre">uri_to_iri()</span></code> functions are idempotent, which means the
+following is always true:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iri_to_uri</span><span class="p">(</span><span class="n">iri_to_uri</span><span class="p">(</span><span class="n">some_string</span><span class="p">))</span> <span class="o">==</span> <span class="n">iri_to_uri</span><span class="p">(</span><span class="n">some_string</span><span class="p">)</span>
+<span class="n">uri_to_iri</span><span class="p">(</span><span class="n">uri_to_iri</span><span class="p">(</span><span class="n">some_string</span><span class="p">))</span> <span class="o">==</span> <span class="n">uri_to_iri</span><span class="p">(</span><span class="n">some_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So you can safely call it multiple times on the same URI/IRI without risking
+double-quoting problems.</p>
+</section>
+</section>
+</section>
+<section id="s-models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<p>Because all strings are returned from the database as <code class="docutils literal notranslate"><span class="pre">str</span></code> objects, model
+fields that are character based (CharField, TextField, URLField, etc.) will
+contain Unicode values when Ginger retrieves data from the database. This
+is <em>always</em> the case, even if the data could fit into an ASCII bytestring.</p>
+<p>You can pass in bytestrings when creating a model or populating a field, and
+Ginger will convert it to strings when it needs to.</p>
+<section id="s-taking-care-in-get-absolute-url">
+<span id="taking-care-in-get-absolute-url"></span><h3>Taking care in <code class="docutils literal notranslate"><span class="pre">get_absolute_url()</span></code><a class="headerlink" href="#taking-care-in-get-absolute-url" title="Link to this heading">¶</a></h3>
+<p>URLs can only contain ASCII characters. If you’re constructing a URL from
+pieces of data that might be non-ASCII, be careful to encode the results in a
+way that is suitable for a URL. The <a class="reference internal" href="urlresolvers.html#ginger.urls.reverse" title="ginger.urls.reverse"><code class="xref py py-func docutils literal notranslate"><span class="pre">reverse()</span></code></a> function
+handles this for you automatically.</p>
+<p>If you’re constructing a URL manually (i.e., <em>not</em> using the <code class="docutils literal notranslate"><span class="pre">reverse()</span></code>
+function), you’ll need to take care of the encoding yourself. In this case,
+use the <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code> and <code class="docutils literal notranslate"><span class="pre">quote()</span></code> functions that were documented
+<a class="reference internal" href="#id1">above</a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+<span class="kn">from</span> <span class="nn">ginger.utils.encoding</span> <span class="kn">import</span> <span class="n">iri_to_uri</span>
+
+
+<span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;/person/</span><span class="si">%s</span><span class="s2">/?x=0&amp;y=0&quot;</span> <span class="o">%</span> <span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">iri_to_uri</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function returns a correctly encoded URL even if <code class="docutils literal notranslate"><span class="pre">self.location</span></code> is
+something like “Jack visited Paris &amp; Orléans”. (In fact, the <code class="docutils literal notranslate"><span class="pre">iri_to_uri()</span></code>
+call isn’t strictly necessary in the above example, because all the
+non-ASCII characters would have been removed in quoting in the first line.)</p>
+</section>
+</section>
+<section id="s-templates">
+<span id="templates"></span><h2>Templates<a class="headerlink" href="#templates" title="Link to this heading">¶</a></h2>
+<p>Use strings when creating templates manually:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.template</span> <span class="kn">import</span> <span class="n">Template</span>
+
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;This is a string template.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>But the common case is to read templates from the filesystem. If your template
+files are not stored with a UTF-8 encoding, adjust the <a class="reference internal" href="settings.html#std-setting-TEMPLATES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TEMPLATES</span></code></a>
+setting. The built-in <a class="reference internal" href="../topics/templates.html#module-ginger.template.backends.ginger" title="ginger.template.backends.ginger"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ginger</span></code></a> backend
+provides the <code class="docutils literal notranslate"><span class="pre">'file_charset'</span></code> option to change the encoding used to read
+files from disk.</p>
+<p>The <a class="reference internal" href="settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> setting controls the encoding of rendered templates.
+This is set to UTF-8 by default.</p>
+<section id="s-template-tags-and-filters">
+<span id="template-tags-and-filters"></span><h3>Template tags and filters<a class="headerlink" href="#template-tags-and-filters" title="Link to this heading">¶</a></h3>
+<p>A couple of tips to remember when writing your own template tags and filters:</p>
+<ul class="simple">
+<li><p>Always return strings from a template tag’s <code class="docutils literal notranslate"><span class="pre">render()</span></code> method
+and from template filters.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">force_str()</span></code> in preference to <code class="docutils literal notranslate"><span class="pre">smart_str()</span></code> in these
+places. Tag rendering and filter calls occur as the template is being
+rendered, so there is no advantage to postponing the conversion of lazy
+translation objects into strings. It’s easier to work solely with
+strings at that point.</p></li>
+</ul>
+</section>
+</section>
+<section id="s-files">
+<span id="s-unicode-files"></span><span id="files"></span><span id="unicode-files"></span><h2>Files<a class="headerlink" href="#files" title="Link to this heading">¶</a></h2>
+<p>If you intend to allow users to upload files, you must ensure that the
+environment used to run Ginger is configured to work with non-ASCII file names.
+If your environment isn’t configured correctly, you’ll encounter
+<code class="docutils literal notranslate"><span class="pre">UnicodeEncodeError</span></code> exceptions when saving files with file names or content
+that contains non-ASCII characters.</p>
+<p>Filesystem support for UTF-8 file names varies and might depend on the
+environment. Check your current configuration in an interactive Python shell by
+running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">getfilesystemencoding</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This should output “UTF-8”.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">LANG</span></code> environment variable is responsible for setting the expected
+encoding on Unix platforms. Consult the documentation for your operating system
+and application server for the appropriate syntax and location to set this
+variable. See the <a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html"><span class="doc">How to use Ginger with Apache and mod_wsgi</span></a> for examples.</p>
+<p>In your development environment, you might need to add a setting to your
+<code class="docutils literal notranslate"><span class="pre">~.bashrc</span></code> analogous to:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-form-submission">
+<span id="form-submission"></span><h2>Form submission<a class="headerlink" href="#form-submission" title="Link to this heading">¶</a></h2>
+<p>HTML form submission is a tricky area. There’s no guarantee that the
+submission will include encoding information, which means the framework might
+have to guess at the encoding of submitted data.</p>
+<p>Ginger adopts a “lazy” approach to decoding form data. The data in an
+<code class="docutils literal notranslate"><span class="pre">HttpRequest</span></code> object is only decoded when you access it. In fact, most of
+the data is not decoded at all. Only the <code class="docutils literal notranslate"><span class="pre">HttpRequest.GET</span></code> and
+<code class="docutils literal notranslate"><span class="pre">HttpRequest.POST</span></code> data structures have any decoding applied to them. Those
+two fields will return their members as Unicode data. All other attributes and
+methods of <code class="docutils literal notranslate"><span class="pre">HttpRequest</span></code> return data exactly as it was submitted by the
+client.</p>
+<p>By default, the <a class="reference internal" href="settings.html#std-setting-DEFAULT_CHARSET"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEFAULT_CHARSET</span></code></a> setting is used as the assumed encoding
+for form data. If you need to change this for a particular form, you can set
+the <code class="docutils literal notranslate"><span class="pre">encoding</span></code> attribute on an <code class="docutils literal notranslate"><span class="pre">HttpRequest</span></code> instance. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">some_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># We know that the data must be encoded as KOI8-R (for some reason).</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;koi8-r&quot;</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>You can even change the encoding after having accessed <code class="docutils literal notranslate"><span class="pre">request.GET</span></code> or
+<code class="docutils literal notranslate"><span class="pre">request.POST</span></code>, and all subsequent accesses will use the new encoding.</p>
+<p>Most developers won’t need to worry about changing form encoding, but this is
+a useful feature for applications that talk to legacy systems whose encoding
+you cannot control.</p>
+<p>Ginger does not decode the data of file uploads, because that data is normally
+treated as collections of bytes, rather than strings. Any automatic decoding
+there would alter the meaning of the stream of bytes.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="urlresolvers.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="template-response.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Unicode data</a><ul>
+<li><a class="reference internal" href="#creating-the-database">Creating the database</a></li>
+<li><a class="reference internal" href="#general-string-handling">General string handling</a><ul>
+<li><a class="reference internal" href="#translated-strings">Translated strings</a></li>
+<li><a class="reference internal" href="#useful-utility-functions">Useful utility functions</a><ul>
+<li><a class="reference internal" href="#conversion-functions">Conversion functions</a></li>
+<li><a class="reference internal" href="#uri-and-iri-handling">URI and IRI handling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#models">Models</a><ul>
+<li><a class="reference internal" href="#taking-care-in-get-absolute-url">Taking care in <code class="docutils literal notranslate"><span class="pre">get_absolute_url()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#templates">Templates</a><ul>
+<li><a class="reference internal" href="#template-tags-and-filters">Template tags and filters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#files">Files</a></li>
+<li><a class="reference internal" href="#form-submission">Form submission</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

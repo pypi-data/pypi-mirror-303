@@ -1,0 +1,1255 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Class-based views" href="class-based-views/index.html" /><link rel="prev" title="Form Assets (the Media class)" href="forms/media.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Templates - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/topics/templates.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.template">
+<span id="s-templates"></span><span id="module-ginger.template"></span><span id="templates"></span><h1>Templates<a class="headerlink" href="#module-ginger.template" title="Link to this heading">¶</a></h1>
+<p>Being a web framework, Ginger needs a convenient way to generate HTML
+dynamically. The most common approach relies on templates. A template contains
+the static parts of the desired HTML output as well as some special syntax
+describing how dynamic content will be inserted. For a hands-on example of
+creating HTML pages with templates, see <a class="reference internal" href="../intro/tutorial03.html"><span class="doc">Tutorial 3</span></a>.</p>
+<p>A Ginger project can be configured with one or several template engines (or
+even zero if you don’t use templates). Ginger ships built-in backends for its
+own template system, creatively called the Ginger template language (DTL), and
+for the popular alternative <a class="reference external" href="https://jinja.palletsprojects.com/">Jinja2</a>. Backends for other template languages may
+be available from third-parties. You can also write your own custom backend,
+see <a class="reference internal" href="../howto/custom-template-backend.html"><span class="doc">Custom template backend</span></a></p>
+<p>Ginger defines a standard API for loading and rendering templates regardless
+of the backend. Loading consists of finding the template for a given identifier
+and preprocessing it, usually compiling it to an in-memory representation.
+Rendering means interpolating the template with context data and returning the
+resulting string.</p>
+<p>The <a class="reference internal" href="../ref/templates/language.html"><span class="doc">Ginger template language</span></a> is Ginger’s own
+template system. Until Ginger 1.8 it was the only built-in option available.
+It’s a good template library even though it’s fairly opinionated and sports a
+few idiosyncrasies. If you don’t have a pressing reason to choose another
+backend, you should use the DTL, especially if you’re writing a pluggable
+application and you intend to distribute templates. Ginger’s contrib apps that
+include templates, like <a class="reference internal" href="../ref/contrib/admin/index.html"><span class="doc">ginger.contrib.admin</span></a>,
+use the DTL.</p>
+<p>For historical reasons, both the generic support for template engines and the
+implementation of the Ginger template language live in the <code class="docutils literal notranslate"><span class="pre">ginger.template</span></code>
+namespace.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The template system isn’t safe against untrusted template authors. For
+example, a site shouldn’t allow its users to provide their own templates,
+since template authors can do things like perform XSS attacks and access
+properties of template variables that may contain sensitive information.</p>
+</div>
+<section id="s-the-ginger-template-language">
+<span id="s-template-language-intro"></span><span id="the-ginger-template-language"></span><span id="template-language-intro"></span><h2>The Ginger template language<a class="headerlink" href="#the-ginger-template-language" title="Link to this heading">¶</a></h2>
+<section id="s-syntax">
+<span id="syntax"></span><h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading">¶</a></h3>
+<div class="admonition-about-this-section admonition">
+<p class="admonition-title">About this section</p>
+<p>This is an overview of the Ginger template language’s syntax. For details
+see the <a class="reference internal" href="../ref/templates/language.html"><span class="doc">language syntax reference</span></a>.</p>
+</div>
+<p>A Ginger template is a text document or a Python string marked-up using the
+Ginger template language. Some constructs are recognized and interpreted by the
+template engine. The main ones are variables and tags.</p>
+<p>A template is rendered with a context. Rendering replaces variables with their
+values, which are looked up in the context, and executes tags. Everything else
+is output as is.</p>
+<p>The syntax of the Ginger template language involves four constructs.</p>
+<section id="s-variables">
+<span id="variables"></span><h4>Variables<a class="headerlink" href="#variables" title="Link to this heading">¶</a></h4>
+<p>A variable outputs a value from the context, which is a dict-like object
+mapping keys to values.</p>
+<p>Variables are surrounded by <code class="docutils literal notranslate"><span class="pre">{{</span></code> and <code class="docutils literal notranslate"><span class="pre">}}</span></code> like this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span>My first name is <span class="cp">{{</span> <span class="nv">first_name</span> <span class="cp">}}</span>. My last name is <span class="cp">{{</span> <span class="nv">last_name</span> <span class="cp">}}</span>.
+</pre></div>
+</div>
+<p>With a context of <code class="docutils literal notranslate"><span class="pre">{'first_name':</span> <span class="pre">'John',</span> <span class="pre">'last_name':</span> <span class="pre">'Doe'}</span></code>, this template
+renders to:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span>My first name is John. My last name is Doe.
+</pre></div>
+</div>
+<p>Dictionary lookup, attribute lookup and list-index lookups are implemented with
+a dot notation:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">my_dict.key</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">my_object.attribute</span> <span class="cp">}}</span>
+<span class="cp">{{</span> <span class="nv">my_list.0</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>If a variable resolves to a callable, the template system will call it with no
+arguments and use its result instead of the callable.</p>
+</section>
+<section id="s-tags">
+<span id="tags"></span><h4>Tags<a class="headerlink" href="#tags" title="Link to this heading">¶</a></h4>
+<p>Tags provide arbitrary logic in the rendering process.</p>
+<p>This definition is deliberately vague. For example, a tag can output content,
+serve as a control structure e.g. an “if” statement or a “for” loop, grab
+content from a database, or even enable access to other template tags.</p>
+<p>Tags are surrounded by <code class="docutils literal notranslate"><span class="pre">{%</span></code> and <code class="docutils literal notranslate"><span class="pre">%}</span></code> like this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">csrf_token</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Most tags accept arguments:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">cycle</span> <span class="s1">&#39;odd&#39;</span> <span class="s1">&#39;even&#39;</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>Some tags require beginning and ending tags:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">user.is_authenticated</span> <span class="cp">%}</span>Hello, <span class="cp">{{</span> <span class="nv">user.username</span> <span class="cp">}}</span>.<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+<p>A <a class="reference internal" href="../ref/templates/builtins.html#ref-templates-builtins-tags"><span class="std std-ref">reference of built-in tags</span></a> is
+available as well as <a class="reference internal" href="../howto/custom-template-tags.html#howto-writing-custom-template-tags"><span class="std std-ref">instructions for writing custom tags</span></a>.</p>
+</section>
+<section id="s-filters">
+<span id="filters"></span><h4>Filters<a class="headerlink" href="#filters" title="Link to this heading">¶</a></h4>
+<p>Filters transform the values of variables and tag arguments.</p>
+<p>They look like this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">ginger</span><span class="o">|</span><span class="nf">title</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>With a context of <code class="docutils literal notranslate"><span class="pre">{'ginger':</span> <span class="pre">'the</span> <span class="pre">web</span> <span class="pre">framework</span> <span class="pre">for</span> <span class="pre">perfectionists</span> <span class="pre">with</span>
+<span class="pre">deadlines'}</span></code>, this template renders to:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span>The Web Framework For Perfectionists With Deadlines
+</pre></div>
+</div>
+<p>Some filters take an argument:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">my_date</span><span class="o">|</span><span class="nf">date</span><span class="s2">:&quot;Y-m-d&quot;</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>A <a class="reference internal" href="../ref/templates/builtins.html#ref-templates-builtins-filters"><span class="std std-ref">reference of built-in filters</span></a> is
+available as well as <a class="reference internal" href="../howto/custom-template-tags.html#howto-writing-custom-template-filters"><span class="std std-ref">instructions for writing custom filters</span></a>.</p>
+</section>
+<section id="s-comments">
+<span id="comments"></span><h4>Comments<a class="headerlink" href="#comments" title="Link to this heading">¶</a></h4>
+<p>Comments look like this:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="c">{# this won&#39;t be rendered #}</span>
+</pre></div>
+</div>
+<p>A <a class="reference internal" href="../ref/templates/builtins.html#std-templatetag-comment"><code class="xref std std-ttag docutils literal notranslate"><span class="pre">{%</span> <span class="pre">comment</span> <span class="pre">%}</span></code></a> tag provides multi-line comments.</p>
+</section>
+</section>
+<section id="s-components">
+<span id="components"></span><h3>Components<a class="headerlink" href="#components" title="Link to this heading">¶</a></h3>
+<div class="admonition-about-this-section admonition">
+<p class="admonition-title">About this section</p>
+<p>This is an overview of the Ginger template language’s APIs. For details
+see the <a class="reference internal" href="../ref/templates/api.html"><span class="doc">API reference</span></a>.</p>
+</div>
+<section id="s-engine">
+<span id="engine"></span><h4>Engine<a class="headerlink" href="#engine" title="Link to this heading">¶</a></h4>
+<p><a class="reference internal" href="../ref/templates/api.html#ginger.template.Engine" title="ginger.template.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.Engine</span></code></a> encapsulates an instance of the Ginger
+template system. The main reason for instantiating an
+<a class="reference internal" href="../ref/templates/api.html#ginger.template.Engine" title="ginger.template.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">Engine</span></code></a> directly is to use the Ginger template
+language outside of a Ginger project.</p>
+<p><a class="reference internal" href="#ginger.template.backends.ginger.GingerTemplates" title="ginger.template.backends.ginger.GingerTemplates"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.backends.ginger.GingerTemplates</span></code></a> is a thin wrapper
+adapting <a class="reference internal" href="../ref/templates/api.html#ginger.template.Engine" title="ginger.template.Engine"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.Engine</span></code></a> to Ginger’s template backend API.</p>
+</section>
+<section id="s-template">
+<span id="template"></span><h4>Template<a class="headerlink" href="#template" title="Link to this heading">¶</a></h4>
+<p><a class="reference internal" href="../ref/templates/api.html#ginger.template.Template" title="ginger.template.Template"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.Template</span></code></a> represents a compiled template. Templates are
+obtained with <a class="reference internal" href="../ref/templates/api.html#ginger.template.Engine.get_template" title="ginger.template.Engine.get_template"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Engine.get_template()</span></code></a> or <a class="reference internal" href="../ref/templates/api.html#ginger.template.Engine.from_string" title="ginger.template.Engine.from_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Engine.from_string()</span></code></a>.</p>
+<p>Likewise <code class="docutils literal notranslate"><span class="pre">ginger.template.backends.ginger.Template</span></code> is a thin wrapper
+adapting <a class="reference internal" href="../ref/templates/api.html#ginger.template.Template" title="ginger.template.Template"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.Template</span></code></a> to the common template API.</p>
+</section>
+<section id="s-context">
+<span id="context"></span><h4>Context<a class="headerlink" href="#context" title="Link to this heading">¶</a></h4>
+<p><a class="reference internal" href="../ref/templates/api.html#ginger.template.Context" title="ginger.template.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.Context</span></code></a> holds some metadata in addition to the context
+data. It is passed to <a class="reference internal" href="../ref/templates/api.html#ginger.template.Template.render" title="ginger.template.Template.render"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Template.render()</span></code></a> for rendering a template.</p>
+<p><a class="reference internal" href="../ref/templates/api.html#ginger.template.RequestContext" title="ginger.template.RequestContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.RequestContext</span></code></a> is a subclass of
+<a class="reference internal" href="../ref/templates/api.html#ginger.template.Context" title="ginger.template.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> that stores the current
+<a class="reference internal" href="../ref/request-response.html#ginger.http.HttpRequest" title="ginger.http.HttpRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpRequest</span></code></a> and runs template context processors.</p>
+<p>The common API doesn’t have an equivalent concept. Context data is passed in a
+plain <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> and the current <a class="reference internal" href="../ref/request-response.html#ginger.http.HttpRequest" title="ginger.http.HttpRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpRequest</span></code></a> is passed
+separately if needed.</p>
+</section>
+<section id="s-loaders">
+<span id="loaders"></span><h4>Loaders<a class="headerlink" href="#loaders" title="Link to this heading">¶</a></h4>
+<p>Template loaders are responsible for locating templates, loading them, and
+returning <a class="reference internal" href="../ref/templates/api.html#ginger.template.Template" title="ginger.template.Template"><code class="xref py py-class docutils literal notranslate"><span class="pre">Template</span></code></a> objects.</p>
+<p>Ginger provides several <a class="reference internal" href="../ref/templates/api.html#template-loaders"><span class="std std-ref">built-in template loaders</span></a>
+and supports <a class="reference internal" href="../ref/templates/api.html#custom-template-loaders"><span class="std std-ref">custom template loaders</span></a>.</p>
+</section>
+<section id="s-context-processors">
+<span id="context-processors"></span><h4>Context processors<a class="headerlink" href="#context-processors" title="Link to this heading">¶</a></h4>
+<p>Context processors are functions that receive the current
+<a class="reference internal" href="../ref/request-response.html#ginger.http.HttpRequest" title="ginger.http.HttpRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpRequest</span></code></a> as an argument and return a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of
+data to be added to the rendering context.</p>
+<p>Their main use is to add common data shared by all templates to the context
+without repeating code in every view.</p>
+<p>Ginger provides many <a class="reference internal" href="../ref/templates/api.html#context-processors"><span class="std std-ref">built-in context processors</span></a>,
+and you can implement your own additional context processors, too.</p>
+</section>
+</section>
+</section>
+<section id="s-support-for-template-engines">
+<span id="s-template-engines"></span><span id="support-for-template-engines"></span><span id="template-engines"></span><h2>Support for template engines<a class="headerlink" href="#support-for-template-engines" title="Link to this heading">¶</a></h2>
+<section id="s-configuration">
+<span id="configuration"></span><h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
+<p>Templates engines are configured with the <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TEMPLATES</span></code></a> setting. It’s a
+list of configurations, one for each engine. The default value is empty. The
+<code class="docutils literal notranslate"><span class="pre">settings.py</span></code> generated by the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-startproject"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">startproject</span></code></a> command defines a
+more useful value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;ginger.template.backends.ginger.GingerTemplates&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DIRS&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;APP_DIRS&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># ... some options here ...</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">BACKEND</span></code></a> is a dotted Python path to a template
+engine class implementing Ginger’s template backend API. The built-in backends
+are <a class="reference internal" href="#ginger.template.backends.ginger.GingerTemplates" title="ginger.template.backends.ginger.GingerTemplates"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.backends.ginger.GingerTemplates</span></code></a> and
+<a class="reference internal" href="#ginger.template.backends.jinja2.Jinja2" title="ginger.template.backends.jinja2.Jinja2"><code class="xref py py-class docutils literal notranslate"><span class="pre">ginger.template.backends.jinja2.Jinja2</span></code></a>.</p>
+<p>Since most engines load templates from files, the top-level configuration for
+each engine contains two common settings:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DIRS</span></code></a> defines a list of directories where the
+engine should look for template source files, in search order.</p></li>
+<li><p><a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-APP_DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APP_DIRS</span></code></a> tells whether the engine should
+look for templates inside installed applications. Each backend defines a
+conventional name for the subdirectory inside applications where its
+templates should be stored.</p></li>
+</ul>
+<p>While uncommon, it’s possible to configure several instances of the same
+backend with different options. In that case you should define a unique
+<a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a> for each engine.</p>
+<p><a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-OPTIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">OPTIONS</span></code></a> contains backend-specific settings.</p>
+</section>
+<section id="s-module-ginger.template.loader">
+<span id="s-usage"></span><span id="s-template-loading"></span><span id="module-ginger.template.loader"></span><span id="usage"></span><span id="template-loading"></span><h3>Usage<a class="headerlink" href="#module-ginger.template.loader" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">ginger.template.loader</span></code> module defines two functions to load templates.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.template.loader.get_template">
+<span class="sig-name descname"><span class="pre">get_template</span></span>(<em class="sig-param"><span class="n"><span class="pre">template_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.template.loader.get_template" title="Link to this definition">¶</a></dt>
+<dd><p>This function loads the template with the given name and returns a
+<code class="docutils literal notranslate"><span class="pre">Template</span></code> object.</p>
+<p>The exact type of the return value depends on the backend that loaded the
+template. Each backend has its own <code class="docutils literal notranslate"><span class="pre">Template</span></code> class.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_template()</span></code> tries each template engine in order until one succeeds.
+If the template cannot be found, it raises
+<a class="reference internal" href="#ginger.template.TemplateDoesNotExist" title="ginger.template.TemplateDoesNotExist"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TemplateDoesNotExist</span></code></a>. If the template is found but
+contains invalid syntax, it raises
+<a class="reference internal" href="#ginger.template.TemplateSyntaxError" title="ginger.template.TemplateSyntaxError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TemplateSyntaxError</span></code></a>.</p>
+<p>How templates are searched and loaded depends on each engine’s backend and
+configuration.</p>
+<p>If you want to restrict the search to a particular template engine, pass
+the engine’s <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a> in the <code class="docutils literal notranslate"><span class="pre">using</span></code> argument.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.template.loader.select_template">
+<span class="sig-name descname"><span class="pre">select_template</span></span>(<em class="sig-param"><span class="n"><span class="pre">template_name_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.template.loader.select_template" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">select_template()</span></code> is just like <code class="docutils literal notranslate"><span class="pre">get_template()</span></code>, except it takes a
+list of template names. It tries each name in order and returns the first
+template that exists.</p>
+</dd></dl>
+
+<p>If loading a template fails, the following two exceptions, defined in
+<code class="docutils literal notranslate"><span class="pre">ginger.template</span></code>, may be raised:</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ginger.template.TemplateDoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TemplateDoesNotExist</span></span>(<em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tried</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.template.TemplateDoesNotExist" title="Link to this definition">¶</a></dt>
+<dd><p>This exception is raised when a template cannot be found. It accepts the
+following optional arguments for populating the <a class="reference internal" href="../howto/custom-template-backend.html#template-postmortem"><span class="std std-ref">template postmortem</span></a> on the debug page:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">backend</span></code></dt><dd><p>The template backend instance from which the exception originated.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tried</span></code></dt><dd><p>A list of sources that were tried when finding the template. This is
+formatted as a list of tuples containing <code class="docutils literal notranslate"><span class="pre">(origin,</span> <span class="pre">status)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">origin</span></code> is an <a class="reference internal" href="../howto/custom-template-backend.html#template-origin-api"><span class="std std-ref">origin-like</span></a> object and
+<code class="docutils literal notranslate"><span class="pre">status</span></code> is a string with the reason the template wasn’t found.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chain</span></code></dt><dd><p>A list of intermediate <a class="reference internal" href="#ginger.template.TemplateDoesNotExist" title="ginger.template.TemplateDoesNotExist"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TemplateDoesNotExist</span></code></a>
+exceptions raised when trying to load a template. This is used by
+functions, such as <a class="reference internal" href="#ginger.template.loader.get_template" title="ginger.template.loader.get_template"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_template()</span></code></a>, that
+try to load a given template from multiple engines.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="ginger.template.TemplateSyntaxError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TemplateSyntaxError</span></span>(<em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>)<a class="headerlink" href="#ginger.template.TemplateSyntaxError" title="Link to this definition">¶</a></dt>
+<dd><p>This exception is raised when a template was found but contains errors.</p>
+</dd></dl>
+
+<p><code class="docutils literal notranslate"><span class="pre">Template</span></code> objects returned by <code class="docutils literal notranslate"><span class="pre">get_template()</span></code> and <code class="docutils literal notranslate"><span class="pre">select_template()</span></code>
+must provide a <code class="docutils literal notranslate"><span class="pre">render()</span></code> method with the following signature:</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ginger.template.backends.base.Template.render">
+<span class="sig-prename descclassname"><span class="pre">Template.</span></span><span class="sig-name descname"><span class="pre">render</span></span>(<em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.template.backends.base.Template.render" title="Link to this definition">¶</a></dt>
+<dd><p>Renders this template with a given context.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">context</span></code> is provided, it must be a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>. If it isn’t
+provided, the engine will render the template with an empty context.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">request</span></code> is provided, it must be an <a class="reference internal" href="../ref/request-response.html#ginger.http.HttpRequest" title="ginger.http.HttpRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpRequest</span></code></a>.
+Then the engine must make it, as well as the CSRF token, available in the
+template. How this is achieved is up to each backend.</p>
+</dd></dl>
+
+<p>Here’s an example of the search algorithm. For this example the
+<a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TEMPLATES</span></code></a> setting is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;ginger.template.backends.ginger.GingerTemplates&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DIRS&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;/home/html/example.com&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;/home/html/default&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;ginger.template.backends.jinja2.Jinja2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DIRS&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;/home/html/jinja2&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>If you call <code class="docutils literal notranslate"><span class="pre">get_template('story_detail.html')</span></code>, here are the files Ginger
+will look for, in order:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/example.com/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/default/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/jinja2/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'jinja2'</span></code> engine)</p></li>
+</ul>
+<p>If you call <code class="docutils literal notranslate"><span class="pre">select_template(['story_253_detail.html',</span> <span class="pre">'story_detail.html'])</span></code>,
+here’s what Ginger will look for:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/example.com/story_253_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/default/story_253_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/jinja2/story_253_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'jinja2'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/example.com/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/default/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/jinja2/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'jinja2'</span></code> engine)</p></li>
+</ul>
+<p>When Ginger finds a template that exists, it stops looking.</p>
+<div class="admonition-use-ginger-template-loader-select-template-for-more-flexibility admonition">
+<p class="admonition-title">Use <code class="docutils literal notranslate"><span class="pre">ginger.template.loader.select_template()</span></code> for more flexibility</p>
+<p>You can use <a class="reference internal" href="#ginger.template.loader.select_template" title="ginger.template.loader.select_template"><code class="xref py py-func docutils literal notranslate"><span class="pre">select_template()</span></code></a> for flexible
+template loading. For example, if you’ve written a news story and want
+some stories to have custom templates, use something like
+<code class="docutils literal notranslate"><span class="pre">select_template(['story_%s_detail.html'</span> <span class="pre">%</span> <span class="pre">story.id,</span>
+<span class="pre">'story_detail.html'])</span></code>. That’ll allow you to use a custom template for an
+individual story, with a fallback template for stories that don’t have
+custom templates.</p>
+</div>
+<p>It’s possible – and preferable – to organize templates in subdirectories
+inside each directory containing templates. The convention is to make a
+subdirectory for each Ginger app, with subdirectories within those
+subdirectories as needed.</p>
+<p>Do this for your own sanity. Storing all templates in the root level of a
+single directory gets messy.</p>
+<p>To load a template that’s within a subdirectory, use a slash, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;news/story_detail.html&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using the same <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES"><code class="xref std std-setting docutils literal notranslate"><span class="pre">TEMPLATES</span></code></a> option as above, this will attempt to load
+the following templates:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/example.com/news/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/default/news/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> engine)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/home/html/jinja2/news/story_detail.html</span></code> (<code class="docutils literal notranslate"><span class="pre">'jinja2'</span></code> engine)</p></li>
+</ul>
+<p>In addition, to cut down on the repetitive nature of loading and rendering
+templates, Ginger provides a shortcut function which automates the process.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.template.loader.render_to_string">
+<span class="sig-name descname"><span class="pre">render_to_string</span></span>(<em class="sig-param"><span class="n"><span class="pre">template_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">using</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>)<a class="headerlink" href="#ginger.template.loader.render_to_string" title="Link to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">render_to_string()</span></code> loads a template like <a class="reference internal" href="#ginger.template.loader.get_template" title="ginger.template.loader.get_template"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_template()</span></code></a> and
+calls its <code class="docutils literal notranslate"><span class="pre">render()</span></code> method immediately. It takes the following
+arguments.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">template_name</span></code></dt><dd><p>The name of the template to load and render. If it’s a list of template
+names, Ginger uses <a class="reference internal" href="#ginger.template.loader.select_template" title="ginger.template.loader.select_template"><code class="xref py py-func docutils literal notranslate"><span class="pre">select_template()</span></code></a> instead of
+<a class="reference internal" href="#ginger.template.loader.get_template" title="ginger.template.loader.get_template"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_template()</span></code></a> to find the template.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">context</span></code></dt><dd><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> to be used as the template’s context for rendering.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">request</span></code></dt><dd><p>An optional <a class="reference internal" href="../ref/request-response.html#ginger.http.HttpRequest" title="ginger.http.HttpRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpRequest</span></code></a> that will be available
+during the template’s rendering process.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">using</span></code></dt><dd><p>An optional template engine <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a>. The
+search for the template will be restricted to that engine.</p>
+</dd>
+</dl>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.template.loader</span> <span class="kn">import</span> <span class="n">render_to_string</span>
+
+<span class="n">rendered</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="s2">&quot;my_template.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>See also the <a class="reference internal" href="http/shortcuts.html#ginger.shortcuts.render" title="ginger.shortcuts.render"><code class="xref py py-func docutils literal notranslate"><span class="pre">render()</span></code></a> shortcut which calls
+<a class="reference internal" href="#ginger.template.loader.render_to_string" title="ginger.template.loader.render_to_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">render_to_string()</span></code></a> and feeds the result into an
+<a class="reference internal" href="../ref/request-response.html#ginger.http.HttpResponse" title="ginger.http.HttpResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpResponse</span></code></a> suitable for returning from a view.</p>
+<p>Finally, you can use configured engines directly:</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="ginger.template.loader.engines">
+<span class="sig-name descname"><span class="pre">engines</span></span><a class="headerlink" href="#ginger.template.loader.engines" title="Link to this definition">¶</a></dt>
+<dd><p>Template engines are available in <code class="docutils literal notranslate"><span class="pre">ginger.template.engines</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.template</span> <span class="kn">import</span> <span class="n">engines</span>
+
+<span class="n">ginger_engine</span> <span class="o">=</span> <span class="n">engines</span><span class="p">[</span><span class="s2">&quot;ginger&quot;</span><span class="p">]</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">ginger_engine</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;Hello {{ name }}!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The lookup key — <code class="docutils literal notranslate"><span class="pre">'ginger'</span></code> in this example — is the engine’s
+<a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-NAME"><code class="xref std std-setting docutils literal notranslate"><span class="pre">NAME</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="s-module-ginger.template.backends.ginger">
+<span id="s-built-in-backends"></span><span id="s-module-ginger.template.backends"></span><span id="module-ginger.template.backends.ginger"></span><span id="built-in-backends"></span><span id="module-ginger.template.backends"></span><h3>Built-in backends<a class="headerlink" href="#module-ginger.template.backends.ginger" title="Link to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.template.backends.ginger.GingerTemplates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GingerTemplates</span></span><a class="headerlink" href="#ginger.template.backends.ginger.GingerTemplates" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Set <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">BACKEND</span></code></a> to
+<code class="docutils literal notranslate"><span class="pre">'ginger.template.backends.ginger.GingerTemplates'</span></code> to configure a Ginger
+template engine.</p>
+<p>When <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-APP_DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APP_DIRS</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">GingerTemplates</span></code>
+engines look for templates in the <code class="docutils literal notranslate"><span class="pre">templates</span></code> subdirectory of installed
+applications. This generic name was kept for backwards-compatibility.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GingerTemplates</span></code> engines accept the following <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-OPTIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">OPTIONS</span></code></a>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'autoescape'</span></code>: a boolean that controls whether HTML autoescaping is
+enabled.</p>
+<p>It defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Only set it to <code class="docutils literal notranslate"><span class="pre">False</span></code> if you’re rendering non-HTML templates!</p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'context_processors'</span></code>: a list of dotted Python paths to callables that
+are used to populate the context when a template is rendered with a request.
+These callables take a request object as their argument and return a
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of items to be merged into the context.</p>
+<p>It defaults to an empty list.</p>
+<p>See <a class="reference internal" href="../ref/templates/api.html#ginger.template.RequestContext" title="ginger.template.RequestContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">RequestContext</span></code></a> for more information.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'debug'</span></code>: a boolean that turns on/off template debug mode. If it is
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, the fancy error page will display a detailed report for any
+exception raised during template rendering. This report contains the
+relevant snippet of the template with the appropriate line highlighted.</p>
+<p>It defaults to the value of the <a class="reference internal" href="../ref/settings.html#std-setting-DEBUG"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DEBUG</span></code></a> setting.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'loaders'</span></code>: a list of dotted Python paths to template loader classes.
+Each <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class knows how to import templates from a particular
+source. Optionally, a tuple can be used instead of a string. The first item
+in the tuple should be the <code class="docutils literal notranslate"><span class="pre">Loader</span></code> class name, and subsequent items are
+passed to the <code class="docutils literal notranslate"><span class="pre">Loader</span></code> during initialization.</p>
+<p>The default depends on the values of <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DIRS</span></code></a> and
+<a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-APP_DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APP_DIRS</span></code></a>.</p>
+<p>See <a class="reference internal" href="../ref/templates/api.html#template-loaders"><span class="std std-ref">Loader types</span></a> for details.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'string_if_invalid'</span></code>: the output, as a string, that the template system
+should use for invalid (e.g. misspelled) variables.</p>
+<p>It defaults to an empty string.</p>
+<p>See <a class="reference internal" href="../ref/templates/api.html#invalid-template-variables"><span class="std std-ref">How invalid variables are handled</span></a> for details.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'file_charset'</span></code>: the charset used to read template files on disk.</p>
+<p>It defaults to <code class="docutils literal notranslate"><span class="pre">'utf-8'</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'libraries'</span></code>: A dictionary of labels and dotted Python paths of template
+tag modules to register with the template engine. This can be used to add
+new libraries or provide alternate labels for existing ones. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;libraries&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;myapp_tags&quot;</span><span class="p">:</span> <span class="s2">&quot;path.to.myapp.tags&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;admin.urls&quot;</span><span class="p">:</span> <span class="s2">&quot;ginger.contrib.admin.templatetags.admin_urls&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Libraries can be loaded by passing the corresponding dictionary key to
+the <a class="reference internal" href="../ref/templates/builtins.html#std-templatetag-load"><code class="xref std std-ttag docutils literal notranslate"><span class="pre">{%</span> <span class="pre">load</span> <span class="pre">%}</span></code></a> tag.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'builtins'</span></code>: A list of dotted Python paths of template tag modules to
+add to <a class="reference internal" href="../ref/templates/builtins.html"><span class="doc">built-ins</span></a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;builtins&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;myapp.builtins&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Tags and filters from built-in libraries can be used without first calling
+the <a class="reference internal" href="../ref/templates/builtins.html#std-templatetag-load"><code class="xref std std-ttag docutils literal notranslate"><span class="pre">{%</span> <span class="pre">load</span> <span class="pre">%}</span></code></a> tag.</p>
+</li>
+</ul>
+<dl class="py class" id="module-ginger.template.backends.jinja2">
+<dt class="sig sig-object py" id="ginger.template.backends.jinja2.Jinja2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Jinja2</span></span><a class="headerlink" href="#ginger.template.backends.jinja2.Jinja2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Requires <a class="reference external" href="https://jinja.palletsprojects.com/">Jinja2</a> to be installed:</p>
+<div class="console-block" id="console-block-0">
+<input class="c-tab-unix" id="c-tab-0-unix" type="radio" name="console-0" checked>
+<label for="c-tab-0-unix" title="Linux/macOS">&#xf17c/&#xf179</label>
+<input class="c-tab-win" id="c-tab-0-win" type="radio" name="console-0">
+<label for="c-tab-0-win" title="Windows">&#xf17a</label>
+<section class="c-content-unix" id="c-content-0-unix">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>Jinja2
+</pre></div>
+</div>
+</section>
+<section class="c-content-win" id="c-content-0-win">
+<div class="highlight"><pre><span></span><span class="gp">...\&gt;</span> py -m pip install Jinja2
+</pre></div>
+</section>
+</div>
+<p>Set <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-BACKEND"><code class="xref std std-setting docutils literal notranslate"><span class="pre">BACKEND</span></code></a> to
+<code class="docutils literal notranslate"><span class="pre">'ginger.template.backends.jinja2.Jinja2'</span></code> to configure a <a class="reference external" href="https://jinja.palletsprojects.com/">Jinja2</a> engine.</p>
+<p>When <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-APP_DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APP_DIRS</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">Jinja2</span></code> engines
+look for templates in the <code class="docutils literal notranslate"><span class="pre">jinja2</span></code> subdirectory of installed applications.</p>
+<p>The most important entry in <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-OPTIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">OPTIONS</span></code></a> is
+<code class="docutils literal notranslate"><span class="pre">'environment'</span></code>. It’s a dotted Python path to a callable returning a Jinja2
+environment. It defaults to <code class="docutils literal notranslate"><span class="pre">'jinja2.Environment'</span></code>. Ginger invokes that
+callable and passes other options as keyword arguments. Furthermore, Ginger
+adds defaults that differ from Jinja2’s for a few options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'autoescape'</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'loader'</span></code>: a loader configured for <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">DIRS</span></code></a> and
+<a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-APP_DIRS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">APP_DIRS</span></code></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'auto_reload'</span></code>: <code class="docutils literal notranslate"><span class="pre">settings.DEBUG</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'undefined'</span></code>: <code class="docutils literal notranslate"><span class="pre">DebugUndefined</span> <span class="pre">if</span> <span class="pre">settings.DEBUG</span> <span class="pre">else</span> <span class="pre">Undefined</span></code></p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Jinja2</span></code> engines also accept the following <a class="reference internal" href="../ref/settings.html#std-setting-TEMPLATES-OPTIONS"><code class="xref std std-setting docutils literal notranslate"><span class="pre">OPTIONS</span></code></a>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'context_processors'</span></code>: a list of dotted Python paths to callables that
+are used to populate the context when a template is rendered with a request.
+These callables take a request object as their argument and return a
+<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> of items to be merged into the context.</p>
+<p>It defaults to an empty list.</p>
+<div class="admonition-using-context-processors-with-jinja2-templates-is-discouraged admonition">
+<p class="admonition-title">Using context processors with Jinja2 templates is discouraged.</p>
+<p>Context processors are useful with Ginger templates because Ginger templates
+don’t support calling functions with arguments. Since Jinja2 doesn’t have
+that limitation, it’s recommended to put the function that you would use as a
+context processor in the global variables available to the template using
+<code class="docutils literal notranslate"><span class="pre">jinja2.Environment</span></code> as described below. You can then call that function in
+the template:</p>
+<div class="highlight-jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">function</span><span class="o">(</span><span class="nv">request</span><span class="o">)</span> <span class="cp">}}</span>
+</pre></div>
+</div>
+<p>Some Ginger templates context processors return a fixed value. For Jinja2
+templates, this layer of indirection isn’t necessary since you can add
+constants directly in <code class="docutils literal notranslate"><span class="pre">jinja2.Environment</span></code>.</p>
+<p>The original use case for adding context processors for Jinja2 involved:</p>
+<ul class="simple">
+<li><p>Making an expensive computation that depends on the request.</p></li>
+<li><p>Needing the result in every template.</p></li>
+<li><p>Using the result multiple times in each template.</p></li>
+</ul>
+<p>Unless all of these conditions are met, passing a function to the template is
+more in line with the design of Jinja2.</p>
+</div>
+</li>
+</ul>
+<p>The default configuration is purposefully kept to a minimum. If a template is
+rendered with a request (e.g. when using <a class="reference internal" href="http/shortcuts.html#ginger.shortcuts.render" title="ginger.shortcuts.render"><code class="xref py py-func docutils literal notranslate"><span class="pre">render()</span></code></a>),
+the <code class="docutils literal notranslate"><span class="pre">Jinja2</span></code> backend adds the globals <code class="docutils literal notranslate"><span class="pre">request</span></code>, <code class="docutils literal notranslate"><span class="pre">csrf_input</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">csrf_token</span></code> to the context. Apart from that, this backend doesn’t create a
+Ginger-flavored environment. It doesn’t know about Ginger filters and tags.
+In order to use Ginger-specific APIs, you must configure them into the
+environment.</p>
+<p>For example, you can create <code class="docutils literal notranslate"><span class="pre">myproject/jinja2.py</span></code> with this content:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.templatetags.static</span> <span class="kn">import</span> <span class="n">static</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span>
+
+
+<span class="k">def</span> <span class="nf">environment</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">globals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;static&quot;</span><span class="p">:</span> <span class="n">static</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">reverse</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">env</span>
+</pre></div>
+</div>
+<p>and set the <code class="docutils literal notranslate"><span class="pre">'environment'</span></code> option to <code class="docutils literal notranslate"><span class="pre">'myproject.jinja2.environment'</span></code>.</p>
+<p>Then you could use the following constructs in Jinja2 templates:</p>
+<div class="highlight-html+jinja notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">static</span><span class="o">(</span><span class="s1">&#39;path/to/company-logo.png&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&quot;Company Logo&quot;</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">url</span><span class="o">(</span><span class="s1">&#39;admin:index&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>Administration<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The concepts of tags and filters exist both in the Ginger template language
+and in Jinja2 but they’re used differently. Since Jinja2 supports passing
+arguments to callables in templates, many features that require a template tag
+or filter in Ginger templates can be achieved by calling a function in Jinja2
+templates, as shown in the example above. Jinja2’s global namespace removes the
+need for template context processors. The Ginger template language doesn’t have
+an equivalent of Jinja2 tests.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="class-based-views/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Class-based views</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="forms/media.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Templates</a><ul>
+<li><a class="reference internal" href="#the-ginger-template-language">The Ginger template language</a><ul>
+<li><a class="reference internal" href="#syntax">Syntax</a><ul>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#tags">Tags</a></li>
+<li><a class="reference internal" href="#filters">Filters</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#components">Components</a><ul>
+<li><a class="reference internal" href="#engine">Engine</a></li>
+<li><a class="reference internal" href="#template">Template</a></li>
+<li><a class="reference internal" href="#context">Context</a></li>
+<li><a class="reference internal" href="#loaders">Loaders</a></li>
+<li><a class="reference internal" href="#context-processors">Context processors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#support-for-template-engines">Support for template engines</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#module-ginger.template.loader">Usage</a></li>
+<li><a class="reference internal" href="#module-ginger.template.backends.ginger">Built-in backends</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

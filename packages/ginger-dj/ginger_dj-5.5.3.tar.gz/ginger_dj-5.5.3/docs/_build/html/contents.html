@@ -1,0 +1,1538 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Ginger documentation" href="index.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Ginger documentation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/contents.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-ginger-documentation-contents">
+<span id="ginger-documentation-contents"></span><h1>Ginger documentation contents<a class="headerlink" href="#ginger-documentation-contents" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro/index.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro/overview.html">Ginger at a glance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#design-your-model">Design your model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#install-it">Install it</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#enjoy-the-free-api">Enjoy the free API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#a-dynamic-admin-interface-it-s-not-just-scaffolding-it-s-the-whole-house">A dynamic admin interface: it’s not just scaffolding – it’s the whole house</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#design-your-urls">Design your URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#write-your-views">Write your views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#design-your-templates">Design your templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/overview.html#this-is-just-the-surface">This is just the surface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/install.html">Quick install guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#install-python">Install Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#set-up-a-database">Set up a database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#install-ginger">Install Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#verifying">Verifying</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#that-s-it">That’s it!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial01.html">Writing your first Ginger app, part 1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial01.html#creating-a-project">Creating a project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial01.html#the-development-server">The development server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial01.html#creating-the-polls-app">Creating the Polls app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial01.html#write-your-first-view">Write your first view</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial02.html">Writing your first Ginger app, part 2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial02.html#database-setup">Database setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial02.html#creating-models">Creating models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial02.html#activating-models">Activating models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial02.html#playing-with-the-api">Playing with the API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial02.html#introducing-the-ginger-admin">Introducing the Ginger Admin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial03.html">Writing your first Ginger app, part 3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#writing-more-views">Writing more views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#write-views-that-actually-do-something">Write views that actually do something</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#raising-a-404-error">Raising a 404 error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#use-the-template-system">Use the template system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#removing-hardcoded-urls-in-templates">Removing hardcoded URLs in templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial03.html#namespacing-url-names">Namespacing URL names</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial04.html">Writing your first Ginger app, part 4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial04.html#write-a-minimal-form">Write a minimal form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial04.html#use-generic-views-less-code-is-better">Use generic views: Less code is better</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial05.html">Writing your first Ginger app, part 5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#introducing-automated-testing">Introducing automated testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#basic-testing-strategies">Basic testing strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#writing-our-first-test">Writing our first test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#test-a-view">Test a view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#when-testing-more-is-better">When testing, more is better</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#further-testing">Further testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial05.html#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial06.html">Writing your first Ginger app, part 6</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial06.html#customize-your-app-s-look-and-feel">Customize your <em>app’s</em> look and feel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial06.html#adding-a-background-image">Adding a background-image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial07.html">Writing your first Ginger app, part 7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial07.html#customize-the-admin-form">Customize the admin form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial07.html#adding-related-objects">Adding related objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial07.html#customize-the-admin-change-list">Customize the admin change list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial07.html#customize-the-admin-look-and-feel">Customize the admin look and feel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial07.html#customize-the-admin-index-page">Customize the admin index page</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/tutorial08.html">Writing your first Ginger app, part 8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial08.html#installing-ginger-debug-toolbar">Installing Ginger Debug Toolbar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial08.html#getting-help-from-others">Getting help from others</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial08.html#installing-other-third-party-packages">Installing other third-party packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/tutorial08.html#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#reusability-matters">Reusability matters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#your-project-and-your-reusable-app">Your project and your reusable app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#installing-some-prerequisites">Installing some prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#packaging-your-app">Packaging your app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#using-your-own-package">Using your own package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#publishing-your-app">Publishing your app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/reusable-apps.html#installing-python-packages-with-a-virtual-environment">Installing Python packages with a virtual environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/whatsnext.html">What to read next</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/whatsnext.html#finding-documentation">Finding documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/whatsnext.html#how-the-documentation-is-organized">How the documentation is organized</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/whatsnext.html#how-documentation-is-updated">How documentation is updated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/whatsnext.html#where-to-get-it">Where to get it</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/whatsnext.html#differences-between-versions">Differences between versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/contributing.html">Writing your first patch for Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#code-of-conduct">Code of Conduct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#installing-git">Installing Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#getting-a-copy-of-ginger-s-development-version">Getting a copy of Ginger’s development version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#running-ginger-s-test-suite-for-the-first-time">Running Ginger’s test suite for the first time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#working-on-a-feature">Working on a feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#creating-a-branch-for-your-patch">Creating a branch for your patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#writing-some-tests-for-your-ticket">Writing some tests for your ticket</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#writing-the-code-for-your-ticket">Writing the code for your ticket</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#running-ginger-s-test-suite-for-the-second-time">Running Ginger’s test suite for the second time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#writing-documentation">Writing Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#previewing-your-changes">Previewing your changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#committing-the-changes-in-the-patch">Committing the changes in the patch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#pushing-the-commit-and-making-a-pull-request">Pushing the commit and making a pull request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/contributing.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="topics/index.html">Using Ginger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="topics/install.html">How to install Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/install.html#install-python">Install Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/install.html#install-apache-and-mod-wsgi">Install Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/install.html#get-your-database-running">Get your database running</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/install.html#install-the-ginger-code">Install the Ginger code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/db/index.html">Models and databases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/db/examples/index.html">Examples of model relationship API usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/http/index.html">Handling HTTP requests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/forms/index.html">Working with forms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#html-forms">HTML forms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#ginger-s-role-in-forms">Ginger’s role in forms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#forms-in-ginger">Forms in Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#building-a-form">Building a form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#more-about-ginger-form-classes">More about Ginger <code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code> classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#working-with-form-templates">Working with form templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/forms/index.html#further-topics">Further topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/templates.html">Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/templates.html#the-ginger-template-language">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/templates.html#support-for-template-engines">Support for template engines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/class-based-views/index.html">Class-based views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/index.html#basic-examples">Basic examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/index.html#usage-in-your-urlconf">Usage in your URLconf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/index.html#subclassing-generic-views">Subclassing generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/class-based-views/index.html#asynchronous-class-based-views">Asynchronous class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/migrations.html">Migrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#the-commands">The Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#backend-support">Backend Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#workflow">Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#transactions">Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#migration-files">Migration files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#adding-migrations-to-apps">Adding migrations to apps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#reversing-migrations">Reversing migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#historical-models">Historical models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#considerations-when-removing-model-fields">Considerations when removing model fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#data-migrations">Data Migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#squashing-migrations">Squashing migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#serializing-values">Serializing values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/migrations.html#supporting-multiple-ginger-versions">Supporting multiple Ginger versions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/files.html">Managing files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/files.html#using-files-in-models">Using files in models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/files.html#the-file-object">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/files.html#file-storage">File storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/testing/index.html">Testing in Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/cache.html">Ginger’s cache framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#setting-up-the-cache">Setting up the cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#the-per-site-cache">The per-site cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#the-per-view-cache">The per-view cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#template-fragment-caching">Template fragment caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#the-low-level-cache-api">The low-level cache API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#asynchronous-support">Asynchronous support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#downstream-caches">Downstream caches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#using-vary-headers">Using <code class="docutils literal notranslate"><span class="pre">Vary</span></code> headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#controlling-cache-using-other-headers">Controlling cache: Using other headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/cache.html#order-of-middleware">Order of <code class="docutils literal notranslate"><span class="pre">MIDDLEWARE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/conditional-view-processing.html">Conditional View Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/conditional-view-processing.html#the-condition-decorator">The <code class="docutils literal notranslate"><span class="pre">condition</span></code> decorator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/conditional-view-processing.html#shortcuts-for-only-computing-one-value">Shortcuts for only computing one value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/conditional-view-processing.html#using-the-decorators-with-other-http-methods">Using the decorators with other HTTP methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/conditional-view-processing.html#comparison-with-middleware-conditional-processing">Comparison with middleware conditional processing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/signing.html">Cryptographic signing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/signing.html#protecting-secret-key-and-secret-key-fallbacks">Protecting <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code> and <code class="docutils literal notranslate"><span class="pre">SECRET_KEY_FALLBACKS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/signing.html#using-the-low-level-api">Using the low-level API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/email.html">Sending email</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#quick-example">Quick example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#send-mail"><code class="docutils literal notranslate"><span class="pre">send_mail()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#send-mass-mail"><code class="docutils literal notranslate"><span class="pre">send_mass_mail()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#mail-admins"><code class="docutils literal notranslate"><span class="pre">mail_admins()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#mail-managers"><code class="docutils literal notranslate"><span class="pre">mail_managers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#preventing-header-injection">Preventing header injection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#the-emailmessage-class">The <code class="docutils literal notranslate"><span class="pre">EmailMessage</span></code> class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#email-backends">Email backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/email.html#configuring-email-for-development">Configuring email for development</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/i18n/index.html">Internationalization and localization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/i18n/index.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/i18n/index.html#definitions">Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/logging.html">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/logging.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/logging.html#security-implications">Security implications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/logging.html#configuring-logging">Configuring logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/pagination.html">Pagination</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/pagination.html#the-paginator-class">The <code class="docutils literal notranslate"><span class="pre">Paginator</span></code> class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/pagination.html#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/pagination.html#paginating-a-listview">Paginating a <code class="docutils literal notranslate"><span class="pre">ListView</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/pagination.html#using-paginator-in-a-view-function">Using <code class="docutils literal notranslate"><span class="pre">Paginator</span></code> in a view function</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/security.html">Security in Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#cross-site-scripting-xss-protection">Cross site scripting (XSS) protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#cross-site-request-forgery-csrf-protection">Cross site request forgery (CSRF) protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#sql-injection-protection">SQL injection protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#clickjacking-protection">Clickjacking protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#ssl-https">SSL/HTTPS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#host-header-validation">Host header validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#referrer-policy">Referrer policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#cross-origin-opener-policy">Cross-origin opener policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#session-security">Session security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#user-uploaded-content">User-uploaded content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/security.html#additional-security-topics">Additional security topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/performance.html">Performance and optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#general-approaches">General approaches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#understanding-laziness">Understanding laziness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#databases">Databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#http-performance">HTTP performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#template-performance">Template performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/performance.html#using-different-versions-of-available-software">Using different versions of available software</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/serialization.html">Serializing Ginger objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/serialization.html#serializing-data">Serializing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/serialization.html#deserializing-data">Deserializing data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/serialization.html#serialization-formats">Serialization formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/serialization.html#natural-keys">Natural keys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/settings.html">Ginger settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#the-basics">The basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#designating-the-settings">Designating the settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#default-settings">Default settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#using-settings-in-python-code">Using settings in Python code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#altering-settings-at-runtime">Altering settings at runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#security">Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#available-settings">Available settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#creating-your-own-settings">Creating your own settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/settings.html#using-settings-without-setting-ginger-settings-module">Using settings without setting <code class="xref std std-envvar docutils literal notranslate"><span class="pre">GINGER_SETTINGS_MODULE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/signals.html">Signals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/signals.html#listening-to-signals">Listening to signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/signals.html#defining-and-sending-signals">Defining and sending signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/signals.html#disconnecting-signals">Disconnecting signals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/checks.html">System check framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/checks.html#writing-your-own-checks">Writing your own checks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/external-packages.html">External packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/external-packages.html#localflavor">Localflavor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/external-packages.html#comments">Comments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/external-packages.html#formtools">Formtools</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topics/async.html">Asynchronous support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topics/async.html#async-views">Async views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/async.html#async-safety">Async safety</a></li>
+<li class="toctree-l3"><a class="reference internal" href="topics/async.html#async-adapter-functions">Async adapter functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="howto/index.html">“How-to” guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="howto/csrf.html">How to use Ginger’s CSRF protection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#using-csrf-protection-with-ajax">Using CSRF protection with AJAX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#using-csrf-protection-in-jinja2-templates">Using CSRF protection in Jinja2 templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#using-the-decorator-method">Using the decorator method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#handling-rejected-requests">Handling rejected requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#using-csrf-protection-with-caching">Using CSRF protection with caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#testing-and-csrf-protection">Testing and CSRF protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#edge-cases">Edge cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/csrf.html#csrf-protection-in-reusable-applications">CSRF protection in reusable applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-management-commands.html#accepting-optional-arguments">Accepting optional arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-management-commands.html#management-commands-and-locales">Management commands and locales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-management-commands.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-management-commands.html#overriding-commands">Overriding commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-management-commands.html#command-objects">Command objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-model-fields.html">How to create custom model fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-model-fields.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-model-fields.html#background-theory">Background theory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-model-fields.html#writing-a-field-subclass">Writing a field subclass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-model-fields.html#writing-a-filefield-subclass">Writing a <code class="docutils literal notranslate"><span class="pre">FileField</span></code> subclass</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-lookups.html">How to write custom lookups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#a-lookup-example">A lookup example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#a-transformer-example">A transformer example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#writing-an-efficient-abs-lt-lookup">Writing an efficient <code class="docutils literal notranslate"><span class="pre">abs__lt</span></code> lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#a-bilateral-transformer-example">A bilateral transformer example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#writing-alternative-implementations-for-existing-lookups">Writing alternative implementations for existing lookups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-lookups.html#how-ginger-determines-the-lookups-and-transforms-which-are-used">How Ginger determines the lookups and transforms which are used</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-template-backend.html">How to implement a custom template backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-template-backend.html#custom-backends">Custom backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-template-backend.html#debug-integration-for-custom-engines">Debug integration for custom engines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-template-tags.html">How to create custom template tags and filters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-template-tags.html#code-layout">Code layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-template-tags.html#writing-custom-template-filters">Writing custom template filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-template-tags.html#writing-custom-template-tags">Writing custom template tags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/custom-file-storage.html">How to write a custom storage class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/custom-file-storage.html#use-your-custom-storage-engine">Use your custom storage engine</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/deployment/index.html">How to deploy Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/deployment/wsgi/index.html">How to deploy with WSGI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/deployment/asgi/index.html">How to deploy with ASGI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/upgrade-version.html">How to upgrade Ginger to a newer version</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/upgrade-version.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/upgrade-version.html#resolving-deprecation-warnings">Resolving deprecation warnings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/upgrade-version.html#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/upgrade-version.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/upgrade-version.html#deployment">Deployment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/error-reporting.html">How to manage error reporting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/error-reporting.html#email-reports">Email reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/error-reporting.html#filtering-error-reports">Filtering error reports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/initial-data.html">How to provide initial data for models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/initial-data.html#provide-initial-data-with-migrations">Provide initial data with migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/initial-data.html#provide-data-with-fixtures">Provide data with fixtures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/legacy-databases.html">How to integrate Ginger with a legacy database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/legacy-databases.html#give-ginger-your-database-parameters">Give Ginger your database parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/legacy-databases.html#auto-generate-the-models">Auto-generate the models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/legacy-databases.html#install-the-core-ginger-tables">Install the core Ginger tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/legacy-databases.html#test-and-tweak">Test and tweak</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/logging.html">How to configure and use logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/logging.html#make-a-basic-logging-call">Make a basic logging call</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/logging.html#customize-logging-configuration">Customize logging configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/outputting-csv.html">How to create CSV output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-csv.html#using-the-python-csv-library">Using the Python CSV library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-csv.html#using-the-template-system">Using the template system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-csv.html#other-text-based-formats">Other text-based formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/outputting-pdf.html">How to create PDF files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-pdf.html#install-reportlab">Install ReportLab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-pdf.html#write-your-view">Write your view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/outputting-pdf.html#other-formats">Other formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/overriding-templates.html">How to override templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/overriding-templates.html#overriding-from-the-project-s-templates-directory">Overriding from the project’s templates directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/overriding-templates.html#overriding-from-an-app-s-template-directory">Overriding from an app’s template directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/overriding-templates.html#extending-an-overridden-template">Extending an overridden template</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#configuring-static-files">Configuring static files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#serving-static-files-during-development">Serving static files during development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#serving-files-uploaded-by-a-user-during-development">Serving files uploaded by a user during development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#deployment">Deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/index.html#learn-more">Learn more</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/static-files/deployment.html">How to deploy static files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/deployment.html#serving-static-files-in-production">Serving static files in production</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/static-files/deployment.html#learn-more">Learn more</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/windows.html">How to install Ginger on Windows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#install-python">Install Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#about-pip">About <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#setting-up-a-virtual-environment">Setting up a virtual environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#install-ginger">Install Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#colored-terminal-output">Colored terminal output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/windows.html#common-pitfalls">Common pitfalls</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/writing-migrations.html">How to create database migrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#data-migrations-and-multiple-databases">Data migrations and multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#migrations-that-add-unique-fields">Migrations that add unique fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#controlling-the-order-of-migrations">Controlling the order of migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#migrating-data-between-third-party-apps">Migrating data between third-party apps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#changing-a-manytomanyfield-to-use-a-through-model">Changing a <code class="docutils literal notranslate"><span class="pre">ManyToManyField</span></code> to use a <code class="docutils literal notranslate"><span class="pre">through</span></code> model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/writing-migrations.html#changing-an-unmanaged-model-to-managed">Changing an unmanaged model to managed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq/index.html">Ginger FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq/general.html">FAQ: General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#why-does-this-project-exist">Why does this project exist?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#what-does-ginger-mean-and-how-do-you-pronounce-it">What does “Ginger” mean, and how do you pronounce it?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#is-ginger-stable">Is Ginger stable?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#does-ginger-scale">Does Ginger scale?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#who-s-behind-this">Who’s behind this?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#how-is-ginger-licensed">How is Ginger licensed?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#why-does-ginger-include-python-s-license-file">Why does Ginger include Python’s license file?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#which-sites-use-ginger">Which sites use Ginger?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#ginger-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names">Ginger appears to be a MVC framework, but you call the Controller the “view”, and the View the “template”. How come you don’t use the standard names?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#framework-x-does-feature-y-why-doesn-t-ginger">&lt;Framework X&gt; does &lt;feature Y&gt; – why doesn’t Ginger?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#why-did-you-write-all-of-ginger-from-scratch-instead-of-using-other-python-libraries">Why did you write all of Ginger from scratch, instead of using other Python libraries?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#is-ginger-a-content-management-system-cms">Is Ginger a content-management-system (CMS)?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#how-can-i-download-the-ginger-documentation-to-read-it-offline">How can I download the Ginger documentation to read it offline?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/general.html#how-do-i-cite-ginger">How do I cite Ginger?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/install.html">FAQ: Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/install.html#how-do-i-get-started">How do I get started?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/install.html#what-are-ginger-s-prerequisites">What are Ginger’s prerequisites?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/install.html#what-python-version-can-i-use-with-ginger">What Python version can I use with Ginger?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/install.html#what-python-version-should-i-use-with-ginger">What Python version should I use with Ginger?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/install.html#should-i-use-the-stable-version-or-development-version">Should I use the stable version or development version?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/usage.html">FAQ: Using Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/usage.html#why-do-i-get-an-error-about-importing-ginger-settings-module">Why do I get an error about importing <code class="xref std std-envvar docutils literal notranslate"><span class="pre">GINGER_SETTINGS_MODULE</span></code>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/usage.html#i-can-t-stand-your-template-language-do-i-have-to-use-it">I can’t stand your template language. Do I have to use it?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/usage.html#do-i-have-to-use-your-model-database-layer">Do I have to use your model/database layer?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/usage.html#how-do-i-use-image-and-file-fields">How do I use image and file fields?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/usage.html#how-do-i-make-a-variable-available-to-all-my-templates">How do I make a variable available to all my templates?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/help.html">FAQ: Getting Help</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/help.html#how-do-i-do-x-why-doesn-t-y-work-where-can-i-go-to-get-help">How do I do X? Why doesn’t Y work? Where can I go to get help?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/help.html#why-hasn-t-my-message-appeared-on-ginger-users">Why hasn’t my message appeared on <em>ginger-users</em>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/help.html#nobody-answered-my-question-what-should-i-do">Nobody answered my question! What should I do?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/help.html#i-think-i-ve-found-a-bug-what-should-i-do">I think I’ve found a bug! What should I do?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/help.html#i-think-i-ve-found-a-security-problem-what-should-i-do">I think I’ve found a security problem! What should I do?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/models.html">FAQ: Databases and models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#how-can-i-see-the-raw-sql-queries-ginger-is-running">How can I see the raw SQL queries Ginger is running?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#can-i-use-ginger-with-a-preexisting-database">Can I use Ginger with a preexisting database?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#if-i-make-changes-to-a-model-how-do-i-update-the-database">If I make changes to a model, how do I update the database?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#do-ginger-models-support-multiple-column-primary-keys">Do Ginger models support multiple-column primary keys?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#does-ginger-support-nosql-databases">Does Ginger support NoSQL databases?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/models.html#how-do-i-add-database-specific-options-to-my-create-table-statements-such-as-specifying-myisam-as-the-table-type">How do I add database-specific options to my CREATE TABLE statements, such as specifying MyISAM as the table type?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/admin.html">FAQ: The admin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#i-can-t-log-in-when-i-enter-a-valid-username-and-password-it-just-brings-up-the-login-page-again-with-no-error-messages">I can’t log in. When I enter a valid username and password, it just brings up the login page again, with no error messages.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#how-do-i-automatically-set-a-field-s-value-to-the-user-who-last-edited-the-object-in-the-admin">How do I automatically set a field’s value to the user who last edited the object in the admin?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#how-do-i-limit-admin-access-so-that-objects-can-only-be-edited-by-the-users-who-created-them">How do I limit admin access so that objects can only be edited by the users who created them?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#my-admin-site-css-and-images-showed-up-fine-using-the-development-server-but-they-re-not-displaying-when-using-mod-wsgi">My admin-site CSS and images showed up fine using the development server, but they’re not displaying when using mod_wsgi.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#my-list-filter-contains-a-manytomanyfield-but-the-filter-doesn-t-display">My “list_filter” contains a ManyToManyField, but the filter doesn’t display.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#some-objects-aren-t-appearing-in-the-admin">Some objects aren’t appearing in the admin.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#how-can-i-customize-the-functionality-of-the-admin-interface">How can I customize the functionality of the admin interface?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#the-dynamically-generated-admin-site-is-ugly-how-can-i-change-it">The dynamically-generated admin site is ugly! How can I change it?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#what-browsers-are-supported-for-using-the-admin">What browsers are supported for using the admin?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/admin.html#what-assistive-technologies-are-supported-for-using-the-admin">What assistive technologies are supported for using the admin?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/contributing.html">FAQ: Contributing code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/contributing.html#how-can-i-get-started-contributing-code-to-ginger">How can I get started contributing code to Ginger?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/contributing.html#i-submitted-a-bug-fix-in-the-ticket-system-several-weeks-ago-why-are-you-ignoring-my-patch">I submitted a bug fix in the ticket system several weeks ago. Why are you ignoring my patch?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/contributing.html#when-and-how-might-i-remind-the-team-of-a-patch-i-care-about">When and how might I remind the team of a patch I care about?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/contributing.html#but-i-ve-reminded-you-several-times-and-you-keep-ignoring-my-patch">But I’ve reminded you several times and you keep ignoring my patch!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/contributing.html#i-m-sure-my-ticket-is-absolutely-100-perfect-can-i-mark-it-as-ready-for-checkin-myself">I’m sure my ticket is absolutely 100% perfect, can I mark it as “Ready For Checkin” myself?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq/troubleshooting.html#problems-running-ginger-admin">Problems running <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq/troubleshooting.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ref/applications.html">Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/applications.html#projects-and-applications">Projects and applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/applications.html#configuring-applications">Configuring applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/applications.html#application-configuration">Application configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/applications.html#application-registry">Application registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/applications.html#initialization-process">Initialization process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/checks.html">System check framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/checks.html#api-reference">API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/checks.html#builtin-tags">Builtin tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/checks.html#core-system-checks">Core system checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/checks.html#contrib-app-checks"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> app checks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/class-based-views/index.html">Built-in class-based views API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/mixins.html">Class-based views mixins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/index.html#specification">Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/class-based-views/index.html#base-vs-generic-views">Base vs Generic views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/clickjacking.html">Clickjacking Protection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/clickjacking.html#an-example-of-clickjacking">An example of clickjacking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/clickjacking.html#preventing-clickjacking">Preventing clickjacking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/clickjacking.html#how-to-use-it">How to use it</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/clickjacking.html#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/admin/index.html">The Ginger admin site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/gis/index.html">GeoGinger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/syndication.html">The syndication feed framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#admin"><code class="docutils literal notranslate"><span class="pre">admin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#flatpages"><code class="docutils literal notranslate"><span class="pre">flatpages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#gis"><code class="docutils literal notranslate"><span class="pre">gis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#humanize"><code class="docutils literal notranslate"><span class="pre">humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#messages"><code class="docutils literal notranslate"><span class="pre">messages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#postgres"><code class="docutils literal notranslate"><span class="pre">postgres</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#redirects"><code class="docutils literal notranslate"><span class="pre">redirects</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#sessions"><code class="docutils literal notranslate"><span class="pre">sessions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#sites"><code class="docutils literal notranslate"><span class="pre">sites</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#sitemaps"><code class="docutils literal notranslate"><span class="pre">sitemaps</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#syndication"><code class="docutils literal notranslate"><span class="pre">syndication</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/contrib/index.html#other-add-ons">Other add-ons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/csrf.html">Cross Site Request Forgery protection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/csrf.html#how-it-works">How it works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/csrf.html#limitations">Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/csrf.html#module-ginger.views.decorators.csrf">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/csrf.html#settings">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/csrf.html#frequently-asked-questions">Frequently Asked Questions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/databases.html">Databases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#general-notes">General notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#postgresql-notes">PostgreSQL notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#mariadb-notes">MariaDB notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#mysql-notes">MySQL notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#sqlite-notes">SQLite notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#oracle-notes">Oracle notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#subclassing-the-built-in-database-backends">Subclassing the built-in database backends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/databases.html#using-a-3rd-party-database-backend">Using a 3rd-party database backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#available-commands">Available commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#commands-provided-by-applications">Commands provided by applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#default-options">Default options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#extra-niceties">Extra niceties</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/ginger-admin.html#output-redirection">Output redirection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/exceptions.html">Ginger Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#module-ginger.core.exceptions">Ginger Core Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#url-resolver-exceptions">URL Resolver exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#database-exceptions">Database Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#http-exceptions">HTTP Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#sessions-exceptions">Sessions Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#transaction-exceptions">Transaction Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#testing-framework-exceptions">Testing Framework Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/exceptions.html#python-exceptions">Python Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/files/index.html">File handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/forms/index.html">Forms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/logging.html">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/logging.html#ginger-s-default-logging-configuration">Ginger’s default logging configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/logging.html#ginger-logging-extensions">Ginger logging extensions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/middleware.html">Middleware</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/middleware.html#available-middleware">Available middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/middleware.html#middleware-ordering">Middleware ordering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/migration-operations.html">Migration Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/migration-operations.html#schema-operations">Schema Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/migration-operations.html#special-operations">Special Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/migration-operations.html#operation-category">Operation category</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/migration-operations.html#writing-your-own">Writing your own</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/models/index.html">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/paginator.html">Paginator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/paginator.html#paginator-class"><code class="docutils literal notranslate"><span class="pre">Paginator</span></code> class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/paginator.html#page-class"><code class="docutils literal notranslate"><span class="pre">Page</span></code> class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/paginator.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/request-response.html">Request and response objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#quick-overview">Quick overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#httprequest-objects"><code class="docutils literal notranslate"><span class="pre">HttpRequest</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#querydict-objects"><code class="docutils literal notranslate"><span class="pre">QueryDict</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#httpresponse-objects"><code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#jsonresponse-objects"><code class="docutils literal notranslate"><span class="pre">JsonResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#streaminghttpresponse-objects"><code class="docutils literal notranslate"><span class="pre">StreamingHttpResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#fileresponse-objects"><code class="docutils literal notranslate"><span class="pre">FileResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/request-response.html#httpresponsebase-class"><code class="docutils literal notranslate"><span class="pre">HttpResponseBase</span></code> class</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/schema-editor.html#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/schema-editor.html#attributes">Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/settings.html">Settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#core-settings">Core Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#messages">Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#sessions">Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#sites">Sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#static-files">Static Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/settings.html#core-settings-topical-index">Core Settings Topical Index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/signals.html">Signals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/signals.html#module-ginger.db.models.signals">Model signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/signals.html#management-signals">Management signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/signals.html#module-ginger.core.signals">Request/response signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/signals.html#module-ginger.test.signals">Test signals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/signals.html#module-ginger.db.backends">Database Wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/templates/index.html">Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/template-response.html#simpletemplateresponse-objects"><code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/template-response.html#templateresponse-objects"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/template-response.html#the-rendering-process">The rendering process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/template-response.html#using-templateresponse-and-simpletemplateresponse">Using <code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/unicode.html">Unicode data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#creating-the-database">Creating the database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#general-string-handling">General string handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#templates">Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#files">Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/unicode.html#form-submission">Form submission</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/urlresolvers.html#reverse"><code class="docutils literal notranslate"><span class="pre">reverse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urlresolvers.html#reverse-lazy"><code class="docutils literal notranslate"><span class="pre">reverse_lazy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urlresolvers.html#resolve"><code class="docutils literal notranslate"><span class="pre">resolve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urlresolvers.html#get-script-prefix"><code class="docutils literal notranslate"><span class="pre">get_script_prefix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#path"><code class="docutils literal notranslate"><span class="pre">path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#re-path"><code class="docutils literal notranslate"><span class="pre">re_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#include"><code class="docutils literal notranslate"><span class="pre">include()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#register-converter"><code class="docutils literal notranslate"><span class="pre">register_converter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#static"><code class="docutils literal notranslate"><span class="pre">static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#handler400"><code class="docutils literal notranslate"><span class="pre">handler400</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#handler403"><code class="docutils literal notranslate"><span class="pre">handler403</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#handler404"><code class="docutils literal notranslate"><span class="pre">handler404</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/urls.html#handler500"><code class="docutils literal notranslate"><span class="pre">handler500</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/utils.html">Ginger Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.cache"><code class="docutils literal notranslate"><span class="pre">ginger.utils.cache</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.dateparse"><code class="docutils literal notranslate"><span class="pre">ginger.utils.dateparse</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.decorators"><code class="docutils literal notranslate"><span class="pre">ginger.utils.decorators</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.encoding"><code class="docutils literal notranslate"><span class="pre">ginger.utils.encoding</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.feedgenerator"><code class="docutils literal notranslate"><span class="pre">ginger.utils.feedgenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.functional"><code class="docutils literal notranslate"><span class="pre">ginger.utils.functional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.html"><code class="docutils literal notranslate"><span class="pre">ginger.utils.html</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.http"><code class="docutils literal notranslate"><span class="pre">ginger.utils.http</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.module_loading"><code class="docutils literal notranslate"><span class="pre">ginger.utils.module_loading</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.safestring"><code class="docutils literal notranslate"><span class="pre">ginger.utils.safestring</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.text"><code class="docutils literal notranslate"><span class="pre">ginger.utils.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.timezone"><code class="docutils literal notranslate"><span class="pre">ginger.utils.timezone</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/utils.html#module-ginger.utils.translation"><code class="docutils literal notranslate"><span class="pre">ginger.utils.translation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/validators.html">Validators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/validators.html#writing-validators">Writing validators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/validators.html#how-validators-are-run">How validators are run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/validators.html#built-in-validators">Built-in validators</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ref/views.html">Built-in Views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ref/views.html#serving-files-in-development">Serving files in development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref/views.html#error-views">Error views</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc/index.html">Meta-documentation and miscellany</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="misc/api-stability.html">API stability</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="misc/api-stability.html#what-stable-means">What “stable” means</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/api-stability.html#stable-apis">Stable APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/api-stability.html#exceptions">Exceptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="misc/design-philosophies.html">Design philosophies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#overall">Overall</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#database-api">Database API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#url-design">URL design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#template-system">Template system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#views">Views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc/design-philosophies.html#cache-framework">Cache Framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="misc/distributions.html">Third-party distributions of Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="misc/distributions.html#for-distributors">For distributors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/index.html">Ginger internals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internals/contributing/index.html">Contributing to Ginger</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/index.html#communication-channels">Communication channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/index.html#getting-started">Getting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/index.html#work-on-the-ginger-framework">Work on the Ginger framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/contributing/index.html#other-ways-of-contributing">Other ways of contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/mailing-lists.html">Mailing lists and Forum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/mailing-lists.html#ginger-forum">Ginger Forum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/mailing-lists.html#ginger-users"><code class="docutils literal notranslate"><span class="pre">ginger-users</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/mailing-lists.html#ginger-developers"><code class="docutils literal notranslate"><span class="pre">ginger-developers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/mailing-lists.html#ginger-announce"><code class="docutils literal notranslate"><span class="pre">ginger-announce</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/mailing-lists.html#ginger-updates"><code class="docutils literal notranslate"><span class="pre">ginger-updates</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/organization.html">Organization of the Ginger Project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/organization.html#principles">Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/organization.html#mergers">Mergers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/organization.html#releasers">Releasers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/organization.html#steering-council">Steering council</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/organization.html#changing-the-organization">Changing the organization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/security.html">Ginger’s security policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/security.html#reporting-security-issues">Reporting security issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/security.html#supported-versions">Supported versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/security.html#how-ginger-discloses-security-issues">How Ginger discloses security issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/security.html#who-receives-advance-notification">Who receives advance notification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/security.html#requesting-notifications">Requesting notifications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/release-process.html">Ginger’s release process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/release-process.html#official-releases">Official releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/release-process.html#release-cadence">Release cadence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/release-process.html#deprecation-policy">Deprecation policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/release-process.html#supported-versions">Supported versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/release-process.html#release-process">Release process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="internals/git.html">The Ginger source code repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="internals/git.html#high-level-overview">High-level overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/git.html#the-main-branch">The main branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/git.html#stable-branches">Stable branches</a></li>
+<li class="toctree-l3"><a class="reference internal" href="internals/git.html#id1">Tags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="s-indices-glossary-and-tables">
+<span id="indices-glossary-and-tables"></span><h2>Indices, glossary and tables<a class="headerlink" href="#indices-glossary-and-tables" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="glossary.html"><span class="doc">Glossary</span></a></p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Ginger documentation</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Ginger documentation contents</a><ul>
+<li><a class="reference internal" href="#indices-glossary-and-tables">Indices, glossary and tables</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=bf43e847"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

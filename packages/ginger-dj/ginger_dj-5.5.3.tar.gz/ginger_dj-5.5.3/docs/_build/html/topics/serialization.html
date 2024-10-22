@@ -1,0 +1,1251 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Ginger settings" href="settings.html" /><link rel="prev" title="Performance and optimization" href="performance.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Serializing Ginger objects - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html">Performance and optimization</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/topics/serialization.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-serializing-ginger-objects">
+<span id="serializing-ginger-objects"></span><h1>Serializing Ginger objects<a class="headerlink" href="#serializing-ginger-objects" title="Link to this heading">¶</a></h1>
+<p>Ginger’s serialization framework provides a mechanism for “translating” Ginger
+models into other formats. Usually these other formats will be text-based and
+used for sending Ginger data over a wire, but it’s possible for a
+serializer to handle any format (text-based or not).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>If you just want to get some data from your tables into a serialized
+form, you could use the <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-dumpdata"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">dumpdata</span></code></a> management command.</p>
+</div>
+<section id="s-serializing-data">
+<span id="serializing-data"></span><h2>Serializing data<a class="headerlink" href="#serializing-data" title="Link to this heading">¶</a></h2>
+<p>At the highest level, you can serialize data like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core</span> <span class="kn">import</span> <span class="n">serializers</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">SomeModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The arguments to the <code class="docutils literal notranslate"><span class="pre">serialize</span></code> function are the format to serialize the data
+to (see <a class="reference internal" href="#id2">Serialization formats</a>) and a
+<a class="reference internal" href="../ref/models/querysets.html#ginger.db.models.query.QuerySet" title="ginger.db.models.query.QuerySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></a> to serialize. (Actually, the second
+argument can be any iterator that yields Ginger model instances, but it’ll
+almost always be a QuerySet).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ginger.core.serializers.get_serializer">
+<span class="sig-prename descclassname"><span class="pre">ginger.core.serializers.</span></span><span class="sig-name descname"><span class="pre">get_serializer</span></span>(<em class="sig-param"><span class="n"><span class="pre">format</span></span></em>)<a class="headerlink" href="#ginger.core.serializers.get_serializer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>You can also use a serializer object directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">XMLSerializer</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+<span class="n">xml_serializer</span> <span class="o">=</span> <span class="n">XMLSerializer</span><span class="p">()</span>
+<span class="n">xml_serializer</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">queryset</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">xml_serializer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is useful if you want to serialize data directly to a file-like object
+(which includes an <a class="reference internal" href="../ref/request-response.html#ginger.http.HttpResponse" title="ginger.http.HttpResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpResponse</span></code></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;file.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+    <span class="n">xml_serializer</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">SomeModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">stream</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Calling <a class="reference internal" href="#ginger.core.serializers.get_serializer" title="ginger.core.serializers.get_serializer"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_serializer()</span></code></a> with an unknown
+<a class="reference internal" href="#serialization-formats"><span class="std std-ref">format</span></a> will raise a
+<code class="docutils literal notranslate"><span class="pre">ginger.core.serializers.SerializerDoesNotExist</span></code> exception.</p>
+</div>
+<section id="s-subset-of-fields">
+<span id="s-id1"></span><span id="subset-of-fields"></span><span id="id1"></span><h3>Subset of fields<a class="headerlink" href="#subset-of-fields" title="Link to this heading">¶</a></h3>
+<p>If you only want a subset of fields to be serialized, you can
+specify a <code class="docutils literal notranslate"><span class="pre">fields</span></code> argument to the serializer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core</span> <span class="kn">import</span> <span class="n">serializers</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">SomeModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>In this example, only the <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">size</span></code> attributes of each model will
+be serialized. The primary key is always serialized as the <code class="docutils literal notranslate"><span class="pre">pk</span></code> element in the
+resulting output; it never appears in the <code class="docutils literal notranslate"><span class="pre">fields</span></code> part.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on your model, you may find that it is not possible to
+deserialize a model that only serializes a subset of its fields. If a
+serialized object doesn’t specify all the fields that are required by a
+model, the deserializer will not be able to save deserialized instances.</p>
+</div>
+</section>
+<section id="s-inherited-models">
+<span id="inherited-models"></span><h3>Inherited models<a class="headerlink" href="#inherited-models" title="Link to this heading">¶</a></h3>
+<p>If you have a model that is defined using an <a class="reference internal" href="db/models.html#abstract-base-classes"><span class="std std-ref">abstract base class</span></a>, you don’t have to do anything special to serialize
+that model. Call the serializer on the object (or objects) that you want to
+serialize, and the output will be a complete representation of the serialized
+object.</p>
+<p>However, if you have a model that uses <a class="reference internal" href="db/models.html#multi-table-inheritance"><span class="std std-ref">multi-table inheritance</span></a>, you also need to serialize all of the base classes
+for the model. This is because only the fields that are locally defined on the
+model will be serialized. For example, consider the following models:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Place</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Restaurant</span><span class="p">(</span><span class="n">Place</span><span class="p">):</span>
+    <span class="n">serves_hot_dogs</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you only serialize the Restaurant model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">Restaurant</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>the fields on the serialized output will only contain the <code class="docutils literal notranslate"><span class="pre">serves_hot_dogs</span></code>
+attribute. The <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute of the base class will be ignored.</p>
+<p>In order to fully serialize your <code class="docutils literal notranslate"><span class="pre">Restaurant</span></code> instances, you will need to
+serialize the <code class="docutils literal notranslate"><span class="pre">Place</span></code> models as well:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">all_objects</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">Restaurant</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="o">*</span><span class="n">Place</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">all_objects</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-deserializing-data">
+<span id="deserializing-data"></span><h2>Deserializing data<a class="headerlink" href="#deserializing-data" title="Link to this heading">¶</a></h2>
+<p>Deserializing data is very similar to serializing it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">serializers</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, the <code class="docutils literal notranslate"><span class="pre">deserialize</span></code> function takes the same format argument as
+<code class="docutils literal notranslate"><span class="pre">serialize</span></code>, a string or stream of data, and returns an iterator.</p>
+<p>However, here it gets slightly complicated. The objects returned by the
+<code class="docutils literal notranslate"><span class="pre">deserialize</span></code> iterator <em>aren’t</em> regular Ginger objects. Instead, they are
+special <code class="docutils literal notranslate"><span class="pre">DeserializedObject</span></code> instances that wrap a created – but unsaved –
+object and any associated relationship data.</p>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">DeserializedObject.save()</span></code> saves the object to the database.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">pk</span></code> attribute in the serialized data doesn’t exist or is
+null, a new instance will be saved to the database.</p>
+</div>
+<p>This ensures that deserializing is a non-destructive operation even if the
+data in your serialized representation doesn’t match what’s currently in the
+database. Usually, working with these <code class="docutils literal notranslate"><span class="pre">DeserializedObject</span></code> instances looks
+something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">deserialized_object</span> <span class="ow">in</span> <span class="n">serializers</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">object_should_be_saved</span><span class="p">(</span><span class="n">deserialized_object</span><span class="p">):</span>
+        <span class="n">deserialized_object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In other words, the usual use is to examine the deserialized objects to make
+sure that they are “appropriate” for saving before doing so. If you trust your
+data source you can instead save the object directly and move on.</p>
+<p>The Ginger object itself can be inspected as <code class="docutils literal notranslate"><span class="pre">deserialized_object.object</span></code>.
+If fields in the serialized data do not exist on a model, a
+<code class="docutils literal notranslate"><span class="pre">DeserializationError</span></code> will be raised unless the <code class="docutils literal notranslate"><span class="pre">ignorenonexistent</span></code>
+argument is passed in as <code class="docutils literal notranslate"><span class="pre">True</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">serializers</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ignorenonexistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s-serialization-formats">
+<span id="s-id2"></span><span id="serialization-formats"></span><span id="id2"></span><h2>Serialization formats<a class="headerlink" href="#serialization-formats" title="Link to this heading">¶</a></h2>
+<p>Ginger supports a number of serialization formats, some of which require you
+to install third-party Python modules:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Identifier</p></th>
+<th class="head"><p>Information</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xml</span></code></p></td>
+<td><p>Serializes to and from a simple XML dialect.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">json</span></code></p></td>
+<td><p>Serializes to and from <a class="reference external" href="https://json.org/">JSON</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">jsonl</span></code></p></td>
+<td><p>Serializes to and from <a class="reference external" href="https://jsonlines.org/">JSONL</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yaml</span></code></p></td>
+<td><p>Serializes to YAML (YAML Ain’t a Markup Language). This
+serializer is only available if <a class="reference external" href="https://pyyaml.org/">PyYAML</a> is installed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="s-xml">
+<span id="xml"></span><h3>XML<a class="headerlink" href="#xml" title="Link to this heading">¶</a></h3>
+<p>The basic XML serialization format looks like this:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;ginger-objects</span><span class="w"> </span><span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">pk=</span><span class="s">&quot;123&quot;</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;sessions.session&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;DateTimeField&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;expire_date&quot;</span><span class="nt">&gt;</span>2013-01-16T08:16:59.844560+00:00<span class="nt">&lt;/field&gt;</span>
+<span class="w">        </span><span class="cm">&lt;!-- ... --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/object&gt;</span>
+<span class="nt">&lt;/ginger-objects&gt;</span>
+</pre></div>
+</div>
+<p>The whole collection of objects that is either serialized or deserialized is
+represented by a <code class="docutils literal notranslate"><span class="pre">&lt;ginger-objects&gt;</span></code>-tag which contains multiple
+<code class="docutils literal notranslate"><span class="pre">&lt;object&gt;</span></code>-elements. Each such object has two attributes: “pk” and “model”,
+the latter being represented by the name of the app (“sessions”) and the
+lowercase name of the model (“session”) separated by a dot.</p>
+<p>Each field of the object is serialized as a <code class="docutils literal notranslate"><span class="pre">&lt;field&gt;</span></code>-element sporting the
+fields “type” and “name”. The text content of the element represents the value
+that should be stored.</p>
+<p>Foreign keys and other relational fields are treated a little bit differently:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">pk=</span><span class="s">&quot;27&quot;</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;auth.permission&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- ... --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">to=</span><span class="s">&quot;contenttypes.contenttype&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;content_type&quot;</span><span class="w"> </span><span class="na">rel=</span><span class="s">&quot;ManyToOneRel&quot;</span><span class="nt">&gt;</span>9<span class="nt">&lt;/field&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- ... --&gt;</span>
+<span class="nt">&lt;/object&gt;</span>
+</pre></div>
+</div>
+<p>In this example we specify that the <code class="docutils literal notranslate"><span class="pre">auth.Permission</span></code> object with the PK 27
+has a foreign key to the <code class="docutils literal notranslate"><span class="pre">contenttypes.ContentType</span></code> instance with the PK 9.</p>
+<p>ManyToMany-relations are exported for the model that binds them. For instance,
+the <code class="docutils literal notranslate"><span class="pre">auth.User</span></code> model has such a relation to the <code class="docutils literal notranslate"><span class="pre">auth.Permission</span></code> model:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">pk=</span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="na">model=</span><span class="s">&quot;auth.user&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- ... --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">to=</span><span class="s">&quot;auth.permission&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;user_permissions&quot;</span><span class="w"> </span><span class="na">rel=</span><span class="s">&quot;ManyToManyRel&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">pk=</span><span class="s">&quot;46&quot;</span><span class="nt">&gt;&lt;/object&gt;</span>
+<span class="w">        </span><span class="nt">&lt;object</span><span class="w"> </span><span class="na">pk=</span><span class="s">&quot;47&quot;</span><span class="nt">&gt;&lt;/object&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/field&gt;</span>
+<span class="nt">&lt;/object&gt;</span>
+</pre></div>
+</div>
+<p>This example links the given user with the permission models with PKs 46 and 47.</p>
+<div class="admonition-control-characters admonition">
+<p class="admonition-title">Control characters</p>
+<p>If the content to be serialized contains control characters that are not
+accepted in the XML 1.0 standard, the serialization will fail with a
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> exception. Read also the W3C’s explanation of <a class="reference external" href="https://www.w3.org/International/questions/qa-controls">HTML,
+XHTML, XML and Control Codes</a>.</p>
+</div>
+</section>
+<section id="s-serialization-formats-json">
+<span id="s-id3"></span><span id="serialization-formats-json"></span><span id="id3"></span><h3>JSON<a class="headerlink" href="#serialization-formats-json" title="Link to this heading">¶</a></h3>
+<p>When staying with the same example data as before it would be serialized as
+JSON in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="s2">&quot;4b678b301dfd8a4e0dad910de3ae245b&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;sessions.session&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;expire_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2013-01-16T08:16:59.844Z&quot;</span><span class="p">,</span>
+            <span class="c1"># ...</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The formatting here is a bit simpler than with XML. The whole collection
+is just represented as an array and the objects are represented by JSON objects
+with three properties: “pk”, “model” and “fields”. “fields” is again an object
+containing each field’s name and value as property and property-value
+respectively.</p>
+<p>Foreign keys have the PK of the linked object as property value.
+ManyToMany-relations are serialized for the model that defines them and are
+represented as a list of PKs.</p>
+<p>Be aware that not all Ginger output can be passed unmodified to <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a>.
+For example, if you have some custom type in an object to be serialized, you’ll
+have to write a custom <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.13)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a> encoder for it. Something like this will
+work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.serializers.json</span> <span class="kn">import</span> <span class="n">GingerJSONEncoder</span>
+
+
+<span class="k">class</span> <span class="nc">LazyEncoder</span><span class="p">(</span><span class="n">GingerJSONEncoder</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">YourCustomType</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then pass <code class="docutils literal notranslate"><span class="pre">cls=LazyEncoder</span></code> to the <code class="docutils literal notranslate"><span class="pre">serializers.serialize()</span></code>
+function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.core.serializers</span> <span class="kn">import</span> <span class="n">serialize</span>
+
+<span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="n">SomeModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="bp">cls</span><span class="o">=</span><span class="n">LazyEncoder</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also note that GeoGinger provides a <a class="reference internal" href="../ref/contrib/gis/serializers.html"><span class="doc">customized GeoJSON serializer</span></a>.</p>
+<section id="s-gingerjsonencoder">
+<span id="gingerjsonencoder"></span><h4><code class="docutils literal notranslate"><span class="pre">GingerJSONEncoder</span></code><a class="headerlink" href="#gingerjsonencoder" title="Link to this heading">¶</a></h4>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.core.serializers.json.GingerJSONEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ginger.core.serializers.json.</span></span><span class="sig-name descname"><span class="pre">GingerJSONEncoder</span></span><a class="headerlink" href="#ginger.core.serializers.json.GingerJSONEncoder" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The JSON serializer uses <code class="docutils literal notranslate"><span class="pre">GingerJSONEncoder</span></code> for encoding. A subclass of
+<a class="reference external" href="https://docs.python.org/3/library/json.html#json.JSONEncoder" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONEncoder</span></code></a>, it handles these additional types:</p>
+<dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></dt><dd><p>A string of the form <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ss.sssZ</span></code> or
+<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ss.sss+HH:MM</span></code> as defined in <a class="reference external" href="https://262.ecma-international.org/5.1/#sec-15.9.1.15">ECMA-262</a>.</p>
+</dd>
+<dt><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">date</span></code></a></dt><dd><p>A string of the form <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> as defined in <a class="reference external" href="https://262.ecma-international.org/5.1/#sec-15.9.1.15">ECMA-262</a>.</p>
+</dd>
+<dt><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.time" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">time</span></code></a></dt><dd><p>A string of the form <code class="docutils literal notranslate"><span class="pre">HH:MM:ss.sss</span></code> as defined in <a class="reference external" href="https://262.ecma-international.org/5.1/#sec-15.9.1.15">ECMA-262</a>.</p>
+</dd>
+<dt><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></dt><dd><p>A string representing a duration as defined in ISO-8601. For example,
+<code class="docutils literal notranslate"><span class="pre">timedelta(days=1,</span> <span class="pre">hours=2,</span> <span class="pre">seconds=3.4)</span></code> is represented as
+<code class="docutils literal notranslate"><span class="pre">'P1DT02H00M03.400000S'</span></code>.</p>
+</dd>
+<dt><a class="reference external" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Decimal</span></code></a>, <code class="docutils literal notranslate"><span class="pre">Promise</span></code> (<code class="docutils literal notranslate"><span class="pre">ginger.utils.functional.lazy()</span></code> objects), <a class="reference external" href="https://docs.python.org/3/library/uuid.html#uuid.UUID" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UUID</span></code></a></dt><dd><p>A string representation of the object.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="s-serialization-formats-jsonl">
+<span id="s-id4"></span><span id="serialization-formats-jsonl"></span><span id="id4"></span><h3>JSONL<a class="headerlink" href="#serialization-formats-jsonl" title="Link to this heading">¶</a></h3>
+<p><em>JSONL</em> stands for <em>JSON Lines</em>. With this format, objects are separated by new
+lines, and each line contains a valid JSON object. JSONL serialized data looks
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="s2">&quot;4b678b301dfd8a4e0dad910de3ae245b&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;sessions.session&quot;</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}}</span>
+<span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="s2">&quot;88bea72c02274f3c9bf1cb2bb8cee4fc&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;sessions.session&quot;</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}}</span>
+<span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="s2">&quot;9cf0e26691b64147a67e2a9f06ad7a53&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;sessions.session&quot;</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>JSONL can be useful for populating large databases, since the data can be
+processed line by line, rather than being loaded into memory all at once.</p>
+</section>
+<section id="s-yaml">
+<span id="yaml"></span><h3>YAML<a class="headerlink" href="#yaml" title="Link to this heading">¶</a></h3>
+<p>YAML serialization looks quite similar to JSON. The object list is serialized
+as a sequence mappings with the keys “pk”, “model” and “fields”. Each field is
+again a mapping with the key being name of the field and the value the value:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sessions.session</span>
+<span class="w">  </span><span class="nt">pk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4b678b301dfd8a4e0dad910de3ae245b</span>
+<span class="w">  </span><span class="nt">fields</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">expire_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2013-01-16 08:16:59.844560+00:00</span>
+</pre></div>
+</div>
+<p>Referential fields are again represented by the PK or sequence of PKs.</p>
+</section>
+</section>
+<section id="s-natural-keys">
+<span id="s-topics-serialization-natural-keys"></span><span id="natural-keys"></span><span id="topics-serialization-natural-keys"></span><h2>Natural keys<a class="headerlink" href="#natural-keys" title="Link to this heading">¶</a></h2>
+<p>The default serialization strategy for foreign keys and many-to-many relations
+is to serialize the value of the primary key(s) of the objects in the relation.
+This strategy works well for most objects, but it can cause difficulty in some
+circumstances.</p>
+<p>Consider the case of a list of objects that have a foreign key referencing
+ContentType. If you’re going to
+serialize an object that refers to a content type, then you need to have a way
+to refer to that content type to begin with. Since <code class="docutils literal notranslate"><span class="pre">ContentType</span></code> objects are
+automatically created by Ginger during the database synchronization process,
+the primary key of a given content type isn’t easy to predict; it will
+depend on how and when <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-migrate"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">migrate</span></code></a> was executed. This is true for all
+models which automatically generate objects, notably including django migrations</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You should never include automatically generated objects in a fixture or
+other serialized data. By chance, the primary keys in the fixture
+may match those in the database and loading the fixture will
+have no effect. In the more likely case that they don’t match, the fixture
+loading will fail with an <a class="reference internal" href="../ref/exceptions.html#ginger.db.IntegrityError" title="ginger.db.IntegrityError"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrityError</span></code></a>.</p>
+</div>
+<p>There is also the matter of convenience. An integer id isn’t always
+the most convenient way to refer to an object; sometimes, a
+more natural reference would be helpful.</p>
+<p>It is for these reasons that Ginger provides <em>natural keys</em>. A natural
+key is a tuple of values that can be used to uniquely identify an
+object instance without using the primary key value.</p>
+<section id="s-deserialization-of-natural-keys">
+<span id="deserialization-of-natural-keys"></span><h3>Deserialization of natural keys<a class="headerlink" href="#deserialization-of-natural-keys" title="Link to this heading">¶</a></h3>
+<p>Consider the following two models:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">UniqueConstraint</span><span class="p">(</span>
+                <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;unique_first_last_name&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ordinarily, serialized data for <code class="docutils literal notranslate"><span class="pre">Book</span></code> would use an integer to refer to
+the author. For example, in JSON, a Book might be serialized as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;store.book&quot;</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mostly Harmless&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}}</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>This isn’t a particularly natural way to refer to an author. It
+requires that you know the primary key value for the author; it also
+requires that this primary key value is stable and predictable.</p>
+<p>However, if we add natural key handling to Person, the fixture becomes
+much more humane. To add natural key handling, you define a default
+Manager for Person with a <code class="docutils literal notranslate"><span class="pre">get_by_natural_key()</span></code> method. In the case
+of a Person, a good natural key might be the pair of first and last
+name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+
+<span class="k">class</span> <span class="nc">PersonManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_by_natural_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="n">last_name</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">PersonManager</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">UniqueConstraint</span><span class="p">(</span>
+                <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;unique_first_last_name&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+</pre></div>
+</div>
+<p>Now books can use that natural key to refer to <code class="docutils literal notranslate"><span class="pre">Person</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">{</span>
+    <span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;store.book&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mostly Harmless&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Douglas&quot;</span><span class="p">,</span> <span class="s2">&quot;Adams&quot;</span><span class="p">]},</span>
+<span class="p">}</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>When you try to load this serialized data, Ginger will use the
+<code class="docutils literal notranslate"><span class="pre">get_by_natural_key()</span></code> method to resolve <code class="docutils literal notranslate"><span class="pre">[&quot;Douglas&quot;,</span> <span class="pre">&quot;Adams&quot;]</span></code>
+into the primary key of an actual <code class="docutils literal notranslate"><span class="pre">Person</span></code> object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Whatever fields you use for a natural key must be able to uniquely
+identify an object. This will usually mean that your model will
+have a uniqueness clause (either <code class="docutils literal notranslate"><span class="pre">unique=True</span></code> on a single field, or a
+<code class="docutils literal notranslate"><span class="pre">UniqueConstraint</span></code> or <code class="docutils literal notranslate"><span class="pre">unique_together</span></code> over multiple fields) for the
+field or fields in your natural key. However, uniqueness doesn’t need to be
+enforced at the database level. If you are certain that a set of fields
+will be effectively unique, you can still use those fields as a natural
+key.</p>
+</div>
+<p>Deserialization of objects with no primary key will always check whether the
+model’s manager has a <code class="docutils literal notranslate"><span class="pre">get_by_natural_key()</span></code> method and if so, use it to
+populate the deserialized object’s primary key.</p>
+</section>
+<section id="s-serialization-of-natural-keys">
+<span id="serialization-of-natural-keys"></span><h3>Serialization of natural keys<a class="headerlink" href="#serialization-of-natural-keys" title="Link to this heading">¶</a></h3>
+<p>So how do you get Ginger to emit a natural key when serializing an object?
+Firstly, you need to add another method – this time to the model itself:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">PersonManager</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">UniqueConstraint</span><span class="p">(</span>
+                <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;unique_first_last_name&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">natural_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That method should always return a natural key tuple – in this
+example, <code class="docutils literal notranslate"><span class="pre">(first</span> <span class="pre">name,</span> <span class="pre">last</span> <span class="pre">name)</span></code>. Then, when you call
+<code class="docutils literal notranslate"><span class="pre">serializers.serialize()</span></code>, you provide <code class="docutils literal notranslate"><span class="pre">use_natural_foreign_keys=True</span></code>
+or <code class="docutils literal notranslate"><span class="pre">use_natural_primary_keys=True</span></code> arguments:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">serializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">book1</span><span class="p">,</span> <span class="n">book2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">use_natural_foreign_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">use_natural_primary_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal notranslate"><span class="pre">use_natural_foreign_keys=True</span></code> is specified, Ginger will use the
+<code class="docutils literal notranslate"><span class="pre">natural_key()</span></code> method to serialize any foreign key reference to objects
+of the type that defines the method.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">use_natural_primary_keys=True</span></code> is specified, Ginger will not provide the
+primary key in the serialized data of this object since it can be calculated
+during deserialization:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;store.person&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;first_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Douglas&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adams&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;birth_date&quot;</span><span class="p">:</span> <span class="s2">&quot;1952-03-11&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>This can be useful when you need to load serialized data into an existing
+database and you cannot guarantee that the serialized primary key value is not
+already in use, and do not need to ensure that deserialized objects retain the
+same primary keys.</p>
+<p>If you are using <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-dumpdata"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">dumpdata</span></code></a> to generate serialized data, use the
+<a class="reference internal" href="../ref/ginger-admin.html#cmdoption-dumpdata-natural-foreign"><code class="xref std std-option docutils literal notranslate"><span class="pre">dumpdata</span> <span class="pre">--natural-foreign</span></code></a> and <a class="reference internal" href="../ref/ginger-admin.html#cmdoption-dumpdata-natural-primary"><code class="xref std std-option docutils literal notranslate"><span class="pre">dumpdata</span> <span class="pre">--natural-primary</span></code></a>
+command line flags to generate natural keys.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You don’t need to define both <code class="docutils literal notranslate"><span class="pre">natural_key()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">get_by_natural_key()</span></code>. If you don’t want Ginger to output
+natural keys during serialization, but you want to retain the
+ability to load natural keys, then you can opt to not implement
+the <code class="docutils literal notranslate"><span class="pre">natural_key()</span></code> method.</p>
+<p>Conversely, if (for some strange reason) you want Ginger to output
+natural keys during serialization, but <em>not</em> be able to load those
+key values, just don’t define the <code class="docutils literal notranslate"><span class="pre">get_by_natural_key()</span></code> method.</p>
+</div>
+</section>
+<section id="s-natural-keys-and-forward-references">
+<span id="s-id5"></span><span id="natural-keys-and-forward-references"></span><span id="id5"></span><h3>Natural keys and forward references<a class="headerlink" href="#natural-keys-and-forward-references" title="Link to this heading">¶</a></h3>
+<p>Sometimes when you use <a class="reference internal" href="#topics-serialization-natural-keys"><span class="std std-ref">natural foreign keys</span></a> you’ll need to deserialize data where
+an object has a foreign key referencing another object that hasn’t yet been
+deserialized. This is called a “forward reference”.</p>
+<p>For instance, suppose you have the following objects in your fixture:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">{</span>
+    <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;store.book&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mostly Harmless&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Douglas&quot;</span><span class="p">,</span> <span class="s2">&quot;Adams&quot;</span><span class="p">]},</span>
+<span class="p">},</span>
+<span class="o">...</span>
+<span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;store.person&quot;</span><span class="p">,</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;first_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Douglas&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adams&quot;</span><span class="p">}},</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>In order to handle this situation, you need to pass
+<code class="docutils literal notranslate"><span class="pre">handle_forward_references=True</span></code> to <code class="docutils literal notranslate"><span class="pre">serializers.deserialize()</span></code>. This will
+set the <code class="docutils literal notranslate"><span class="pre">deferred_fields</span></code> attribute on the <code class="docutils literal notranslate"><span class="pre">DeserializedObject</span></code> instances.
+You’ll need to keep track of <code class="docutils literal notranslate"><span class="pre">DeserializedObject</span></code> instances where this
+attribute isn’t <code class="docutils literal notranslate"><span class="pre">None</span></code> and later call <code class="docutils literal notranslate"><span class="pre">save_deferred_fields()</span></code> on them.</p>
+<p>Typical usage looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">objs_with_deferred_fields</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">serializers</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="s2">&quot;xml&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">handle_forward_references</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">deferred_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">objs_with_deferred_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs_with_deferred_fields</span><span class="p">:</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">save_deferred_fields</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For this to work, the <code class="docutils literal notranslate"><span class="pre">ForeignKey</span></code> on the referencing model must have
+<code class="docutils literal notranslate"><span class="pre">null=True</span></code>.</p>
+</section>
+<section id="s-dependencies-during-serialization">
+<span id="dependencies-during-serialization"></span><h3>Dependencies during serialization<a class="headerlink" href="#dependencies-during-serialization" title="Link to this heading">¶</a></h3>
+<p>It’s often possible to avoid explicitly having to handle forward references by
+taking care with the ordering of objects within a fixture.</p>
+<p>To help with this, calls to <a class="reference internal" href="../ref/ginger-admin.html#ginger-admin-dumpdata"><code class="xref std std-djadmin docutils literal notranslate"><span class="pre">dumpdata</span></code></a> that use the <a class="reference internal" href="../ref/ginger-admin.html#cmdoption-dumpdata-natural-foreign"><code class="xref std std-option docutils literal notranslate"><span class="pre">dumpdata</span>
+<span class="pre">--natural-foreign</span></code></a> option will serialize any model with a <code class="docutils literal notranslate"><span class="pre">natural_key()</span></code>
+method before serializing standard primary key objects.</p>
+<p>However, this may not always be enough. If your natural key refers to
+another object (by using a foreign key or natural key to another object
+as part of a natural key), then you need to be able to ensure that
+the objects on which a natural key depends occur in the serialized data
+before the natural key requires them.</p>
+<p>To control this ordering, you can define dependencies on your
+<code class="docutils literal notranslate"><span class="pre">natural_key()</span></code> methods. You do this by setting a <code class="docutils literal notranslate"><span class="pre">dependencies</span></code>
+attribute on the <code class="docutils literal notranslate"><span class="pre">natural_key()</span></code> method itself.</p>
+<p>For example, let’s add a natural key to the <code class="docutils literal notranslate"><span class="pre">Book</span></code> model from the
+example above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">natural_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">natural_key</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The natural key for a <code class="docutils literal notranslate"><span class="pre">Book</span></code> is a combination of its name and its
+author. This means that <code class="docutils literal notranslate"><span class="pre">Person</span></code> must be serialized before <code class="docutils literal notranslate"><span class="pre">Book</span></code>.
+To define this dependency, we add one extra line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">natural_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">natural_key</span><span class="p">()</span>
+
+
+<span class="n">natural_key</span><span class="o">.</span><span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;example_app.person&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This definition ensures that all <code class="docutils literal notranslate"><span class="pre">Person</span></code> objects are serialized before
+any <code class="docutils literal notranslate"><span class="pre">Book</span></code> objects. In turn, any object referencing <code class="docutils literal notranslate"><span class="pre">Book</span></code> will be
+serialized after both <code class="docutils literal notranslate"><span class="pre">Person</span></code> and <code class="docutils literal notranslate"><span class="pre">Book</span></code> have been serialized.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="settings.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Ginger settings</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="performance.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Performance and optimization</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Serializing Ginger objects</a><ul>
+<li><a class="reference internal" href="#serializing-data">Serializing data</a><ul>
+<li><a class="reference internal" href="#subset-of-fields">Subset of fields</a></li>
+<li><a class="reference internal" href="#inherited-models">Inherited models</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deserializing-data">Deserializing data</a></li>
+<li><a class="reference internal" href="#serialization-formats">Serialization formats</a><ul>
+<li><a class="reference internal" href="#xml">XML</a></li>
+<li><a class="reference internal" href="#serialization-formats-json">JSON</a><ul>
+<li><a class="reference internal" href="#gingerjsonencoder"><code class="docutils literal notranslate"><span class="pre">GingerJSONEncoder</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#serialization-formats-jsonl">JSONL</a></li>
+<li><a class="reference internal" href="#yaml">YAML</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#natural-keys">Natural keys</a><ul>
+<li><a class="reference internal" href="#deserialization-of-natural-keys">Deserialization of natural keys</a></li>
+<li><a class="reference internal" href="#serialization-of-natural-keys">Serialization of natural keys</a></li>
+<li><a class="reference internal" href="#natural-keys-and-forward-references">Natural keys and forward references</a></li>
+<li><a class="reference internal" href="#dependencies-during-serialization">Dependencies during serialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

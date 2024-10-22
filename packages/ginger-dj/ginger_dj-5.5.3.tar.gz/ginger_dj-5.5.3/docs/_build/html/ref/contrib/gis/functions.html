@@ -1,0 +1,1412 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Measurement Objects" href="measure.html" /><link rel="prev" title="GIS QuerySet API Reference" href="geoquerysets.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Geographic Database Functions - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../topics/index.html">Using Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../topics/db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/templates.html">Templates</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/class-based-views/index.html">Class-based views</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/class-based-views/mixins.html">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../topics/i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../topics/i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../topics/async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="index.html">GeoGinger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../topics/testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/ref/contrib/gis/functions.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-module-ginger.contrib.gis.db.models.functions">
+<span id="s-geographic-database-functions"></span><span id="module-ginger.contrib.gis.db.models.functions"></span><span id="geographic-database-functions"></span><h1>Geographic Database Functions<a class="headerlink" href="#module-ginger.contrib.gis.db.models.functions" title="Link to this heading">¶</a></h1>
+<p>The functions documented on this page allow users to access geographic database
+functions to be used in annotations, aggregations, or filters in Ginger.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.db.models.functions</span> <span class="kn">import</span> <span class="n">Length</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Track</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">Length</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">length__gt</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Not all backends support all functions, so refer to the documentation of each
+function to see if your database backend supports the function you want to use.
+If you call a geographic function on a backend that doesn’t support it, you’ll
+get a <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> exception.</p>
+<p>Function’s summary:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Measurement</p></th>
+<th class="head"><p>Relationships</p></th>
+<th class="head"><p>Operations</p></th>
+<th class="head"><p>Editors</p></th>
+<th class="head"><p>Input format</p></th>
+<th class="head"><p>Output format</p></th>
+<th class="head"><p>Miscellaneous</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Area" title="ginger.contrib.gis.db.models.functions.Area"><code class="xref py py-class docutils literal notranslate"><span class="pre">Area</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Azimuth" title="ginger.contrib.gis.db.models.functions.Azimuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">Azimuth</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Difference" title="ginger.contrib.gis.db.models.functions.Difference"><code class="xref py py-class docutils literal notranslate"><span class="pre">Difference</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.ForcePolygonCW" title="ginger.contrib.gis.db.models.functions.ForcePolygonCW"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForcePolygonCW</span></code></a></p></td>
+<td></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsGeoJSON" title="ginger.contrib.gis.db.models.functions.AsGeoJSON"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsGeoJSON</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.IsEmpty" title="ginger.contrib.gis.db.models.functions.IsEmpty"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsEmpty</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Distance" title="ginger.contrib.gis.db.models.functions.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.BoundingCircle" title="ginger.contrib.gis.db.models.functions.BoundingCircle"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundingCircle</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Intersection" title="ginger.contrib.gis.db.models.functions.Intersection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Intersection</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.MakeValid" title="ginger.contrib.gis.db.models.functions.MakeValid"><code class="xref py py-class docutils literal notranslate"><span class="pre">MakeValid</span></code></a></p></td>
+<td></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsGML" title="ginger.contrib.gis.db.models.functions.AsGML"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsGML</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.IsValid" title="ginger.contrib.gis.db.models.functions.IsValid"><code class="xref py py-class docutils literal notranslate"><span class="pre">IsValid</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.GeometryDistance" title="ginger.contrib.gis.db.models.functions.GeometryDistance"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryDistance</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Centroid" title="ginger.contrib.gis.db.models.functions.Centroid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Centroid</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.SymDifference" title="ginger.contrib.gis.db.models.functions.SymDifference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymDifference</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Reverse" title="ginger.contrib.gis.db.models.functions.Reverse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reverse</span></code></a></p></td>
+<td></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsKML" title="ginger.contrib.gis.db.models.functions.AsKML"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsKML</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.MemSize" title="ginger.contrib.gis.db.models.functions.MemSize"><code class="xref py py-class docutils literal notranslate"><span class="pre">MemSize</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Length" title="ginger.contrib.gis.db.models.functions.Length"><code class="xref py py-class docutils literal notranslate"><span class="pre">Length</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.ClosestPoint" title="ginger.contrib.gis.db.models.functions.ClosestPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClosestPoint</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Union" title="ginger.contrib.gis.db.models.functions.Union"><code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Scale" title="ginger.contrib.gis.db.models.functions.Scale"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scale</span></code></a></p></td>
+<td></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsSVG" title="ginger.contrib.gis.db.models.functions.AsSVG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsSVG</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.NumGeometries" title="ginger.contrib.gis.db.models.functions.NumGeometries"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumGeometries</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Perimeter" title="ginger.contrib.gis.db.models.functions.Perimeter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Perimeter</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Envelope" title="ginger.contrib.gis.db.models.functions.Envelope"><code class="xref py py-class docutils literal notranslate"><span class="pre">Envelope</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.LineLocatePoint" title="ginger.contrib.gis.db.models.functions.LineLocatePoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">LineLocatePoint</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.PointOnSurface" title="ginger.contrib.gis.db.models.functions.PointOnSurface"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointOnSurface</span></code></a></p></td>
+<td></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.SnapToGrid" title="ginger.contrib.gis.db.models.functions.SnapToGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SnapToGrid</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Transform" title="ginger.contrib.gis.db.models.functions.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transform</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.Translate" title="ginger.contrib.gis.db.models.functions.Translate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translate</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.FromWKB" title="ginger.contrib.gis.db.models.functions.FromWKB"><code class="xref py py-class docutils literal notranslate"><span class="pre">FromWKB</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.FromWKT" title="ginger.contrib.gis.db.models.functions.FromWKT"><code class="xref py py-class docutils literal notranslate"><span class="pre">FromWKT</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsWKB" title="ginger.contrib.gis.db.models.functions.AsWKB"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsWKB</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.AsWKT" title="ginger.contrib.gis.db.models.functions.AsWKT"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsWKT</span></code></a>
+<a class="reference internal" href="#ginger.contrib.gis.db.models.functions.GeoHash" title="ginger.contrib.gis.db.models.functions.GeoHash"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoHash</span></code></a></p></td>
+<td><p><a class="reference internal" href="#ginger.contrib.gis.db.models.functions.NumPoints" title="ginger.contrib.gis.db.models.functions.NumPoints"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumPoints</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="s-area">
+<span id="area"></span><h2><code class="docutils literal notranslate"><span class="pre">Area</span></code><a class="headerlink" href="#area" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Area">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Area</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Area" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-polygon-property-functions.html#function_st-area">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_Area.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the area of the
+field as an <a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Area" title="ginger.contrib.gis.measure.Area"><code class="xref py py-class docutils literal notranslate"><span class="pre">Area</span></code></a> measure.</p>
+<p>MySQL and SpatiaLite without LWGEOM/RTTOPO don’t support area calculations on
+geographic SRSes.</p>
+</section>
+<section id="s-asgeojson">
+<span id="asgeojson"></span><h2><code class="docutils literal notranslate"><span class="pre">AsGeoJSON</span></code><a class="headerlink" href="#asgeojson" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsGeoJSON">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsGeoJSON</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsGeoJSON" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-geojson-functions.html#function_st-asgeojson">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_AsGeoJSON.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://geojson.org/">GeoJSON</a> representation of the geometry. Note that the result
+is not a complete GeoJSON structure but only the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> key content of a
+GeoJSON structure. See also <a class="reference internal" href="serializers.html"><span class="doc">GeoJSON Serializer</span></a>.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">json</span><span class="o">=</span><span class="n">AsGeoJSON</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Chicago&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span>
+<span class="go">{&quot;type&quot;:&quot;Point&quot;,&quot;coordinates&quot;:[-87.65018,41.85039]}</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keyword Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bbox</span></code></p></td>
+<td><p>Set this to <code class="docutils literal notranslate"><span class="pre">True</span></code> if you want the bounding box
+to be included in the returned GeoJSON. Ignored on
+Oracle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crs</span></code></p></td>
+<td><p>Set this to <code class="docutils literal notranslate"><span class="pre">True</span></code> if you want the coordinate
+reference system to be included in the returned
+GeoJSON. Ignored on MySQL and Oracle.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
+<td><p>It may be used to specify the number of significant
+digits for the coordinates in the GeoJSON
+representation – the default value is 8. Ignored on
+Oracle.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-asgml">
+<span id="asgml"></span><h2><code class="docutils literal notranslate"><span class="pre">AsGML</span></code><a class="headerlink" href="#asgml" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsGML">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsGML</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsGML" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: Oracle, <a class="reference external" href="https://postgis.net/docs/ST_AsGML.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://en.wikipedia.org/wiki/Geography_Markup_Language">Geographic Markup
+Language (GML)</a> representation of the geometry.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">gml</span><span class="o">=</span><span class="n">AsGML</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">gml</span><span class="p">)</span>
+<span class="go">&lt;gml:Polygon srsName=&quot;EPSG:4326&quot;&gt;&lt;gml:OuterBoundaryIs&gt;-147.78711,70.245363 ...</span>
+<span class="go">-147.78711,70.245363&lt;/gml:OuterBoundaryIs&gt;&lt;/gml:Polygon&gt;</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keyword Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
+<td><p>Specifies the number of significant digits for the
+coordinates in the GML representation – the default
+value is 8. Ignored on Oracle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p>Specifies the GML version to use: 2 (default) or 3.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-askml">
+<span id="askml"></span><h2><code class="docutils literal notranslate"><span class="pre">AsKML</span></code><a class="headerlink" href="#askml" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsKML">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsKML</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsKML" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_AsKML.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://developers.google.com/kml/documentation/">Keyhole Markup
+Language (KML)</a> representation of the geometry.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qs</span> <span class="o">=</span> <span class="n">Zipcode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">kml</span><span class="o">=</span><span class="n">AsKML</span><span class="p">(</span><span class="s2">&quot;poly&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">kml</span><span class="p">)</span>
+<span class="go">&lt;Polygon&gt;&lt;outerBoundaryIs&gt;&lt;LinearRing&gt;&lt;coordinates&gt;-103.04135,36.217596,0 ...</span>
+<span class="go">-103.04135,36.217596,0&lt;/coordinates&gt;&lt;/LinearRing&gt;&lt;/outerBoundaryIs&gt;&lt;/Polygon&gt;</span>
+</pre></div>
+</div>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keyword Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
+<td><p>This keyword may be used to specify the number of
+significant digits for the coordinates in the KML
+representation – the default value is 8.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-assvg">
+<span id="assvg"></span><h2><code class="docutils literal notranslate"><span class="pre">AsSVG</span></code><a class="headerlink" href="#assvg" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsSVG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsSVG</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsSVG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_AsSVG.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://www.w3.org/Graphics/SVG/">Scalable Vector
+Graphics (SVG)</a> representation of the geometry.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Keyword Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">relative</span></code></p></td>
+<td><p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the path data will be implemented
+in terms of relative moves. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>,
+meaning that absolute moves are used instead.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
+<td><p>This keyword may be used to specify the number of
+significant digits for the coordinates in the SVG
+representation – the default value is 8.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-aswkb">
+<span id="aswkb"></span><h2><code class="docutils literal notranslate"><span class="pre">AsWKB</span></code><a class="headerlink" href="#aswkb" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsWKB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsWKB</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsWKB" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-format-conversion-functions.html#function_st-asbinary">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_AsBinary.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-known
+binary (WKB)</a> representation of the geometry.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">bytes</span><span class="p">(</span><span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">wkb</span><span class="o">=</span><span class="n">AsWKB</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Chelyabinsk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">wkb</span><span class="p">)</span>
+<span class="go">b&#39;\x01\x01\x00\x00\x00]3\xf9f\x9b\x91K@\x00X\x1d9\xd2\xb9N@&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-aswkt">
+<span id="aswkt"></span><h2><code class="docutils literal notranslate"><span class="pre">AsWKT</span></code><a class="headerlink" href="#aswkt" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.AsWKT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AsWKT</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.AsWKT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-format-conversion-functions.html#function_st-astext">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_AsText.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text
+(WKT)</a> representation of the geometry.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">City</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">wkt</span><span class="o">=</span><span class="n">AsWKT</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Chelyabinsk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">wkt</span>
+<span class="go">&#39;POINT (55.137555 61.451728)&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="s-azimuth">
+<span id="azimuth"></span><h2><code class="docutils literal notranslate"><span class="pre">Azimuth</span></code><a class="headerlink" href="#azimuth" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Azimuth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Azimuth</span></span>(<em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Azimuth" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Azimuth.html">PostGIS</a>,
+SpatiaLite (LWGEOM/RTTOPO)</p>
+<p>Returns the azimuth in radians of the segment defined by the given point
+geometries, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the two points are coincident. The azimuth is angle
+referenced from north and is positive clockwise: north = <code class="docutils literal notranslate"><span class="pre">0</span></code>; east = <code class="docutils literal notranslate"><span class="pre">π/2</span></code>;
+south = <code class="docutils literal notranslate"><span class="pre">π</span></code>; west = <code class="docutils literal notranslate"><span class="pre">3π/2</span></code>.</p>
+</section>
+<section id="s-boundingcircle">
+<span id="boundingcircle"></span><h2><code class="docutils literal notranslate"><span class="pre">BoundingCircle</span></code><a class="headerlink" href="#boundingcircle" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.BoundingCircle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BoundingCircle</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_seg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">48</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.BoundingCircle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_MinimumBoundingCircle.html">PostGIS</a>,
+<a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/spatl/SDO_GEOM-reference.html#GUID-82A61626-BB64-4793-B53D-A0DBEC91831A">Oracle</a>,
+SpatiaLite 5.1+</p>
+<p>Accepts a single geographic field or expression and returns the smallest circle
+polygon that can fully contain the geometry.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">num_seg</span></code> parameter is used only on PostGIS.</p>
+<div class="versionchanged">
+<span class="title">Changed in Ginger Development version:</span> <p>SpatiaLite 5.1+ support was added.</p>
+</div>
+</section>
+<section id="s-centroid">
+<span id="centroid"></span><h2><code class="docutils literal notranslate"><span class="pre">Centroid</span></code><a class="headerlink" href="#centroid" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Centroid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Centroid</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Centroid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-polygon-property-functions.html#function_st-centroid">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Centroid.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the <code class="docutils literal notranslate"><span class="pre">centroid</span></code>
+value of the geometry.</p>
+</section>
+<section id="s-closestpoint">
+<span id="closestpoint"></span><h2><code class="docutils literal notranslate"><span class="pre">ClosestPoint</span></code><a class="headerlink" href="#closestpoint" title="Link to this heading">¶</a></h2>
+<div class="versionadded">
+<span class="title">New in Ginger 5.0.</span> </div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.ClosestPoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ClosestPoint</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.ClosestPoint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_ClosestPoint.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the 2-dimensional
+point on geometry A that is closest to geometry B.</p>
+</section>
+<section id="s-difference">
+<span id="difference"></span><h2><code class="docutils literal notranslate"><span class="pre">Difference</span></code><a class="headerlink" href="#difference" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Difference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Difference</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Difference" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-operator-functions.html#function_st-difference">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Difference.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the geometric
+difference, that is the part of geometry A that does not intersect with
+geometry B.</p>
+</section>
+<section id="s-distance">
+<span id="distance"></span><h2><code class="docutils literal notranslate"><span class="pre">Distance</span></code><a class="headerlink" href="#distance" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Distance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Distance</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spheroid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Distance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-relation-functions-object-shapes.html#function_st-distance">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Distance.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the distance between
+them, as a <a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> object. On MySQL, a raw
+float value is returned when the coordinates are geodetic.</p>
+<p>On backends that support distance calculation on geodetic coordinates, the
+proper backend function is automatically chosen depending on the SRID value of
+the geometries (e.g. <a class="reference external" href="https://postgis.net/docs/ST_DistanceSphere.html">ST_DistanceSphere</a> on PostGIS).</p>
+<p>When distances are calculated with geodetic (angular) coordinates, as is the
+case with the default WGS84 (4326) SRID, you can set the <code class="docutils literal notranslate"><span class="pre">spheroid</span></code> keyword
+argument to decide if the calculation should be based on a simple sphere (less
+accurate, less resource-intensive) or on a spheroid (more accurate, more
+resource-intensive).</p>
+<p>In the following example, the distance from the city of Hobart to every other
+<a class="reference internal" href="model-api.html#ginger.contrib.gis.db.models.PointField" title="ginger.contrib.gis.db.models.PointField"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointField</span></code></a> in the <code class="docutils literal notranslate"><span class="pre">AustraliaCity</span></code>
+queryset is calculated:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ginger.contrib.gis.db.models.functions</span> <span class="kn">import</span> <span class="n">Distance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pnt</span> <span class="o">=</span> <span class="n">AustraliaCity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Hobart&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">point</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">city</span> <span class="ow">in</span> <span class="n">AustraliaCity</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="n">Distance</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">pnt</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">city</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">city</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Wollongong 990071.220408 m</span>
+<span class="go">Shellharbour 972804.613941 m</span>
+<span class="go">Thirroul 1002334.36351 m</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">distance</span></code> attribute is a
+<a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> object, you can easily express
+the value in the units of your choice. For example, <code class="docutils literal notranslate"><span class="pre">city.distance.mi</span></code> is
+the distance value in miles and <code class="docutils literal notranslate"><span class="pre">city.distance.km</span></code> is the distance value
+in kilometers. See <a class="reference internal" href="measure.html"><span class="doc">Measurement Objects</span></a> for usage details and the list of
+<a class="reference internal" href="measure.html#supported-units"><span class="std std-ref">Supported units</span></a>.</p>
+</div>
+</section>
+<section id="s-envelope">
+<span id="envelope"></span><h2><code class="docutils literal notranslate"><span class="pre">Envelope</span></code><a class="headerlink" href="#envelope" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Envelope">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Envelope</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Envelope" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-general-property-functions.html#function_st-envelope">MySQL</a>,
+<a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/21/spatl/spatial-operators-reference.html#GUID-ACED800F-3435-44AA-9606-D40934A23ED0">Oracle</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Envelope.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the geometry
+representing the bounding box of the geometry.</p>
+</section>
+<section id="s-forcepolygoncw">
+<span id="forcepolygoncw"></span><h2><code class="docutils literal notranslate"><span class="pre">ForcePolygonCW</span></code><a class="headerlink" href="#forcepolygoncw" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.ForcePolygonCW">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ForcePolygonCW</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.ForcePolygonCW" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_ForcePolygonCW.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a modified version
+of the polygon/multipolygon in which all exterior rings are oriented clockwise
+and all interior rings are oriented counterclockwise. Non-polygonal geometries
+are returned unchanged.</p>
+</section>
+<section id="s-fromwkb">
+<span id="fromwkb"></span><h2><code class="docutils literal notranslate"><span class="pre">FromWKB</span></code><a class="headerlink" href="#fromwkb" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.FromWKB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FromWKB</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.FromWKB" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-wkb-functions.html#function_st-geomfromwkb">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_GeomFromWKB.html">PostGIS</a>, SpatiaLite</p>
+<p>Creates geometry from <a class="reference external" href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-known binary (WKB)</a> representation. The optional
+<code class="docutils literal notranslate"><span class="pre">srid</span></code> argument allows to specify the SRID of the resulting geometry.
+<code class="docutils literal notranslate"><span class="pre">srid</span></code> is ignored on Oracle.</p>
+<div class="versionchanged">
+<span class="title">Changed in Ginger Development version:</span> <p>The <code class="docutils literal notranslate"><span class="pre">srid</span></code> argument was added.</p>
+</div>
+</section>
+<section id="s-fromwkt">
+<span id="fromwkt"></span><h2><code class="docutils literal notranslate"><span class="pre">FromWKT</span></code><a class="headerlink" href="#fromwkt" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.FromWKT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FromWKT</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.FromWKT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-wkt-functions.html#function_st-geomfromtext">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_GeomFromText.html">PostGIS</a>, SpatiaLite</p>
+<p>Creates geometry from <a class="reference external" href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text (WKT)</a> representation. The optional
+<code class="docutils literal notranslate"><span class="pre">srid</span></code> argument allows to specify the SRID of the resulting geometry.
+<code class="docutils literal notranslate"><span class="pre">srid</span></code> is ignored on Oracle.</p>
+<div class="versionchanged">
+<span class="title">Changed in Ginger Development version:</span> <p>The <code class="docutils literal notranslate"><span class="pre">srid</span></code> argument was added.</p>
+</div>
+</section>
+<section id="s-geohash">
+<span id="geohash"></span><h2><code class="docutils literal notranslate"><span class="pre">GeoHash</span></code><a class="headerlink" href="#geohash" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.GeoHash">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GeoHash</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.GeoHash" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-geohash-functions.html#function_st-geohash">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_GeoHash.html">PostGIS</a>, SpatiaLite
+(LWGEOM/RTTOPO)</p>
+<p>Accepts a single geographic field or expression and returns a <a class="reference external" href="https://en.wikipedia.org/wiki/Geohash">GeoHash</a>
+representation of the geometry.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">precision</span></code> keyword argument controls the number of characters in the
+result.</p>
+</section>
+<section id="s-geometrydistance">
+<span id="geometrydistance"></span><h2><code class="docutils literal notranslate"><span class="pre">GeometryDistance</span></code><a class="headerlink" href="#geometrydistance" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.GeometryDistance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GeometryDistance</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.GeometryDistance" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/geometry_distance_knn.html">PostGIS</a></p>
+<p>Accepts two geographic fields or expressions and returns the distance between
+them. When used in an <a class="reference internal" href="../../models/querysets.html#ginger.db.models.query.QuerySet.order_by" title="ginger.db.models.query.QuerySet.order_by"><code class="xref py py-meth docutils literal notranslate"><span class="pre">order_by()</span></code></a> clause,
+it provides index-assisted nearest-neighbor result sets.</p>
+</section>
+<section id="s-intersection">
+<span id="intersection"></span><h2><code class="docutils literal notranslate"><span class="pre">Intersection</span></code><a class="headerlink" href="#intersection" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Intersection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Intersection</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Intersection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-operator-functions.html#function_st-intersection">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Intersection.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the geometric
+intersection between them.</p>
+</section>
+<section id="s-isempty">
+<span id="isempty"></span><h2><code class="docutils literal notranslate"><span class="pre">IsEmpty</span></code><a class="headerlink" href="#isempty" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.IsEmpty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IsEmpty</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.IsEmpty" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_IsEmpty.html">PostGIS</a></p>
+<p>Accepts a geographic field or expression and tests if the value is an empty
+geometry. Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if its value is empty and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</section>
+<section id="s-isvalid">
+<span id="isvalid"></span><h2><code class="docutils literal notranslate"><span class="pre">IsValid</span></code><a class="headerlink" href="#isvalid" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.IsValid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IsValid</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.IsValid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-convenience-functions.html#function_st-isvalid">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_IsValid.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts a geographic field or expression and tests if the value is well formed.
+Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if its value is a valid geometry and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</section>
+<section id="s-length">
+<span id="length"></span><h2><code class="docutils literal notranslate"><span class="pre">Length</span></code><a class="headerlink" href="#length" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Length">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Length</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spheroid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Length" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-linestring-property-functions.html#function_st-length">MySQL</a>,
+Oracle, <a class="reference external" href="https://postgis.net/docs/ST_Length.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic linestring or multilinestring field or expression
+and returns its length as a <a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a>
+measure.</p>
+<p>On PostGIS and SpatiaLite, when the coordinates are geodetic (angular), you can
+specify if the calculation should be based on a simple sphere (less
+accurate, less resource-intensive) or on a spheroid (more accurate, more
+resource-intensive) with the <code class="docutils literal notranslate"><span class="pre">spheroid</span></code> keyword argument.</p>
+<p>MySQL doesn’t support length calculations on geographic SRSes.</p>
+</section>
+<section id="s-linelocatepoint">
+<span id="linelocatepoint"></span><h2><code class="docutils literal notranslate"><span class="pre">LineLocatePoint</span></code><a class="headerlink" href="#linelocatepoint" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.LineLocatePoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LineLocatePoint</span></span>(<em class="sig-param"><span class="n"><span class="pre">linestring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.LineLocatePoint" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_LineLocatePoint.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Returns a float between 0 and 1 representing the location of the closest point on
+<code class="docutils literal notranslate"><span class="pre">linestring</span></code> to the given <code class="docutils literal notranslate"><span class="pre">point</span></code>, as a fraction of the 2D line length.</p>
+</section>
+<section id="s-makevalid">
+<span id="makevalid"></span><h2><code class="docutils literal notranslate"><span class="pre">MakeValid</span></code><a class="headerlink" href="#makevalid" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.MakeValid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MakeValid</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.MakeValid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_MakeValid.html">PostGIS</a>,
+SpatiaLite (LWGEOM/RTTOPO)</p>
+<p>Accepts a geographic field or expression and attempts to convert the value into
+a valid geometry without losing any of the input vertices. Geometries that are
+already valid are returned without changes. Simple polygons might become a
+multipolygon and the result might be of lower dimension than the input.</p>
+</section>
+<section id="s-memsize">
+<span id="memsize"></span><h2><code class="docutils literal notranslate"><span class="pre">MemSize</span></code><a class="headerlink" href="#memsize" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.MemSize">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MemSize</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.MemSize" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_MemSize.html">PostGIS</a></p>
+<p>Accepts a single geographic field or expression and returns the memory size
+(number of bytes) that the geometry field takes.</p>
+</section>
+<section id="s-numgeometries">
+<span id="numgeometries"></span><h2><code class="docutils literal notranslate"><span class="pre">NumGeometries</span></code><a class="headerlink" href="#numgeometries" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.NumGeometries">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumGeometries</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.NumGeometries" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-geometrycollection-property-functions.html#function_st-numgeometries">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_NumGeometries.html">PostGIS</a>, Oracle,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the number of
+geometries if the geometry field is a collection (e.g., a <code class="docutils literal notranslate"><span class="pre">GEOMETRYCOLLECTION</span></code>
+or <code class="docutils literal notranslate"><span class="pre">MULTI*</span></code> field). Returns 1 for single geometries.</p>
+<p>On MySQL, returns <code class="docutils literal notranslate"><span class="pre">None</span></code> for single geometries.</p>
+</section>
+<section id="s-numpoints">
+<span id="numpoints"></span><h2><code class="docutils literal notranslate"><span class="pre">NumPoints</span></code><a class="headerlink" href="#numpoints" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.NumPoints">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NumPoints</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.NumPoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/gis-linestring-property-functions.html#function_st-numpoints">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_NPoints.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the number of points
+in a geometry.</p>
+<p>On MySQL, returns <code class="docutils literal notranslate"><span class="pre">None</span></code> for any non-<code class="docutils literal notranslate"><span class="pre">LINESTRING</span></code> geometry.</p>
+</section>
+<section id="s-perimeter">
+<span id="perimeter"></span><h2><code class="docutils literal notranslate"><span class="pre">Perimeter</span></code><a class="headerlink" href="#perimeter" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Perimeter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Perimeter</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Perimeter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Perimeter.html">PostGIS</a>,
+Oracle, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns the perimeter of the
+geometry field as a <a class="reference internal" href="measure.html#ginger.contrib.gis.measure.Distance" title="ginger.contrib.gis.measure.Distance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Distance</span></code></a> object.</p>
+</section>
+<section id="s-pointonsurface">
+<span id="pointonsurface"></span><h2><code class="docutils literal notranslate"><span class="pre">PointOnSurface</span></code><a class="headerlink" href="#pointonsurface" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.PointOnSurface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PointOnSurface</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.PointOnSurface" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_PointOnSurface.html">PostGIS</a>,
+MariaDB, Oracle, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a <code class="docutils literal notranslate"><span class="pre">Point</span></code> geometry
+guaranteed to lie on the surface of the field; otherwise returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</section>
+<section id="s-reverse">
+<span id="reverse"></span><h2><code class="docutils literal notranslate"><span class="pre">Reverse</span></code><a class="headerlink" href="#reverse" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Reverse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Reverse</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Reverse" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Reverse.html">PostGIS</a>, Oracle,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a geometry with
+reversed coordinates.</p>
+</section>
+<section id="s-scale">
+<span id="scale"></span><h2><code class="docutils literal notranslate"><span class="pre">Scale</span></code><a class="headerlink" href="#scale" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Scale">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Scale</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Scale" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Scale.html">PostGIS</a>, SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a geometry with
+scaled coordinates by multiplying them with the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and optionally
+<code class="docutils literal notranslate"><span class="pre">z</span></code> parameters.</p>
+</section>
+<section id="s-snaptogrid">
+<span id="snaptogrid"></span><h2><code class="docutils literal notranslate"><span class="pre">SnapToGrid</span></code><a class="headerlink" href="#snaptogrid" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.SnapToGrid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SnapToGrid</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.SnapToGrid" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_SnapToGrid.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a geometry with all
+points snapped to the given grid.  How the geometry is snapped to the grid
+depends on how many numeric (either float, integer, or long) arguments are
+given.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils">
+<thead>
+<tr class="row-odd"><th class="head"><p>Number of Arguments</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>A single size to snap both the X and Y grids to.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>X and Y sizes to snap the grid to.</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>X, Y sizes and the corresponding X, Y origins.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="s-symdifference">
+<span id="symdifference"></span><h2><code class="docutils literal notranslate"><span class="pre">SymDifference</span></code><a class="headerlink" href="#symdifference" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.SymDifference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SymDifference</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.SymDifference" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-operator-functions.html#function_st-symdifference">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_SymDifference.html">PostGIS</a>, Oracle,
+SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the geometric
+symmetric difference (union without the intersection) between the given
+parameters.</p>
+</section>
+<section id="s-transform">
+<span id="transform"></span><h2><code class="docutils literal notranslate"><span class="pre">Transform</span></code><a class="headerlink" href="#transform" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Transform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Transform</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srid</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Transform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Transform.html">PostGIS</a>,
+Oracle, SpatiaLite</p>
+<p>Accepts a geographic field or expression and a SRID integer code, and returns
+the transformed geometry to the spatial reference system specified by the
+<code class="docutils literal notranslate"><span class="pre">srid</span></code> parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>What spatial reference system an integer SRID corresponds to may depend on
+the spatial database used.  In other words, the SRID numbers used for Oracle
+are not necessarily the same as those used by PostGIS.</p>
+</div>
+</section>
+<section id="s-translate">
+<span id="translate"></span><h2><code class="docutils literal notranslate"><span class="pre">Translate</span></code><a class="headerlink" href="#translate" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Translate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Translate</span></span>(<em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Translate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: <a class="reference external" href="https://postgis.net/docs/ST_Translate.html">PostGIS</a>,
+SpatiaLite</p>
+<p>Accepts a single geographic field or expression and returns a geometry with
+its coordinates offset by the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and optionally <code class="docutils literal notranslate"><span class="pre">z</span></code> numeric
+parameters.</p>
+</section>
+<section id="s-union">
+<span id="union"></span><h2><code class="docutils literal notranslate"><span class="pre">Union</span></code><a class="headerlink" href="#union" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ginger.contrib.gis.db.models.functions.Union">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Union</span></span>(<em class="sig-param"><span class="n"><span class="pre">expr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra</span></span></em>)<a class="headerlink" href="#ginger.contrib.gis.db.models.functions.Union" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p><em>Availability</em>: MariaDB, <a class="reference external" href="https://dev.mysql.com/doc/refman/en/spatial-operator-functions.html#function_st-union">MySQL</a>,
+<a class="reference external" href="https://postgis.net/docs/ST_Union.html">PostGIS</a>, Oracle, SpatiaLite</p>
+<p>Accepts two geographic fields or expressions and returns the union of both
+geometries.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="measure.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Measurement Objects</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="geoquerysets.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">GIS QuerySet API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Geographic Database Functions</a><ul>
+<li><a class="reference internal" href="#area"><code class="docutils literal notranslate"><span class="pre">Area</span></code></a></li>
+<li><a class="reference internal" href="#asgeojson"><code class="docutils literal notranslate"><span class="pre">AsGeoJSON</span></code></a></li>
+<li><a class="reference internal" href="#asgml"><code class="docutils literal notranslate"><span class="pre">AsGML</span></code></a></li>
+<li><a class="reference internal" href="#askml"><code class="docutils literal notranslate"><span class="pre">AsKML</span></code></a></li>
+<li><a class="reference internal" href="#assvg"><code class="docutils literal notranslate"><span class="pre">AsSVG</span></code></a></li>
+<li><a class="reference internal" href="#aswkb"><code class="docutils literal notranslate"><span class="pre">AsWKB</span></code></a></li>
+<li><a class="reference internal" href="#aswkt"><code class="docutils literal notranslate"><span class="pre">AsWKT</span></code></a></li>
+<li><a class="reference internal" href="#azimuth"><code class="docutils literal notranslate"><span class="pre">Azimuth</span></code></a></li>
+<li><a class="reference internal" href="#boundingcircle"><code class="docutils literal notranslate"><span class="pre">BoundingCircle</span></code></a></li>
+<li><a class="reference internal" href="#centroid"><code class="docutils literal notranslate"><span class="pre">Centroid</span></code></a></li>
+<li><a class="reference internal" href="#closestpoint"><code class="docutils literal notranslate"><span class="pre">ClosestPoint</span></code></a></li>
+<li><a class="reference internal" href="#difference"><code class="docutils literal notranslate"><span class="pre">Difference</span></code></a></li>
+<li><a class="reference internal" href="#distance"><code class="docutils literal notranslate"><span class="pre">Distance</span></code></a></li>
+<li><a class="reference internal" href="#envelope"><code class="docutils literal notranslate"><span class="pre">Envelope</span></code></a></li>
+<li><a class="reference internal" href="#forcepolygoncw"><code class="docutils literal notranslate"><span class="pre">ForcePolygonCW</span></code></a></li>
+<li><a class="reference internal" href="#fromwkb"><code class="docutils literal notranslate"><span class="pre">FromWKB</span></code></a></li>
+<li><a class="reference internal" href="#fromwkt"><code class="docutils literal notranslate"><span class="pre">FromWKT</span></code></a></li>
+<li><a class="reference internal" href="#geohash"><code class="docutils literal notranslate"><span class="pre">GeoHash</span></code></a></li>
+<li><a class="reference internal" href="#geometrydistance"><code class="docutils literal notranslate"><span class="pre">GeometryDistance</span></code></a></li>
+<li><a class="reference internal" href="#intersection"><code class="docutils literal notranslate"><span class="pre">Intersection</span></code></a></li>
+<li><a class="reference internal" href="#isempty"><code class="docutils literal notranslate"><span class="pre">IsEmpty</span></code></a></li>
+<li><a class="reference internal" href="#isvalid"><code class="docutils literal notranslate"><span class="pre">IsValid</span></code></a></li>
+<li><a class="reference internal" href="#length"><code class="docutils literal notranslate"><span class="pre">Length</span></code></a></li>
+<li><a class="reference internal" href="#linelocatepoint"><code class="docutils literal notranslate"><span class="pre">LineLocatePoint</span></code></a></li>
+<li><a class="reference internal" href="#makevalid"><code class="docutils literal notranslate"><span class="pre">MakeValid</span></code></a></li>
+<li><a class="reference internal" href="#memsize"><code class="docutils literal notranslate"><span class="pre">MemSize</span></code></a></li>
+<li><a class="reference internal" href="#numgeometries"><code class="docutils literal notranslate"><span class="pre">NumGeometries</span></code></a></li>
+<li><a class="reference internal" href="#numpoints"><code class="docutils literal notranslate"><span class="pre">NumPoints</span></code></a></li>
+<li><a class="reference internal" href="#perimeter"><code class="docutils literal notranslate"><span class="pre">Perimeter</span></code></a></li>
+<li><a class="reference internal" href="#pointonsurface"><code class="docutils literal notranslate"><span class="pre">PointOnSurface</span></code></a></li>
+<li><a class="reference internal" href="#reverse"><code class="docutils literal notranslate"><span class="pre">Reverse</span></code></a></li>
+<li><a class="reference internal" href="#scale"><code class="docutils literal notranslate"><span class="pre">Scale</span></code></a></li>
+<li><a class="reference internal" href="#snaptogrid"><code class="docutils literal notranslate"><span class="pre">SnapToGrid</span></code></a></li>
+<li><a class="reference internal" href="#symdifference"><code class="docutils literal notranslate"><span class="pre">SymDifference</span></code></a></li>
+<li><a class="reference internal" href="#transform"><code class="docutils literal notranslate"><span class="pre">Transform</span></code></a></li>
+<li><a class="reference internal" href="#translate"><code class="docutils literal notranslate"><span class="pre">Translate</span></code></a></li>
+<li><a class="reference internal" href="#union"><code class="docutils literal notranslate"><span class="pre">Union</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

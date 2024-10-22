@@ -1,0 +1,1308 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Migrations" href="../migrations.html" /><link rel="prev" title="Form handling with class-based views" href="generic-editing.html" />
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Using mixins with class-based views - Ginger - DJ 5.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d10597a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #ffffff;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../contents.html"><div class="brand">Ginger - DJ 5.5.3 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../contents.html">
+  
+  
+  <span class="sidebar-brand-text">Ginger - DJ 5.5.3 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Ginger documentation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../intro/index.html">Getting started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/overview.html">Ginger at a glance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial01.html">Writing your first Ginger app, part 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial02.html">Writing your first Ginger app, part 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial03.html">Writing your first Ginger app, part 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial04.html">Writing your first Ginger app, part 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial05.html">Writing your first Ginger app, part 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial06.html">Writing your first Ginger app, part 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial07.html">Writing your first Ginger app, part 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/tutorial08.html">Writing your first Ginger app, part 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/reusable-apps.html">Advanced tutorial: How to write reusable apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/whatsnext.html">What to read next</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Using Ginger</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Using Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install.html">How to install Ginger</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../db/index.html">Models and databases</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Models and databases</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../db/models.html">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/queries.html">Making queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/aggregation.html">Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/search.html">Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/managers.html">Managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/sql.html">Performing raw SQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/transactions.html">Database transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/multi-db.html">Multiple databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/tablespaces.html">Tablespaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/optimization.html">Database access optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/instrumentation.html">Database instrumentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../db/fixtures.html">Fixtures</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../db/examples/index.html">Examples of model relationship API usage</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples of model relationship API usage</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_many.html">Many-to-many relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/many_to_one.html">Many-to-one relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../db/examples/one_to_one.html">One-to-one relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../http/index.html">Handling HTTP requests</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Handling HTTP requests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../http/urls.html">URL dispatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/views.html">Writing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/decorators.html">View decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/file-uploads.html">File Uploads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/shortcuts.html">Ginger shortcut functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/generic-views.html">Generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/middleware.html">Middleware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http/sessions.html">How to use sessions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../forms/index.html">Working with forms</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Working with forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../forms/formsets.html">Formsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/modelforms.html">Creating forms from models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../forms/media.html">Form Assets (the <code class="docutils literal notranslate"><span class="pre">Media</span></code> class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../templates.html">Templates</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html">Class-based views</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Class-based views</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="intro.html">Introduction to class-based views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic-display.html">Built-in class-based generic views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic-editing.html">Form handling with class-based views</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Using mixins with class-based views</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migrations.html">Migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files.html">Managing files</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../testing/index.html">Testing in Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Testing in Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../testing/overview.html">Writing and running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/tools.html">Testing tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing/advanced.html">Advanced testing topics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cache.html">Ginger’s cache framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conditional-view-processing.html">Conditional View Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signing.html">Cryptographic signing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../email.html">Sending email</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../i18n/index.html">Internationalization and localization</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of Internationalization and localization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/translation.html">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/formatting.html">Format localization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i18n/timezones.html">Time zones</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pagination.html">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security.html">Security in Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance.html">Performance and optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../serialization.html">Serializing Ginger objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../settings.html">Ginger settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../signals.html">Signals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../checks.html">System check framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../external-packages.html">External packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../async.html">Asynchronous support</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../howto/index.html">“How-to” guides</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of “How-to” guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/csrf.html">How to use Ginger’s CSRF protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-management-commands.html">How to create custom <code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-model-fields.html">How to create custom model fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-lookups.html">How to write custom lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-backend.html">How to implement a custom template backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-template-tags.html">How to create custom template tags and filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/custom-file-storage.html">How to write a custom storage class</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../howto/deployment/index.html">How to deploy Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of How to deploy Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/wsgi/index.html">How to deploy with WSGI</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of How to deploy with WSGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/gunicorn.html">How to use Ginger with Gunicorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/uwsgi.html">How to use Ginger with uWSGI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/wsgi/modwsgi.html">How to use Ginger with Apache and <code class="docutils literal notranslate"><span class="pre">mod_wsgi</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../howto/deployment/asgi/index.html">How to deploy with ASGI</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of How to deploy with ASGI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/daphne.html">How to use Ginger with Daphne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/hypercorn.html">How to use Ginger with Hypercorn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../howto/deployment/asgi/uvicorn.html">How to use Ginger with Uvicorn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../howto/deployment/checklist.html">Deployment checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/upgrade-version.html">How to upgrade Ginger to a newer version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/error-reporting.html">How to manage error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/initial-data.html">How to provide initial data for models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/legacy-databases.html">How to integrate Ginger with a legacy database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/logging.html">How to configure and use logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-csv.html">How to create CSV output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/outputting-pdf.html">How to create PDF files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/overriding-templates.html">How to override templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/index.html">How to manage static files (e.g. images, JavaScript, CSS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/static-files/deployment.html">How to deploy static files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/windows.html">How to install Ginger on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/writing-migrations.html">How to create database migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../howto/delete-app.html">How to delete a Ginger application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../faq/index.html">Ginger FAQ</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Ginger FAQ</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/general.html">FAQ: General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/install.html">FAQ: Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/usage.html">FAQ: Using Ginger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/help.html">FAQ: Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/models.html">FAQ: Databases and models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/admin.html">FAQ: The admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/contributing.html">FAQ: Contributing code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faq/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ref/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/applications.html">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/checks.html">System check framework</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/class-based-views/index.html">Built-in class-based views API</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of Built-in class-based views API</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/base.html">Base views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-display.html">Generic display views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-editing.html">Generic editing views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/generic-date-based.html">Generic date views</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/class-based-views/mixins.html">Class-based views mixins</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of Class-based views mixins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-simple.html">Simple mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html">Single object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html">Multiple object mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-editing.html">Editing mixins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/class-based-views/mixins-date-based.html">Date-based mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/class-based-views/flattened-index.html">Class-based generic views - flattened index</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/clickjacking.html">Clickjacking Protection</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/contrib/index.html"><code class="docutils literal notranslate"><span class="pre">contrib</span></code> packages</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of contrib packages</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/admin/index.html">The Ginger admin site</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of The Ginger admin site</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/actions.html">Admin actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/filters.html"><code class="docutils literal notranslate"><span class="pre">ModelAdmin</span></code> List Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/admindocs.html">The Ginger admin documentation generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/admin/javascript.html">JavaScript customizations in the admin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/flatpages.html">The flatpages app</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/gis/index.html">GeoGinger</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of GeoGinger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/tutorial.html">GeoGinger Tutorial</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/install/index.html">GeoGinger Installation</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of GeoGinger Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/geolibs.html">Installing Geospatial libraries</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/postgis.html">Installing PostGIS</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/install/spatialite.html">Installing SpatiaLite</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/model-api.html">GeoGinger Model API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/db-api.html">GeoGinger Database API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/forms-api.html">GeoGinger Forms API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoquerysets.html">GIS QuerySet API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/functions.html">Geographic Database Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/measure.html">Measurement Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geos.html">GEOS API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/gdal.html">GDAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/geoip2.html">Geolocation with GeoIP2</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../ref/contrib/gis/utils.html">GeoGinger Utilities</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of GeoGinger Utilities</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/layermapping.html"><code class="docutils literal notranslate"><span class="pre">LayerMapping</span></code> data import utility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/ogrinspect.html">OGR Inspection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../ref/contrib/gis/serializers.html"><code class="docutils literal notranslate"><span class="pre">GeoJSON</span></code> Serializer</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/commands.html">GeoGinger Management Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/admin.html">GeoGinger’s admin site</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/feeds.html">Geographic Feeds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/sitemaps.html">Geographic Sitemaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/testing.html">Testing GeoGinger apps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/gis/deployment.html">Deploying GeoGinger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/humanize.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.humanize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/messages.html">The messages framework</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../ref/contrib/postgres/index.html"><code class="docutils literal notranslate"><span class="pre">ginger.contrib.postgres</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of ginger.contrib.postgres</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/aggregates.html">PostgreSQL specific aggregation functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/constraints.html">PostgreSQL specific database constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/expressions.html">PostgreSQL specific query expressions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/fields.html">PostgreSQL specific model fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/forms.html">PostgreSQL specific form fields and widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/functions.html">PostgreSQL specific database functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/indexes.html">PostgreSQL specific model indexes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/lookups.html">PostgreSQL specific lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/operations.html">Database migration operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/search.html">Full text search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../ref/contrib/postgres/validators.html">Validators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/redirects.html">The redirects app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sitemaps.html">The sitemap framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/sites.html">The “sites” framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/staticfiles.html">The <code class="docutils literal notranslate"><span class="pre">staticfiles</span></code> app</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/contrib/syndication.html">The syndication feed framework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/csrf.html">Cross Site Request Forgery protection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/databases.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html"><code class="docutils literal notranslate"><span class="pre">ginger-admin</span></code> and <code class="docutils literal notranslate"><span class="pre">manage.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/ginger-admin.html#running-management-commands-from-your-code">Running management commands from your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/exceptions.html">Ginger Exceptions</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/files/index.html">File handling</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of File handling</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/file.html">The <code class="docutils literal notranslate"><span class="pre">File</span></code> object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/storage.html">File storage API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/files/uploads.html">Uploaded Files and Upload Handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/forms/index.html">Forms</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of Forms</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/api.html">The Forms API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/fields.html">Form fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/models.html">Model Form Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/formsets.html">Formset Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/renderers.html">The form rendering API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/widgets.html">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/forms/validation.html">Form and field validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/logging.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/middleware.html">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/migration-operations.html">Migration Operations</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/models/index.html">Models</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of Models</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html">Model field reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/fields.html#field-attribute-reference">Field attribute reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/indexes.html">Model index reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/constraints.html">Constraints reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/meta.html">Model <code class="docutils literal notranslate"><span class="pre">_meta</span></code> API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/relations.html">Related objects reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/class.html">Model class reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/options.html">Model <code class="docutils literal notranslate"><span class="pre">Meta</span></code> options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/instances.html">Model instance reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/querysets.html"><code class="docutils literal notranslate"><span class="pre">QuerySet</span></code> API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/lookups.html">Lookup API reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/expressions.html">Query Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/conditional-expressions.html">Conditional Expressions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/models/database-functions.html">Database Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/paginator.html">Paginator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/request-response.html">Request and response objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/schema-editor.html"><code class="docutils literal notranslate"><span class="pre">SchemaEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/settings.html">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/signals.html">Signals</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../ref/templates/index.html">Templates</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of Templates</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/language.html">The Ginger template language</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/builtins.html">Built-in template tags and filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ref/templates/api.html">The Ginger template language: for Python programmers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/template-response.html"><code class="docutils literal notranslate"><span class="pre">TemplateResponse</span></code> and <code class="docutils literal notranslate"><span class="pre">SimpleTemplateResponse</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/unicode.html">Unicode data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urlresolvers.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html"><code class="docutils literal notranslate"><span class="pre">ginger.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/urls.html#module-ginger.conf.urls"><code class="docutils literal notranslate"><span class="pre">ginger.conf.urls</span></code> functions for use in URLconfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/utils.html">Ginger Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/validators.html">Validators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ref/views.html">Built-in Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../misc/index.html">Meta-documentation and miscellany</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of Meta-documentation and miscellany</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/api-stability.html">API stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/design-philosophies.html">Design philosophies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/distributions.html">Third-party distributions of Ginger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../internals/index.html">Ginger internals</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of Ginger internals</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../internals/contributing/index.html">Contributing to Ginger</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of Contributing to Ginger</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/new-contributors.html">An overview of the contributing process and what's involved.</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../internals/contributing/writing-code/index.html">Contributing code</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of Contributing code</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../intro/contributing.html">Writing your first patch for Ginger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/submitting-patches.html">How to submit a patch to Ginger for new and/or fixed behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../testing/overview.html">How to write and run tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/unit-tests.html">How to run Ginger's unit tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/working-with-git.html">How to work with Git and GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/coding-style.html">Coding style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/writing-code/javascript.html">JavaScript code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../internals/contributing/committing-code.html">Committing code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/writing-documentation.html">Writing documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/localizing.html">Localizing Ginger</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/bugs-and-features.html">Reporting bugs and requesting features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../internals/contributing/triaging-tickets.html">Triaging tickets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/mailing-lists.html">Mailing lists and Forum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/organization.html">Organization of the Ginger Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/security.html">Ginger’s security policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/release-process.html">Ginger’s release process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internals/git.html">The Ginger source code repository</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/topics/class-based-views/mixins.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="s-using-mixins-with-class-based-views">
+<span id="using-mixins-with-class-based-views"></span><h1>Using mixins with class-based views<a class="headerlink" href="#using-mixins-with-class-based-views" title="Link to this heading">¶</a></h1>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>This is an advanced topic. A working knowledge of <a class="reference internal" href="index.html"><span class="doc">Ginger’s
+class-based views</span></a> is advised before exploring these
+techniques.</p>
+</div>
+<p>Ginger’s built-in class-based views provide a lot of functionality,
+but some of it you may want to use separately. For instance, you may
+want to write a view that renders a template to make the HTTP
+response, but you can’t use
+<a class="reference internal" href="../../ref/class-based-views/base.html#ginger.views.generic.base.TemplateView" title="ginger.views.generic.base.TemplateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></a>; perhaps you need to
+render a template only on <code class="docutils literal notranslate"><span class="pre">POST</span></code>, with <code class="docutils literal notranslate"><span class="pre">GET</span></code> doing something else
+entirely. While you could use
+<a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a> directly, this
+will likely result in duplicate code.</p>
+<p>For this reason, Ginger also provides a number of mixins that provide
+more discrete functionality. Template rendering, for instance, is
+encapsulated in the
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin" title="ginger.views.generic.base.TemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code></a>. The Ginger
+reference documentation contains <a class="reference internal" href="../../ref/class-based-views/mixins.html"><span class="doc">full documentation of all the
+mixins</span></a>.</p>
+<section id="s-context-and-template-responses">
+<span id="context-and-template-responses"></span><h2>Context and template responses<a class="headerlink" href="#context-and-template-responses" title="Link to this heading">¶</a></h2>
+<p>Two central mixins are provided that help in providing a consistent
+interface to working with templates in class-based views.</p>
+<dl>
+<dt><a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin" title="ginger.views.generic.base.TemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code></a></dt><dd><p>Every built in view which returns a
+<a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a> will call the
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.render_to_response" title="ginger.views.generic.base.TemplateResponseMixin.render_to_response"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render_to_response()</span></code></a>
+method that <code class="docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code> provides. Most of the time this
+will be called for you (for instance, it is called by the <code class="docutils literal notranslate"><span class="pre">get()</span></code> method
+implemented by both <a class="reference internal" href="../../ref/class-based-views/base.html#ginger.views.generic.base.TemplateView" title="ginger.views.generic.base.TemplateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>); similarly, it’s unlikely
+that you’ll need to override it, although if you want your response to
+return something not rendered via a Ginger template then you’ll want to do
+it. For an example of this, see the <a class="reference internal" href="#jsonresponsemixin-example"><span class="std std-ref">JSONResponseMixin example</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">render_to_response()</span></code> itself calls
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.get_template_names" title="ginger.views.generic.base.TemplateResponseMixin.get_template_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_template_names()</span></code></a>,
+which by default will look up
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.template_name" title="ginger.views.generic.base.TemplateResponseMixin.template_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name</span></code></a> on
+the class-based view; two other mixins
+(<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectTemplateResponseMixin" title="ginger.views.generic.detail.SingleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectTemplateResponseMixin</span></code></a>
+and
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectTemplateResponseMixin" title="ginger.views.generic.list.MultipleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectTemplateResponseMixin</span></code></a>)
+override this to provide more flexible defaults when dealing with actual
+objects.</p>
+</dd>
+<dt><a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.ContextMixin" title="ginger.views.generic.base.ContextMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextMixin</span></code></a></dt><dd><p>Every built in view which needs context data, such as for rendering a
+template (including <code class="docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code> above), should call
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.ContextMixin.get_context_data" title="ginger.views.generic.base.ContextMixin.get_context_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_context_data()</span></code></a> passing
+any data they want to ensure is in there as keyword arguments.
+<code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code> returns a dictionary; in <code class="docutils literal notranslate"><span class="pre">ContextMixin</span></code> it
+returns its keyword arguments, but it is common to override this to add
+more members to the dictionary. You can also use the
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.ContextMixin.extra_context" title="ginger.views.generic.base.ContextMixin.extra_context"><code class="xref py py-attr docutils literal notranslate"><span class="pre">extra_context</span></code></a> attribute.</p>
+</dd>
+</dl>
+</section>
+<section id="s-building-up-ginger-s-generic-class-based-views">
+<span id="building-up-ginger-s-generic-class-based-views"></span><h2>Building up Ginger’s generic class-based views<a class="headerlink" href="#building-up-ginger-s-generic-class-based-views" title="Link to this heading">¶</a></h2>
+<p>Let’s look at how two of Ginger’s generic class-based views are built
+out of mixins providing discrete functionality. We’ll consider
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>, which renders a
+“detail” view of an object, and
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a>, which will render a list
+of objects, typically from a queryset, and optionally paginate
+them. This will introduce us to four mixins which between them provide
+useful functionality when working with either a single Ginger object,
+or multiple objects.</p>
+<p>There are also mixins involved in the generic edit views
+(<a class="reference internal" href="../../ref/class-based-views/generic-editing.html#ginger.views.generic.edit.FormView" title="ginger.views.generic.edit.FormView"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormView</span></code></a>, and the model-specific
+views <a class="reference internal" href="../../ref/class-based-views/generic-editing.html#ginger.views.generic.edit.CreateView" title="ginger.views.generic.edit.CreateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">CreateView</span></code></a>,
+<a class="reference internal" href="../../ref/class-based-views/generic-editing.html#ginger.views.generic.edit.UpdateView" title="ginger.views.generic.edit.UpdateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdateView</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/generic-editing.html#ginger.views.generic.edit.DeleteView" title="ginger.views.generic.edit.DeleteView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeleteView</span></code></a>), and in the
+date-based generic views. These are
+covered in the <a class="reference internal" href="../../ref/class-based-views/mixins.html"><span class="doc">mixin reference
+documentation</span></a>.</p>
+<section id="s-detailview-working-with-a-single-ginger-object">
+<span id="detailview-working-with-a-single-ginger-object"></span><h3><code class="docutils literal notranslate"><span class="pre">DetailView</span></code>: working with a single Ginger object<a class="headerlink" href="#detailview-working-with-a-single-ginger-object" title="Link to this heading">¶</a></h3>
+<p>To show the detail of an object, we basically need to do two things:
+we need to look up the object and then we need to make a
+<a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a> with a suitable template,
+and that object as context.</p>
+<p>To get the object, <a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>
+relies on <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>,
+which provides a
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin.get_object" title="ginger.views.generic.detail.SingleObjectMixin.get_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_object()</span></code></a>
+method that figures out the object based on the URL of the request (it
+looks for <code class="docutils literal notranslate"><span class="pre">pk</span></code> and <code class="docutils literal notranslate"><span class="pre">slug</span></code> keyword arguments as declared in the
+URLConf, and looks the object up either from the
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin.model" title="ginger.views.generic.detail.SingleObjectMixin.model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code></a> attribute
+on the view, or the
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin.queryset" title="ginger.views.generic.detail.SingleObjectMixin.queryset"><code class="xref py py-attr docutils literal notranslate"><span class="pre">queryset</span></code></a>
+attribute if that’s provided). <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> also overrides
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.ContextMixin.get_context_data" title="ginger.views.generic.base.ContextMixin.get_context_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_context_data()</span></code></a>,
+which is used across all Ginger’s built in class-based views to supply
+context data for template renders.</p>
+<p>To then make a <a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a>,
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> uses
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectTemplateResponseMixin" title="ginger.views.generic.detail.SingleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectTemplateResponseMixin</span></code></a>,
+which extends <a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin" title="ginger.views.generic.base.TemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code></a>,
+overriding
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.get_template_names" title="ginger.views.generic.base.TemplateResponseMixin.get_template_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_template_names()</span></code></a>
+as discussed above. It actually provides a fairly sophisticated set of options,
+but the main one that most people are going to use is
+<code class="docutils literal notranslate"><span class="pre">&lt;app_label&gt;/&lt;model_name&gt;_detail.html</span></code>. The <code class="docutils literal notranslate"><span class="pre">_detail</span></code> part can be changed
+by setting
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectTemplateResponseMixin.template_name_suffix" title="ginger.views.generic.detail.SingleObjectTemplateResponseMixin.template_name_suffix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_suffix</span></code></a>
+on a subclass to something else. (For instance, the <a class="reference internal" href="generic-editing.html"><span class="doc">generic edit
+views</span></a> use <code class="docutils literal notranslate"><span class="pre">_form</span></code> for create and update views, and
+<code class="docutils literal notranslate"><span class="pre">_confirm_delete</span></code> for delete views.)</p>
+</section>
+<section id="s-listview-working-with-many-ginger-objects">
+<span id="listview-working-with-many-ginger-objects"></span><h3><code class="docutils literal notranslate"><span class="pre">ListView</span></code>: working with many Ginger objects<a class="headerlink" href="#listview-working-with-many-ginger-objects" title="Link to this heading">¶</a></h3>
+<p>Lists of objects follow roughly the same pattern: we need a (possibly
+paginated) list of objects, typically a
+<a class="reference internal" href="../../ref/models/querysets.html#ginger.db.models.query.QuerySet" title="ginger.db.models.query.QuerySet"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuerySet</span></code></a>, and then we need to make a
+<a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a> with a suitable template
+using that list of objects.</p>
+<p>To get the objects, <a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> uses
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin" title="ginger.views.generic.list.MultipleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectMixin</span></code></a>, which
+provides both
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin.get_queryset" title="ginger.views.generic.list.MultipleObjectMixin.get_queryset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_queryset()</span></code></a>
+and
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin.paginate_queryset" title="ginger.views.generic.list.MultipleObjectMixin.paginate_queryset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">paginate_queryset()</span></code></a>. Unlike
+with <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>, there’s no need
+to key off parts of the URL to figure out the queryset to work with, so the
+default uses the
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin.queryset" title="ginger.views.generic.list.MultipleObjectMixin.queryset"><code class="xref py py-attr docutils literal notranslate"><span class="pre">queryset</span></code></a> or
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin.model" title="ginger.views.generic.list.MultipleObjectMixin.model"><code class="xref py py-attr docutils literal notranslate"><span class="pre">model</span></code></a> attribute
+on the view class. A common reason to override
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin.get_queryset" title="ginger.views.generic.list.MultipleObjectMixin.get_queryset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_queryset()</span></code></a>
+here would be to dynamically vary the objects, such as depending on
+the current user or to exclude posts in the future for a blog.</p>
+<p><a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin" title="ginger.views.generic.list.MultipleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectMixin</span></code></a> also overrides
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.ContextMixin.get_context_data" title="ginger.views.generic.base.ContextMixin.get_context_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_context_data()</span></code></a> to
+include appropriate context variables for pagination (providing
+dummies if pagination is disabled). It relies on <code class="docutils literal notranslate"><span class="pre">object_list</span></code> being
+passed in as a keyword argument, which <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> arranges for
+it.</p>
+<p>To make a <a class="reference internal" href="../../ref/template-response.html#ginger.template.response.TemplateResponse" title="ginger.template.response.TemplateResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponse</span></code></a>,
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> then uses
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectTemplateResponseMixin" title="ginger.views.generic.list.MultipleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectTemplateResponseMixin</span></code></a>;
+as with <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectTemplateResponseMixin" title="ginger.views.generic.detail.SingleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectTemplateResponseMixin</span></code></a>
+above, this overrides <code class="docutils literal notranslate"><span class="pre">get_template_names()</span></code> to provide <a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectTemplateResponseMixin" title="ginger.views.generic.list.MultipleObjectTemplateResponseMixin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">a</span> <span class="pre">range</span> <span class="pre">of</span>
+<span class="pre">options</span></code></a>,
+with the most commonly-used being
+<code class="docutils literal notranslate"><span class="pre">&lt;app_label&gt;/&lt;model_name&gt;_list.html</span></code>, with the <code class="docutils literal notranslate"><span class="pre">_list</span></code> part again
+being taken from the
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectTemplateResponseMixin.template_name_suffix" title="ginger.views.generic.list.MultipleObjectTemplateResponseMixin.template_name_suffix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">template_name_suffix</span></code></a>
+attribute. (The date based generic views use suffixes such as <code class="docutils literal notranslate"><span class="pre">_archive</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_archive_year</span></code> and so on to use different templates for the various
+specialized date-based list views.)</p>
+</section>
+</section>
+<section id="s-using-ginger-s-class-based-view-mixins">
+<span id="using-ginger-s-class-based-view-mixins"></span><h2>Using Ginger’s class-based view mixins<a class="headerlink" href="#using-ginger-s-class-based-view-mixins" title="Link to this heading">¶</a></h2>
+<p>Now we’ve seen how Ginger’s generic class-based views use the provided mixins,
+let’s look at other ways we can combine them. We’re still going to be combining
+them with either built-in class-based views, or other generic class-based
+views, but there are a range of rarer problems you can solve than are provided
+for by Ginger out of the box.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Not all mixins can be used together, and not all generic class
+based views can be used with all other mixins. Here we present a
+few examples that do work; if you want to bring together other
+functionality then you’ll have to consider interactions between
+attributes and methods that overlap between the different classes
+you’re using, and how <a class="reference external" href="https://www.python.org/download/releases/2.3/mro/">method resolution order</a> will affect which
+versions of the methods will be called in what order.</p>
+<p>The reference documentation for Ginger’s <a class="reference internal" href="../../ref/class-based-views/index.html"><span class="doc">class-based
+views</span></a> and <a class="reference internal" href="../../ref/class-based-views/mixins.html"><span class="doc">class-based view
+mixins</span></a> will help you in
+understanding which attributes and methods are likely to cause
+conflict between different classes and mixins.</p>
+<p>If in doubt, it’s often better to back off and base your work on
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#View" title="View"><code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></a> or <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#TemplateView" title="TemplateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></a>, perhaps with
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin" title="ginger.views.generic.list.MultipleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectMixin</span></code></a>. Although you
+will probably end up writing more code, it is more likely to be clearly
+understandable to someone else coming to it later, and with fewer
+interactions to worry about you will save yourself some thinking. (Of
+course, you can always dip into Ginger’s implementation of the generic
+class-based views for inspiration on how to tackle problems.)</p>
+</div>
+<section id="s-using-singleobjectmixin-with-view">
+<span id="using-singleobjectmixin-with-view"></span><h3>Using <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> with View<a class="headerlink" href="#using-singleobjectmixin-with-view" title="Link to this heading">¶</a></h3>
+<p>If we want to write a class-based view that responds only to <code class="docutils literal notranslate"><span class="pre">POST</span></code>, we’ll
+subclass <a class="reference internal" href="../../ref/class-based-views/base.html#ginger.views.generic.base.View" title="ginger.views.generic.base.View"><code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></a> and write a <code class="docutils literal notranslate"><span class="pre">post()</span></code> method
+in the subclass. However if we want our processing to work on a particular
+object, identified from the URL, we’ll want the functionality provided by
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>.</p>
+<p>We’ll demonstrate this with the <code class="docutils literal notranslate"><span class="pre">Author</span></code> model we used in the
+<a class="reference internal" href="generic-display.html"><span class="doc">generic class-based views introduction</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">views.py</span></code></span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">ginger.views</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic.detail</span> <span class="kn">import</span> <span class="n">SingleObjectMixin</span>
+<span class="kn">from</span> <span class="nn">books.models</span> <span class="kn">import</span> <span class="n">Author</span>
+
+
+<span class="k">class</span> <span class="nc">RecordInterestView</span><span class="p">(</span><span class="n">SingleObjectMixin</span><span class="p">,</span> <span class="n">View</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Records the current user&#39;s interest in an author.&quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Author</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+
+        <span class="c1"># Look up the author we&#39;re interested in.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="c1"># Actually record interest somehow here!</span>
+
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;author-detail&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In practice you’d probably want to record the interest in a key-value
+store rather than in a relational database, so we’ve left that bit
+out. The only bit of the view that needs to worry about using
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> is where we want to
+look up the author we’re interested in, which it does with a call to
+<code class="docutils literal notranslate"><span class="pre">self.get_object()</span></code>. Everything else is taken care of for us by the mixin.</p>
+<p>We can hook this into our URLs easily enough:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">urls.py</span></code></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">books.views</span> <span class="kn">import</span> <span class="n">RecordInterestView</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+    <span class="n">path</span><span class="p">(</span>
+        <span class="s2">&quot;author/&lt;int:pk&gt;/interest/&quot;</span><span class="p">,</span>
+        <span class="n">RecordInterestView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;author-interest&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">pk</span></code> named group, which
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin.get_object" title="ginger.views.generic.detail.SingleObjectMixin.get_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_object()</span></code></a> uses
+to look up the <code class="docutils literal notranslate"><span class="pre">Author</span></code> instance. You could also use a slug, or
+any of the other features of
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>.</p>
+</section>
+<section id="s-using-singleobjectmixin-with-listview">
+<span id="using-singleobjectmixin-with-listview"></span><h3>Using <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> with <code class="docutils literal notranslate"><span class="pre">ListView</span></code><a class="headerlink" href="#using-singleobjectmixin-with-listview" title="Link to this heading">¶</a></h3>
+<p><a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> provides built-in
+pagination, but you might want to paginate a list of objects that are
+all linked (by a foreign key) to another object. In our publishing
+example, you might want to paginate through all the books by a
+particular publisher.</p>
+<p>One way to do this is to combine <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> with
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>, so that the queryset
+for the paginated list of books can hang off the publisher found as the single
+object. In order to do this, we need to have two different querysets:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Book</span></code> queryset for use by <a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a></dt><dd><p>Since we have access to the <code class="docutils literal notranslate"><span class="pre">Publisher</span></code> whose books we want to list, we
+override <code class="docutils literal notranslate"><span class="pre">get_queryset()</span></code> and use the <code class="docutils literal notranslate"><span class="pre">Publisher</span></code>’s <a class="reference internal" href="../db/queries.html#backwards-related-objects"><span class="std std-ref">reverse
+foreign key manager</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Publisher</span></code> queryset for use in <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin.get_object" title="ginger.views.generic.detail.SingleObjectMixin.get_object"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_object()</span></code></a></dt><dd><p>We’ll rely on the default implementation of <code class="docutils literal notranslate"><span class="pre">get_object()</span></code> to fetch the
+correct <code class="docutils literal notranslate"><span class="pre">Publisher</span></code> object.
+However, we need to explicitly pass a <code class="docutils literal notranslate"><span class="pre">queryset</span></code> argument because
+otherwise the default implementation of <code class="docutils literal notranslate"><span class="pre">get_object()</span></code> would call
+<code class="docutils literal notranslate"><span class="pre">get_queryset()</span></code> which we have overridden to return <code class="docutils literal notranslate"><span class="pre">Book</span></code> objects
+instead of <code class="docutils literal notranslate"><span class="pre">Publisher</span></code> ones.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We have to think carefully about <code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code>.
+Since both <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> will
+put things in the context data under the value of
+<code class="docutils literal notranslate"><span class="pre">context_object_name</span></code> if it’s set, we’ll instead explicitly
+ensure the <code class="docutils literal notranslate"><span class="pre">Publisher</span></code> is in the context data. <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a>
+will add in the suitable <code class="docutils literal notranslate"><span class="pre">page_obj</span></code> and <code class="docutils literal notranslate"><span class="pre">paginator</span></code> for us
+providing we remember to call <code class="docutils literal notranslate"><span class="pre">super()</span></code>.</p>
+</div>
+<p>Now we can write a new <code class="docutils literal notranslate"><span class="pre">PublisherDetailView</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views.generic</span> <span class="kn">import</span> <span class="n">ListView</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic.detail</span> <span class="kn">import</span> <span class="n">SingleObjectMixin</span>
+<span class="kn">from</span> <span class="nn">books.models</span> <span class="kn">import</span> <span class="n">Publisher</span>
+
+
+<span class="k">class</span> <span class="nc">PublisherDetailView</span><span class="p">(</span><span class="n">SingleObjectMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span>
+    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;books/publisher_detail.html&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;publisher&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span>
+        <span class="k">return</span> <span class="n">context</span>
+
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">book_set</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice how we set <code class="docutils literal notranslate"><span class="pre">self.object</span></code> within <code class="docutils literal notranslate"><span class="pre">get()</span></code> so we
+can use it again later in <code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code> and <code class="docutils literal notranslate"><span class="pre">get_queryset()</span></code>.
+If you don’t set <code class="docutils literal notranslate"><span class="pre">template_name</span></code>, the template will default to the normal
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> choice, which in this case would be
+<code class="docutils literal notranslate"><span class="pre">&quot;books/book_list.html&quot;</span></code> because it’s a list of books;
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#ListView" title="ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a> knows nothing about
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a>, so it doesn’t have
+any clue this view is anything to do with a <code class="docutils literal notranslate"><span class="pre">Publisher</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">paginate_by</span></code> is deliberately small in the example so you don’t
+have to create lots of books to see the pagination working! Here’s the
+template you’d want to use:</p>
+<div class="highlight-html+django notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Publisher <span class="cp">{{</span> <span class="nv">publisher.name</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+      <span class="cp">{%</span> <span class="k">for</span> <span class="nv">book</span> <span class="k">in</span> <span class="nv">page_obj</span> <span class="cp">%}</span>
+        <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span><span class="cp">{{</span> <span class="nv">book.title</span> <span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;pagination&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;step-links&quot;</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">if</span> <span class="nv">page_obj.has_previous</span> <span class="cp">%}</span>
+                <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;?page=</span><span class="cp">{{</span> <span class="nv">page_obj.previous_page_number</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>previous<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+
+            <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;current&quot;</span><span class="p">&gt;</span>
+                Page <span class="cp">{{</span> <span class="nv">page_obj.number</span> <span class="cp">}}</span> of <span class="cp">{{</span> <span class="nv">paginator.num_pages</span> <span class="cp">}}</span>.
+            <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+
+            <span class="cp">{%</span> <span class="k">if</span> <span class="nv">page_obj.has_next</span> <span class="cp">%}</span>
+                <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;?page=</span><span class="cp">{{</span> <span class="nv">page_obj.next_page_number</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="p">&gt;</span>next<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+            <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+        <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s-avoid-anything-more-complex">
+<span id="avoid-anything-more-complex"></span><h2>Avoid anything more complex<a class="headerlink" href="#avoid-anything-more-complex" title="Link to this heading">¶</a></h2>
+<p>Generally you can use
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin" title="ginger.views.generic.base.TemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> when you need
+their functionality. As shown above, with a bit of care you can even
+combine <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> with
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.list.ListView" title="ginger.views.generic.list.ListView"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListView</span></code></a>. However things get
+increasingly complex as you try to do so, and a good rule of thumb is:</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Each of your views should use only mixins or views from one of the
+groups of generic class-based views: <a class="reference internal" href="generic-display.html"><span class="doc">detail,
+list</span></a>, <a class="reference internal" href="generic-editing.html"><span class="doc">editing</span></a> and
+date. For example it’s fine to combine
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#TemplateView" title="TemplateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></a> (built in view) with
+<a class="reference internal" href="../../ref/class-based-views/mixins-multiple-object.html#ginger.views.generic.list.MultipleObjectMixin" title="ginger.views.generic.list.MultipleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectMixin</span></code></a> (generic list), but
+you’re likely to have problems combining <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> (generic
+detail) with <code class="docutils literal notranslate"><span class="pre">MultipleObjectMixin</span></code> (generic list).</p>
+</div>
+<p>To show what happens when you try to get more sophisticated, we show
+an example that sacrifices readability and maintainability when there
+is a simpler solution. First, let’s look at a naive attempt to combine
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> with
+<a class="reference internal" href="../../ref/class-based-views/mixins-editing.html#ginger.views.generic.edit.FormMixin" title="ginger.views.generic.edit.FormMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormMixin</span></code></a> to enable us to
+<code class="docutils literal notranslate"><span class="pre">POST</span></code> a Ginger <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> to the same URL as we’re
+displaying an object using <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>.</p>
+<section id="s-using-formmixin-with-detailview">
+<span id="using-formmixin-with-detailview"></span><h3>Using <code class="docutils literal notranslate"><span class="pre">FormMixin</span></code> with <code class="docutils literal notranslate"><span class="pre">DetailView</span></code><a class="headerlink" href="#using-formmixin-with-detailview" title="Link to this heading">¶</a></h3>
+<p>Think back to our earlier example of using <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#View" title="View"><code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></a> and
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> together. We were
+recording a user’s interest in a particular author; say now that we want to
+let them leave a message saying why they like them. Again, let’s assume we’re
+not going to store this in a relational database but instead in
+something more esoteric that we won’t worry about here.</p>
+<p>At this point it’s natural to reach for a <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> to
+encapsulate the information sent from the user’s browser to Ginger. Say also
+that we’re heavily invested in <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>, so we want to use the same URL for
+displaying the author as for capturing the message from the
+user. Let’s rewrite our <code class="docutils literal notranslate"><span class="pre">AuthorDetailView</span></code> to do that.</p>
+<p>We’ll keep the <code class="docutils literal notranslate"><span class="pre">GET</span></code> handling from <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>, although
+we’ll have to add a <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> into the context data so we can
+render it in the template. We’ll also want to pull in form processing
+from <a class="reference internal" href="../../ref/class-based-views/mixins-editing.html#ginger.views.generic.edit.FormMixin" title="ginger.views.generic.edit.FormMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormMixin</span></code></a>, and write a bit of
+code so that on <code class="docutils literal notranslate"><span class="pre">POST</span></code> the form gets called appropriately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use <a class="reference internal" href="../../ref/class-based-views/mixins-editing.html#ginger.views.generic.edit.FormMixin" title="ginger.views.generic.edit.FormMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormMixin</span></code></a> and implement
+<code class="docutils literal notranslate"><span class="pre">post()</span></code> ourselves rather than try to mix <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> with
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#FormView" title="FormView"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormView</span></code></a> (which provides a suitable <code class="docutils literal notranslate"><span class="pre">post()</span></code> already) because
+both of the views implement <code class="docutils literal notranslate"><span class="pre">get()</span></code>, and things would get much more
+confusing.</p>
+</div>
+<p>Our new <code class="docutils literal notranslate"><span class="pre">AuthorDetailView</span></code> looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># CAUTION: you almost certainly do not want to do this.</span>
+<span class="c1"># It is provided as part of a discussion of problems you can</span>
+<span class="c1"># run into when combining different generic class-based view</span>
+<span class="c1"># functionality that is not designed to be used together.</span>
+
+<span class="kn">from</span> <span class="nn">ginger</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">HttpResponseForbidden</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic</span> <span class="kn">import</span> <span class="n">DetailView</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic.edit</span> <span class="kn">import</span> <span class="n">FormMixin</span>
+<span class="kn">from</span> <span class="nn">books.models</span> <span class="kn">import</span> <span class="n">Author</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorInterestForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorDetailView</span><span class="p">(</span><span class="n">FormMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Author</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">AuthorInterestForm</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;author-detail&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_form</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_valid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_invalid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="c1"># Here, we would record the user&#39;s interest using the message</span>
+        <span class="c1"># passed in form.cleaned_data[&#39;message&#39;]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">form_valid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">get_success_url()</span></code> provides somewhere to redirect to, which gets used
+in the default implementation of <code class="docutils literal notranslate"><span class="pre">form_valid()</span></code>. We have to provide our
+own <code class="docutils literal notranslate"><span class="pre">post()</span></code> as noted earlier.</p>
+</section>
+<section id="s-a-better-solution">
+<span id="a-better-solution"></span><h3>A better solution<a class="headerlink" href="#a-better-solution" title="Link to this heading">¶</a></h3>
+<p>The number of subtle interactions between
+<a class="reference internal" href="../../ref/class-based-views/mixins-editing.html#ginger.views.generic.edit.FormMixin" title="ginger.views.generic.edit.FormMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormMixin</span></code></a> and <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> is
+already testing our ability to manage things. It’s unlikely you’d want to
+write this kind of class yourself.</p>
+<p>In this case, you could write the <code class="docutils literal notranslate"><span class="pre">post()</span></code> method yourself, keeping
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> as the only generic functionality, although writing
+<a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> handling code involves a lot of duplication.</p>
+<p>Alternatively, it would still be less work than the above approach to
+have a separate view for processing the form, which could use
+<a class="reference internal" href="../../ref/class-based-views/generic-editing.html#ginger.views.generic.edit.FormView" title="ginger.views.generic.edit.FormView"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormView</span></code></a> distinct from
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> without concerns.</p>
+</section>
+<section id="s-an-alternative-better-solution">
+<span id="an-alternative-better-solution"></span><h3>An alternative better solution<a class="headerlink" href="#an-alternative-better-solution" title="Link to this heading">¶</a></h3>
+<p>What we’re really trying to do here is to use two different class
+based views from the same URL. So why not do just that? We have a very
+clear division here: <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests should get the
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#DetailView" title="DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> (with the <a class="reference internal" href="../../ref/forms/api.html#ginger.forms.Form" title="ginger.forms.Form"><code class="xref py py-class docutils literal notranslate"><span class="pre">Form</span></code></a> added to the context
+data), and <code class="docutils literal notranslate"><span class="pre">POST</span></code> requests should get the <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#FormView" title="FormView"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormView</span></code></a>. Let’s
+set up those views first.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">AuthorDetailView</span></code> view is almost the same as <a class="reference internal" href="generic-display.html#generic-views-extra-work"><span class="std std-ref">when we
+first introduced AuthorDetailView</span></a>; we have to
+write our own <code class="docutils literal notranslate"><span class="pre">get_context_data()</span></code> to make the
+<code class="docutils literal notranslate"><span class="pre">AuthorInterestForm</span></code> available to the template. We’ll skip the
+<code class="docutils literal notranslate"><span class="pre">get_object()</span></code> override from before for clarity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic</span> <span class="kn">import</span> <span class="n">DetailView</span>
+<span class="kn">from</span> <span class="nn">books.models</span> <span class="kn">import</span> <span class="n">Author</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorInterestForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorDetailView</span><span class="p">(</span><span class="n">DetailView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Author</span>
+
+    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">&quot;form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AuthorInterestForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+<p>Then the <code class="docutils literal notranslate"><span class="pre">AuthorInterestFormView</span></code> is a <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#FormView" title="FormView"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormView</span></code></a>, but we have to
+bring in <a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectMixin" title="ginger.views.generic.detail.SingleObjectMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code></a> so we can find
+the author we’re talking about, and we have to remember to set
+<code class="docutils literal notranslate"><span class="pre">template_name</span></code> to ensure that form errors will render the same template as
+<code class="docutils literal notranslate"><span class="pre">AuthorDetailView</span></code> is using on <code class="docutils literal notranslate"><span class="pre">GET</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">HttpResponseForbidden</span>
+<span class="kn">from</span> <span class="nn">ginger.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic</span> <span class="kn">import</span> <span class="n">FormView</span>
+<span class="kn">from</span> <span class="nn">ginger.views.generic.detail</span> <span class="kn">import</span> <span class="n">SingleObjectMixin</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorInterestFormView</span><span class="p">(</span><span class="n">SingleObjectMixin</span><span class="p">,</span> <span class="n">FormView</span><span class="p">):</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;books/author_detail.html&quot;</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">AuthorInterestForm</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Author</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_success_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;author-detail&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pk&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Finally we bring this together in a new <code class="docutils literal notranslate"><span class="pre">AuthorView</span></code> view. We
+already know that calling <a class="reference internal" href="../../ref/class-based-views/base.html#ginger.views.generic.base.View.as_view" title="ginger.views.generic.base.View.as_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_view()</span></code></a> on
+a class-based view gives us something that behaves exactly like a function
+based view, so we can do that at the point we choose between the two subviews.</p>
+<p>You can pass through keyword arguments to
+<a class="reference internal" href="../../ref/class-based-views/base.html#ginger.views.generic.base.View.as_view" title="ginger.views.generic.base.View.as_view"><code class="xref py py-meth docutils literal notranslate"><span class="pre">as_view()</span></code></a> in the same way you
+would in your URLconf, such as if you wanted the <code class="docutils literal notranslate"><span class="pre">AuthorInterestFormView</span></code>
+behavior to also appear at another URL but using a different template:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views</span> <span class="kn">import</span> <span class="n">View</span>
+
+
+<span class="k">class</span> <span class="nc">AuthorView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">AuthorDetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">AuthorInterestFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This approach can also be used with any other generic class-based
+views or your own class-based views inheriting directly from
+<a class="reference internal" href="../../ref/class-based-views/flattened-index.html#View" title="View"><code class="xref py py-class docutils literal notranslate"><span class="pre">View</span></code></a> or <a class="reference internal" href="../../ref/class-based-views/flattened-index.html#TemplateView" title="TemplateView"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateView</span></code></a>, as it keeps the different
+views as separate as possible.</p>
+</section>
+</section>
+<section id="s-more-than-just-html">
+<span id="s-jsonresponsemixin-example"></span><span id="more-than-just-html"></span><span id="jsonresponsemixin-example"></span><h2>More than just HTML<a class="headerlink" href="#more-than-just-html" title="Link to this heading">¶</a></h2>
+<p>Where class-based views shine is when you want to do the same thing many times.
+Suppose you’re writing an API, and every view should return JSON instead of
+rendered HTML.</p>
+<p>We can create a mixin class to use in all of our views, handling the
+conversion to JSON once.</p>
+<p>For example, a JSON mixin might look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span>
+
+
+<span class="k">class</span> <span class="nc">JSONResponseMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A mixin that can be used to render a JSON response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">render_to_json_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a JSON response, transforming &#39;context&#39; to make the payload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">context</span><span class="p">),</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an object that will be serialized as JSON by json.dumps().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Note: This is *EXTREMELY* naive; in reality, you&#39;ll need</span>
+        <span class="c1"># to do much more complex handling to ensure that arbitrary</span>
+        <span class="c1"># objects -- such as Ginger model instances or querysets</span>
+        <span class="c1"># -- can be serialized as JSON.</span>
+        <span class="k">return</span> <span class="n">context</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Check out the <a class="reference internal" href="../serialization.html"><span class="doc">Serializing Ginger objects</span></a> documentation for more
+information on how to correctly transform Ginger models and querysets into
+JSON.</p>
+</div>
+<p>This mixin provides a <code class="docutils literal notranslate"><span class="pre">render_to_json_response()</span></code> method with the same signature
+as <a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.render_to_response" title="ginger.views.generic.base.TemplateResponseMixin.render_to_response"><code class="xref py py-func docutils literal notranslate"><span class="pre">render_to_response()</span></code></a>.
+To use it, we need to mix it into a <code class="docutils literal notranslate"><span class="pre">TemplateView</span></code> for example, and override
+<code class="docutils literal notranslate"><span class="pre">render_to_response()</span></code> to call <code class="docutils literal notranslate"><span class="pre">render_to_json_response()</span></code> instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
+
+
+<span class="k">class</span> <span class="nc">JSONView</span><span class="p">(</span><span class="n">JSONResponseMixin</span><span class="p">,</span> <span class="n">TemplateView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">render_to_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_json_response</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Equally we could use our mixin with one of the generic views. We can make our
+own version of <a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> by mixing
+<code class="docutils literal notranslate"><span class="pre">JSONResponseMixin</span></code> with the
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.BaseDetailView" title="ginger.views.generic.detail.BaseDetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetailView</span></code></a> – (the
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> before template
+rendering behavior has been mixed in):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views.generic.detail</span> <span class="kn">import</span> <span class="n">BaseDetailView</span>
+
+
+<span class="k">class</span> <span class="nc">JSONDetailView</span><span class="p">(</span><span class="n">JSONResponseMixin</span><span class="p">,</span> <span class="n">BaseDetailView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">render_to_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_json_response</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">response_kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This view can then be deployed in the same way as any other
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a>, with exactly the
+same behavior – except for the format of the response.</p>
+<p>If you want to be really adventurous, you could even mix a
+<a class="reference internal" href="../../ref/class-based-views/generic-display.html#ginger.views.generic.detail.DetailView" title="ginger.views.generic.detail.DetailView"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetailView</span></code></a> subclass that is able
+to return <em>both</em> HTML and JSON content, depending on some property of
+the HTTP request, such as a query argument or an HTTP header. Mix in both the
+<code class="docutils literal notranslate"><span class="pre">JSONResponseMixin</span></code> and a
+<a class="reference internal" href="../../ref/class-based-views/mixins-single-object.html#ginger.views.generic.detail.SingleObjectTemplateResponseMixin" title="ginger.views.generic.detail.SingleObjectTemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleObjectTemplateResponseMixin</span></code></a>,
+and override the implementation of
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.render_to_response" title="ginger.views.generic.base.TemplateResponseMixin.render_to_response"><code class="xref py py-func docutils literal notranslate"><span class="pre">render_to_response()</span></code></a>
+to defer to the appropriate rendering method depending on the type of response
+that the user requested:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ginger.views.generic.detail</span> <span class="kn">import</span> <span class="n">SingleObjectTemplateResponseMixin</span>
+
+
+<span class="k">class</span> <span class="nc">HybridDetailView</span><span class="p">(</span>
+    <span class="n">JSONResponseMixin</span><span class="p">,</span> <span class="n">SingleObjectTemplateResponseMixin</span><span class="p">,</span> <span class="n">BaseDetailView</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="nf">render_to_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># Look for a &#39;format=json&#39; GET argument</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_to_json_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render_to_response</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Because of the way that Python resolves method overloading, the call to
+<code class="docutils literal notranslate"><span class="pre">super().render_to_response(context)</span></code> ends up calling the
+<a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin.render_to_response" title="ginger.views.generic.base.TemplateResponseMixin.render_to_response"><code class="xref py py-meth docutils literal notranslate"><span class="pre">render_to_response()</span></code></a>
+implementation of <a class="reference internal" href="../../ref/class-based-views/mixins-simple.html#ginger.views.generic.base.TemplateResponseMixin" title="ginger.views.generic.base.TemplateResponseMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateResponseMixin</span></code></a>.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../migrations.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Migrations</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="generic-editing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Form handling with class-based views</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Ginger Society and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on Oct 22, 2024</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Using mixins with class-based views</a><ul>
+<li><a class="reference internal" href="#context-and-template-responses">Context and template responses</a></li>
+<li><a class="reference internal" href="#building-up-ginger-s-generic-class-based-views">Building up Ginger’s generic class-based views</a><ul>
+<li><a class="reference internal" href="#detailview-working-with-a-single-ginger-object"><code class="docutils literal notranslate"><span class="pre">DetailView</span></code>: working with a single Ginger object</a></li>
+<li><a class="reference internal" href="#listview-working-with-many-ginger-objects"><code class="docutils literal notranslate"><span class="pre">ListView</span></code>: working with many Ginger objects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-ginger-s-class-based-view-mixins">Using Ginger’s class-based view mixins</a><ul>
+<li><a class="reference internal" href="#using-singleobjectmixin-with-view">Using <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> with View</a></li>
+<li><a class="reference internal" href="#using-singleobjectmixin-with-listview">Using <code class="docutils literal notranslate"><span class="pre">SingleObjectMixin</span></code> with <code class="docutils literal notranslate"><span class="pre">ListView</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avoid-anything-more-complex">Avoid anything more complex</a><ul>
+<li><a class="reference internal" href="#using-formmixin-with-detailview">Using <code class="docutils literal notranslate"><span class="pre">FormMixin</span></code> with <code class="docutils literal notranslate"><span class="pre">DetailView</span></code></a></li>
+<li><a class="reference internal" href="#a-better-solution">A better solution</a></li>
+<li><a class="reference internal" href="#an-alternative-better-solution">An alternative better solution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#more-than-just-html">More than just HTML</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=bf43e847"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
