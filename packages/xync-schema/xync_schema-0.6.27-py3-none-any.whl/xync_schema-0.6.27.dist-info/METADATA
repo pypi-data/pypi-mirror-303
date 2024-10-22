@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: xync-schema
+Version: 0.6.27
+Summary: XyncNet project database model schema
+Author-email: Mike Artemiev <mixartemev@gmail.com>
+License: EULA
+Project-URL: Homepage, https://gitlab.com/xync/back/schema
+Project-URL: Repository, https://gitlab.com/xync/back/schema
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: xtg-auth
+Provides-Extra: dev
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+Requires-Dist: setuptools-scm ; extra == 'dev'
+
+## INSTALL
+```bash
+# Create python virtual environment
+python3 -m venv venv
+# Activate this environment
+source venv/bin/activate
+# Install dependencies
+pip install -r requirements.dev.txt
+
+# Create pg db
+createdb --U username -W dbname
+## set password for db user
+
+# Copy .env file from sample template
+cp .env.sample .env
+## set your pg creds in .env file
+```
+
+## TEST
+```bash
+pytest
+```
+
+
+### pre-commit
+You can done `commit` only after `pytest` will done success.
+Pre-commit script stored in `.git/hooks/pre-commit` file; current script is:
+```shell
+#!/bin/sh
+pytest
+```
