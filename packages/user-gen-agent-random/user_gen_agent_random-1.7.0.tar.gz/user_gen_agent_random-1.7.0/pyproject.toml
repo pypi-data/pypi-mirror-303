@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "user-gen-agent-random"
+version = "1.7.0"
+authors = []
+dependencies = [
+    "importlib-resources >= 5.0; python_version < '3.10'",
+    "importlib-metadata ~= 4.0; python_version < '3.8'",
+]
+description = "Agent user generator"
+keywords = [
+    "user",
+    "agent",
+    "user agent",
+    "useragent",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/"
+
+[tool.ruff]
+line-length = 142
+lint.select = ["B", "C4", "C9", "E", "F", "I", "PL", "S", "SIM", "U", "W", "YTT"]
+lint.ignore = ["B904", "C408", "PLW2901", "SIM105", "SIM108"]
+target-version = "py37"
+
+[tool.ruff.lint.isort]
+known-first-party = ["fake_useragent"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 13
+
+[tool.ruff.lint.per-file-ignores]
+"src/fake_useragent/__init__.py" = ["F401"]
+"src/fake_useragent/fake.py" = ["B006", "S101"]
+"tests/*" = ["S", "SIM", "UP015"]
+
+[tool.ruff.lint.pylint]
+max-args = 7
+max-branches = 13
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-data]
+"fake_useragent.data" = ["*.json", "*.jpg"]
