@@ -1,0 +1,118 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "setuptools_scm[toml]>=3.4.3",
+    "wheel",
+    "pyproject-flake8",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bagofchips"
+dynamic = ["version"]
+dependencies = [
+    "pyyaml",
+    "lalsuite",
+    "python-ligo-lw",
+    "h5py",
+    "gwsci-manifold",
+]
+requires-python = ">=3.10"
+authors = [
+    { name = "James Kennington", email = "jmk7376@psu.edu" },
+]
+description = "All that and a bag of"
+readme = "README.md"
+license = { text = "MPL-2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://git.ligo.org/james.kennington/chips"
+Documentation = "https://docs.ligo.org/james.kennington/chips"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+docs = [
+    "furo",
+    "myst-parser",
+    "sphinx",
+]
+lint = [
+    "black",
+    "flake8",
+    "flake8-bandit",
+    "flake8-black",
+    "flake8-bugbear",
+    "flake8-future-annotations",
+    "flake8-isort",
+    "flake8-logging-format",
+    "isort",
+    "mypy",
+    "mypy-extensions",
+]
+dev = [
+    "bagofchips[docs]",
+    "bagofchips[lint]",
+    "bagofchips[test]",
+]
+
+[project.scripts]
+chips-bank-search = "chips.bin.bank_search:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+chips = [
+    "data/*",
+]
+
+[tool.setuptools_scm]
+write_to = "src/chips/_version.py"
+
+[tool.coverage.paths]
+source = [
+    "src/chips/",
+    "*/chips/",
+]
+
+[tool.coverage.report]
+omit = ["_version.py", "tests/*", "*/__init__.py"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = [
+    "build",
+    "docs",
+]
+
+[tool.pytest]
+addopts = "-p no:warnings --cov=chips"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",
+    "S101",
+]
+per-file-ignores = [
+    "__init__.py:F401",
+    "_version.py:BLK100",
+    "docs/conf.py:E501",
+    "tests/*.py:E731",
+]
+exclude = [
+    "build",
+    "docs",
+    "_version.py",
+]
