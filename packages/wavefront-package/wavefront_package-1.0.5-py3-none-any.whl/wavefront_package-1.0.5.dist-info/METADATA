@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: wavefront-package
+Version: 1.0.5
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: opencv-python
+
+# Wavefront_package
+このツールはYanatori (2022) を修正したツールです
+
+# 実行方法
+python -m wavefront_package
+
+# 主な機能
+Vronoi図の生成
+経路探査
+
+# 依存関係
+numpy 
+matplotlib
+opencv-python
+
+# ファイルの説明
+circle.csv 
+生成源のデータ
+ 
+__main__.pyは
+必要なモジュールをインストールしています.
+コマンドライン引数が2個未満の時,メインプログラム(wavefront_5_pac.py)が実行されます
+ファイルの入力 スタート点とゴール点の設定 出力画像の表示を行う
+画像の大きさ Voronoi(縦,横) 指定
+# 以下 主な変数の説明
+vor.file_input('datefile') で入力ファイルの指定します
+ 
+ diagram = vor.voronoi_tessellation() ボロノイ図の生成
+
+path = vor.search_path(maze,s,g,8) sとgの座標を入力します ex. s:(200,180),g:(270,320)
+
+plt.imshow(maze, cmap=ListedColormap(['white','black','red','gray']))
+ボロノイ図の色をつける この処理はなくてもいいが場合により見えずらくなる
+
+plt.scatter(x,y,color='black', s= 3)
+                
+線の色を変えたり大きさを変えている. この処理を加えることで実行時間は短くなるが,線は見えやすくなる
+ここではボロノイ境界線を通常の3倍の太さにスタート点から境界上の点までの線とゴール点から
+境界上の点までの線を4倍の太さにしている
+
+wavefront_5_pac.py
+メインのプログラムです
+
+setup.py
+パッケージのメタデータを定義する
+
