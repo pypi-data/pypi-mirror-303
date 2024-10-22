@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "study-da"
+version = "0.3.0"
+description = "A tool to create large-scale DA simulations."
+authors = ["Colas <colasdroin@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^2.0.2"
+pandas = "^2.2.3"
+pyyaml = "^6.0.2"
+cpymad = "^1.16.3"
+ruamel-yaml = "^0.18.6"
+jinja2 = "^3.1.4"
+xsuite = "^0.18.6"
+fastparquet = "^2024.5.0"
+nafflib = "^2.0.2"
+filelock = "^3.16.1"
+# Xmask commented out as external_dependencies are not supported by pypi
+# xmask = {path = "external_dependencies/xmask", develop = true}
+black = "^24.10.0"
+seaborn = "^0.13.2"
+qrcode = "^8.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "*"
+mkdocstrings = {extras = ["python"], version = "^0.26.2"}
+mkdocs-material = "^9.5.41"
+mkdocs-gen-files = "^0.5.0"
+mkdocs-literate-nav = "^0.6.1"
+mkdocs-section-index = "^0.3.9"
+mkdocs-git-revision-date-localized-plugin = "^1.2.9"
+mkdocs-git-authors-plugin = "^0.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
