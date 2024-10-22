@@ -1,0 +1,183 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vasca"
+dynamic = ["version"]
+description = "Ultraviolet Variability Analysis is an astronomy pipeline for time-variable sources."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+keywords = ["astronomy", "ultraviolet", "pipeline"]
+authors = [
+    {name = "Julian Schliwinski", email = "julian.schliwinski@desy.de"},
+    {name = "Rolf Bühler", email = "rolf.buehler@desy.de"},
+]
+dependencies = [
+  "astropy ~= 5.3",
+  "astroquery ~= 0.4.6",
+  "coverage ~= 7.2.7",
+  "healpy ~= 1.17",
+  "loguru ~= 0.7.0",
+  "matplotlib ~= 3.7.1",
+  "numpy ~= 1.24.3",
+  "pandas ~= 2.0.2",
+  "pytest ~= 7.3.1",
+  "pytest-cov ~= 4.1.0",
+  "python-dotenv ~= 1.0.0",
+  "PyYAML ~= 6.0",
+  "scikit-learn ~= 1.3.0",
+  "setuptools ~= 67.8.0",
+  "setuptools_scm",
+  "regions ~= 0.7",
+  "pyyaml-include ~= 1.3",
+  "ipywidgets ~= 8.0.6",
+  "ipympl ~= 0.9.3",
+  "jupyterlab ~= 4.0.2",
+  "sphinx ~= 7.2.6",
+  "myst-parser ~= 4.0",
+  "furo",
+  "sphinx_autodoc2",
+  "sphinx_copybutton",
+  "sphinx-tippy",
+  
+]
+
+[project.urls]
+homepage = "https://schliwiju.github.io/vasca-mirror/"
+documentation = "https://schliwiju.github.io/vasca-mirror/"
+repository = "https://github.com/rbuehler/vasca"
+changelog = "https://tbd.desy.de"
+
+[project.scripts]
+vasca_pipe = "vasca.vasca_pipe:run_from_file"
+
+[tool.setuptools]
+
+[tool.setuptools_scm]
+write_to = "vasca/_version.py"
+
+[tool.pytest.ini_options]
+# Pytest settings (https://docs.pytest.org/en/6.2.x/reference.html#configuration-options)
+minversion = "6.0"
+addopts = "-v"
+testpaths = ["vasca/test"]
+log_cli = true
+
+[tool.isort]
+# Black-Isort compatibility (https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#isort)
+# could be replaced by 'profile = "black"' for isort versions >=5.0.0
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.11
+target-version = "py311"
+
+[tool.ruff.lint]
+# Ruff rules docs: https://docs.astral.sh/ruff/rules/
+# Selection below from: https://codebase.helmholtz.cloud/hifis/cloud/access-layer/portal/-/blob/4f9600fb942da5eefc2c0d88f70b120ef2b72206/pyproject.toml#L67
+select = [
+  "F",
+  "E",
+  "W",
+  "I",
+  "N",
+  "UP",
+  "ANN",
+  "BLE",
+  "FBT",
+  "B",
+  "A",
+  "C4",
+  "DTZ",
+  "T10",
+  "T20",
+  "DJ",
+  "EM",
+  "EXE",
+  "ISC",
+  "ICN",
+  "G",
+  "INP",
+  "PIE",
+  "PYI",
+  "PT",
+  "Q",
+  "RSE",
+  "RET",
+  "SLF",
+  "SIM",
+  "TID",
+  "TCH",
+  "INT",
+  "ARG",
+  "PTH",
+  "ERA",
+  "PD",
+  "PGH",
+  "PL",
+  "TRY",
+  "NPY",
+  "NPY201",
+  "RUF"
+  ]
+
+ignore = ["ANN101"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
