@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "easypost-python-toolkit"
+dynamic = ["version"]
+authors = [
+  { name="Postalia Belgium", email="it@easypost.eu" },
+]
+description = "A package providing easy-to-use solutions for common recurring problems. More info in the README file"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pyodbc~=5.1.0",
+    "slack_sdk~=3.30.0",
+    "elasticsearch~=8.14.0"
+]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://bitbucket.org/easypostit/easypost-python-toolkit"
+
+[tool.hatch.version]
+path = "easypost_python_toolkit/__version__.py"
