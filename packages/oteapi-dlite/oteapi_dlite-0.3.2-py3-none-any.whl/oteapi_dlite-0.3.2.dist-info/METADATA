@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: oteapi-dlite
+Version: 0.3.2
+Summary: DLite plugin for Open Translation Environment (OTE) API.
+Keywords: OTE,OTEAPI,LITE,OTEAPI-DLITE
+Author-email: SINTEF <Team4.0@SINTEF.no>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Requires-Dist: DLite-Python>=0.4.5,<1.0
+Requires-Dist: numpy>=1.21,<2.0.3
+Requires-Dist: oteapi-core>=0.6.0,<0.6.2
+Requires-Dist: pydantic>=2.1,<2.9
+Requires-Dist: pydantic-settings>=2.0,<2.7
+Requires-Dist: typing-extensions>=4.8,<4.13; python_version<'3.10'
+Requires-Dist: Pillow>=9.0.1,<12
+Requires-Dist: tripper>=0.3.4, <0.3.5
+Requires-Dist: oteapi-dlite[docs,testing] ; extra == "dev"
+Requires-Dist: pre-commit==4.0.1 ; extra == "dev"
+Requires-Dist: mike~=2.1 ; extra == "docs"
+Requires-Dist: mkdocs~=1.6 ; extra == "docs"
+Requires-Dist: mkdocs-autorefs~=1.2 ; extra == "docs"
+Requires-Dist: mkdocs-awesome-pages-plugin~=2.9 ; extra == "docs"
+Requires-Dist: mkdocs-material~=9.5 ; extra == "docs"
+Requires-Dist: mkdocstrings[python]~=0.26.0 ; extra == "docs"
+Requires-Dist: PyYAML>=5.4.1,<7 ; extra == "testing"
+Requires-Dist: otelib>=0.4.0,<1 ; extra == "testing"
+Requires-Dist: rdflib>=5.0.0,<8 ; extra == "testing"
+Requires-Dist: pytest==8.3.3 ; extra == "testing"
+Requires-Dist: pytest-cov==5.0.0 ; extra == "testing"
+Project-URL: Changelog, https://github.com/EMMC-ASBL/oteapi-dlite/blob/master/CHANGELOG.md
+Project-URL: Documentation, https://EMMC-ASBL.github.io/oteapi-dlite
+Project-URL: Home, https://github.com/EMMC-ASBL/oteapi-dlite
+Project-URL: Issue Tracker, https://github.com/EMMC-ASBL/oteapi-dlite/issues
+Project-URL: Package, https://pypi.org/project/oteapi-dlite
+Project-URL: Source, https://github.com/EMMC-ASBL/oteapi-dlite
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: testing
+
+[![DOI](https://zenodo.org/badge/455070691.svg)](https://zenodo.org/badge/latestdoi/455070691)
+
+# OTEAPI DLite Plugin
+
+All strategies implemented in this plugin (except for `create_collection`) assumes that you have the UUID of a DLite collection with the key `collection_id` in the `session`:
+
+```python
+collection_id = session["collection_id"]
+coll = dlite.get_collection(collection_id)
+```
+
+A DLite collection stores references to DLite instances and relations between them as RDF triples.
+Hence, the collection is a knowledge base for the current use case.
+
+In order to make it easy retrieve the collection id when executing a pipeline, the `get()` method of all filters in this plugin should return the `collection_id`.
+
+Further reading:
+
+- [OTE-API Core Documentation](https://emmc-asbl.github.io/oteapi-core)
+- [OTE-API Services Documentation](https://github.com/EMMC-ASBL/oteapi-services)
+- [DLite](https://github.com/SINTEF/dlite)
+
+A list and documentation for all the strategies in this plugin can be found [here](https://EMMC-ASBL.github.io/oteapi-dlite/latest/all_strategies).
+
+## License and copyright
+
+The OTEAPI DLite Plugin is released under the [MIT license](LICENSE) with copyright &copy; SINTEF.
+
+## Acknowledgment
+
+OTEAPI DLite Plugin has been created via the [cookiecutter](https://cookiecutter.readthedocs.io/) [template for OTE-API plugins](https://github.com/EMMC-ASBL/oteapi-plugin-template).
+
+OTEAPI DLite Plugin has been supported by the following projects:
+
+- __OntoTrans__ (2020-2024) that receives funding from the European Union’s Horizon 2020 Research and Innovation Programme, under Grant Agreement no. 862136.
+
+- __VIPCOAT__ (2021-2025) receives funding from the European Union’s Horizon 2020 Research and Innovation Programme - DT-NMBP-11-2020 Open Innovation Platform for Materials Modelling, under Grant Agreement no: 952903.
+
+- __OpenModel__ (2021-2025) receives funding from the European Union’s Horizon 2020 Research and Innovation Programme - DT-NMBP-11-2020 Open Innovation Platform for Materials Modelling, under Grant Agreement no: 953167.
+
