@@ -1,0 +1,396 @@
+/* SIDEBARS */
+
+:root {
+    --cover-size: 0.7; /* size of cover compared to lyrics from 0.0 to 1.0 */
+}
+
+.sidebars {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    display: flex;
+    flex-basis: 50%;
+    flex-grow: 1;
+    margin: var(--gap);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.sidebar .boxes {
+    align-content: safe center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 901px) {
+    #left-sidebar {
+        margin-right: 0;
+    }
+
+    #lyrics-box {
+        max-height: calc(100vh - var(--cover-size) * 100vh - var(--gap));
+    }
+
+    #album-cover-box {
+        max-height: calc(var(--cover-size) * 100vh - 2 * var(--gap));
+    }
+
+    #right-sidebar .box {
+        max-width: calc(var(--cover-size) * 100vh - 2 * var(--gap));
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .sidebars {
+        flex-wrap: wrap;
+    }
+
+    /* flexbox ignores body padding and overflows due to gap? */
+    #lyrics-box {
+        margin-bottom: calc(var(--gap) / 2);
+    }
+
+    /* fix double margin */
+    #right-sidebar {
+        margin-top: 0;
+    }
+
+}
+
+/* ALBUM COVERS */
+
+#bg-image-2, #album-cover-2 {
+    background-color: #222;
+    transition: opacity .2s;
+}
+
+.bg-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 120%;
+    height: 120%;
+    margin: -5%;
+    z-index: -1;
+    filter: blur(2rem);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#album-cover-box {
+    position: relative;
+    aspect-ratio: 1/1;
+}
+
+.cover-img {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+/* LYRICS */
+
+#lyrics-text {
+    white-space: pre-line; /* render newlines */
+    font-size: 1.2em;
+}
+
+/* PLAYLISTS */
+
+.other-checkboxes {
+    max-height: 20vh;
+    overflow-y: auto;
+}
+
+/* POPUP WINDOWS */
+
+.full-page-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2rem);
+    transition: opacity .2s, visibility .2s;
+}
+
+.dialog {
+    box-shadow: .3rem .3rem 1rem rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    background-color: var(--box-background-color);
+    overflow: hidden; /* prevent header from overlapping rounded corners */
+
+    min-width: min(60rem, 100%);
+    max-width: calc(100%);
+    min-height: min(45rem, 100%);
+    max-height: 100%;
+    margin: var(--gap);
+
+    /* prevent children from overflowing parent */
+    display: flex;
+    flex-direction: column;
+
+    transition: scale .2s;
+}
+
+.dialog-header {
+    background-color: var(--box-background-color);
+    padding: var(--gap);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dialog-header > * {
+    display: inline;
+    margin: 0;
+}
+
+.dialog-body {
+    padding: .5rem var(--gap);
+    overflow-y: auto;
+}
+
+.full-page-overlay.overlay-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.full-page-overlay.overlay-hidden .dialog {
+    scale: .95;
+}
+
+@media screen and (max-width: 900px) {
+    .dialog {
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+/* PLAYBACK CONTROLS SEEK BAR */
+
+#outer-progress-bar {
+    border-radius: var(--border-radius);
+    height: 1.5rem;
+    border: 1px solid var(--elem-border-color);
+    width: 100%;
+    margin: .5rem 0;
+    position: relative; /* required for positioning of child */
+    background-color: var(--elem-background-color);
+    cursor: ew-resize;
+    /* Hide part of inner progress bar (corners) that goes outside of outer element) */
+    overflow: hidden;
+}
+
+#outer-progress-bar > div {
+    position: absolute;
+    top: 0;
+    transition: width .05s linear;
+}
+
+#progress-bar {
+    background-color: #ccc;
+    width: 0;
+    /* Inner progress bar needs to overlap border of outer bar to have matching corner radius */
+    height: calc(1.5rem + 2px);
+    margin: -1px;
+}
+
+.progress-time {
+    margin: 0 .25rem;
+    font-size: 1.1rem;
+    mix-blend-mode: difference;
+}
+
+/* QUEUE */
+
+/* queue height must be fixed in two-column mode, or buttons jump around */
+.box-queue .scroll {
+    height: 35vh;
+}
+
+/* allow greater height on mobile, and can adapt to queue size */
+@media screen and (max-width: 900px) {
+    .box-queue .scroll {
+        height: auto;
+        max-height: 40rem;
+    }
+}
+
+.box-queue h3 {
+    margin: .5rem 0;
+}
+
+#queue-table {
+    width: 100%;
+    border-spacing: .5rem;
+    margin-left: -.5rem;
+}
+
+#queue-table td {
+    height: 4.5rem;
+    cursor: grab;
+}
+
+/* album image column */
+#queue-table td:first-child {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 4.5rem;
+    cursor: pointer;
+}
+
+#queue-table td.downloading {
+    text-align: center;
+}
+
+#queue-table td:nth-child(2) {
+    padding-left: .5rem;
+}
+
+.delete-overlay {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-overlay > .icon {
+    opacity: 0;
+}
+
+.delete-overlay {
+    border-radius: 100%;
+    transition: background-color .25s;
+}
+
+.delete-overlay > .icon {
+    transition: opacity .25s;
+}
+
+.delete-overlay:hover {
+    background-color: red;
+}
+
+.delete-overlay:hover > .icon {
+    opacity: 1.0;
+}
+
+h4 > .icon {
+    display: inline-block;
+}
+
+.scroll {
+    overflow-y: auto;
+}
+
+#loading-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity .5s, visibility .5s;
+}
+
+.loading-text {
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.checkbox-with-label {
+    display: inline-block;
+    margin-right: var(--gap);
+    margin-bottom: .25rem;
+    margin-top: .25rem;
+    white-space: nowrap;
+}
+
+#track-list-output {
+    max-height: 40rem;
+}
+
+.track-list-table {
+    width: 100%;
+}
+
+.track-list-table td:nth-child(4),
+.track-list-table td:nth-child(5),
+.track-list-table td:nth-child(6) {
+    width: 2rem;
+}
+
+#visualiser {
+    position: absolute;
+    bottom: 0;
+    height: 20vh;
+    width: 100%;
+    mix-blend-mode: difference;
+    transition: transform .5s;
+}
+
+.search-result-album {
+    display: inline-block;
+    margin: .5rem;
+    height: 8rem;
+    width: 8rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+/* VOLUME SLIDER */
+
+#settings-volume {
+    width: 7rem;
+}
+
+/* For some reason, ::-webkit-slider-thumb and ::-moz-range-thumb cannot be in the same selector (comma separated), or Chrome loses styling */
+
+input[type=range].input-volume-high::-webkit-slider-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1oaWdoPC90aXRsZT48cGF0aCBkPSJNMTQsMy4yM1Y1LjI5QzE2Ljg5LDYuMTUgMTksOC44MyAxOSwxMkMxOSwxNS4xNyAxNi44OSwxNy44NCAxNCwxOC43VjIwLjc3QzE4LDE5Ljg2IDIxLDE2LjI4IDIxLDEyQzIxLDcuNzIgMTgsNC4xNCAxNCwzLjIzTTE2LjUsMTJDMTYuNSwxMC4yMyAxNS41LDguNzEgMTQsNy45N1YxNkMxNS41LDE1LjI5IDE2LjUsMTMuNzYgMTYuNSwxMk0zLDlWMTVIN0wxMiwyMFY0TDcsOUgzWiIgLz48L3N2Zz4=") no-repeat center, var(--elem-background-color-true);
+}
+
+input[type=range].input-volume-high::-moz-range-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1oaWdoPC90aXRsZT48cGF0aCBkPSJNMTQsMy4yM1Y1LjI5QzE2Ljg5LDYuMTUgMTksOC44MyAxOSwxMkMxOSwxNS4xNyAxNi44OSwxNy44NCAxNCwxOC43VjIwLjc3QzE4LDE5Ljg2IDIxLDE2LjI4IDIxLDEyQzIxLDcuNzIgMTgsNC4xNCAxNCwzLjIzTTE2LjUsMTJDMTYuNSwxMC4yMyAxNS41LDguNzEgMTQsNy45N1YxNkMxNS41LDE1LjI5IDE2LjUsMTMuNzYgMTYuNSwxMk0zLDlWMTVIN0wxMiwyMFY0TDcsOUgzWiIgLz48L3N2Zz4=") no-repeat center, var(--elem-background-color-true);
+}
+
+input[type=range].input-volume-medium::-webkit-slider-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1tZWRpdW08L3RpdGxlPjxwYXRoIGQ9Ik01LDlWMTVIOUwxNCwyMFY0TDksOU0xOC41LDEyQzE4LjUsMTAuMjMgMTcuNSw4LjcxIDE2LDcuOTdWMTZDMTcuNSwxNS4yOSAxOC41LDEzLjc2IDE4LjUsMTJaIiAvPjwvc3ZnPg==") no-repeat center, var(--elem-background-color-true);
+}
+
+input[type=range].input-volume-medium::-moz-range-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1tZWRpdW08L3RpdGxlPjxwYXRoIGQ9Ik01LDlWMTVIOUwxNCwyMFY0TDksOU0xOC41LDEyQzE4LjUsMTAuMjMgMTcuNSw4LjcxIDE2LDcuOTdWMTZDMTcuNSwxNS4yOSAxOC41LDEzLjc2IDE4LjUsMTJaIiAvPjwvc3ZnPg==") no-repeat center, var(--elem-background-color-true);
+}
+
+input[type=range].input-volume-low::-webkit-slider-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1sb3c8L3RpdGxlPjxwYXRoIGQ9Ik03LDlWMTVIMTFMMTYsMjBWNEwxMSw5SDdaIiAvPjwvc3ZnPg==") no-repeat center, rgba(255, 255, 255, 0.8);
+}
+
+input[type=range].input-volume-low::-moz-range-thumb {
+    background: url("data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHRpdGxlPnZvbHVtZS1sb3c8L3RpdGxlPjxwYXRoIGQ9Ik03LDlWMTVIMTFMMTYsMjBWNEwxMSw5SDdaIiAvPjwvc3ZnPg==") no-repeat center, rgba(255, 255, 255, 0.8);
+}
+
+/* THEATER MODE */
+
+.theater #playlist-checkboxes,
+.theater #playback-controls,
+.theater #queue-buttons,
+.theater .box-queue h3 {
+    display: none;
+}
+
+.theater #current-track {
+    font-size: 1.2em;
+}
+
+.theater .box-queue .scroll {
+    max-height: 45vh;
+}

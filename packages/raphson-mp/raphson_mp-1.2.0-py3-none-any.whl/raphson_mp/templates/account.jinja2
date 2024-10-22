@@ -1,0 +1,103 @@
+{% extends "base_static.jinja2" %}
+
+{% block title %}
+    {% trans %}Account settings{% endtrans %}
+{% endblock title %}
+
+{% block content %}
+
+{{ page_heading(gettext("Account settings for '%(username)s'", username=user.username)) }}
+
+<h2>{% trans %}Nickname{% endtrans %}</h2>
+<form method="POST" action="/account/change_nickname" class="form">
+    <input type="hidden" value="{{ csrf_token }}" name="csrf">
+    <label for="nickname">{% trans %}Nickname{% endtrans %}</label>
+    <input type="text" value="{{ user.nickname if user.nickname }}" name="nickname" id="nickname">
+    <input type="submit" value="{% trans %}Change nickname{% endtrans %}">
+</form>
+
+<h2>{% trans %}Language{% endtrans %}</h2>
+<form method="POST" action="/account/change_language" class="form">
+    <input type="hidden" value="{{ csrf_token }}" name="csrf">
+    <label for="language-select">{% trans %}Language{% endtrans %}</label>
+    <select name="language" id="language">
+        <option value="" {% if not user.language %}selected{% endif %}>{% trans %}System language{% endtrans %}</option>
+        {% for lang_code, lang_display in languages %}
+            {% if lang_code == user.language %}
+                <option value="{{ lang_code }}" selected>{{ lang_display }}</option>
+            {% else %}
+                <option value="{{ lang_code }}">{{ lang_display }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <input type="submit" value="{% trans %}Change language{% endtrans %}">
+</form>
+
+<h2>{% trans %}Privacy{% endtrans %}</h2>
+
+<form method="POST" action="/account/change_privacy_setting" class="form">
+    <input type="hidden" value="{{ csrf_token }}" name="csrf">
+    <label for="privacy-select">{% trans %}Recording of listening activity{% endtrans %}</label>
+    <select name="privacy" id="privacy-select">
+        <option value="none" {% if user.privacy.name == 'NONE' %}selected{% endif %}>{% trans %}Activity and statistics{% endtrans %}</option>
+        <option value="aggregate" {% if user.privacy.name == 'AGGREGATE' %}selected{% endif %}>{% trans %}Not in activity, only in statistics{% endtrans %}</option>
+        <option value="hidden" {% if user.privacy.name == 'HIDDEN' %}selected{% endif %}>{% trans %}No data recording{% endtrans %}</option>
+    </select>
+    <input type="submit" value="{% trans %}Change privacy setting{% endtrans %}">
+</form>
+
+<h2>{% trans %}Last.fm{% endtrans%}</h2>
+<p>
+    {% if lastfm_enabled %}
+        {% if lastfm_name %}
+            {% trans name=lastfm_name %}Connected to last.fm account: {{ name }}{% endtrans%}<br>
+            <form action="/lastfm_disconnect" method="POST">
+                <input type="hidden" name="csrf" value="{{ csrf_token }}">
+                <input type="submit" value="{% trans %}Disconnect last.fm account{% endtrans %}">
+            </form>
+        {% else %}
+            <a href="{{ lastfm_connect_url }}">{% trans %}Connect your last.fm account{% endtrans %}</a>
+        {% endif %}
+    {% else %}
+        {% trans %}Last.fm integration is not available, because no API key is configured by the server administrator.{% endtrans %}
+    {% endif %}
+</p>
+
+<h2>{% trans %}Password{% endtrans %}</h2>
+<form method="POST" action="/account/change_password" class="form">
+    <input type="hidden" value="{{ csrf_token }}" name="csrf">
+    <label for="current-password">{% trans %}Current password{% endtrans %}</label>
+    <input type="password" value="" name="current_password" id="current-password">
+
+    <label for="new-password">{% trans %}New password{% endtrans %}</label>
+    <input type="password" value="" name="new_password" id="new-password">
+
+    <label for="repeat-new-password">{% trans %}Repeat new password{% endtrans %}</label>
+    <input type="password" value="" name="repeat_new_password" id="repeat-new-password">
+
+    <input type="submit" value="{% trans %}Change password and log out all sessions{% endtrans %}">
+</form>
+
+<h2>{% trans %}Sessions{% endtrans%}</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>{% trans %}Login date{% endtrans %}</th>
+            <th>{% trans %}Last used{% endtrans %}</th>
+            <th>{% trans %}Device{% endtrans %}</th>
+            <th>{% trans %}IP address{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for session in sessions %}
+            <tr>
+                <td>{{ session.creation_date }}</td>
+                <td>{{ session.last_use_ago }}</td>
+                <td>{{ session.last_device }}</td>
+                <td>{{ session.remote_address }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
