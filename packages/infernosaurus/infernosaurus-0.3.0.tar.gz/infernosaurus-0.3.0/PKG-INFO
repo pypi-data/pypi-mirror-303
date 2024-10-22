@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: infernosaurus
+Version: 0.3.0
+Summary: LLM on YT
+Author: Dmitriy Fedorov
+License: Apache 2.0
+Project-URL: Homepage, https://github.com/dmi-feo/infernosaurus
+Project-URL: Repository, https://github.com/dmi-feo/infernosaurus.git
+Project-URL: Issues, https://github.com/dmi-feo/infernosaurus/issues
+Project-URL: Changelog, https://github.com/dmi-feo/infernosaurus/blob/main/CHANGELOG.md
+Keywords: yt,ytsaurus
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: attrs<24.3
+Requires-Dist: openai<1.52
+Requires-Dist: ytsaurus-client<0.14
+Requires-Dist: ytsaurus-yson<0.5
+Provides-Extra: tests
+Requires-Dist: pytest<9; extra == "tests"
+Requires-Dist: testcontainers-yt-local==0.16.0; extra == "tests"
+Provides-Extra: release
+Requires-Dist: bump-my-version==0.18.3; extra == "release"
+Requires-Dist: generate-changelog==0.10.0; extra == "release"
+
+A library that helps run an LLM on a Ytsaurus cluster.
+
+See tests for examples.
