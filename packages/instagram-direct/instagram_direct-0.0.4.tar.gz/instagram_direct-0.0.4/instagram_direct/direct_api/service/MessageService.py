@@ -1,0 +1,9 @@
+
+
+class MessageService:
+
+    def seen(self, message_id: str) -> bool: ...
+
+    def delete(self, message_id: str) -> bool: ...
+
+    def send(self): ...
