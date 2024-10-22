@@ -1,0 +1,22 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "my_lin_reg" 
+version = "0.4.3" 
+description = "regression linéaire"
+authors = ["Julien Zanin"]  
+readme = "README.md"  
+packages = [{include = "my_lin_reg"}]  
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+numpy ="1.26.1"
+scipy ="1.11.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
