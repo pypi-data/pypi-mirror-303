@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "crosstech-py-tools"
+version = "0.2.10"
+description = "Common functions, classes and interfaces that CrossTech uses in its python development."
+authors = ["Fedor Sulitskiy <fedor@crosstech.co.uk>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "crosstech" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.2"
+SQLAlchemy = "^2.0.31"
+geopandas = "^1.0.0"
+python-dotenv = "^1.0.1"
+cryptography = "^42.0.8"
+cloud-sql-python-connector = {extras = ["pg8000"], version = "^1.10.0"}
+pydantic = "^2.7.4"
+google-cloud-storage = "^2.17.0"
+flask = "^3.0.3"
+fiona = "^1.9.6"
+folium = "^0.17.0"
+matplotlib = "^3.9.0"
+mapclassify = "^2.6.1"
+tqdm = "^4.66.4"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
