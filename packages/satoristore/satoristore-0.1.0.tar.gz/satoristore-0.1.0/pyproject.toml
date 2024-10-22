@@ -1,0 +1,40 @@
+# pyproject.toml
+[tool.poetry]
+name = "satoristore"
+version = "0.1.0"
+description = "A memory architecture for AI agents supporting hierarchical and multimodal data."
+authors = ["Kentauros AI <partners@kentauros.ai>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "satoristore"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "2.2.2"
+torchvision = "0.17.2"
+qdrant-client = "^1.8.0"
+sentence-transformers = "^3.1.1"
+numpy = "^1.21.0"
+pydantic = "^2.9.2"
+Pillow = "^10.0.0"
+clip-anytorch = "^2.5.0"
+PyYAML = "^6.0.1"
+SQLAlchemy = "^2.0.25"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.3.1"
+sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+recommonmark = "^0.7.1"
+flake8 = "^7.0.0"
+black = "^24.2.0"
+ipykernel = "^6.29.3"
+pytest-env = "^1.1.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+build-docs = "scripts.build_docs:main"
+lint = "scripts.lint:main"
