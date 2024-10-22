@@ -1,0 +1,2 @@
+class PdfImageExtractionExeception(Exception):
+    pass
