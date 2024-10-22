@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cfe"
+version = "0.0.22"
+description = "Build projects faster with cfe"
+authors = [
+    { name = "Justin Mitchel", email = "hello@codingforentrepreneurs.com" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "requests>=2.25.1",
+    "fire",
+    "rich",
+]
+keywords = ["cfe", "build", "projects", "faster", "codingforentrepreneurs"]
+
+[project.scripts]
+cfe = "cfe.__main__:main"
+
+[project.urls]
+"Homepage" = "https://github.com/codingforentrepreneurs/cfe"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Add this section for bump-my-version configuration
+[tool.bumpversion]
+current_version = "0.0.22"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+commit = true
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit_args = "--no-verify"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
