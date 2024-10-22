@@ -1,0 +1,23 @@
+aws:
+    master_access_key_id: access_key_for_io_node
+    master_secret_access_key: secret_access_key_for_io_node
+
+    username: ec2-user
+    key_name: key_pair_for_io_node
+    ami_id : image_id_for_io_node
+    io-node: io_node_ip
+    grace_sec: 300
+
+    node-types:
+        t1:  { name: t2.micro,    price: 0.0116, cores: 1,  memgb: 1 }
+        c1:  { name: c5.large,    price: 0.085,  cores: 1,  memgb: 3.5 }
+        c8:  { name: c5.4xlarge,  price: 0.68,   cores: 8,  memgb: 32 }
+        c16: { name: c5.8xlarge,  price: 1.36,   cores: 16, membg: 64 }
+        c18: { name: c5.9xlarge,  price: 1.53,   cores: 18, memgb: 72 }
+        c36: { name: c5.18xlarge, price: 3.06,   cores: 36, memgb: 144 }
+        g1:  { name: p3.2xlarge,  price: 3.06,   cores: 4,  memgb: 61,  gpu: 1 }
+        g4:  { name: p3.8xlarge,  price: 12.24,  cores: 16, memgb: 244, gpu: 4 }
+        g8:  { name: p3.16xlarge, price: 24.48,  cores: 32, memgb: 488, gpu: 8 }
+        m24: { name: r5.12xlarge, price: 3.024,  cores: 24, memgb: 384 }
+
+
