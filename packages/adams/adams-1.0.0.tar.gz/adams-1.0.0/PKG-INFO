@@ -1,0 +1,131 @@
+Metadata-Version: 2.1
+Name: adams
+Version: 1.0.0
+Summary: this is a program for fast protein structure search
+Home-page: https://github.com/young55775/ADAMS-developing
+Author: Guo_Zhengyang
+Author-email: guozy23@mails.tsinghua.edu.cn
+License: GNU-GPL 3.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: scipy
+Requires-Dist: tqdm
+Requires-Dist: biopython
+Requires-Dist: GPUtil
+
+# ADAMS: Align Distance Matrix with SIFT algorithm enables GPU-Accelerated protein structre comparison
+
+## Requirements
+
+opencv == 4.7.0.72
+
+numpy >= 1.17.2
+
+cuda > 11.x
+
+cupy-cuda111 == 12.2.0 or same as cuda version
+
+biopython == 1.81
+
+scipy == 1.11.2
+
+tqdm == 4.66.1
+
+cuda == 11.x or same as cupy version
+
+pickle
+
+## Installation
+
+```commandline
+pip install adams
+```
+
+Please contact: guozy23@mails.tsinghua.edu.cn for more information
+
+## Tutorial and description
+
+### Introduction
+
+We've developed a method to address the issue of numerous proteins 
+exhibiting high structural similarity despite having no sequence 
+similarities. This problem has become increasingly critical as 
+Alphafold2 continues to predict new structures, resulting in a massive 
+database (23TiB ver 4) that lacks an effective data mining tool.
+
+Foldseek offers a solution by embedding local structure into the 
+sequence and transforming this issue into a sequence alignment problem. 
+It's significantly faster than DALI, TM-Align, and CE-Align and 
+outperforms them on structure comparison benchmarks.
+
+However, according to the Foldseek paper, we observed that Foldseek occasionally underperforms 
+compared to DALI, indicating that some 'overall information' 
+may not be captured within local structure embedding.
+
+Our Align Distance Matrix with SIFT algorithm (ADAMS) is 
+similar to DALI but uses an enhanced version of the renowned 
+computer vision algorithm - Scale Invariant Feature Transform (SIFT). 
+It extracts key features from protein distance matrices at different 
+scales and compares their similarities. Most calculations can benefit 
+from GPU acceleration. This zero-shot model enables more precise 
+structure comparisons at speeds comparable to Foldseek-TM tools. 
+Users can create their own pdb databases on PCs for all-vs-all 
+comparisons with increased speed and reduced memory usage 
+(approximately 500MB - 3GB GPU memory for a 20000 all vs all comparison).
+
+The algorithm is illustrated in Fig.1: The original SIFT algorithm is 
+applied on distance matrixes to extract detectable features across 
+various scales. These features are represented as 128-dimension vectors 
+which are then stacked into an n X 128 matrix for comparison between 
+two structures using cosine similarity calculated between two feature 
+matrices by A X B.T operation. Given these features have nearly identical
+lengths (512 ± 1.5), feature distances are determined by angles rather 
+than length differences between them; thus when normalized beforehand, 
+similarity calculation becomes straightforward on GPUs.
+
+![image](img/fig1.jpg)
+
+The performance metrics are as follows - it took between 3-4 seconds 
+to search for the protein structure 'OSM-3' (699aa) within a C.elegans protein 
+structure database (19361 structures) using an Nvidia RTX2080Ti (11GiB) GPU. When loading 
+the entire database onto the dataset, total GPU memory usage was around
+4000MB. However, when loaded separately, it only consumed about 500MB 
+of memory. Importantly, these different methods did not impact search 
+speed. 
+
+pre-print paper is here: https://www.biorxiv.org/content/10.1101/2023.11.14.566990v1.article-metrics
+
+
+### Tutorial
+##### Installation
+```commandline
+pip install adams
+```
+##### 1. Download a pdb set and make it a cuda_database or a compatible one'
+```commandline
+import adams
+from adams.db_maker import *
+db = DatabaseMaker(device=0, process=40) # use GPU-0,40*1.5 process.
+db.make('./pdb','./pdb_db') # put your pdb dataset in one folder and make your database in another one
+```
+##### 2. Match your protein structure to different databases
+```commandline
+import adams
+from adams.matcher import ADAMS_match
+matcher = ADAMS_match('./protein.pdb',gpu_usage=[0,1],threshold=0.95)#use gpu0 and gpu1
+result = matcher.match('./pdb_db','tmp',prefilter_threshold = 0.01) # search similar protein structure from a database, return a pandas dataframe. A temp folder is needed, will be created if not exist.
+
+```
+Firstly check the compare_all.py script:
+
+```commandline
+compare_all.py
+```
+if permission denied
+```commandline
+chmod +x path/to/compare_all.py
+```
