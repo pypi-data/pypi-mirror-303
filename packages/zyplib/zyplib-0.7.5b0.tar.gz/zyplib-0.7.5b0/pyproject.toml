@@ -1,0 +1,66 @@
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "zyplib"
+version = "0.7.5-beta"
+description = "Common utilites code of myself"
+authors = [
+    { name = "yp.z" },
+]
+dependencies = [
+    "mne>=1.6.0",
+    "numpy>=1.26.2,<2.0",
+    "scipy>=1.11.4",
+    "matplotlib>=3.8.2",
+    "seaborn>=0.13.0",
+    "torch>=2.1.0,<2.5.0",
+    "lightning>=2.4.0",
+    "scikit-learn>=1.4.0",
+    "pyedflib>=0.1.36",
+    "omegaconf>=2.3.0",
+    "h5py>=3.10.0",
+    "pywavelets>=1.5.0",
+    "pyyaml>=6.0.2",
+    "py-simple-inject>=0.5.1",
+    "diskcache>=5.6.3",
+    "prettytable>=3.11.0",
+    "openpyxl>=3.1.5",
+    "rich>=13.9.2",
+    "torchmetrics>=1.4.3",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+keywords = []
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.license]
+text = "AGPL"
+
+[tool.setuptools]
+py-modules = [
+    "zyplib",
+]
+
+[tool.pdm.scripts]
+install-editable = "pip install -v -e ."
+test = "pytest ./test/ --verbosity=1"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.3.3",
+]
+
+[tool.pdm.build]
+source-includes = [
+    "zyplib/**/*.mplstyle",
+]
