@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: TCFile
+Version: 2024.10.2
+Summary: Python package for handling TCF data. It works with Tomcube data
+Author-email: Dohyeon Lee <dleh428@kaist.ac.kr>
+Maintainer-email: Dohyeon Lee <dleh428@kaist.ac.kr>
+Requires-Python: >=3.7,<4
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering
+Requires-Dist: numpy>=1.18.5,<3
+Requires-Dist: h5py>=3.2.0,<4
+Requires-Dist: pillow>=9.5.0,<11
+Requires-Dist: hdf5plugin>=4.4,<5
+Requires-Dist: dask
+Project-URL: repository, https://github.com/ehgus/TCFile
+
+# TCFile python package
+
+A basic image processing tool of tomocube data.
+
+## Installation
+
+```bash
+pip install TCFile
+```
+
+## Use case
+
+```python
+
+from TCFile import TCFile
+
+tcfile = TCFile('test.TCF','3D') # ready for return 3D RI images
+print(f"number of snapshots : {len(tcfile)}")
+
+## Usage 1: handling each snapshots (numpy array)
+data = tcfile[0]
+print(f"shape of data : {data.shape}")
+# or
+for data in tcfile:
+    # do some operations on the data ...
+    pass
+
+## Usage 2: handling fluorescence array
+tcfile_fl = TCFile('test.TCF','3DFL')
+fl_data = tcfile_fl[0]
+
+## Usage 2: handling dask array
+data = tcfile.asdask() # (T, Z, Y, X) array
+
+```
+
+## Limitation
+
+It does not support TCF writer due to the difficulty of configuring metadata and interoperability with commercial Tomocube software.
+
+## TODO
+- [ ] rigorous tests
+- [ ] TCFile converter
+
+Any suggestions and comments are welcome!
+
+## Test
+
+```bash
+# install this package in editable mode
+git clone https://github.com/ehgus/TCFile.git
+cd TCFile
+pip install -e .
+# execute pytest
+pytest
+```
+
