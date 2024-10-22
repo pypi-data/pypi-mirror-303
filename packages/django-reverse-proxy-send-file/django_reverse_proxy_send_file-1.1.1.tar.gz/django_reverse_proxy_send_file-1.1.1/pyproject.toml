@@ -1,0 +1,116 @@
+[tool.poetry]
+name = "django-reverse-proxy-send-file"
+version = "1.1.1"
+description = "Storage and View to send X-Accel-Redirect (or X-Sendfile) header to nginx (or apache) reverse-proxy"
+authors = ["Fabs <fabien.michel@hespul.org>"]
+license = "WTFPL"
+readme = "README.md"
+repository="https://bitbucket.org/hespul/django-reverse-proxy-send-file"
+packages = [{include = "reverse_proxy_send_file"}]
+classifiers=[
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.0',
+        'Framework :: Django :: 4.1',
+        'Framework :: Django :: 4.2',
+        'Framework :: Django :: 5.0',
+        'Framework :: Django :: 5.1',
+        'Intended Audience :: Developers',
+        'License :: Public Domain',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Development Status :: 5 - Production/Stable',
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+
+[tool.poetry.group.dev.dependencies]
+Django = ">=4.1"
+ruff = "*"
+pre-commit = "^2.21.0"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",     # flake8-annotations
+    "ARG001",  # Unused function argument: {name}
+    "ARG002",  # Unused method argument: {name}
+    "C401",    # Unnecessary generator (rewrite as a set comprehension)
+    "C405",    # Unnecessary {obj_type} literal (rewrite as a set literal)
+    "COM812",  # Trailing comma missing
+    "D1",      # Missing docstring
+    "D2",      # docstrings stuffs
+    "D4",      # docstrings stuffs
+    "DJ001",   # Avoid using null=True on string-based fields such as
+    "DJ008",   # 
+    "DJ012",   # Order of model's inner classes, methods, and fields does not follow the Django Style Guide: {element_type} should come before
+    "EM1",     # Exception
+    "ERA001",  # Found commented-out code
+    "G004",    # Logging statement uses f-string
+    "PD",      # pandas-vet
+    "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
+    "PLW2901", # Outer {outer_kind} variable {name} overwritten by inner {inner_kind} target
+    "PT0",     # flake8-pytest-style
+    "RUF012",  # Mutable class attributes should be annotated with typing.ClassVar
+    "S106",    # Possible hardcoded password assigned to argument: "{}"
+    "S310",    # Audit URL open for permitted schemes. Allowing use of file: or custom schemes is often unexpected.
+    "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "SIM102",  # Use a single if statement instead of nested if statements
+    "SLF001",  # flake8-self
+    "TRY003",  # Avoid specifying long messages outside the exception class
+    "TRY300",  # Consider moving this statement to an else block
+    "ISC001",  # Checks for implicitly concatenated strings on a single line. (to avoid with formatter)
+]
+
+
+[tool.ruff.lint.isort]
+extra-standard-library = ["dateutil"]
+known-first-party = ["reverse_proxy_send_file"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "django",
+    "first-party",
+    "local-folder",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-docstring",
+    "invalid-name",
+    "arguments-differ",
+    "logging-fstring-interpolation",
+    "too-few-public-methods",
+    "arguments-renamed",
+    "wrong-import-order",
+    "import-outside-toplevel",
+    "no-member",
+    "empty-docstring",
+    "unused-argument",
+    "abstract-method",
+    "protected-access",
+    "too-many-arguments",
+    "broad-except",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
