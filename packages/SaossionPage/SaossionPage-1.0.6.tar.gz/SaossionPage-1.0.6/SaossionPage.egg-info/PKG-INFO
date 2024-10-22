@@ -1,0 +1,180 @@
+Metadata-Version: 2.1
+Name: SaossionPage
+Version: 1.0.6
+Summary: A sao shen library
+Author: sao shen
+Author-email: 
+Keywords: python,menu,saoshen,windows,SaossionPage,linux
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+
+
+# SaossionPage[骚神库]
+![logo](https://wxhzhwxhzh.github.io/saossion_code_helper_online/img/saoshen2.png)
+
+[![Downloads](https://static.pepy.tech/badge/SaossionPage)](https://pepy.tech/project/SaossionPage)
+
+The brother version of the Drissionpage library, SaossionPage, is referred to as Sao Shen for short
+
+
+## Installation
+
+```
+pip install SaossionPage
+```
+
+
+
+## Usage
+
+ example 1:      Print the tree structure of the element tag
+
+
+```python
+
+from SaossionPage import Browser
+
+
+if __name__ == '__main__':
+    browser = Browser(config=" ")
+
+    browser.open('https://www.doc88.com/')
+
+    t=browser.page.latest_tab
+    y=t.ele('t:body')
+    t.wait(2)     
+    # 打印元素标签的树结构
+    browser.get_tree(y)  
+
+    input(' press any key to exit')
+
+```
+example 2: Convert native HTML tag syntax to DP library element syntax
+
+
+```python
+#将原生html标签语法转换成DP库元素语法
+from SaossionPage import Browser,Use
+
+
+if __name__ == '__main__':
+    #连接浏览器
+    b=Browser()
+    t=b.page.new_tab('https://www.baidu.com/')
+    #获取元素
+
+    search_botton=t.ele(Use.raw('<input type="submit" id="su" value="百度一下" class="bg s_btn">'))
+    
+    print(search_botton)
+
+    input(' press any key to exit')
+
+```
+
+example 3: Foolish browser startup configuration
+
+
+```python
+# 傻瓜式浏览器启动配置
+from SaossionPage import Browser
+
+
+if __name__ == '__main__':
+
+    #  连接浏览器  傻瓜式自动识别配置
+    browser = Browser(  r"C:\Users\Application\chrome.exe",config=' 静音  无图 代理http://127.0.0.1:1080 ')
+
+    # 打开网站 
+    browser.open('https://www.bing.com/')    
+
+    input(' press any key to exit')
+
+```
+example 4: High-definition element screenshots
+
+
+```python
+# 高清元素截图
+from SaossionPage import Browser
+
+if __name__ == '__main__':
+    browser = Browser(config=" ")
+
+    browser.open('https://www.python.org/')
+    t=browser.page.latest_tab
+    y=t.ele('t:body')
+    t.wait(2)
+     
+    # 截图
+    browser.get_shot_by_canvas(tab=t,ele=y,name='shot.png')     
+
+
+
+    input(' press any key to exit')
+
+```
+example 5: # Extract JSON data returned by asynchronous function
+
+
+```python
+# 提取异步函数返回的json数据
+from SaossionPage import Browser,Tool
+
+if __name__ == '__main__':
+    browser = Browser(config='  ')
+    url='https://spa3.scrape.center/'
+    tab=browser.page.new_tab(url) 
+    js_code=r'''fetch("https://spa3.scrape.center/api/movie/?limit=10&offset=0", {
+                "referrer": "https://spa3.scrape.center/",
+                "referrerPolicy": "strict-origin-when-cross-origin",
+                "body": null,
+                "method": "GET",
+                "mode": "cors",
+                "credentials": "omit"
+                });
+                '''
+    
+
+    aa=Tool.get_json_by_js_fetch(tab=tab,fetch_code=js_code) 
+    print(aa) 
+
+
+    input(' press any key to exit')
+
+```
+example 6: #  支持上下文管理协议的 new_page
+
+
+
+```python
+#  支持上下文管理协议的 new_page
+from SaossionPage import Browser
+
+if __name__ == '__main__':
+    browser=Browser()
+    with  browser.new_page('https://tencent.com/')  as t:
+        print(t.title)
+
+    input('press any  to continue...')   
+
+```
+
+
+
+## Update log
+
+
+
+- `1.0.6` fix bug
+- `1.0.5` add  NewPage the context manager
+- `1.0.4` add  fetch_code
+- `1.0.3` add  logo
+- `1.0.2` update  README.md
+- `1.0.1` fix bug
+- `1.0.0` first release
+
