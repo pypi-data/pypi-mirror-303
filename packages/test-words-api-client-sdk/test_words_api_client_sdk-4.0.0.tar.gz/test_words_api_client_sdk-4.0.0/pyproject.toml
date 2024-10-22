@@ -1,0 +1,18 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+[project]
+name = "test-words-api-client-sdk"
+description = "Words API lets you retrieve information about English words, including definitions, synonyms, rhymes, pronunciation, syllables, and frequency of usage. It also can tell you about relationships between words, for instance that “math” has categories like “algebra” and “geometry”, or that a “finger” is part of a “hand”."
+version = "4.0.0"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["Apimatic"]
+authors = [{name = "Sufyan", email = "muhammad.sufyan@apimatic.io"}]
+urls = {Documentation = "https://apimatic.io"}
+dependencies = ["apimatic-core~=0.2.0, >= 0.2.15", "apimatic-core-interfaces~=0.1.0, >= 0.1.5", "apimatic-requests-client-adapter~=0.1.0, >= 0.1.6"]
+classifiers = []
+[project.optional-dependencies]
+testutils = ["pytest>=7.2.2"]
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*"]
