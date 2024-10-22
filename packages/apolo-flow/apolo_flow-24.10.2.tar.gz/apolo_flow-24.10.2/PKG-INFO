@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: apolo-flow
+Version: 24.10.2
+Summary: Pipelines system for Apolo MLOps platform
+Home-page: https://github.com/neuro-inc/neuro-flow
+Author: Apolo Team
+Author-email: dev@apolo.us
+License: Apache 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Information Technology
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.9.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: apolo-cli>=24.10.1
+Requires-Dist: pyyaml>=5.4
+Requires-Dist: funcparserlib>=1.0.0
+Requires-Dist: humanize>=4.10
+Requires-Dist: apolo-extras>=24.10.0
+Requires-Dist: graphviz>=0.20.3
+Requires-Dist: yarl>=1.13
+Requires-Dist: multidict<7.0,>=5.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: typing-extensions>=3.10
+Requires-Dist: click>=8.0
+
+# Getting started
+
+`apolo-flow` is a tool that simplifies daily jobs on the Apolo platform.
+
+Apolo Flow provides users the ability to create YAML files that configure routine things, for example, starting a Jupiter Notebook on the platform, starting a training pipeline, opening a file browser for remote storage, etc.
+
+The tool builds required Docker images and starts all necessary Apolo jobs under the hood, while the user doesn't have to type all required `apolo` options and manually manage the pipeline scenarios.
+
+## Installation
+
+The tool is hosted on PyPI and can be installed by `pip` as a regular Python project:
+
+```bash
+$ pip install apolo-flow
+```
+
+Use the `--upgrade` option to upgrading Apolo Flow to the latest version:
+
+```bash
+$ pip install --upgrade apolo-flow
+```
+
