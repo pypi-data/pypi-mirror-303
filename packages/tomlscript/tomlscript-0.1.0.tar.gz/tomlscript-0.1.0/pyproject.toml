@@ -1,0 +1,47 @@
+[project]
+name = "tomlscript"
+version = "0.1.0"
+description = "A lightweight, dependency-free tool to manage your scripts directly from pyproject.toml"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["tomli>=1; python_version<'3.11'"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+tom = "tomlscript.main:main"
+tomlscript = "tomlscript.main:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "pytest-cov>=5.0.0",
+    "ipykernel>=6.29.5",
+    "ruff>=0.6.9",
+    "inline-snapshot>=0.13.3",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+addopts = "--cov src --cov-branch --cov-report term --cov-report html"
+
+[tool.tomlscript]
+# Run tests with coverage
+test = """
+uv run ruff check
+uv run pytest --inline-snapshot=review
+"""
+
+# Publish pypi package
+publish = "rm -rf dist && uv build && uvx twine upload dist/*"
+
+# Open Cov report
+cov = "open htmlcov/index.html"
+
+# Execute a simple python function
+example = "tests.myscript:run1"
