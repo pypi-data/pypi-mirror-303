@@ -1,0 +1,63 @@
+[tool.black]
+line-length = 79
+target-version = ["py312"]
+
+# =============================================================================
+# PACKAGING
+# =============================================================================
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "galpynostatic"
+version = "0.5.7"
+authors = [
+    {name = "Francisco Fernandez", email = "ffernandev@gmail.com"},
+    {name = "Maximiliano Gavilán", email = "maxigavilan@hotmail.com"},
+    {name = "Andres Ruderman", email = "andres.ruderman@gmail.com"},
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+description = "A Python/C++ package with physics-based and data-driven models to predict optimal conditions for fast-charging lithium-ion batteries."
+keywords = [
+    "battery",
+    "physics-based",
+    "data-driven",
+    "heuristic-algorithm",
+    "regression-models",
+    "fast-charging",
+    "predictions",
+    "metrics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "importlib_metadata",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pyyaml",
+    "scikit-learn",
+    "scipy",
+]
+
+[project.urls]
+homepage = "https://github.com/fernandezfran/galpynostatic"
+documentation = "https://galpynostatic.readthedocs.io"
+repository = "https://github.com/fernandezfran/galpynostatic"
+changelog = "https://github.com/fernandezfran/galpynostatic/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["galpynostatic", "galpynostatic.*"]
+namespaces = false
