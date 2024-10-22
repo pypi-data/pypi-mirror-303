@@ -1,0 +1,97 @@
+{% load static %}
+{% load herobiz_tags %}
+{% load shared_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'shared_lib/seo.html' with template_name='herobiz' %}
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet"
+        href="{% static 'herobiz/vendor/bootstrap/css/bootstrap.min.css' %}" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'herobiz/vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link href="{% static 'herobiz/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'herobiz/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'herobiz/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Variables CSS Files. Uncomment your preferred color scheme -->
+  <link href="{% static 'herobiz/css/variables'|add:color|add:'.css' %}" rel="stylesheet">
+  <!-- <link href="{% static 'herobiz/css/variables-blue.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobiz/css/variables-green.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobiz/css/variables-orange.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobiz/css/variables-purple.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobiz/css/variables-red.css' %}" rel="stylesheet"> -->
+  <!-- <link href="{% static 'herobiz/css/variables-pink.css' %}" rel="stylesheet"> -->
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'herobiz/css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+  {% include "herobiz/header.html" %}
+
+  {% block content %}
+  {% include "herobiz/components/hero-"|add:hero_type|add:".html" %}
+
+  <main id="main">
+    {% show_calendar %}
+    {% show_modal %}
+    {% analytics %}
+
+    {% for component, is_use, _, _ in components %}
+      {% if is_use %}
+        {% if component == 'featured_services' %}
+          {% include "herobiz/components/featured-services.html" %}
+        {% elif component == 'about' %}
+          {% include "herobiz/components/about.html" %}
+        {% elif component == 'clients' %}
+          {% include "herobiz/components/clients.html" %}
+        {% elif component == 'cta' %}
+          {% include "herobiz/components/cta.html" %}
+        {% elif component == 'onfocus' %}
+          {% include "herobiz/components/onfocus.html" %}
+        {% elif component == 'features' %}
+          {% include "herobiz/components/features.html" %}
+        {% elif component == 'services' %}
+          {% include "herobiz/components/services.html" %}
+        {% elif component == 'testimonials' %}
+          {% include "herobiz/components/testimonials.html" %}
+        {% elif component == 'pricing' %}
+          {% include "herobiz/components/pricing.html" %}
+        {% elif component == 'faq' %}
+          {% include "herobiz/components/faq.html" %}
+        {% elif component == 'portfolio' %}
+          {% portfolio portfolio_title portfolio_subtitle %}
+        {% elif component == 'team' %}
+          {% include "herobiz/components/team.html" %}
+        {% elif component == 'recent_blog_posts' %}
+          {% recent_blog_posts blog_title blog_subtitle 3 %}
+        {% elif component == 'contact' %}
+          {% include "herobiz/components/contact.html" %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </main><!-- End #main -->
+  {% endblock content %}
+
+  <!-- ======= Footer ======= -->{% footer 5 %}<!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'herobiz/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
+          crossorigin="anonymous"></script>
+  <script src="{% static 'herobiz/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'herobiz/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'herobiz/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'herobiz/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <!-- <script src="{% static 'herobiz/vendor/php-email-form/validate.js' %}"></script> -->
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'herobiz/js/main.js' %}"></script>
+</body>
+</html>
