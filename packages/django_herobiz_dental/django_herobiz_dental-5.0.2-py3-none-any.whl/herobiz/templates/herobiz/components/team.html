@@ -1,0 +1,41 @@
+{% load static %}
+
+<section id="team" class="team">
+  <div class="container" data-aos="fade-up">
+
+    <div class="section-header">
+      <h2>{{ team_title }}</h2>
+      <p>{{ team_subtitle }}</p>
+    </div>
+    <div class="row gy-5 justify-content-center">
+      {% for member in team %}
+      {% if team|length == 1 %}
+      <div class="col-xl-6 col-md-8 d-flex" data-aos="zoom-in" data-aos-delay="200">
+      {% elif team|length == 2 %}
+      <div class="col-xl-6 col-md-6 d-flex" data-aos="zoom-in" data-aos-delay="{% cycle '200' '400'%}">
+      {% else %}
+      <div class="col-xl-4 col-md-6 d-flex" data-aos="zoom-in" data-aos-delay="{% cycle '200' '400' '600' '800' '1000' '1200' %}">
+      {% endif %}
+        <div class="team-member">
+          <div class="member-img">
+            {% cycle 'member1' 'member2' 'member3' 'member4' 'member5' 'member6' as member_dir silent %}
+            <img src="{% static 'herobiz/img/team/'|add:member_dir|add:'/profile.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="member-info">
+            <div class="social">
+              {% for title, filename in member.certs %}
+              <a href="{% static 'herobiz/img/team/'|add:member_dir|add:'_team.html/'|add:filename %}"
+                 data-bs-toggle="tooltip" title="{{ title }}" class="glightbox">
+              <i class="bi {% cycle 'bi-award' 'bi-hand-thumbs-up' 'bi-star' 'bi-tags' 'bi-magic' %}"></i>
+              </a>
+              {% endfor %}
+            </div>
+            <h4>{{ member.name }}</h4>
+            <span>{{ member.title }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
