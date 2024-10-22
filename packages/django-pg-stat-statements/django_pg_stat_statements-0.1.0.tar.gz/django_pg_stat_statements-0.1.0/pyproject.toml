@@ -1,0 +1,82 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "django-pg-stat-statements"
+version = "0.1.0"
+description = "A PostgreSQL profiler for Django that uses pg_stat_statements extension"
+authors = ["blag"]
+readme = "README.md"
+urls = {Homepage = "https://github.com/blag/django-pg-stat-statements"}
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+packages = [
+    {include = "django_pg_stat_statements", from = "src"},
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+Django = ">=2.2"
+psycopg2-binary = ">=2.9.10"
+
+[tool.poetry.group.dev.dependencies]
+django-extensions = ">=3.2.3"
+
+[tool.poetry.group.test.dependencies]
+coverage = ">=7.6.3"
+pytest = ">=8.3.3"
+pytest-cov = ">=5.0.0"
+pytest-django = ">=4.9.0"
+
+[tool.coverage.run]
+branch = true
+source = [
+    "src/django_pg_stat_statements",
+]
+omit = [
+    "htmlcov",
+    "test_app/*",
+    "venv/*",
+]
+
+[tool.pyright]
+include = ["src"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+]
+executionEnvironments = [ { root = "src" } ]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test_app.settings"
+addopts = """
+--cov-branch
+--cov=src/django_pg_stat_statements
+--no-cov-on-fail
+--cov-report=term
+--cov-report=html
+"""
+pythonpath = [
+    "src",
+]
+testpaths = [
+    "src/django_pg_stat_statements/**/tests/",
+    "src/django_pg_stat_statements/**/test_*/",
+    "src/django_pg_stat_statements/**/tests.py",
+    "src/django_pg_stat_statements/**/test_*.py",
+]
