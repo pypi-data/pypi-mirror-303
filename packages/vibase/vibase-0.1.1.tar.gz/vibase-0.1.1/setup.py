@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+from setuptools import setup
+
+import sys
+if not sys.version_info[0] >= 3:
+    sys.exit("Requires python 3 or greater")
+
+setup(name='vibase',
+      version='0.1.1',
+      description='Edit a database table using the VIM editor',
+      author='Ben McGunigle',
+      author_email='bnmcgn@gmail.com',
+      url='https://github.com/BnMcGn/vibase',
+      download_url='https://github.com/BnMcGn/vibase/archive/0.1.1.tar.gzip',
+      long_description='Inspired by vidir, vibase allows you to quickly edit the data in a database table using the power of the legendary VIM editor.',
+      packages=['src'],
+      entry_points = {
+              'console_scripts': [
+                  'vibase = src.vibase:main',
+              ],
+          },
+     )
