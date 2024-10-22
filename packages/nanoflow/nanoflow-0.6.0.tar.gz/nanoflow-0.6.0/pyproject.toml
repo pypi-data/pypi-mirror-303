@@ -1,0 +1,143 @@
+[project]
+name = "nanoflow"
+dynamic = []
+description = "A simple and efficient workflow framework for Python"
+authors = [
+    { name = "Zhan Rongrui", email = "2742392377@qq.com" },
+]
+dependencies = [
+    "loguru>=0.7.0",
+    "networkx>=3.0",
+    "pydantic>=2.0.0",
+    "toml>=0.10.0",
+    "rich>=13.8.0",
+    "typer>=0.12.5",
+    "textual>=0.81.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Typing :: Typed",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+version = "0.6.0"
+
+[project.license]
+text = "GPL-3.0"
+
+[project.optional-dependencies]
+server = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.30.6",
+]
+plot = [
+    "matplotlib>=3.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/zrr1999/nanoflow.git"
+Repository = "https://github.com/zrr1999/nanoflow.git"
+
+[project.scripts]
+nanoflow = "nanoflow.__main__:app"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "W",
+    "I",
+    "UP",
+    "B",
+    "C4",
+    "YTT",
+    "TID",
+    "PTH",
+    "PGH",
+    "RUF",
+]
+ignore = [
+    "F841",
+    "PGH003",
+    "UP038",
+    "B008",
+    "RUF001",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",
+    "I002",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "recognize",
+]
+required-imports = [
+    "from __future__ import annotations",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pyright]
+includes = [
+    "nanoflow",
+    "tests",
+]
+typeCheckingMode = "standard"
+reportPrivateImportUsage = false
+
+[tool.pdm.version]
+source = "scm"
+write_to = "nanoflow/__version__.py"
+write_template = "__version__ = '{}'"
+
+[tool.pdm.build]
+includes = [
+    "nanoflow",
+]
+source-includes = [
+    "tests",
+    "README.md",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ruff",
+    "xdoctest",
+    "pytest",
+    "pytest-cov",
+    "pytest-codspeed",
+    "pytest-asyncio",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc\\.)?abstractmethod",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
