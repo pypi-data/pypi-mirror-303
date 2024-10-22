@@ -1,0 +1,16 @@
+---
+provider: openai
+model: gpt-4o-mini
+prompt_version: 1.0
+temperature: 0.0
+output_format: json
+---
+{{ test_prompt }}
+Use a score between {{ min_value }} and {{ max_value }}
+Provide the output in JSON format with the following structure:
+
+{ "score": <score_value>, "response": "<response_text>" }
+
+Respond in the language of the input.
+
+input: 

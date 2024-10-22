@@ -1,0 +1,51 @@
+---
+provider: openai
+model: gpt-4o-mini
+prompt_version: 1.1
+temperature: 0.4
+output_format: json
+input: article.txt
+output: aida.json
+test_path: tests/test_data/test_inputs/08 - aida
+tests:
+    test_01: 
+        type: question
+        prompt: Komt de tekst overeen met het gevraagde formaat. Wees heel precies.
+    test_02: 
+        type: question
+        prompt: Staat de actie als instructie beschreven.
+    test_03: 
+        type: format
+        format: json
+---
+# Volg dit stappenplan
+
+1. Schrijf een AIDA (Attention; Interest; Desire; Action) voor dit artikel.
+2. Bepaal of de aflevering met een gast is. Indien ja, noem alleen naam van de gast. Laat de hosts Joop Snijder en Niels Naglé weg.
+3. Gebruik voor Attention verhalen, humor, een schokkende statistiek of een retorische vraag – alles wat ervoor zorgt dat de lezer oplet en aandachtig luistert.
+4. Schrijf de Interest als een prikkelende vraag aan de lezer. Bijvoorbeeld, Herken jij dit? Wil jij ook, wist je dat, waarom ..., etc.
+5. Bij de action geef de call-to-action van de gast weer als eerste weer.
+6. Schrijf de Action als een zin in de gebiedende wijs die de luisteraar aanspoort om deel te nemen aan een activiteit, met aanvullende uitleg over het doel en de relevantie van deze activiteit. Laat de het noemen van Spotify, Google Podcast en Apple Podcast weg.
+7. LET OP: Als er geen gast is, noem dan geen gast! Ook niet uit het voorbeeld.
+8. Verwijder de labels [ATTENTION], [INTEREST], [DESIRE], en [ACTION] uit de uiteindelijke versie.
+9. Antwoord in json formaat. No yapping.
+
+## Formaat
+
+Gebruik het volgende formaat voor de uiteindelijke versie:
+
+{
+    "attention": "[ATTENTION]",
+    "interest": "[INTEREST]",
+    "desire": "[DESIRE]",
+    "action": "[ACTION]"
+}
+
+## Voorbeeld
+
+{
+    "attention": "Kunstmatige intelligentie (AI) is niet alleen een technologie van de toekomst, maar alomtegenwoordig in ons dagelijks leven. Wist je dat de meeste mensen onbewust dagelijks gebruikmaken van AI, zonder het te beseffen? Dit roept vragen op over de impact van deze technologie op onze samenleving en ons dagelijks functioneren.",
+    "interest": "Herken jij de zorgen over de invloed van AI op je werk en privéleven? Wil je begrijpen hoe AI je dagelijkse beslissingen beïnvloedt, van de nieuwsberichten die je leest tot de advertenties die je ziet? In de nieuwste aflevering van AIToday Live, met onze gast Aaron Mirck, auteur van 'AI voorbij de hype', worden deze vragen kritisch besproken.",
+    "desire": "Wil je meer weten over de impact van AI op ons dagelijks leven? Ben je benieuwd naar de ethische en maatschappelijke vraagstukken die AI met zich meebrengt? Schrijf je dan nu in voor AIToday Live en ontdek hoe AI ons dagelijks leven beïnvloedt, zonder dat we het doorhebben.",
+    "action": "Luister naar deze aflevering om meer te leren over de rol van AI in jouw leven en hoe je kritisch kunt omgaan met de technologie die ons omringt. Het is belangrijk om bewust te zijn van de keuzes die we maken in een wereld die steeds meer door AI wordt gedreven."
+}
