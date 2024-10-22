@@ -1,0 +1,31 @@
+Package được làm bởi DENO(Nguyễn Văn Vinh)
+* Các hàm thông dụng
+- function
++ GiaiThua : Tính Giai Thừa Của 1 Số
++ SNT : Kiểm tra số đó có phải số nguyên tố không
++ UCLN : Ước Chung Lớn Nhất Của 2 Số 
++ BCNN : Bội Chung Nhỏ Nhất Của 2 Số
++ FIB : In Số Fibonacci thứ n , 
+- LIST
++ TBC : Trung Bình Cộng 1 list
++ SXTANG : Sắp Xếp List Tăng
++ vitriamdautien : vị trí âm đầu tiên trong list
++ maxvavitri : hiển thị giá trị max và vị trí cuối cùng (max,vị trí cuối cùng)
++ SNT : Tìm Tất Cả Số Nguyên Tố Có Trong 1 List
++ soduonglientiep : in ra số lượng số dương liên tiếp dài nhất
++ soluongdandau : in ra số lượng số đan dấu liên tiếp dài nhất
++ xosophantuthuk : xóa phần tử thứ k trong list
++ chenX  : chèn 1 số X mà list vẫn tăng
+- SET
++ sxchuoi : sắp xếp chuỗi theo chữ cái (ASCII)
++ loaibokitutrunglap : trả về 1 set Không có kí tự Trùng lặp
++ xaucondainhap : trả về sâu con có chứa tất cả các phần tử không trùng lăp
+- STRING
++ invadaonguoc : trả về chuỗi đảo ngược
++ demxaucon : đếm số lượng xâu con trong chuỗi 
++ demchuhoavachuthuong : đếm số lượng chữ hoa và thường ̣(số lượng chữ hoa , chữ thường)
++ SXkitu : trả về dãy kí tự theo chữ cái
++ kethucbangxaucon : kiểm tra xem xâu s có kêt thúc bằng xâu con x1 không,
++ kituxuathienitnhat : trả về kí tự xuất hiện ít nhất
++ batdaubangxaucon : kiểm tra xem xâu s có bắt đầu bằng xâu con x1 không,
++ kituxuathiennhieunhat : trả về kí tự xuất hiện nhiều nhất
