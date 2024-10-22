@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pulse-vpn"
+authors = [
+    {name = "Borodin Gregory", email = "grihabor@gmail.com"},
+]
+description = ""
+readme = "README.rst"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+keywords = ["vpn", "Pulse Secure", "openconnect", "ivanti"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+urls = {repository = "https://github.com/grihabor/pulse-vpn"}
+dependencies = [
+    "PyQt6-WebEngine",
+]
+dynamic = ["version"]
+
+[project.scripts]
+pulse-vpn = "pulse_vpn.main:main"
+
+[tool.setuptools_scm]
