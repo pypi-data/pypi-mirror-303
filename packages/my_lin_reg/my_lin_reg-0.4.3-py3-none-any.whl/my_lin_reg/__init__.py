@@ -1,0 +1,1 @@
+from my_lin_reg.regression_lineaire import LinearRegression, KneighbourghRegression
