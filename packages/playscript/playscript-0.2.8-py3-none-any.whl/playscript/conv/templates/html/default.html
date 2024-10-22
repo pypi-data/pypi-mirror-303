@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>{{ title }}</title>
+<meta name="viewport" content="width=device-width">
+{{ css }}
+</head>
+<body>
+
+<!-- ヘッダ ------------------------------------------------------------------>
+<header id="normalHeader" class="app-header">
+  <img id="tocButton" class="header-button header-button-left" src="https://satamame.github.io/pscv/img/list.png" />
+  <h1 id="headerTitle" class="header-title">{{ title }}</h1>
+  <img id="settingButton" class="header-button header-button-right" src="https://satamame.github.io/pscv/img/gear.png" />
+</header>
+
+<!-- 台本コンテンツ ---------------------------------------------------------->
+<main id="main">
+{%- for line in lines %}
+<div class="{{ line.type|class_name }}">
+{%- if line.type.name == 'CHARACTER' %}
+  <p>{{ line.name|e }}</p>
+  {%- if 'text' in line.__dir__() %}
+  <p>{{ line.text|e|esc_spc }}</p>
+  {%- endif %}
+{%- elif line.type.name == 'DIALOGUE' %}
+  <p>{{ line.name|e }}</p>
+  <p>{{ line.text|e|esc_spc }}</p>
+{%- else %}
+  <p>{{ line.text|e|esc_spc }}</p>
+{%- endif %}
+</div>
+{%- endfor %}
+</main>
+
+<!-- 目次パネル -------------------------------------------------------------->
+<nav id="toc" class="modal">
+  <div class="overlay"></div>
+  <div class="app-toc panel">
+    <div class="panel-header">
+      <h2>目次</h2>
+      <img id="tocCloseButton" class="panel-header-button" src="https://satamame.github.io/pscv/img/close.png" />
+    </div>
+    <ul id="tocList" class="toc-list">
+    {%- for toc_item in toc_items %}
+    {%- endfor %}
+    </ul>
+  </div>
+</nav>
+
+<!-- 設定パネル -------------------------------------------------------------->
+<div id="setting" class="modal">
+  <div class="overlay"></div>
+  <div class="app-setting panel">
+    <div class="panel-header">
+      <h2>設定</h2>
+      <img id="settingCloseButton" class="panel-header-button" src="https://satamame.github.io/pscv/img/close.png" />
+    </div>
+    <p class="setting-item">文字サイズ</p>
+    <div>
+      <select id="fontSizeSelect">
+      </select>
+    </div>
+    <p class="setting-item">向き</p>
+    <div>
+      <select id="writingModeSelect">
+        <option value='0'>横書き</option>
+        <option value='1'>縦書き</option>
+        <option value='2'>縦書き (英数字も)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+{{ js }}
+</body>
+</html>
