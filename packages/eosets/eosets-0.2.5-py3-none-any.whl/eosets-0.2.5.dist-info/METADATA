@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: eosets
+Version: 0.2.5
+Summary: This library aims to simplify any process working with different sets of EO data handled by EOReader.
+Home-page: UNKNOWN
+Author: ICube-SERTIT
+Author-email: dev-sertit@unistra.fr
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/sertit/eosets/issues/
+Project-URL: Documentation, https://eosets.readthedocs.io/en/latest/
+Project-URL: Source Code, https://github.com/sertit/eosets
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: lxml
+Requires-Dist: h5netcdf
+Requires-Dist: scipy
+Requires-Dist: rasterio>=1.3.10
+Requires-Dist: xarray>=2024.06.0
+Requires-Dist: rioxarray>=0.10.0
+Requires-Dist: odc-geo>=0.4.6
+Requires-Dist: geopandas>=0.14.4
+Requires-Dist: spyndex>=0.3.0
+Requires-Dist: pyresample
+Requires-Dist: zarr
+Requires-Dist: rtree
+Requires-Dist: validators
+Requires-Dist: methodtools
+Requires-Dist: dicttoxml
+Requires-Dist: eoreader>=0.21.3
+Requires-Dist: sertit[full]>=1.42.2
+
+# EOSets
+
+This library aims to simplify any process working with sets of EO data handled by [EOReader](https://github.com/sertit/eoreader).
+
+## Content
+
+EOSets implement these objects:
+
+![eosets_objects](docs/_static/eosets_objects.png)
+
+NB: multi-pairs are not really implemented for now. We are waiting for true usecases. For now please use a list of pairs to process your data.
+
+## Features
+
+Implemented features are similar to those implemented in EOReader:
+- `load`
+- `stack`
+- `extent`
+- `footprint`
+- ...
+
+## Examples
+
+Available notebooks provided as examples:
+
+- [Mosaic](https://eosets.readthedocs.io/en/latest/notebooks/mosaic.html#)
+- [Pair](https://eosets.readthedocs.io/en/latest/notebooks/pair.html)
+- [Series](https://eosets.readthedocs.io/en/latest/notebooks/series.html)
+
