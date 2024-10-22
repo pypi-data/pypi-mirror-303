@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: ms2lipid
+Version: 0.1.6
+Summary: ms2lipid is a Python library for predicted lipid class by using ms2 spectrum.
+Home-page: https://github.com/systemsomicslab/ms2lipid
+License: MIT
+Author: NamiSakamoto
+Author-email: 123930464+NamiSakamoto@users.noreply.github.com
+Requires-Python: >=3.9,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: keras (==2.15.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: pandas (>=2.1.2,<3.0.0)
+Requires-Dist: scikit-learn (>=1.5.2,<2.0.0)
+Requires-Dist: tensorflow (==2.15.0)
+Requires-Dist: xgboost (>=2.1.1,<3.0.0)
+Requires-Dist: zenodo-get (>=1.6.1,<2.0.0)
+Project-URL: Issues, https://github.com/systemsomicslab/ms2lipid/issues
+Description-Content-Type: text/markdown
+
+# ms2lipid
+
+ms2lipid is a Python library for predicted lipid class by using ms2 spectrum.
+
+## Installation
+
+Use the package manager pip to install ms2lipid.
+
+```bash
+pip install ms2lipid
+```
+
+## Usage
+
+```python
+import ms2lipid
+
+# predicted lipid subclass by ms2 spectrum
+predicted_result_df = ms2lipid.predclass(data_path, ms2spectrum_column_name, precurcerion_column_name, ionmode)
+
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
