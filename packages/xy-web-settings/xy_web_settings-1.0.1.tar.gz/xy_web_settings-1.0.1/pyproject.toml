@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "xy_web_settings"
+
+authors = [{ name = "helios", email = "yuyang.0515@qq.com" }]
+description = "xy-web-service服务设置模块"
+
+dependencies = ["importlib_resources", "xy_file", "xy_configure", "xy_settings", "xy_work"]
+
+requires-python = ">=3.11.3"
+
+dynamic = ["version"]
+
+classifiers = ["Programming Language :: Python :: 3"]
+
+[project.scripts]
+
+[tool.setuptools.packages.find]
+where = ["./"]
+include = ["xy_web_settings"] # alternatively: `exclude = ["additional*"]`
+namespaces = false
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
