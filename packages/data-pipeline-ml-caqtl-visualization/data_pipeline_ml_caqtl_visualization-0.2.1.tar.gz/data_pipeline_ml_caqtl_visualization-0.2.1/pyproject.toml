@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "data-pipeline-ml-caqtl-visualization"
+version = "0.2.1"
+description = "ML visualization pipeline for caQTL evaluation"
+authors = ["Jaureguy760 <jeffpjaureguy@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/mcvickerlab/CaVarCNN/blob/master"
+repository = "https://github.com/mcvickerlab/CaVarCNN/blob/master"
+keywords = ["machine-learning", "visualization", "caQTL", "PyTorch"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+packages = [
+    { include = "data_pipeline" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+h5py = "*"
+numpy = "*"
+polars = "*"
+click = "*"
+pandas = "*"
+matplotlib = "*"
+scipy = "*"
+statsmodels = "*"
+# Uncomment if `caqtl-ml-pipeline` is needed
+# caqtl-ml-pipeline = { version = "*", source = "testpypi" }
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"  # Add other development dependencies as needed
+
+[tool.poetry.group.dev.dependencies]
+twine = "^5.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+priority = "supplemental"
+
+[tool.poetry.scripts]
+pipeline = "data_pipeline.scripts.cli:cli"
