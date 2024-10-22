@@ -1,0 +1,167 @@
+[project]
+name = "pixel-map"
+version = "0.2.0"
+description = "A Python CLI tool for plotting geo files in the terminal"
+authors = [
+    { name = "Kamil Raczycki", email = "kraczycki@kraina.ai" },
+]
+dependencies = [
+    "rich>=12.0.0",
+    "typer[all]>=0.9.0",
+    "img2unicode[n2]>=0.1a11; sys_platform != 'win32' and sys_platform != 'darwin'",
+    "img2unicode>=0.1a11; sys_platform == 'win32' or sys_platform == 'darwin'",
+    "geopandas>=0.6",
+    "numpy>=1.26.0",
+    "contextily>=1",
+    "matplotlib>=3.2.0",
+    "pyarrow>=16.0.0",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[project.scripts]
+pixel-map = "pixel_map.__main__:main"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "bumpver",
+    "types-requests",
+    "setuptools>=45.0.0",
+]
+lint = [
+    "pre-commit>=4",
+    "mypy>=1",
+    "docformatter[tomli]",
+    "ruff>=0.1.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "tox-pdm>=0.7.2",
+    "pytest-mock>=3.3.0",
+    "requests-mock>=1.12.1",
+    "pytest-check>=2.3.1",
+    "pytest-parametrization>=2022.2.1",
+]
+license = [
+    "licensecheck",
+    "pipdeptree",
+]
+
+[tool.pdm.scripts]
+post_install = "pre-commit install"
+
+[tool.black]
+line-length = 100
+target-version = [
+    "py39",
+    "py310",
+    "py311",
+    "py312",
+]
+preview = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-exclude = [
+    "old",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "W",
+    "F",
+    "UP",
+    "D",
+    "I",
+    "B",
+    "NPY",
+    "YTT",
+    "Q",
+    "PLE",
+    "PLW",
+    "PIE",
+    "TID",
+    "ISC",
+    "TCH",
+]
+ignore = [
+    "D212",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 100
+
+[tool.mypy]
+strict = true
+show_column_numbers = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+
+[tool.docformatter]
+syntax = "google"
+black = true
+recursive = true
+wrap-summaries = 100
+wrap-descriptions = 100
+tab-width = 4
+blank = false
+pre-summary-newline = true
+close-quotes-on-newline = true
+wrap-one-line = true
+
+[tool.bumpver]
+current_version = "0.2.0"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
+commit_message = "chore(CI/CD): bump version {old_version} -> {new_version}"
+commit = true
+tag = false
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    "^current_version = \"{version}\"$",
+    "^version = \"{version}\"$",
+]
+"pixel_map/__init__.py" = [
+    "^__version__ = \"{version}\"$",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+log_cli = true
+doctest_optionflags = [
+    "ELLIPSIS",
+    "NORMALIZE_WHITESPACE",
+    "IGNORE_EXCEPTION_DETAIL",
+]
+
+[tool.licensecheck]
+using = "requirements"
+zero = false
+ignore_licenses = [
+    "UNKNOWN",
+]
