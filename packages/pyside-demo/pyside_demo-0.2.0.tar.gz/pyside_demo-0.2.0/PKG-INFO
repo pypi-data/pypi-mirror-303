@@ -1,0 +1,96 @@
+Metadata-Version: 2.1
+Name: pyside-demo
+Version: 0.2.0
+Summary: Offline-first GUI application with PostgreSQL synchronization
+Home-page: https://github.com/jiriklic/pyside-demo
+License: MIT
+Keywords: PySide6,Offline-first,GUI
+Author: Jiri Klic
+Author-email: web@jiriklic.com
+Requires-Python: >=3.9,<3.13
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Classifier: Topic :: Scientific/Engineering :: GIS
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: folium (>=0.17.0,<0.18.0)
+Requires-Dist: pandas (>=2.2.3,<3.0.0)
+Requires-Dist: psycopg2-binary (>=2.9.9,<3.0.0)
+Requires-Dist: pyqtgraph (>=0.13.7,<0.14.0)
+Requires-Dist: pyside6 (>=6.7.2,<7.0.0)
+Requires-Dist: python-dotenv (>=1.0.1,<2.0.0)
+Requires-Dist: qtawesome (>=1.3.1,<2.0.0)
+Requires-Dist: requests (>=2.31.0,<3.0.0)
+Requires-Dist: sqlalchemy (>=2.0.23,<3.0.0)
+Project-URL: Repository, https://github.com/jiriklic/pyside-demo
+Description-Content-Type: text/markdown
+
+# PySide Demo
+
+|   |   |
+|---|---|
+|Project|[![Python Versions](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://www.python.org/) [![Supported Platforms](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/deltodon/pyside-demo) [![License](https://img.shields.io/github/license/deltodon/pyside-demo)](LICENSE) |
+|Quality| [![Issues](https://img.shields.io/github/issues/deltodon/pyside-demo)](https://github.com/deltodon/pyside-demo/issues) [![Lint](https://img.shields.io/badge/Lint-black%20%7C%20isort%20%7C%20flake8%20%7C%20mypy%20%7C%20pymarkdown-blue)](https://github.com/deltodon/pyside-demo/blob/main/.pre-commit-config.yaml) |
+| Tools | [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/) [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/) |
+
+This application is a PySide6-based GUI that demonstrates an offline-first approach with PostgreSQL synchronization capabilities.
+It allows users to manage items locally and synchronize them with a remote PostgreSQL database when an internet connection is available.
+
+It uses folium and pyqtgraph for interactive graph and geospatial visualisation.
+
+![PySide Demo Animation](https://github.com/deltodon/pyside-demo/blob/main/docs/images/pyside-demo-anim.gif)
+
+* [Introduction](https://deltodon.github.io/pyside-demo/introduction.html)
+* [Installation](https://deltodon.github.io/pyside-demo/installation.html)
+* [Usage](https://deltodon.github.io/pyside-demo/usage.html)
+* [Data](https://deltodon.github.io/pyside-demo/data.html)
+* [Contributing](https://deltodon.github.io/pyside-demo/contributing.html)
+* [Changelog](https://deltodon.github.io/pyside-demo/changelog.html)
+
+### Quick Start
+
+install the package using pip
+
+```bash
+pip install pyside-demo
+```
+
+run the package
+
+```bash
+python -m pyside_demo
+```
+
+if you are using Poetry, install the package  with
+
+```bash
+poetry add pyside-demo
+```
+
+and then run
+
+```bash
+poetry run python pyside_demo
+```
+
+### Features
+
+* Offline-first architecture
+* Local data storage in SQLite
+* PySide6 based GUI
+* PostgreSQL synchronization
+* Interactive Graph visualisation
+* Interactive Geospatial data visualisation
+* Custom QSS colour theme
+* Cross-platform support
+* Model View Controller structure (MVC)
+
