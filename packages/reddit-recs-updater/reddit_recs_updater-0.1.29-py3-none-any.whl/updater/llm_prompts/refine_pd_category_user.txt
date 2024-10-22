@@ -1,0 +1,37 @@
+## Context
+
+A user shopping for a product said that he is looking for a "{pd_category}". 
+
+When he searched Reddit for recommendations, these are the search results:
+<search_results>
+{search_results}
+</search_results>
+
+## Your task
+
+Are most of results relevant? Respond with true or false.
+
+If most of the results are not relevant, help the user search better for recommendations in the form of "best {product_category}" and "{product_category} recommendations". Respond what {product_category} should be.
+
+## Guidelines in coming up the product category:
+- Optimize for getting a good number of results. Don't be too specific in the product category (e.g. 15 inch TVs) because that will yield too little results
+- But at the same time, don't be too broad (e.g. kitchen appliances) because that will yield results that are not specific enough to be helpful
+
+### Example product categories
+- "15inch TVs" should be "Small Tvs"
+
+## Response format:
+Respond in the following json format based on these examples:
+
+<example>
+{
+  "search_results_mostly_relevant": true
+  "product_category": null
+}
+</example>
+
+<example>
+{
+  "search_results_mostly_relevant": false
+  "product_category": "Small TVs"
+}
