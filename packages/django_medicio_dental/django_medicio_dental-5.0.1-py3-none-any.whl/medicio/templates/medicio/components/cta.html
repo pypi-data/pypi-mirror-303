@@ -1,0 +1,26 @@
+{% load static %}
+
+<section id="cta" class="cta">
+  <div class="container" data-aos="zoom-in">
+
+    <div class="text-center">
+      <h3>{{ cta_title }}</h3>
+      <p>{{ cta_subtitle|safe }}</p>
+
+      <div class="row gy-5 justify-content-center">
+      {% for btn in cta_btns %}
+        <div class="col col-lg-3">
+          {% if btn.conversion_name %}
+          <a class="cta-btn scrollto" href="{{ btn.link }}"
+             onclick="{{ btn.conversion_name }}_gtag_report_conversion('{{ btn.link }}');"
+             target="_blank">{{ btn.title }}</a>
+          {% else %}
+          <a class="cta-btn scrollto" href="{{ btn.link }}" target="_blank">{{ btn.title }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
