@@ -1,0 +1,29 @@
+{% load static %}
+
+<section id="testimonials" class="testimonials">
+  <div class="container">
+
+    <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+      <div class="swiper-wrapper">
+        {% for item in testimonials %}
+        <div class="swiper-slide">
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'medilab/img/testimonials/'|add:item.photo %}" class="testimonial-img" alt="">
+              <h3>{{ item.name }}</h3>
+              <h4>{{ item.job |safe }}</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                {{ item.desc }}
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+  </div>
+</section>
