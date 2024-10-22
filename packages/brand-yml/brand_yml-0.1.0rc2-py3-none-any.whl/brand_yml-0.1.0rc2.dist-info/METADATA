@@ -1,0 +1,64 @@
+Metadata-Version: 2.3
+Name: brand_yml
+Version: 0.1.0rc2
+Summary: Read brand yaml files, a unified way to store brand information.
+Project-URL: Homepage, https://posit-dev.github.io/brand-yml/
+Project-URL: Documentation, https://posit-dev.github.io/brand-yml/pkg/py/
+Project-URL: Repository, https://github.com/posit-dev/brand-yml
+Project-URL: Issues, https://github.com/posit-dev/brand-yml/issues/
+Project-URL: Changelog, https://github.com/posit-dev/brand-yml/blob/main/pkg-py/CHANGELOG.md
+Author-email: Garrick Aden-Buie <garrick@posit.co>
+License-File: LICENSE.md
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Requires-Dist: eval-type-backport>=0.2.0
+Requires-Dist: pydantic>=2
+Requires-Dist: ruamel-yaml>=0.18.0
+Provides-Extra: docs
+Requires-Dist: griffe>=1; extra == 'docs'
+Requires-Dist: ipykernel; extra == 'docs'
+Requires-Dist: nbclient; extra == 'docs'
+Requires-Dist: nbformat; extra == 'docs'
+Requires-Dist: pyyaml; extra == 'docs'
+Requires-Dist: quartodoc>=0.7; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pyright>=1.1.251; extra == 'test'
+Requires-Dist: pytest>=8; extra == 'test'
+Requires-Dist: syrupy>=4; extra == 'test'
+Description-Content-Type: text/markdown
+
+# brand.yml Python Package
+
+
+``` python
+from brand_yml import Brand
+
+brand = Brand(
+    meta = {"name": "Posit PBC", "link": "https://posit.co"}
+)
+
+brand.meta
+```
+
+    BrandMeta(name=BrandMetaName(full='Posit PBC'), link=BrandMetaLink(home=Url('https://posit.co/')))
+
+## Installation
+
+### From PyPI
+
+``` bash
+uv pip install brand_yml
+```
+
+### From GitHub
+
+``` bash
+uv pip install "git+https://github.com/posit-dev/brand-yml#subdirectory=pkg-py"
+```
