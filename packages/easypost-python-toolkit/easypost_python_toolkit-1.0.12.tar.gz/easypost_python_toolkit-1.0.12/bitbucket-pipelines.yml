@@ -1,0 +1,22 @@
+image: python:3.12.4-alpine
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Build & Deploy to Production
+          deployment: Production
+          runs-on:
+            - self.hosted
+            - linux
+          script:
+            # bump package version
+            - echo "VERSION = '1.0.${BITBUCKET_BUILD_NUMBER}'" > easypost_python_toolkit/__version__.py
+
+            # install the necessary packages for building and deploying
+            - pip install --upgrade build twine
+
+            # Build and Deploy
+            - python -m build
+            - python -m twine upload dist/* -u '__token__' -p $PYPI_TOKEN
+
