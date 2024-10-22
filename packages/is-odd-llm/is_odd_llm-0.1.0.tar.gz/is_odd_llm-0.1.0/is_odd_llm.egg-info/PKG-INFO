@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: is-odd-llm
+Version: 0.1.0
+Summary: A Python package using LLM to determine if a number is odd
+Home-page: https://github.com/yenslife/is-odd-llm
+Author: yenslife
+Author-email: 77geo5rge6@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai>=1.40.6
+
+# is-odd-llm
+
+LLM is so powerful 💪, let's use it to check if a number is odd.
+
+Inspired by [is-odd-ai](https://github.com/rhettlunn/is-odd-ai). So I build a Python version of it.
+
+## Install
+
+```bash
+pip install is-odd-llm
+```
+
+## Usage
+
+set up your OpenAI API key in the environment variable `OPENAI_API_KEY`
+
+```bash
+export OPENAI_API_KEY="sk-..."
+```
+
+then you can use the `is_odd` function to check if a number is odd.
+
+### Example
+
+```python
+from is_odd_llm import is_odd
+
+print(is_odd(1))  # high probability is True
+print(is_odd(2))  # high probability is False
+```
+
+## Contributing
+
+Feel free to open an issue or a PR or any other suggestions.
+
+## License
+
+[MIT](LICENSE)
