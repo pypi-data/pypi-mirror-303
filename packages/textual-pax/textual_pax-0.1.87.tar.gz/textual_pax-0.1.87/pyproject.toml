@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "textual-pax"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Scott", email = "fake@fake.com" }
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+dependencies = [
+  "textual", 
+  "pandas", 
+  "reportlab", 
+  "aiohttp",
+  "reportlab_qrcode",
+]
+
+[project.scripts]
+paxtui = "textual_pax.entry_points:paxtui"
+e7labels = "textual_pax.entry_points:e7labels"
+
+[tool.hatch.version]
+path = "src/textual_pax/__about__.py"
+
+[tool.hatch.envs.myenv]
+python = "3.12"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/textual_pax tests}"
+
+[tool.coverage.run]
+source_pkgs = ["textual_pax", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/textual_pax/__about__.py",
+]
+[tool.hatch.envs.default]
+dependencies = [
+  "textual", 
+  "pandas", 
+  "reportlab", 
+  "aiohttp",
+  "reportlab_qrcode"
+]
+
+[tool.coverage.paths]
+textual_pax = ["src/textual_pax", "*/textual-pax/src/textual_pax"]
+tests = ["tests", "*/textual-pax/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+[tool.hatch.build] 
+
+exlude = ['Constants.py']

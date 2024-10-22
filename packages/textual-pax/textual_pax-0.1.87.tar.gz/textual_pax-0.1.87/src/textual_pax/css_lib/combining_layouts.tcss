@@ -1,0 +1,116 @@
+#app-grid {
+    layout: grid;
+    grid-size: 3 2;  /* two columns */
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+}
+
+#left-pane > Static {
+    background: $boost;
+    color: auto;
+    margin-bottom: 0;
+    padding: 1;
+}
+
+#left-pane {
+    width: 100%;
+    height: 100%;
+    row-span: 2;
+    background: $panel;
+    border: dodgerblue;
+}
+
+#top-center {
+    height: auto;
+    background: $panel;
+    content-align: center top;
+    border: mediumvioletred;
+    padding: 1 2;
+
+}
+#top-center > Static {
+    background: $boost;
+    color: auto;
+    margin-bottom: 1;
+    padding: 1;
+}
+.gtask-buttons {
+    width: 100%;
+    height: auto;
+}
+
+#bottom-right {
+    padding: 1;
+    border: green;
+    column-span: 1;
+    background: $panel
+}
+#quickactivate {
+    border: heavy green;
+}
+#deactivate {
+    border: heavy darkkhaki;
+}
+#quickdelete {
+    border: heavy firebrick;
+}
+#move {
+    border: heavy mediumpurple
+}
+#details {
+    border: heavy royalblue;
+}
+#foop {
+    border: heavy saddlebrown
+}
+
+.titleheader {
+    height: auto;
+    content-align: center top;
+    text-style: bold;
+    dock: top;
+
+}
+/* The button class */
+Button {
+    margin: 1 1;
+    width: 1fr;
+}
+
+.buttons {
+    width: 100%;
+    height: auto;
+}
+
+
+#bottom-left {
+    height: 100%;
+
+    column-span: 1;
+    row-span: 1;
+
+    background: $panel;
+    border: greenyellow;
+}
+
+
+
+#bottom-right {
+    height: 100%;
+
+    column-span: 2;
+    row-span: 1;
+
+    background: $panel;
+    border: orange;
+}
+
+
+#bottom-middle {
+    padding: 1;
+    border: mediumvioletred;
+    column-span: 2;
+    background: $panel;
+    layout: grid;
+    grid-size: 2 3;
+}
