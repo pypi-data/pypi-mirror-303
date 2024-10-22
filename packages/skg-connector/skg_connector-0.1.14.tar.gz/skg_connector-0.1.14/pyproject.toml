@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "skg-connector"
+version = "0.1.14"
+description = "Module to extract and store data into an SKG"
+authors = ["livialestingi <livia.lestingi@polimi.it>"]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Manufacturing",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only"
+]
+packages = [
+    { include = "skg_main" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+neo4j = "^5.17.0"
+graphviz = "^0.20.1"
+pygraphviz = "^1.12"
+
+[tool.poetry.group.test.dependencies]
+black = "^24.2.0"
+flake8 = "^7.0.0"
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://github.com/LesLivia/skg_connector"
