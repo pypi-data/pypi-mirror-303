@@ -1,0 +1,99 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "setuptools_scm[toml]>=3.4.3",
+    "construct>=2.10.0",
+    "randovania-lupa>=2.0.1",
+    "zstandard",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mercury-engine-data-structures"
+description = "Construct file definitions for the Mercury Engine, the in-house game engine from MercurySteam"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.10"
+dynamic = ["version"]
+
+dependencies = [
+    "construct>=2.10.70",  # 2.10.70 includes a fix for compiled structs building
+    "randovania-lupa>=2.0.1",
+    "zstandard",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/randovania/mercury-engine-data-structures"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.1",  # see https://github.com/pytest-dev/pytest/issues/12608
+    "pytest-cov",
+]
+
+# Entry Points for PyInstaller
+[project.entry-points.pyinstaller40]
+hook-dirs = "mercury_engine_data_structures.__pyinstaller:get_hook_dirs"
+
+[tool.setuptools_scm]
+local_scheme = "no-local-version"
+write_to = "src/mercury_engine_data_structures/version.py"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+# asyncio_mode = "auto"
+xfail_strict = true
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 120
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W", "C90", "I", "UP", "C4",
+    "RSE",
+    "TCH",
+    # "PTH",
+    "COM818", "COM819",
+    "ISC",
+    "PIE",
+    # "PT",
+
+    "PLC",
+    "PLC0208",  # iterating over set is also not deterministic, so we shouldn't do that!
+
+    "PLE",
+    "PLR0402", "PLR1711", "PLR1722", "PLR0206", "PLR0133", "PLR0124",
+    "PLW",
+    "SIM101",
+]
+extend-ignore = [
+    "ISC001",  # may cause conflicts with formatter
+    "PLW2901",  # `for` loop variable `key` overwritten by assignment target
+]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 25.
+# Defaults to 10, but we're being very flexible right now
+max-complexity = 25
