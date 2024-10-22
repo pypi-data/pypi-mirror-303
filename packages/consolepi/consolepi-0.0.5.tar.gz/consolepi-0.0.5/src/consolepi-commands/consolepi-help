@@ -1,0 +1,32 @@
+#!/etc/ConsolePi/venv/bin/python3
+
+from rich.console import Console
+from rich.markdown import Markdown
+from pathlib import Path
+
+console = Console(emoji=False)
+
+
+def help_from_md():
+    md = []
+    readme_file = Path("/etc/ConsolePi/README.md")
+    readme_txt = readme_file.read_text()
+    capture = False
+    for line in readme_txt.splitlines():
+        if '## **Convenience Commands:**' in line:
+            capture = True
+        elif capture and line.startswith("#"):
+            capture = False
+            break
+        if capture:
+            md += [line]
+
+    md = Markdown("\n".join(md))
+
+    print()
+    console.rule('The Following is extracted from the readme')
+    console.print(md)
+    console.rule()
+
+
+help_from_md()

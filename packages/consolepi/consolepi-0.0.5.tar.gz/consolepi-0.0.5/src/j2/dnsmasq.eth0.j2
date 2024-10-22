@@ -1,0 +1,11 @@
+####
+# ConsolePi wired interface specific dnsmasq instance
+# used for ZTP functionality, use with caution.
+####
+dhcp-script=/etc/ConsolePi/src/dhcp-trigger.py
+interface={{ wired_iface|default('eth0') }}
+bogus-priv
+domain-needed
+dhcp-range={{dhcp_start}},{{dhcp_end}},255.255.255.0,12h
+bind-interfaces
+resolv-file=/run/dnsmasq/resolv.conf

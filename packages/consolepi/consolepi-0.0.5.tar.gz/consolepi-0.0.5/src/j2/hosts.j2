@@ -1,0 +1,29 @@
+127.0.0.1       localhost
+::1             localhost ip6-localhost ip6-loopback
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+127.0.1.1       {{hostname}}
+{% if domain %}
+    {% if hotspot %}
+        {% if wlan_ip %}
+{{ "%-15s" | format(wlan_ip) }} {{hostname}} {{hostname}}.{{domain}}
+        {% endif %}
+    {% endif %}
+    {% if wired_dhcp %}
+        {% if wired_ip %}
+{{ "%-15s" | format(wired_ip) }} {{hostname}} {{hostname}}.{{domain}}
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% if hotspot %}
+        {% if wlan_ip %}
+{{ "%-15s" | format(wlan_ip) }} {{hostname}}
+        {% endif %}
+    {% endif %}
+    {% if wired_dhcp %}
+        {% if wired_ip %}
+{{ "%-15s" | format(wired_ip) }} {{hostname}}
+        {% endif %}
+    {% endif %}
+{% endif %}

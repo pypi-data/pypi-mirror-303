@@ -1,0 +1,135 @@
+[project]
+name = "consolepi"
+version = "0.0.5"
+description = 'Acts as a serial Console Server, allowing you to remotely connect to ConsolePi via Telnet/SSH/bluetooth to gain Console Access to devices connected to local or remote ConsolePis via USB to serial adapters (i.e. Switches, Routers, Access Points... anything with a serial port).'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Pack3tL0ss", email = "wade99@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    "aiohttp<=3.10.9",
+    "dlipower>=1.0.176",
+    "fastapi>=0.103.2",
+    "google-api-python-client>=2.103.0",
+    "google-auth-oauthlib>=1.1.0",
+    "halo>=0.0.31",
+    "in-place>=0.5.0",
+    "Jinja2>=3.1.2",
+    "log-symbols>=0.0.14",
+    "netifaces>=0.11.0",
+    "paramiko>=3.3.1",
+    "psutil>=5.9.5",
+    "pydantic>=2.4.2",
+    "pyudev>=0.24.1",
+    "PyYAML>=6.0.1",
+    "requests>=2.31.0",
+    "rich>=13.6.0",
+    "setproctitle>=1.3.3",
+    "starlette>=0.27.0",
+    "uvicorn>=0.23.2",
+    "zeroconf>=0.115.2"
+]
+
+[project.urls]
+Documentation = "https://consolepi.readthedocs.io"
+Issues = "https://github.com/Pack3tL0ss/consolepi/issues"
+Source = "https://github.com/Pack3tL0ss/consolepi"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/docs",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pypkg/consolepi"]
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/consolepi tests}"
+
+[tool.coverage.run]
+source_pkgs = ["consolepi", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/pypkg/consolepi/__about__.py",
+]
+
+[tool.coverage.paths]
+consolepi = ["src/consolepi", "*/consolepi/src/consolepi"]
+tests = ["tests", "*/consolepi/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.ruff]
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E", "F"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+# fixable = ["ALL"]
+# unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+per-file-ignores = {}
+
+# Same as Black.
+line-length = 300
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.11.
+# target-version = "py311"

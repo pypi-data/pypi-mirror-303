@@ -1,0 +1,374 @@
+#!/usr/bin/env bash
+
+# __author__: Wade Wells ~ Pack3tL0ss
+#
+# A Convenience script to update ConsolePi from repo with numerous options
+#  Most used primarily to aid in testing of remote ConsolePi functionality
+#  during development.
+#
+
+consolepi_dir="/etc/ConsolePi"
+log_file="/tmp/consolepi-sync.log"
+final_log="/var/log/ConsolePi/install.log"
+iam=$(who -m |  awk '{print $1}')
+[ -z $iam ] && iam=$USER
+[[ $iam == "root" ]] && [[ ! -z $SUDO_USER ]] && iam=$SUDO_USER
+[ "$iam" = "root" ] && home_dir="/${iam}" || home_dir="/home/${iam}"
+loc_pull_file=$home_dir/local_pull
+rem_user='consolepi'
+loc_pull_host='ConsolePi-dev'
+upgrade_pip=false
+cp_lib=false
+loc_pull=false
+stash_local=false
+perms=false
+perms_done=false
+reload_svcs=false
+skip_pull=false
+SVCS=("consolepi-mdnsbrowse" "consolepi-mdnsreg" "consolepi-api")
+[ -z "$DEBUG" ] && DEBUG=false
+
+# Terminal coloring
+_norm='\e[0m'
+_bold='\e[32;1m'
+_blink='\e[5m'
+_red='\e[31m'
+_blue='\e[34m'
+_lred='\e[91m'
+_yellow='\e[33;1m'
+_green='\e[32m'
+_cyan='\e[96m' # technically light cyan
+
+dots() {
+    local pad=$(printf "%0.1s" "."{1..70})
+    printf " * %s%*.*s" "$1" 0 $((70-${#1})) "$pad"
+    return 0
+}
+
+do_error() {
+    if [ -z "$1" ] || [ "$1" -gt 0 ]; then
+        if [ -z "$1" ]; then
+            echo -e "${_red}Error${_norm}: No rc sent to do_error\n"
+        else
+            echo -e "${_red}${_blink}Failed${_norm}" ; echo -e "\n"
+        fi
+        [ -n "$2" ] && echo "$2"
+        [[ $(dirs | tr " " "\n" | wc -l) -gt 1 ]] && popd >/dev/null
+        popd > /dev/null 2>&1
+        dump_log true
+        exit 1
+    fi
+    echo -e "${_green}OK${_norm}"
+}
+
+user_input_bool() {
+  local prompt=$1
+  echo
+  while [[ -z $response ]] || [[ ! "$response" =~ ^(yes|y|no|n)$ ]]; do
+      read -ep "${prompt}? (y/N): " response
+      response=${response,,}
+      [[ "$response" =~ ^(no|n)$ ]] && exit 0
+  done
+}
+
+dump_log() {
+    [[ ! -z "$1" ]] && err=true || err=false
+    if [[ -f $log_file ]] && [[ -f $final_log ]]; then
+        echo -e "$(date +"%b %d %T") ----- // Sync Performed via consolepi-sync \\\\ -----" >> $final_log
+        $err && cat $log_file | tee -a $final_log
+    fi
+    [[ -f $log_file ]] && ! $DEBUG && rm $log_file
+}
+
+do_perms() {
+    echo -e "\n -- Verify Permissions"
+    dots "verify ConsolePi dir exists"
+    [ -d $consolepi_dir ] ; do_error $?
+
+    dots "verify $iam is member of consolepi group"
+    [[ $(groups) =~ 'consolepi' ]] ; do_error $?
+
+    check_list=("$consolepi_dir" "$consolepi_dir/.git")
+    [[ -f $consolepi_dir/.static.yaml ]] && check_list+=("$consolepi_dir/.static.yaml")
+
+    for d in "${check_list[@]}"; do
+        dots "Verifying Permissions for $d"
+        sudo chgrp -R consolepi ${d} 2>> $log_file ; local rc=$?
+        sudo chmod g+w -R ${d} 2>> $log_file ; local rc=$?
+        do_error $rc
+    done
+}
+
+do_git_pull() {
+    x=0; while [ $x -le 2 ]  ; do
+        pushd /etc/ConsolePi >/dev/null
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        echo -e "\n -- Performing git pull"
+        dots "git pull ConsolePi (${branch})"
+        res=$(git pull 2>>$log_file) ; local rc=$?
+        popd >/dev/null
+        if [[ $rc -eq 0 ]] ; then
+            # echo OK
+            # echo $res | grep -q "file\? changed" && echo $res | sed -n "/Updating /,/^$/p"
+            echo -e "OK\n --\n$res\n --"
+            break
+        else
+            if tail $log_file | grep -q "error: insufficient permission\|Permission denied" ; then
+                if ! $perms_done ; then
+                    echo 'FIX PERMISSIONS!'
+                    do_perms && perms_done=true
+                else
+                    do_error $rc
+                    break
+                fi
+            elif $stash_local ; then
+                echo 'STASH!'
+                do_stash_local
+                stash_local=false
+            else
+                do_error $rc
+            fi
+        fi
+        ((x+=1))
+    done
+}
+
+
+do_loc_pull() {
+    if [[ -f $loc_pull_file ]] ; then
+        echo -e "\n -- Performing local only Pull"
+        orig_IFS=$IFS
+        IFS=$'\r\n' GLOBIGNORE='*' command eval  "sync_files=(\$(cat ${loc_pull_file} | grep -v \"^#.*\"))"
+        local get_all=""
+        local tmp_dir=$(mktemp -d)
+        for f in "${sync_files[@]}" ; do
+            f=${f#/*}  # strip leading / if they included it
+            local path=$(dirname $f)
+            local file=$(basename $f)
+            get_all+="get $consolepi_dir/$path/$file\n"
+        done
+
+        echo -e "\n  ${_cyan}Local Pull Files${_norm}\n  ---------------------------\n${get_all//get/'  ~'}"
+        get_all+="exit\n"
+        pushd $tmp_dir >/dev/null
+        dots "Collect Local Pull files from consolepi-dev"
+        echo -e "$get_all" | sftp $rem_user@$loc_pull_host >> $tmp_dir/sftp.log 2>&1; local sftp_rc=$?
+        popd >/dev/null
+        do_error $sftp_rc
+
+        if [ "$sftp_rc" -eq 0 ]; then
+            for f in "${sync_files[@]}" ; do
+                f=${f#/*}  # strip leading / if they included it
+                local path=$(dirname $f)
+                local file=$(basename $f)
+                dots "place $file in $consolepi_dir/$path"
+                res=$(cp $tmp_dir/$file $consolepi_dir/$path/); do_error $? "$res"
+            done
+        else
+            echo "Error during SFTP transfer"
+            cat $tmp_dir/sftp.log
+        fi
+
+        ! $DEBUG && rm -r $tmp_dir || echo "$tmp_dir remains as DEBUG=$DEBUG"
+        IFS=$orig_IFS
+
+    else
+        echo '!! No Local Pull File Found... exitting !!' ; exit 1
+    fi
+}
+
+do_stash_local() {
+  if [[ -f $log_file ]] ; then
+      echo -e "\n -- Stashing files in conflict due to local pull to $home_dir/.local_pull_stash"
+      loc_changes=$(sed -n '/error:.*overwritten by merge.*$/,/Please.*before you merge/p' $log_file | tail -n +2 | head -n -1)
+      loc_changes=($loc_changes)
+      mkdir -p $home_dir/.local_pull_stash
+      dots_done=false
+      for f in ${loc_changes[@]} ; do
+          dots "Stashing $f"
+          mv ${consolepi_dir}/${f} $home_dir/.local_pull_stash ; do_error $?
+          pushd /etc/ConsolePi >/dev/null
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          dots "git checkout $f"
+          git_output=$(git checkout "$f" 2>&1); rc=$?
+          echo "$git_output" >> $log_file
+          [[ "$git_output" =~ "did not match any file" ]] && do_error 0 || do_error $rc
+          popd >/dev/null
+      done
+  else
+      echo '!! No log File Found... No git pull errors to process !!'
+  fi
+}
+
+do_cp_lib() {
+    dots "Copying ConsolePi library to site-packages"
+    sudo cp /etc/ConsolePi/src/PyConsolePi/* /etc/ConsolePi/venv/lib/python3*/site-packages/consolepi/ ; do_error $?
+}
+
+do_pip_upgrade() {
+    py3ver=$(python3 -V | cut -d. -f2)
+    [ $py3ver -ge 6 ] && req_file="/etc/ConsolePi/installer/requirements.txt" ||
+                        req_file="/etc/ConsolePi/installer/requirements-legacy.txt"
+
+    echo -e "\n -- pip install/upgrade ConsolePi requirements - Long Wait Here"
+    dots "Upgrade pip"
+    sudo /etc/ConsolePi/venv/bin/python3 -m pip install --upgrade pip >>$log_file 2>&1 ; do_error $?
+    dots "Upgrade ConsolePi Dependencies"
+    sudo /etc/ConsolePi/venv/bin/python3 -m pip install --upgrade -r ${req_file} >>$log_file 2>&1; do_error $?
+}
+
+line_dots() {
+    local pad=$(printf "%0.1s" "."{1..40})
+    printf " %s%*.*s" "$1" 0 $((40-${#1})) "$pad" ; echo $2
+}
+
+do_reload_svcs() {
+    echo -e "\n -- Restarting Any ConsolePi Services that are currently Active"
+
+    for svc in "${SVCS[@]}" ; do
+        if systemctl is-active $svc >/dev/null 2>&1 ; then
+            dots "restart $svc"
+            sudo systemctl restart $svc ; do_error $?
+        elif systemctl is-failed $svc >/dev/null 2>&1 ; then
+            dots "Starting Previously Failed $svc"
+            sudo systemctl start $svc ; do_error $?
+        else
+            dots "$svc is not active"; echo "SKIP"
+        fi
+    done
+
+    echo -e "\n\n---------------------- // Summary \\\\\ ----------------------"
+    echo ".......UNIT.......             ENABLED   ACTIVE     STATUS"
+    echo "------------------             -------   ------     -------"
+    for svc in "${SVCS[@]}" ; do
+        if systemctl is-enabled $svc >/dev/null 2>&1 ; then
+            ena=$(systemctl is-enabled $svc 2>/dev/null)
+            printf "%-30s %-10s" $svc $ena
+            systemctl -a | grep ${svc} |sed s/'● '//g | awk '{printf "%-10s %-10s \n", $3,$4}'
+        fi
+    done
+    echo
+}
+
+show_usage() {
+    echo
+    [[ ! "$1" =~ ^(help|-help|--help)$ ]] && echo "Invalid Input $1"
+    echo -e "\nBy default this Script will do a 'git pull' and if necessary fix permissions so members of the consolepi group can pull without sudo\n"
+    echo -e "valid command line options:"
+    line_dots "-p|--pip" "Update pip and dependencies (skipped by default)"
+    line_dots "-R|--reload" "reload/restart consolepi systemd Services (api, mdnsbrowse, mdnsreg)"
+    line_dots "--no-pull" "Don't do a git pull to update the repo, script will do nothing if there are not other options with this"
+    echo -e "\nThe Following Options are generally only useful for the developer"
+    line_dots "--cp" "Copy consolpi-library to venv after git pull (Should never have to do this - new library)."
+    line_dots "-L|--local|--dev" "Syncs files via SFTP from the dev ConsolePi."
+    line_dots "-S|--stash" "Stashes files previoulsy synced via SFTP to clean local working dir for git pull"
+    line_dots "-P|--perms" "Force a Permissions Check/Fix *prior* to pull So member of consolepi group can pull without sudo (script will do this now anyway then retry pull if necessary)"
+    line_dots "--me" "Applies only if using --local.  Alternative to --rem-user. Uses the current user ($iam) to access the remote system via SFTP."
+    line_dots "-H|--local-host <ip or host>" "Override the default local dev ConsolePi ($loc_pull_host)"
+    line_dots "-u|--rem-user <username>" "Override the default user ($rem_user) used during local_pull (sftp to $loc_pull_host)"
+    echo
+}
+
+process_args() {
+    $DEBUG && echo "DEBUG: Args Passed to process_args() ${@}"  ## -- DEBUG LINE --
+    if $DEBUG; then
+        echo -e "DEBUG: ------------ initial variable values ------------\n"
+            echo -e "upgrade_pip=${upgrade_pip}\ncp_lib=$cp_lib\nloc_pull=${loc_pull}\nloc_pull_host=${loc_pull_host}\nrem_user=$rem_user\nstash_local=${stash_local}"
+            echo -e "reload_svcs=${reload_svcs}\nskip_pull=${skip_pull}\n"
+    fi
+    while (( "$#" )); do
+        $DEBUG && echo -e "------------ Now processing $1\n"
+
+      case "$1" in
+        -p|--pip)
+            upgrade_pip=true
+            shift
+            ;;
+        -*cp)
+            cp_lib=true
+            shift
+            ;;
+        -L|-*local|-*dev)
+            loc_pull=true
+            shift
+            ;;
+        -S|--stash)
+            stash_local=true
+            shift
+            ;;
+        --debug)
+            DEBUG=true
+            shift
+            ;;
+        -P|--perms)
+            perms=true
+            shift
+            ;;
+        -*no*pull)
+            skip_pull=true
+            shift
+            ;;
+        -R|-*reload)
+            reload_svcs=true
+            shift
+            ;;
+        -*me)
+            rem_user=$iam
+            shift
+            ;;
+        -H|--local-host) # override default local_pull_host (consolepi-dev)
+            if [ -n "$2" ]; then
+                loc_pull_host=$2
+                shift 2
+            else
+                echo "Missing 1 required parameter with $1 option"
+                exit 1
+            fi
+            ;;
+        -u|--rem-user) # override default rem_user (consolepi)
+            if [ -n "$2" ]; then
+                rem_user=$2
+                shift 2
+            else
+                echo "Missing 1 required parameter with $1 option"
+                exit 1
+            fi
+          ;;
+        -h|-*help)
+            show_usage
+            exit 0
+            ;;
+        *)
+          show_usage $1
+          exit 1
+          ;;
+      esac
+
+        if $DEBUG; then
+            echo -e "upgrade_pip=${upgrade_pip}\ncp_lib=$cp_lib\nloc_pull=${loc_pull}\nloc_pull_host=${loc_pull_host}\nrem_user=$rem_user\nstash_local=${stash_local}"
+            echo -e "reload_svcs=${reload_svcs}\nskip_pull=${skip_pull}\n"
+            echo "--------------------------------------------------------" # -- DEBUG Line --
+        fi
+    done
+}
+
+dev_host_check() {
+    if [[ ${HOSTNAME,,} == "consolepi-dev" ]] ; then
+      user_input_bool "This appears to be the development ConsolePi, Proceed with Sync" local response
+    fi
+}
+
+main() {
+    process_args "${@}"
+    ! $loc_pull && ! $skip_pull && dev_host_check
+    $perms && do_perms
+    ! $loc_pull && ! $skip_pull && do_git_pull  # stash_local will be called from here if option set
+    $loc_pull && do_loc_pull
+    $cp_lib && do_cp_lib
+    $upgrade_pip && do_pip_upgrade
+    $reload_svcs && do_reload_svcs
+    [ -f "$log_file" ] && dump_log
+    echo
+}
+
+main "${@}"
