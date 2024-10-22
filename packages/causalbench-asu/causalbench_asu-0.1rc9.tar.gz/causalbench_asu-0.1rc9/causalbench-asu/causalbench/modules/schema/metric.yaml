@@ -1,0 +1,54 @@
+type: object
+properties:
+    type:
+        const: metric
+    name:
+        type: string
+    source:
+        type: string
+    url:
+        type: string
+    description:
+        type: string
+    task:
+        enum:
+            - discovery.static
+            - discovery.temporal
+            - discovery.spatiotemporal
+            - classification
+    path:
+        type: string
+    hyperparameters:
+        type: object
+        patternProperties:
+            ^.*$:
+                type: object
+                properties:
+                    data:
+                        enum:
+                            - string
+                            - integer
+                            - decimal
+                            - boolean
+                    description:
+                        type: string
+                    value:
+                        type:
+                            - 'null'
+                            - boolean
+                            - integer
+                            - number
+                            - string
+                            - array
+                            - object
+                required:
+                    - data
+                    - value
+required:
+    - type
+    - name
+    - source
+    - url
+    - description
+    - task
+    - path
