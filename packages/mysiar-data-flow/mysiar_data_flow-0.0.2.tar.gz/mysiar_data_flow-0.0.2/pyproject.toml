@@ -1,0 +1,65 @@
+[project]
+license = {file = "LICENSE"}
+[tool.poetry]
+name = "mysiar-data-flow"
+version = "0.0.2"
+readme = "README.md"
+description = "Python data manipulation library"
+authors = ["Piotr Synowiec <psynowiec@gmail.com>"]
+maintainers = ["Piotr Synowiec <psynowiec@gmail.com>"]
+keywords = ["dataframe", "pandas", "polars", "fireducks"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "License :: OSI Approved :: MIT License",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+fireducks = "*"
+tables = "*"
+pyarrow = "*"
+pandas = "*"
+polars = "*"
+black = "*"
+flake8 = "*"
+pyproject-flake8 = "*"
+pytest = "*"
+pytest-cov = "*"
+poetry = "*"
+
+
+[project.urls]
+Repository = "https://github.com/mysiar-org/python-data-flow"
+Issues = "https://github.com/mysiar-org/python-data-flow/issues"
+#Changelog=
+
+[tool.poetry.extras]
+all = [
+
+]
+dev = [
+    "black",
+    "flake8",
+    "pyproject-flake8",
+    "pytest",
+    "pytest-cov",
+    "poetry",
+]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+max-line-length = 120
+exclude = [".git", "venv", "__pychache__", "__init__.py", "build", "dist"]
