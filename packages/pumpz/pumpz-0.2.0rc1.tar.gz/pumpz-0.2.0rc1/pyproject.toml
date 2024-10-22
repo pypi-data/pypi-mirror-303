@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+
+name = "pumpz"
+version = "0.2.0rc1"
+authors = [
+  { name="Faisal Shahbaz", email="faisalsshahbaz1@gmail.com" },
+]
+description = "For the automatic creation and sync of .PPL files, used for pump programming"
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Faisal-Shahbaz/pumpz"
