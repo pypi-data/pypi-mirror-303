@@ -1,0 +1,9 @@
+
+
+class ThreadRequestService:
+
+    def approve(self, thread_ids): ...
+
+    def decline_all(self): ...
+
+    def decline(self, thread_ids): ...
