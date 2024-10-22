@@ -1,0 +1,59 @@
+{
+  "name": "prompt-architect",
+  "displayName": "Prompt architect",
+  "publisher": "infosupport",
+  "description": "Helps you write engineered prompts and validate them using the promptarchitect python package.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.92.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.prompt"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "contributes": {
+    "configurationDefaults": {
+      "files.associations": {
+        "*.prompt": "markdown"
+      }
+    },
+    "configuration": {
+      "title": "Prompt Architect",
+      "properties": {
+        "promptarchitect.executablePath": {
+          "type": "string",
+          "default": "promptarchitect",
+          "description": "The path to the promptarchitect executable."
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/expect.js": "^0.3.32",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.92.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.9.1",
+    "expect.js": "^0.3.1",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.6.0"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
