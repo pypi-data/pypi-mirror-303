@@ -1,0 +1,58 @@
+{% load static %}
+<style>
+.onfocus .video-play {
+  min-height: 400px;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url("{% static 'herobiz/img/onfocus/'|add:onfocus_image %}") center center;
+  background-size: cover;
+}
+
+.onfocus .content {
+  background: linear-gradient(rgba(72, 86, 100, 0.5), rgba(72, 86, 100, 0.8)), url("{% static 'herobiz/img/onfocus-content-bg.jpg' %}") center center;
+  background-size: cover;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+}
+
+</style>
+<section id="onfocus" class="onfocus">
+  <div class="container-fluid p-0" data-aos="fade-up">
+
+    <div class="row g-0">
+      <div class="col-lg-6 video-play position-relative">
+        {% if onfocus.video_link %}
+        <a href="{{ onfocus.video_link }}" class="glightbox play-btn"></a>
+        {% endif %}
+      </div>
+      <div class="col-lg-6">
+        <div class="content d-flex flex-column justify-content-center h-100">
+          {% autoescape off %}
+          <h3>{{ onfocus.h3 }}</h3>
+          <p class="fst-italic">
+            {{ onfocus.p }}
+          </p>
+          <ul>
+            {% for item in onfocus.li %}
+            <li><i class="bi bi-check-circle"></i>{{ item }}</li>
+            {% endfor %}
+          </ul>
+          {% endautoescape %}
+          <div class="row gy-5 row-cols-auto">
+          {% for btn in onfocus.btns %}
+            <div class="col">
+              {% if btn.conversion_name %}
+              <a class="read-more align-self-start" href="{{ btn.link }}"
+                 onclick="{{ btn.conversion_name }}_gtag_report_conversion('{{ btn.link }}');"
+                 target="_blank"><span>{{ btn.title }}</span><i class="bi bi-arrow-right"></i></a>
+              {% else %}
+              <a class="read-more align-self-start" href="{{ btn.link }}"><span>{{ btn.title }}</span>
+                <i class="bi bi-arrow-right"></i></a>
+              {% endif %}
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
