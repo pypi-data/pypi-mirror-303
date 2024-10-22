@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools", "pybind11>=2.13.6,<3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bencode2"
+version = "0.3.7"
+description = "A fast and correct bencode serialize/deserialize library"
+license = { text = "MIT" }
+requires-python = ">=3.9,<4.0"
+authors = [
+    { name = "trim21", email = "trim21me@gmail.com" },
+]
+readme = 'readme.md'
+keywords = [
+    "bencode",
+    "bittorrent",
+    "bit-torrent",
+    "serialize",
+    "deserialize",
+    'p2p',
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+]
+
+dependencies = [
+    'typing_extensions'
+]
+
+[project.urls]
+Homepage = "https://github.com/trim21/bencode-py"
+Repository = "https://github.com/trim21/bencode-py"
+Issues = "https://github.com/trim21/bencode-py/issues"
+
+[tool.hatch.build.targets.sdist]
+sources = ["src/"]
+include = ['src/']
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bencode2"]
+
+[tool.black]
+target-version = ['py39']
+line-length = 88
+
+[tool.ruff]
+target-version = 'py39'
+line-length = 88
+
+src = ['src', 'tests']
+
+[tool.ruff.lint]
+extend-select = ['UP', 'I', 'E', "W", 'FA', 'ANN']
+ignore = ['ANN101', 'ANN401', 'E721', 'E501']
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ['ANN']
+"setup.py" = ['ANN']
+
+[tool.coverage.run]
+source = [
+    "src",
+]
+
+[tool.mypy]
+exclude = ['tests', 'vendor']
+python_version = "3.9"
+strict = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+warn_return_any = false
+warn_unused_configs = true
+show_error_codes = true
