@@ -1,0 +1,3 @@
+"""Interfaces module."""
+import ansys.mechanical.stubs.v241.Ansys.ACT.Interfaces.Mechanical as Mechanical
+import ansys.mechanical.stubs.v241.Ansys.ACT.Interfaces.Graphics as Graphics
