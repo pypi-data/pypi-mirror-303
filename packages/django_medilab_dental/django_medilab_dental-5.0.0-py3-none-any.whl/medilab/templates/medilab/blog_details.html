@@ -1,0 +1,16 @@
+{% extends 'medilab/index.html' %}
+{% load static %}
+{% load shared_tags %}
+
+{% block content %}
+  <main id="main">
+    {% include 'medilab/breadcrumb.html' %}
+
+    <section class="inner-page">
+      <div class="container"  data-aos="fade-up">
+          {{ object.formatted_markdown | add_img_class | safe }}
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+{% endblock content %}
