@@ -1,0 +1,2763 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "moapy",
+    "description": "Schema for moapy",
+    "version": "0.9.6"
+  },
+  "servers": [
+    {
+      "url": "https://moa.rpm.kr-dv-midasit.com/backend/python-executor/"
+    },
+    {
+      "url": "https://moa.rpm.kr-st-midasit.com/backend/function-executor/python-execute/"
+    }
+  ],
+  "paths": {
+    "/execute?functionId=moapy-plugins-temperature_gradient-calc_eurocode-calc_steel_box": {
+      "post": {
+        "summary": "Steel Box Section Calculation",
+        "description": "Calculate the temperature effect on steel box section",
+        "operationId": "calc steel box",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "sect": {
+                    "properties": {
+                      "top": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "Top",
+                        "default": {
+                          "value": 0.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "bot": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "Bot",
+                        "default": {
+                          "value": 100.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b1": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B1",
+                        "default": {
+                          "value": 150.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b2": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B2",
+                        "default": {
+                          "value": 900.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b3": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B3",
+                        "default": {
+                          "value": 150.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b4": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B4",
+                        "default": {
+                          "value": 150.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b5": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B5",
+                        "default": {
+                          "value": 700.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "b6": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "B6",
+                        "default": {
+                          "value": 150.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "h": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "H",
+                        "default": {
+                          "value": 1000.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "t1": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "T1",
+                        "default": {
+                          "value": 25.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "t2": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "T2",
+                        "default": {
+                          "value": 25.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "tw1": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "Tw1",
+                        "default": {
+                          "value": 30.0,
+                          "unit": "mm"
+                        }
+                      },
+                      "tw2": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Length",
+                            "default": 30.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "mm",
+                              "m",
+                              "in",
+                              "ft"
+                            ],
+                            "title": "enUnitLength",
+                            "default": "mm"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Length",
+                        "description": "Tw2",
+                        "default": {
+                          "value": 30.0,
+                          "unit": "mm"
+                        }
+                      }
+                    },
+                    "type": "object",
+                    "title": "SteelBoxSection",
+                    "dataclassname": "moapy.plugins.temperature_gradient.calc_eurocode.SteelBoxSection"
+                  },
+                  "matl": {
+                    "properties": {
+                      "E": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Stress",
+                            "default": 210000.0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "MPa",
+                              "ksi"
+                            ],
+                            "title": "enUnitStress",
+                            "default": "MPa"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Stress",
+                        "description": "Elastic Modulus",
+                        "default": {
+                          "value": 210000.0,
+                          "unit": "MPa"
+                        }
+                      },
+                      "thermal": {
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "title": "Value",
+                            "description": "Temperature",
+                            "default": 1.2e-05
+                          },
+                          "unit": {
+                            "type": "string",
+                            "enum": [
+                              "celsius",
+                              "fahrenheit"
+                            ],
+                            "title": "enUnitTemperature",
+                            "default": "celsius"
+                          }
+                        },
+                        "type": "object",
+                        "title": "Temperature",
+                        "description": "Thermal Expansion",
+                        "default": {
+                          "value": 1.2e-05,
+                          "unit": "celsius"
+                        }
+                      }
+                    },
+                    "type": "object",
+                    "title": "GirderMaterials",
+                    "description": "GirderMaterials"
+                  }
+                },
+                "type": "object",
+                "required": [
+                  "sect",
+                  "matl"
+                ],
+                "title": "calc steel box"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "heating": {
+                      "properties": {
+                        "y": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "type": "array",
+                          "title": "Y",
+                          "description": "Y"
+                        },
+                        "z": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "type": "array",
+                          "title": "Z",
+                          "description": "Z"
+                        },
+                        "temp": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Temperature",
+                                "default": 1.2e-05
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "celsius",
+                                  "fahrenheit"
+                                ],
+                                "title": "enUnitTemperature",
+                                "default": "celsius"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Temperature",
+                            "description": "Thermal"
+                          },
+                          "type": "array",
+                          "title": "Temp",
+                          "description": "Temperature"
+                        },
+                        "stress": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Stress",
+                                "default": 210000.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "MPa",
+                                  "ksi"
+                                ],
+                                "title": "enUnitStress",
+                                "default": "MPa"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Stress",
+                            "description": "Stress"
+                          },
+                          "type": "array",
+                          "title": "Stress",
+                          "description": "Stress"
+                        }
+                      },
+                      "type": "object",
+                      "title": "ResultThermal",
+                      "description": "Heating"
+                    },
+                    "cooling": {
+                      "properties": {
+                        "y": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "type": "array",
+                          "title": "Y",
+                          "description": "Y"
+                        },
+                        "z": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "type": "array",
+                          "title": "Z",
+                          "description": "Z"
+                        },
+                        "temp": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Temperature",
+                                "default": 1.2e-05
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "celsius",
+                                  "fahrenheit"
+                                ],
+                                "title": "enUnitTemperature",
+                                "default": "celsius"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Temperature",
+                            "description": "Thermal"
+                          },
+                          "type": "array",
+                          "title": "Temp",
+                          "description": "Temperature"
+                        },
+                        "stress": {
+                          "items": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Stress",
+                                "default": 210000.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "MPa",
+                                  "ksi"
+                                ],
+                                "title": "enUnitStress",
+                                "default": "MPa"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Stress",
+                            "description": "Stress"
+                          },
+                          "type": "array",
+                          "title": "Stress",
+                          "description": "Stress"
+                        }
+                      },
+                      "type": "object",
+                      "title": "ResultThermal",
+                      "description": "Cooling"
+                    },
+                    "outer": {
+                      "items": {
+                        "properties": {
+                          "x": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "y": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          }
+                        },
+                        "type": "object",
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "title": "Point",
+                        "dataclassname": "moapy.data_pre.Point"
+                      },
+                      "type": "array",
+                      "title": "Outer",
+                      "description": "Outer polygon"
+                    },
+                    "inner": {
+                      "items": {
+                        "items": {
+                          "properties": {
+                            "x": {
+                              "properties": {
+                                "value": {
+                                  "type": "number",
+                                  "title": "Value",
+                                  "description": "Length",
+                                  "default": 30.0
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "enum": [
+                                    "mm",
+                                    "m",
+                                    "in",
+                                    "ft"
+                                  ],
+                                  "title": "enUnitLength",
+                                  "default": "mm"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Length",
+                              "description": "Length"
+                            },
+                            "y": {
+                              "properties": {
+                                "value": {
+                                  "type": "number",
+                                  "title": "Value",
+                                  "description": "Length",
+                                  "default": 30.0
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "enum": [
+                                    "mm",
+                                    "m",
+                                    "in",
+                                    "ft"
+                                  ],
+                                  "title": "enUnitLength",
+                                  "default": "mm"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Length",
+                              "description": "Length"
+                            }
+                          },
+                          "type": "object",
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "title": "Point",
+                          "dataclassname": "moapy.data_pre.Point"
+                        },
+                        "type": "array"
+                      },
+                      "type": "array",
+                      "title": "Inner",
+                      "description": "Inner polygon"
+                    },
+                    "temp_heating": {
+                      "items": {
+                        "properties": {
+                          "x": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "y": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          }
+                        },
+                        "type": "object",
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "title": "Point",
+                        "dataclassname": "moapy.data_pre.Point"
+                      },
+                      "type": "array",
+                      "title": "Temp Heating",
+                      "description": "Temperature Heating"
+                    },
+                    "temp_cooling": {
+                      "items": {
+                        "properties": {
+                          "x": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          },
+                          "y": {
+                            "properties": {
+                              "value": {
+                                "type": "number",
+                                "title": "Value",
+                                "description": "Length",
+                                "default": 30.0
+                              },
+                              "unit": {
+                                "type": "string",
+                                "enum": [
+                                  "mm",
+                                  "m",
+                                  "in",
+                                  "ft"
+                                ],
+                                "title": "enUnitLength",
+                                "default": "mm"
+                              }
+                            },
+                            "type": "object",
+                            "title": "Length",
+                            "description": "Length"
+                          }
+                        },
+                        "type": "object",
+                        "required": [
+                          "x",
+                          "y"
+                        ],
+                        "title": "Point",
+                        "dataclassname": "moapy.data_pre.Point"
+                      },
+                      "type": "array",
+                      "title": "Temp Cooling",
+                      "description": "Temperature Cooling"
+                    }
+                  },
+                  "type": "object",
+                  "title": "ResultNonlinearTemperatureEffect",
+                  "description": "Result Nonlinear Temperature Effect"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "items": {
+                        "properties": {
+                          "loc": {
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "type": "array",
+                            "title": "Location"
+                          },
+                          "msg": {
+                            "type": "string",
+                            "title": "Message"
+                          },
+                          "type": {
+                            "type": "string",
+                            "title": "Error Type"
+                          }
+                        },
+                        "type": "object",
+                        "required": [
+                          "loc",
+                          "msg",
+                          "type"
+                        ],
+                        "title": "ValidationError"
+                      },
+                      "type": "array",
+                      "title": "Detail"
+                    }
+                  },
+                  "type": "object",
+                  "title": "HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GirderMaterials": {
+        "properties": {
+          "E": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Stress",
+                "default": 210000.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "MPa",
+                  "ksi"
+                ],
+                "title": "enUnitStress",
+                "default": "MPa"
+              }
+            },
+            "type": "object",
+            "title": "Stress",
+            "description": "Elastic Modulus",
+            "default": {
+              "value": 210000.0,
+              "unit": "MPa"
+            }
+          },
+          "thermal": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Temperature",
+                "default": 1.2e-05
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "celsius",
+                  "fahrenheit"
+                ],
+                "title": "enUnitTemperature",
+                "default": "celsius"
+              }
+            },
+            "type": "object",
+            "title": "Temperature",
+            "description": "Thermal Expansion",
+            "default": {
+              "value": 1.2e-05,
+              "unit": "celsius"
+            }
+          }
+        },
+        "type": "object",
+        "title": "GirderMaterials",
+        "description": "GirderMaterials"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "properties": {
+                "loc": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "title": "Location"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "Message"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Error Type"
+                }
+              },
+              "type": "object",
+              "required": [
+                "loc",
+                "msg",
+                "type"
+              ],
+              "title": "ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Length": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Length",
+            "default": 30.0
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "m",
+              "in",
+              "ft"
+            ],
+            "title": "enUnitLength",
+            "default": "mm"
+          }
+        },
+        "type": "object",
+        "title": "Length",
+        "description": "Length"
+      },
+      "Point": {
+        "properties": {
+          "x": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Length"
+          },
+          "y": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Length"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "Point",
+        "dataclassname": "moapy.data_pre.Point"
+      },
+      "ResultNonlinearTemperatureEffect": {
+        "properties": {
+          "heating": {
+            "properties": {
+              "y": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "type": "array",
+                "title": "Y",
+                "description": "Y"
+              },
+              "z": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "type": "array",
+                "title": "Z",
+                "description": "Z"
+              },
+              "temp": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Temperature",
+                      "default": 1.2e-05
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ],
+                      "title": "enUnitTemperature",
+                      "default": "celsius"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Temperature",
+                  "description": "Thermal"
+                },
+                "type": "array",
+                "title": "Temp",
+                "description": "Temperature"
+              },
+              "stress": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Stress",
+                      "default": 210000.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "MPa",
+                        "ksi"
+                      ],
+                      "title": "enUnitStress",
+                      "default": "MPa"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Stress",
+                  "description": "Stress"
+                },
+                "type": "array",
+                "title": "Stress",
+                "description": "Stress"
+              }
+            },
+            "type": "object",
+            "title": "ResultThermal",
+            "description": "Heating"
+          },
+          "cooling": {
+            "properties": {
+              "y": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "type": "array",
+                "title": "Y",
+                "description": "Y"
+              },
+              "z": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "type": "array",
+                "title": "Z",
+                "description": "Z"
+              },
+              "temp": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Temperature",
+                      "default": 1.2e-05
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ],
+                      "title": "enUnitTemperature",
+                      "default": "celsius"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Temperature",
+                  "description": "Thermal"
+                },
+                "type": "array",
+                "title": "Temp",
+                "description": "Temperature"
+              },
+              "stress": {
+                "items": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Stress",
+                      "default": 210000.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "MPa",
+                        "ksi"
+                      ],
+                      "title": "enUnitStress",
+                      "default": "MPa"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Stress",
+                  "description": "Stress"
+                },
+                "type": "array",
+                "title": "Stress",
+                "description": "Stress"
+              }
+            },
+            "type": "object",
+            "title": "ResultThermal",
+            "description": "Cooling"
+          },
+          "outer": {
+            "items": {
+              "properties": {
+                "x": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "y": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                }
+              },
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "title": "Point",
+              "dataclassname": "moapy.data_pre.Point"
+            },
+            "type": "array",
+            "title": "Outer",
+            "description": "Outer polygon"
+          },
+          "inner": {
+            "items": {
+              "items": {
+                "properties": {
+                  "x": {
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "title": "Value",
+                        "description": "Length",
+                        "default": 30.0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "mm",
+                          "m",
+                          "in",
+                          "ft"
+                        ],
+                        "title": "enUnitLength",
+                        "default": "mm"
+                      }
+                    },
+                    "type": "object",
+                    "title": "Length",
+                    "description": "Length"
+                  },
+                  "y": {
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "title": "Value",
+                        "description": "Length",
+                        "default": 30.0
+                      },
+                      "unit": {
+                        "type": "string",
+                        "enum": [
+                          "mm",
+                          "m",
+                          "in",
+                          "ft"
+                        ],
+                        "title": "enUnitLength",
+                        "default": "mm"
+                      }
+                    },
+                    "type": "object",
+                    "title": "Length",
+                    "description": "Length"
+                  }
+                },
+                "type": "object",
+                "required": [
+                  "x",
+                  "y"
+                ],
+                "title": "Point",
+                "dataclassname": "moapy.data_pre.Point"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Inner",
+            "description": "Inner polygon"
+          },
+          "temp_heating": {
+            "items": {
+              "properties": {
+                "x": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "y": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                }
+              },
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "title": "Point",
+              "dataclassname": "moapy.data_pre.Point"
+            },
+            "type": "array",
+            "title": "Temp Heating",
+            "description": "Temperature Heating"
+          },
+          "temp_cooling": {
+            "items": {
+              "properties": {
+                "x": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "y": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 30.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                }
+              },
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "title": "Point",
+              "dataclassname": "moapy.data_pre.Point"
+            },
+            "type": "array",
+            "title": "Temp Cooling",
+            "description": "Temperature Cooling"
+          }
+        },
+        "type": "object",
+        "title": "ResultNonlinearTemperatureEffect",
+        "description": "Result Nonlinear Temperature Effect"
+      },
+      "ResultThermal": {
+        "properties": {
+          "y": {
+            "items": {
+              "properties": {
+                "value": {
+                  "type": "number",
+                  "title": "Value",
+                  "description": "Length",
+                  "default": 30.0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "mm",
+                    "m",
+                    "in",
+                    "ft"
+                  ],
+                  "title": "enUnitLength",
+                  "default": "mm"
+                }
+              },
+              "type": "object",
+              "title": "Length",
+              "description": "Length"
+            },
+            "type": "array",
+            "title": "Y",
+            "description": "Y"
+          },
+          "z": {
+            "items": {
+              "properties": {
+                "value": {
+                  "type": "number",
+                  "title": "Value",
+                  "description": "Length",
+                  "default": 30.0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "mm",
+                    "m",
+                    "in",
+                    "ft"
+                  ],
+                  "title": "enUnitLength",
+                  "default": "mm"
+                }
+              },
+              "type": "object",
+              "title": "Length",
+              "description": "Length"
+            },
+            "type": "array",
+            "title": "Z",
+            "description": "Z"
+          },
+          "temp": {
+            "items": {
+              "properties": {
+                "value": {
+                  "type": "number",
+                  "title": "Value",
+                  "description": "Temperature",
+                  "default": 1.2e-05
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "celsius",
+                    "fahrenheit"
+                  ],
+                  "title": "enUnitTemperature",
+                  "default": "celsius"
+                }
+              },
+              "type": "object",
+              "title": "Temperature",
+              "description": "Thermal"
+            },
+            "type": "array",
+            "title": "Temp",
+            "description": "Temperature"
+          },
+          "stress": {
+            "items": {
+              "properties": {
+                "value": {
+                  "type": "number",
+                  "title": "Value",
+                  "description": "Stress",
+                  "default": 210000.0
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "MPa",
+                    "ksi"
+                  ],
+                  "title": "enUnitStress",
+                  "default": "MPa"
+                }
+              },
+              "type": "object",
+              "title": "Stress",
+              "description": "Stress"
+            },
+            "type": "array",
+            "title": "Stress",
+            "description": "Stress"
+          }
+        },
+        "type": "object",
+        "title": "ResultThermal",
+        "description": "Result Thermal"
+      },
+      "SteelBoxSection": {
+        "properties": {
+          "top": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Top",
+            "default": {
+              "value": 0.0,
+              "unit": "mm"
+            }
+          },
+          "bot": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Bot",
+            "default": {
+              "value": 100.0,
+              "unit": "mm"
+            }
+          },
+          "b1": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B1",
+            "default": {
+              "value": 150.0,
+              "unit": "mm"
+            }
+          },
+          "b2": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B2",
+            "default": {
+              "value": 900.0,
+              "unit": "mm"
+            }
+          },
+          "b3": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B3",
+            "default": {
+              "value": 150.0,
+              "unit": "mm"
+            }
+          },
+          "b4": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B4",
+            "default": {
+              "value": 150.0,
+              "unit": "mm"
+            }
+          },
+          "b5": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B5",
+            "default": {
+              "value": 700.0,
+              "unit": "mm"
+            }
+          },
+          "b6": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "B6",
+            "default": {
+              "value": 150.0,
+              "unit": "mm"
+            }
+          },
+          "h": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "H",
+            "default": {
+              "value": 1000.0,
+              "unit": "mm"
+            }
+          },
+          "t1": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "T1",
+            "default": {
+              "value": 25.0,
+              "unit": "mm"
+            }
+          },
+          "t2": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "T2",
+            "default": {
+              "value": 25.0,
+              "unit": "mm"
+            }
+          },
+          "tw1": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Tw1",
+            "default": {
+              "value": 30.0,
+              "unit": "mm"
+            }
+          },
+          "tw2": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 30.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Tw2",
+            "default": {
+              "value": 30.0,
+              "unit": "mm"
+            }
+          }
+        },
+        "type": "object",
+        "title": "SteelBoxSection",
+        "dataclassname": "moapy.plugins.temperature_gradient.calc_eurocode.SteelBoxSection"
+      },
+      "Stress": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Stress",
+            "default": 210000.0
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "MPa",
+              "ksi"
+            ],
+            "title": "enUnitStress",
+            "default": "MPa"
+          }
+        },
+        "type": "object",
+        "title": "Stress",
+        "description": "Stress"
+      },
+      "Temperature": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Temperature",
+            "default": 1.2e-05
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "celsius",
+              "fahrenheit"
+            ],
+            "title": "enUnitTemperature",
+            "default": "celsius"
+          }
+        },
+        "type": "object",
+        "title": "Temperature",
+        "description": "Thermal"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "calc_steel_box": {
+        "properties": {
+          "sect": {
+            "properties": {
+              "top": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "Top",
+                "default": {
+                  "value": 0.0,
+                  "unit": "mm"
+                }
+              },
+              "bot": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "Bot",
+                "default": {
+                  "value": 100.0,
+                  "unit": "mm"
+                }
+              },
+              "b1": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B1",
+                "default": {
+                  "value": 150.0,
+                  "unit": "mm"
+                }
+              },
+              "b2": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B2",
+                "default": {
+                  "value": 900.0,
+                  "unit": "mm"
+                }
+              },
+              "b3": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B3",
+                "default": {
+                  "value": 150.0,
+                  "unit": "mm"
+                }
+              },
+              "b4": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B4",
+                "default": {
+                  "value": 150.0,
+                  "unit": "mm"
+                }
+              },
+              "b5": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B5",
+                "default": {
+                  "value": 700.0,
+                  "unit": "mm"
+                }
+              },
+              "b6": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "B6",
+                "default": {
+                  "value": 150.0,
+                  "unit": "mm"
+                }
+              },
+              "h": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "H",
+                "default": {
+                  "value": 1000.0,
+                  "unit": "mm"
+                }
+              },
+              "t1": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "T1",
+                "default": {
+                  "value": 25.0,
+                  "unit": "mm"
+                }
+              },
+              "t2": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "T2",
+                "default": {
+                  "value": 25.0,
+                  "unit": "mm"
+                }
+              },
+              "tw1": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "Tw1",
+                "default": {
+                  "value": 30.0,
+                  "unit": "mm"
+                }
+              },
+              "tw2": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Length",
+                    "default": 30.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "m",
+                      "in",
+                      "ft"
+                    ],
+                    "title": "enUnitLength",
+                    "default": "mm"
+                  }
+                },
+                "type": "object",
+                "title": "Length",
+                "description": "Tw2",
+                "default": {
+                  "value": 30.0,
+                  "unit": "mm"
+                }
+              }
+            },
+            "type": "object",
+            "title": "SteelBoxSection",
+            "dataclassname": "moapy.plugins.temperature_gradient.calc_eurocode.SteelBoxSection"
+          },
+          "matl": {
+            "properties": {
+              "E": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Stress",
+                    "default": 210000.0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "MPa",
+                      "ksi"
+                    ],
+                    "title": "enUnitStress",
+                    "default": "MPa"
+                  }
+                },
+                "type": "object",
+                "title": "Stress",
+                "description": "Elastic Modulus",
+                "default": {
+                  "value": 210000.0,
+                  "unit": "MPa"
+                }
+              },
+              "thermal": {
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "title": "Value",
+                    "description": "Temperature",
+                    "default": 1.2e-05
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ],
+                    "title": "enUnitTemperature",
+                    "default": "celsius"
+                  }
+                },
+                "type": "object",
+                "title": "Temperature",
+                "description": "Thermal Expansion",
+                "default": {
+                  "value": 1.2e-05,
+                  "unit": "celsius"
+                }
+              }
+            },
+            "type": "object",
+            "title": "GirderMaterials",
+            "description": "GirderMaterials"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sect",
+          "matl"
+        ],
+        "title": "calc steel box"
+      },
+      "enUnitLength": {
+        "type": "string",
+        "enum": [
+          "mm",
+          "m",
+          "in",
+          "ft"
+        ],
+        "title": "enUnitLength"
+      },
+      "enUnitStress": {
+        "type": "string",
+        "enum": [
+          "MPa",
+          "ksi"
+        ],
+        "title": "enUnitStress",
+        "default": "MPa"
+      },
+      "enUnitTemperature": {
+        "type": "string",
+        "enum": [
+          "celsius",
+          "fahrenheit"
+        ],
+        "title": "enUnitTemperature",
+        "default": "celsius"
+      }
+    }
+  }
+}
