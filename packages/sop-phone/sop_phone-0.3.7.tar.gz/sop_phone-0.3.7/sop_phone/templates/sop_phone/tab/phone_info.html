@@ -1,0 +1,78 @@
+{% load helpers %}
+{% load plugins %}
+{% load buttons %}
+{% load static %}
+{% load tz %}
+{% load i18n %}
+{% load mptt %}
+
+<!-- 
+  ________________________________
+  front inspired by dcim/site.html
+-->
+
+<div class="card">
+
+
+<!--
+  _______________________________________________________________________
+  if there is no site instance of the model, create one using the site pk
+  else edit the current one
+-->
+<h2 class="card-header">Information
+  <div class="card-actions">
+    {% if not object and 'add' in info_actions %}
+    <a href="{% url 'plugins:sop_phone:phoneinfo_add' pk=site.id %}" class="btn btn-ghost-primary btn-sm">
+      <i class="mdi mdi-plus-thick" aria-hidden="true"></i>Add a Phone Maintainer
+    </a>
+    {% elif object and 'add' in info_actions %}
+    <a href="{% url 'plugins:sop_phone:phoneinfo_edit' pk=object.id %}" class="btn btn-ghost-primary btn-sm">
+      <i class="mdi mdi-pencil-thick" aria-hidden="true"></i>Edit Phone Maintainer
+    </a>
+    {% endif %}
+  </div>
+</h2>
+
+
+  {% if 'export' in info_actions %}
+  <table class="table table-hover attr-table">
+
+    <ul class="list-group list-group-flush">
+      {% if object.maintainer %}
+      <a href="{% url object|viewname:"detail" pk=object.id %}"
+        class="list-group-item list-group-item-action d-flex justify-content-between">
+          {% trans "Maintainer" %}
+          <span>{{object.maintainer}}</span>
+        </a>
+      {% else %}
+        <a class="list-group-item list-group-item-action d-flex justify-content-between">
+          {% trans "Maintainer" %}
+          {% include 'sop_phone/tools/badge.html' %}
+        </a>
+      {% endif %}
+    </ul>
+
+<!-- 
+      ____________________________________
+      display devices but not used for now
+-->
+    {% comment %} {% if devices|first %}
+    <ul class="list-group list-group-flush">
+      <a href="{% url devices|first|viewname:"list" %}"
+         class="list-group-item list-group-item-action d-flex justify-content-between">
+        {{ devices|first|meta:"verbose_name_plural"|bettertitle }}
+        {% with count=devices.count %}
+          {% if count %}
+            <span class="badge text-bg-primary rounded-pill">{{ count }}</span>
+          {% else %}
+            <span class="badge text-bg-light rounded-pill">&mdash;</span>
+          {% endif %}
+        {% endwith %}
+      </a>
+    </ul>
+    {% endif %} {% endcomment %}
+
+  </table>
+  {% endif %}
+
+</div>

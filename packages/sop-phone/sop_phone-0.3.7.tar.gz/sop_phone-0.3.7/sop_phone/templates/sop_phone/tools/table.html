@@ -1,0 +1,26 @@
+{% load buttons %}
+{% load helpers %}
+{% load i18n %}
+{% load plugins %}
+
+
+<div class="card">
+
+  <h2 class="card-header">
+    <a href="{% url object|viewname:"list" %}?site_id={{pk}}">{{object|meta:"verbose_name"}}</a>
+    {% if 'add' in permi %}
+    <div class="card-actions">
+        <a href="{% url reversed_url pk=pk %}" class="btn btn-ghost-primary btn-sm">
+            <i class="mdi mdi-plust-thick" aria-hidden="true"></i>Add a {{object|meta:"verbose_name"}}
+        </a>
+    </div>
+    {% endif %}
+  </h2>
+
+  {% if 'export' in permi %}
+  <div class="custom-table" id="{{ object|meta:"verbose_name_plural" }}">
+    {% htmx_table object|viewname:"list" site_id=pk %}
+  </div>
+  {% endif %}
+
+</div>
