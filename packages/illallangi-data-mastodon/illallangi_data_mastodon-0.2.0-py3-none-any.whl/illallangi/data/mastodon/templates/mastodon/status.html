@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>{{ obj }}</h2>
+    <table class="table table-hover table-sm">
+        <tbody>
+            <tr role="button" data-href="{{ obj.url }}">
+                <th scope="row">URL</th>
+                <td>{{ obj.url }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Content</th>
+                <td>{{ obj.content }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date Time</th>
+                <td>{{ obj.datetime }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock content %}
