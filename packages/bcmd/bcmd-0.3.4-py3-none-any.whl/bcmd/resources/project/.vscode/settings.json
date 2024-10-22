@@ -1,0 +1,76 @@
+{
+    "files.exclude": {
+        ".pytest_cache": true,
+        "**/__pycache__": true,
+        ".gitignore": true,
+        ".venv": true,
+        ".venv-lock": true,
+        "venv": true,
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/Scripts/python.exe",
+    // coommon ------------------------------------------------------------------------------------
+    "window.menuBarVisibility": "classic", // 顶部中间
+    // "breadcrumbs.enabled": false, // 代码顶部导航
+    // "http.proxy": "http://localhost:15236",
+    "security.workspace.trust.enabled": false,
+    "redhat.telemetry.enabled": false,
+    "window.restoreWindows": "none",
+    "workbench.startupEditor": "none",
+    "files.eol": "\n",
+    "explorer.autoReveal": false, // 取消文件自动定位跟踪
+    "editor.renderWhitespace": "none", // 不高亮显示空白
+    "editor.unicodeHighlight.allowedLocales": { // 注释里的全角符号不提示警告
+        "zh-hans": true,
+        "zh-hant": true,
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": false,
+        "yaml": true
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.chat.localeOverride": "zh-CN",
+    "git.openRepositoryInParentFolders": "never",
+    "workbench.colorTheme": "Default Dark+",
+    "editor.stickyScroll.enabled": false,
+    "workbench.editor.enablePreview": false,
+    "window.commandCenter": false,
+    "editor.inlineSuggest.enabled": true,
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    // python -------------------------------------------------------------------------------------
+    "python.languageServer": "Pylance",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.diagnosticMode": "workspace", // 针对整个workspace做检查提示
+    "python.analysis.typeCheckingMode": "strict",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8",
+    },
+    "autopep8.args": [
+        "--ignore=E501",
+    ],
+    "python.testing.pytestArgs": [
+        "test", // 指定单元测试查找的目录
+        "-s", // 支持print输出
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": false,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingTypeStubs": "none",
+        "reportUnknownMemberType": "none",
+        // "reportUnknownParameterType": "none",
+        // "reportUnknownVariableType": "none",
+        // "reportUnknownArgumentType": "none",
+        // "reportMatchNotExhaustive": "none", // match 没有匹配所有，会提示添加一个 _
+        // "reportUnusedCallResult": "warning",
+        "reportUnusedClass": "warning",
+        "reportUnusedCoroutine": "warning",
+        "reportUnusedFunction": "warning",
+        "reportUnusedImport": "warning",
+        "reportUnusedVariable": "warning",
+        "reportImportCycles": "warning",
+    },
+}
