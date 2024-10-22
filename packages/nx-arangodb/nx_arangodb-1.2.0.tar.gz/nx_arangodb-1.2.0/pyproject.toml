@@ -1,0 +1,178 @@
+[build-system]
+
+requires = [
+    "setuptools>=61.0.0",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nx-arangodb"
+dynamic = ["version"]
+description = "ArangoDB backend for NetworkX"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [
+    { name = "ArangoDB" },
+]
+license = { text = "Apache 2.0" }
+requires-python = ">=3.10"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "networkx>=3.0,<=3.4",
+    "phenolrs~=0.5",
+    "python-arango~=8.1",
+    "adbnx-adapter~=5.0.5"
+]
+
+[project.optional-dependencies]
+dev = [
+    "packaging>=21",
+    "pandas",
+    "pytest",
+    "pytest-benchmark",
+    "pytest-cov",
+    "pytest-mpl",
+    "pytest-xdist",
+    "scipy",
+    "black",
+    "flake8",
+    "Flake8-pyproject",
+    "isort",
+    "mypy",
+    "pandas",
+    "sphinx",
+    "sphinx_rtd_theme",
+]
+llm = [
+    "langchain~=0.2.14",
+    "langchain-openai~=0.1.22",
+    "langchain-community~=0.2.12"
+]
+
+[project.urls]
+Homepage = "https://github.com/arangodb/nx-arangodb"
+
+# "plugin" used in nx version < 3.2
+[project.entry-points."networkx.plugins"]
+arangodb = "nx_arangodb.interface:backend_interface"
+
+# "backend" used in nx version >= 3.2
+[project.entry-points."networkx.backends"]
+arangodb = "nx_arangodb.interface:backend_interface"
+
+[project.entry-points."networkx.plugin_info"]
+arangodb = "_nx_arangodb:get_info"
+
+[project.entry-points."networkx.backend_info"]
+arangodb = "_nx_arangodb:get_info"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.setuptools.dynamic]
+version = {file = "_nx_arangodb/VERSION"}
+
+[tool.setuptools.packages.find]
+include = [
+    "nx_arangodb*",
+    "nx_arangodb.*",
+    "_nx_arangodb*",
+    "_nx_arangodb.*",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311"]
+
+[tool.isort]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+profile = "black"
+skip_gitignore = true
+float_to_top = true
+default_section = "THIRDPARTY"
+known_first_party = "nx_arangodb"
+line_length = 88
+extend_skip_glob = [
+    "nx_arangodb/__init__.py",
+    "nx_arangodb/classes/__init__.py",
+]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E251", "F401", "F403"]
+exclude = [".git", ".idea", ".*_cache", "dist", "venv"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+disallow_untyped_calls = false
+implicit_reexport = true
+scripts_are_modules = true
+follow_imports = "skip"
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
+exclude = ["venv", "build", "vendor/integration_api", "vendor/protodeps"]
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = "nx_arangodb/tests"
+xfail_strict = true
+markers = [
+    "slow: Skipped unless --runslow passed",
+]
+log_cli_level = "info"
+filterwarnings = [
+    # See: https://docs.python.org/3/library/warnings.html#describing-warning-filters
+    # and: https://docs.pytest.org/en/7.2.x/how-to/capture-warnings.html#controlling-warnings
+    # "error",
+]
+python_files = [
+    "bench_*.py",
+    "test_*.py",
+]
+python_functions = [
+    "bench_*",
+    "test_*",
+]
+addopts = [
+    "-s",
+    "-vv",
+    "--color=yes",
+    "--code-highlight=yes",
+    "--strict-config",  # Force error if config is mispelled
+    "--strict-markers",  # Force error if marker is mispelled (must be defined in config)
+    # "-ra",  # Print summary of all fails/errors
+    # "--benchmark-warmup=off",
+    # "--benchmark-max-time=0",
+    # "--benchmark-min-rounds=1",
+    # "--benchmark-columns=min,median,max",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["nx_arangodb"]
+omit = []
+
+[tool.coverage.report]
+ignore_errors = false
+precision = 1
+fail_under = 0
+skip_covered = false  # Nice to see fully covered files when running `run_nx_tests.sh`
+skip_empty = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
