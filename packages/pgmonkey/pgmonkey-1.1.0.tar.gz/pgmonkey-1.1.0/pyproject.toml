@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pgmonkey"
+version = "1.1.0"
+authors = [
+  { name="Good Boy", email="pythonic@rexbytes.com" },
+]
+description = "A tool to assist with postgresql database connections"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9,<3.13"
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "psycopg[binary]>=3.1.20,<3.3.0",
+    "psycopg_pool>=3.1.9,<3.3.0",
+    "PyYAML>=5.4.1,<7.0",
+    "chardet~=5.2.0",
+    "aiofiles>=22.1.0,<24.0",
+    "tqdm>=4.64.0,<5.0"
+]
+
+[tool.setuptools.package-data]
+pgmonkey = [ "settings/app_settings.yaml", "common/templates/*"]
+
+
+[project.urls]
+"Homepage" = "https://pgmonkey.net"
+"Repository" = "https://github.com/RexBytes/pgmonkey"
+"Bug Tracker" = "https://github.com/RexBytes/pgmonkey"
+
+[project.scripts]
+pgmonkey="cli.cli:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"  # or "strict" for future-proofing
+
+
