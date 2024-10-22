@@ -1,0 +1,168 @@
+[build-system]
+requires=["flit_core >=3.2,<4"]
+build-backend="flit_core.buildapi"
+
+[project]
+name="mlip_arena"
+version="0.0.1a1"
+authors=[
+    {name="Yuan Chiang", email="cyrusyc@lbl.gov"},
+]
+description=""
+readme="README.md"
+requires-python=">=3.10"
+keywords=[
+    "pytorch",
+    "machine-learning-interatomic-potentials",
+    "huggingface",
+    "deep-learning",
+    "graph-neural-networks",
+]
+classifiers=[
+    "Development Status :: 1 - Planning",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+]
+dependencies=[
+    "ase",
+    "torch",
+    "torch_dftd>=0.4.0",
+    "huggingface_hub",
+    "datasets",
+    "torch-geometric",
+    "safetensors",
+    "pymatgen"
+]
+
+[project.optional-dependencies]
+run = [
+    "torch==2.2.0",
+    "e3nn==0.5.1",
+    "matgl==1.1.2",
+    "dgl==2.4.0",
+    "mace-torch==0.3.4",
+    "chgnet==0.3.8",
+    "fairchem-core==1.2.0",
+    "sevenn==0.9.3.post1",
+    "orb-models==0.3.1",
+    "alignn==2024.5.27",
+    "prefect>=3.0.4",
+    "prefect-dask"
+]
+app = [
+    "streamlit==1.38.0",
+    "plotly",
+    "bokeh==2.4.3",
+    "statsmodels"
+]
+test = [
+    "torch==2.2.0",
+    "e3nn==0.5.1",
+    "matgl==1.1.2",
+    "dgl==2.4.0",
+    "chgnet==0.3.8",
+    "fairchem-core==1.2.0",
+    "sevenn==0.9.3.post1",
+    "orb-models==0.3.1",
+    "alignn==2024.5.27",
+    "pytest",
+    "prefect>=3.0.4"
+]
+mace = [
+    "mace-torch==0.3.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/atomind-ai/mlip-arena"
+Issues = "https://github.com/atomind-ai/mlip-arena/issues"
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+extend-include = ["*.ipynb"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "E",      # pycodestyle error
+    "EXE",    # flake8-executable
+    "F",      # pyflakes
+    "FA",     # flake8-future-annotations
+    "FBT003", # boolean-positional-value-in-call
+    "FLY",    # flynt
+    "I",      # isort
+    "ICN",    # flake8-import-conventions
+    "PD",     # pandas-vet
+    "PERF",   # perflint
+    "PIE",    # flake8-pie
+    "PL",     # pylint
+    "PT",     # flake8-pytest-style
+    "PYI",    # flakes8-pyi
+    "Q",      # flake8-quotes
+    "RET",    # flake8-return
+    "RSE",    # flake8-raise
+    "RUF",    # Ruff-specific rules
+    "SIM",    # flake8-simplify
+    "SLOT",   # flake8-slots
+    "TCH",    # flake8-type-checking
+    "TID",    # tidy imports
+    "TID",    # flake8-tidy-imports
+    "UP",     # pyupgrade
+    "W",      # pycodestyle warning
+    "YTT",    # flake8-2020
+]
+ignore = [
+    "C408",   # Unnecessary dict call
+    "PLR",    # Design related pylint codes
+    "E501",   # Line too long
+    "B028",   # No explicit stacklevel
+    "EM101",  # Exception must not use a string literal
+    "EM102",  # Exception must not use an f-string literal
+    "G004",   # f-string in Logging statement
+    "RUF015", # Prefer next(iter())
+    "RET505", # Unnecessary `elif` after `return`
+    "PT004",  # Fixture does not return anthing
+    "B017",   # pytest.raises
+    "PT011",  # pytest.raises
+    "PT012",  # pytest.raises"
+    "E741",  # ambigous variable naming, i.e. one letter
+    "FBT003",  # boolean positional variable in function call
+    "PERF203",  # `try`-`except` within a loop incurs performance overhead (no overhead in Py 3.11+)
+    "F405",  # 'module' may be undefined, or defined from star imports
+]
+fixable = ["ALL"]
+pydocstyle.convention = "google"
