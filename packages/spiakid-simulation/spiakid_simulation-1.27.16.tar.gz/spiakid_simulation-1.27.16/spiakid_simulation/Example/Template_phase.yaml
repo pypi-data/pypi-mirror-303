@@ -1,0 +1,60 @@
+# Simulation
+
+sim_file: /spiakid/Simulation/results/Simulation_1sec_1obj_10pix.hdf5
+process_nb: 5
+
+1-Photon_Generation:
+  telescope:
+    exposition_time: 1
+    diameter: 3.5
+    obscuration: 1
+    latitude: 5
+    transmittance: /spiakid/Simulation/Trans.csv
+    detector: 
+      pix_nbr: 10
+      pix_size: 0.5
+  star:
+    number: 1
+    distance: 
+      min: 35
+      max: 37
+    wavelength_array: 
+      min: 0.4
+      max: 0.8
+      nbr: 40
+    spectrum_folder: spiakid_simulation/Example/Spectrum
+  sky:
+    method: Simulation
+    contamination: False
+    rotation: True
+    fov_method: fix
+    guide:
+      alt: 75
+      az: 20
+  PSF:
+    method: Download
+
+    file: /spiakid/Simulation/PSF/psf_1000pix_2as_1seeing.fits
+
+2-Timeline:
+  point_nb: 1000000
+
+3-Phase:
+  Calib_File: /spiakid/Simulation/conv_law/Conv_law_const.csv
+  Phase_Noise: 10
+  Decay: 33000.0
+  Readout_Noise:
+    scale: 0.5
+    type: Gaussian
+  Phase: true
+
+4-Electronic:
+  nperseg: 4000
+  template_time: 0.004
+  trigerinx: 1000
+  point_nb: 4000
+
+5-Output:
+  save: photon_list
+
+
