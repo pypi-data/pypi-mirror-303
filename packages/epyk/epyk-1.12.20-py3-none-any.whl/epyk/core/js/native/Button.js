@@ -1,0 +1,1 @@
+function button(e,t,n){if(t=getDataFromTemplate(t,n),e.setAttribute("data-processing",!1),e.querySelectorAll('span[name="button-content"]')[0].innerHTML=t,setCss(e,n),n.icon){let l=e.querySelectorAll("i");l&&l[0].setAttribute("class",n.icon)}if(n.badge){let i=e.querySelectorAll('[name="badge-value"]');i&&(i[0].innerHTML=n.badge)}}

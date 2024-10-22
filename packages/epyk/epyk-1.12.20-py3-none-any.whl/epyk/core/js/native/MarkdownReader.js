@@ -1,0 +1,1 @@
+function markdownReader(e,r,n){""!==r&&(setCss(e,n,!0),e.innerHTML=getHtmlData(r,n),document.querySelectorAll("pre code").forEach(e=>{hljs.highlightElement(e)}))}

@@ -1,0 +1,1 @@
+function apRadialBar(e,l){return"number"==typeof e?e={values:[e]}:"number"==typeof e.values&&(e.values=[e.values],void 0!==e.labels&&(e.labels=[e.labels])),result={series:e.values},void 0!==e.labels&&(result.labels=e.labels),void 0!==l?._ek?.alterSeries&&l._ek.alterSeries(result,null),result}

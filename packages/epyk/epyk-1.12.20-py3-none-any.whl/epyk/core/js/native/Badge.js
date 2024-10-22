@@ -1,0 +1,1 @@
+function badge(e,a,l){e.querySelector("[name='badge-value']").innerHTML=a,l.show_empty||(a?e.style.display="":e.style.display="None"),setCss(e,l)}

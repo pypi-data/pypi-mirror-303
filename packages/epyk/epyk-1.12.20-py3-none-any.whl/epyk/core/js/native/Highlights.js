@@ -1,0 +1,1 @@
+function highlights(c,a,b){a=getDataFromTemplate(a,b);if(typeof a==='undefined'){c.remove();}else{if(b.reset){c.querySelector('div[name=content]').innerHTML="";};c.querySelector('div[name=content]').innerHTML=getHtmlData(a,b);}}

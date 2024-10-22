@@ -1,0 +1,1 @@
+function colorsPicker(b,c,a){a.el=b;setCss(b,a,true);Coloris(a);b.value=c;}

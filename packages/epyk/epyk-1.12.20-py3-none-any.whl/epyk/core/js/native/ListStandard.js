@@ -1,0 +1,1 @@
+function listStandard(e,t,s){e.innerHTML="",setCss(e,s,!0),t.forEach(function(t,i){"object"!=typeof t&&(t={text:t});let a=document.createElement(s.item_type);if(a.innerHTML=t.text,s.items_class&&a.classList.add(s.items_class),s.categories)for(let[n,c]of Object.entries(s.categories))t[n]&&a.classList.add(c);e.appendChild(a)})}

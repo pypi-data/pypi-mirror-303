@@ -1,0 +1,1 @@
+function help(a,c,b){setCss(a,b,true);a.setAttribute("title",c);}

@@ -1,0 +1,1 @@
+function textArea(a,c,b){setCss(a,b,true);a.value=c;}

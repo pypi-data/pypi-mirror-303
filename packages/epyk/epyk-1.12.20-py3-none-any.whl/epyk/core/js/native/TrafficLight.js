@@ -1,0 +1,1 @@
+function trafficLight(a,b,c){if(b===false){a.firstChild.style.backgroundColor=c.red;}else if(b===true){a.firstChild.style.backgroundColor=c.green;}else if(b===null){a.firstChild.style.backgroundColor=c.orange;}else{a.firstChild.style.backgroundColor=b;}}

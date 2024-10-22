@@ -1,0 +1,1 @@
+function prettyJson(a,c,b){window[a.id+'_obj']=new JSONFormatter(c,b.open,b.opts);a.innerHTML='';a.appendChild(window[a.id+'_obj'].render());}

@@ -1,0 +1,1 @@
+function datalink(b,a,c){setCss(b,c,true);a=getDataFromTemplate(a,c);var d=new Blob([a.value]);b.href=URL.createObjectURL(d);b.innerHTML=a.text;}

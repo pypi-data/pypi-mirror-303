@@ -1,0 +1,1 @@
+function audio(t,e,a){let u=document.createElement("source");for(let i in t.innerHTML="",u.setAttribute("src",e.path+"/"+e.audio),a)"autoplay"===i?t.autoplay=a.autoplay:u.setAttribute(i,a[i]);t.appendChild(u),setCss(t,a)}

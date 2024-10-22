@@ -1,0 +1,1 @@
+function progressCircle(b,a,c){if((Array.isArray(a))&&(a.length>0)){a=a[0];}if(c.value){a=a[c.value];};b.style.setProperty('--start',b.getAttribute('aria-valuenow'));b.style.setProperty('--value',a);b.style.webkitAnimation='none';setTimeout(function(){b.style.webkitAnimation='';},1);}
