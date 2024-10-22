@@ -1,0 +1,71 @@
+Metadata-Version: 2.3
+Name: akimbo
+Version: 2024.10.0
+Summary: Awkward Array Extension for Dataframes
+Project-URL: Homepage, https://github.com/intake/akimbo
+Project-URL: Bug Tracker, https://github.com/intake/akimbo/issues
+Author-email: Martin Durant <mdurant@anaconda.com>
+Maintainer-email: Martin Durant <mdurant@anaconda.com>
+License-Expression: BSD-3-Clause
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Requires-Dist: awkward>=2.6.5
+Requires-Dist: pyarrow
+Provides-Extra: docs
+Requires-Dist: dask; extra == 'docs'
+Requires-Dist: furo; extra == 'docs'
+Requires-Dist: ipython; extra == 'docs'
+Requires-Dist: nbsphinx; extra == 'docs'
+Requires-Dist: pandas; extra == 'docs'
+Requires-Dist: pandoc; extra == 'docs'
+Requires-Dist: polars; extra == 'docs'
+Requires-Dist: pyarrow; extra == 'docs'
+Requires-Dist: sphinx; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: dask; extra == 'test'
+Requires-Dist: dask-awkward; extra == 'test'
+Requires-Dist: distributed; extra == 'test'
+Requires-Dist: numba; extra == 'test'
+Requires-Dist: pandas; extra == 'test'
+Requires-Dist: polars; extra == 'test'
+Requires-Dist: pyarrow; extra == 'test'
+Requires-Dist: pytest; extra == 'test'
+Requires-Dist: pytest-cov; extra == 'test'
+Description-Content-Type: text/markdown
+
+# akimbo
+
+**For when your data won't fit in your dataframe**
+
+[![Tests](https://github.com/intake/akimbo/actions/workflows/pypi.yml/badge.svg)](https://github.com/intake/akimbo/actions/workflows/pypi.yml)
+[![Documentation Status](https://readthedocs.org/projects/akimbo/badge/?version=latest)](https://akimbo.readthedocs.io/en/latest/?badge=latest)
+
+Akimbo provides fast vectorized processing of nested, ragged data
+in dataframes, using the ``.ak`` accessor.
+
+### Features
+
+- numpy-like API for slicing and accessing data deep in nested structures
+- apply any function, ufunc or aggregation at any level
+- use with different backends: pandas, polars, dask-dataframe and cuDF
+  exactly the same way (more backends may come in the future)
+- CPU and GPU processing and support for ``numba``-jit
+- attach object-like behaviours to your record (sub)structures
+
+See the [quick
+start](https://akimbo.readthedocs.io/en/latest/quickstart.html)
+in the documentation for an introduction to akimbo.
+
+Acknowledgements
+----------------
+
+Support for this work was provided by NSF grant [OAC-2103945](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2103945).
