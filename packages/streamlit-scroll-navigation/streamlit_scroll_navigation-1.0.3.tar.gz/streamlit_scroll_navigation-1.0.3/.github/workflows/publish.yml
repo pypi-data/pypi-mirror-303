@@ -1,0 +1,91 @@
+name: Publish streamlit-scroll-navigation to PyPI and TestPyPI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Run workflow on version tags like v1.0.0x`
+jobs:
+  build:
+    name: Build distribution for streamlit-scroll-navigation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for tags
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+
+    - name: Install dependencies from pyproject.toml
+      run: pip install build
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'  # Adjust to your Node version
+
+    - name: Install frontend dependencies
+      working-directory: ./streamlit_scroll_navigation/frontend  # Change if your frontend is in a different directory
+      run: npm install
+
+    - name: Reset dirty git
+      run: git reset --hard
+
+    - name: Build frontend
+      working-directory: ./streamlit_scroll_navigation/frontend
+      run: npm run build
+
+    - name: Build Python package
+      run: python3 -m build
+
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+
+  
+  pypi-publish:
+    name: Publish streamlit-scroll-navigation to PyPI
+    if: startsWith(github.ref, 'refs/tags/')  # Only publish on tagged commits and on main branch
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/p/streamlit-scroll-navigation/
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Download distribution packages
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+
+  publish-to-testpypi:
+    name: Publish streamlit-scroll-navigation to TestPyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/streamlit-scroll-navigation/
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Download distribution packages
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
