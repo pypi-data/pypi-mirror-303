@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_forecast_line_list_optimized" model="ir.ui.view">
+        <field name="model">forecast.line</field>
+        <field name="inherit_id" ref="project_forecast_line.view_forecast_line_list" />
+        <field name="arch" type="xml">
+            <data>
+                <field name="name" position="before">
+                    <field name="employee_id"/>
+                </field>
+                <field name="forecast_hours" position="replace">
+                    <field name="forecast_hours" widget="float_time"/>
+                    <field name="project_id" widget="many2one" optional="hide"/>
+                    <field name="task_id" widget="many2one" optional="show"/>
+                    <field name="sale_id" widget="many2one" optional="hide"/>
+                </field>
+                <field name="consolidated_forecast" position="replace"/>
+                <field name="confirmed_consolidated_forecast" position="replace"/>
+                <field name="cost" position="replace"/>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_forecast_line_pivot_optimized" model="ir.ui.view">
+        <field name="model">forecast.line</field>
+        <field name="inherit_id" ref="project_forecast_line.view_forecast_line_pivot" />
+        <field name="arch" type="xml">
+            <data>
+                <field name="confirmed_consolidated_forecast" optional="hide"/>
+                <field name="consolidated_forecast" optional="hide"/>
+                <field name="cost" optional="hide"/>
+                <field name="forecast_hours" position="replace">
+                    <field name="forecast_hours" type="measure" widget="float_time"/>
+                </field>
+            </data>
+        </field>
+    </record>
+
+    <record id="graph_for_forecast_line_optimized" model="ir.ui.view">
+        <field name="model">forecast.line</field>
+        <field name="inherit_id" ref="project_forecast_line.view_forecast_line_graph" />
+        <field name="arch" type="xml">
+            <data>
+                <field name="confirmed_consolidated_forecast" position="replace"/>
+                <field name="consolidated_forecast" position="replace"/>
+                <field name="cost" position="replace"/>
+                <field name="forecast_hours" position="replace">
+                    <field name="forecast_hours" type="measure" widget="float_time"/>
+                </field>
+            </data>
+        </field>
+    </record>
+
+</odoo>
