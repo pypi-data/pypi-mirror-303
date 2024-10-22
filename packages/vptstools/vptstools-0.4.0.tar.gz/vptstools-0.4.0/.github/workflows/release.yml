@@ -1,0 +1,158 @@
+# Build package, run unit tests and deploy on success
+name: release
+
+on:
+  push:
+    # Avoid using all the resources/limits available by checking only
+    # relevant branches and tags. Other branches can be checked via PRs.
+    branches: [main]
+    tags: ['v[0-9]*'] # Match tags that resemble a version
+  workflow_dispatch: # Allow manually triggering the workflow
+
+permissions:
+  contents: read
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.ref_type }}-
+    ${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      wheel-distribution: ${{ steps.wheel-distribution.outputs.path }}
+    steps:
+      - uses: actions/checkout@v3
+        with: {fetch-depth: 0}  # deep clone for setuptools-scm
+      - uses: actions/setup-python@v4
+        id: cp310
+        with: {python-version: "3.10"}
+      - name: Build package distribution files
+        run: >-
+          pipx run --python '${{ steps.cp310.outputs.python-path }}'
+          tox -e clean,build
+      - name: Record the path of wheel distribution
+        id: wheel-distribution
+        run: echo "path=$(ls dist/*.whl)" >> $GITHUB_OUTPUT
+      - name: Store the distribution files for use in other stages
+        # `tests` and `publish` will use the same pre-built distributions,
+        # so we make sure to release the exact same package that was tested
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-distribution-files
+          path: dist/
+          retention-days: 1
+
+  test:
+    needs: prepare
+    strategy:
+      matrix:
+        python:
+        - "3.9"
+        - "3.10"
+        - "3.11"
+        platform:
+        - ubuntu-latest
+        - macos-latest
+        - windows-latest
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        id: cp3x
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Retrieve pre-built distribution files
+        uses: actions/download-artifact@v3
+        with: {name: python-distribution-files, path: dist/}
+      - name: Run tests
+        run: >-
+          pipx run --python '${{ steps.cp3x.outputs.python-path }}'
+          tox --installpkg '${{ needs.prepare.outputs.wheel-distribution }}' -e py
+          -- -rFEx --durations 10 --color yes  # pytest args
+      - name: Generate coverage report
+        run: pipx run coverage lcov -o coverage.lcov
+      - name: Upload partial coverage report
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: coverage.lcov
+          github-token: ${{ secrets.github_token }}
+          flag-name: ${{ matrix.platform }} - py${{ matrix.python }}
+          parallel: true
+
+  finalize:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Finalize coverage report
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+
+  pypi-publish:
+    name: Upload release to PyPI
+    needs: finalize
+    if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+    steps:
+      - name: Retrieve pre-built distribution files
+        uses: actions/download-artifact@v3
+        with: {name: python-distribution-files, path: dist/}
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  test-pinned:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Retrieve pre-built distribution files
+        uses: actions/download-artifact@v3
+        with: {name: python-distribution-files, path: dist/}
+      - name: Install pinned dependencies for deployment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install '${{ needs.prepare.outputs.wheel-distribution }}'
+          python -m pip install pytest 'moto[s3]<5.0' pytest-cov
+      - name: Run unit tests on pinned dependencies
+        run: >-
+          pytest -rFEx --durations 10 --color yes  # pytest args
+
+  docker:
+      needs: finalize
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3  # get Dockerfile from repo
+          with: {fetch-depth: 0}  # deep clone for setuptools-scm
+        - name: Retrieve pre-built distribution files
+          uses: actions/download-artifact@v3
+          with: {name: python-distribution-files, path: dist/}
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v1
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v2 # More information on this action can be found below in the 'AWS Credentials' section
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+        - name: Login to Amazon ECR
+          id: login-ecr
+          uses: aws-actions/amazon-ecr-login@v1
+        - name: Build and push
+          uses: docker/build-push-action@v2
+          with:
+            context: .
+            file: ./Dockerfile
+            platforms: linux/arm64
+            push: true
+            tags: ${{ steps.login-ecr.outputs.registry }}/inbo-aloft:latest
