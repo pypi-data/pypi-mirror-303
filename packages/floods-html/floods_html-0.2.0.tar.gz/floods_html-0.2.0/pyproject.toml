@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "floods_html"
+requires-python = ">=3.8"
+authors = [
+    {name = "Oisín Morrison", email = "oisin.morrison@ecmwf.int"},
+]
+description = "Simplify JSON to HTML conversion"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering",
+]
+dynamic = ["version", "readme"]
+
+dependencies = ["pydantic>=2",
+                "pydantic-extra-types"]
+
+[project.urls]
+    repository = "https://github.com/ecmwf/floods-html"
+    issues = "https://github.com/ecmwf/floods-html/issues"
+
+[project.optional-dependencies]
+    test = [
+        "pytest",
+        "html5lib"
+    ]
+    dev = [
+        "pytest",
+        "html5lib",
+        "ruff",
+        "pre-commit",
+    ]
+
+# Linting settings
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.per-file-ignores]
+### Allow wildcard imports for __init__.py
+"__init__.py" = ["F403"]
+
+# Testing
+[tool.pytest]
+addopts = "--pdbcls=IPython.terminal.debugger:Pdb"
+testpaths = [
+    "tests",
+]
+
+# Packaging/setuptools options
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type = "text/markdown"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests"]
+
+[tool.setuptools_scm]
+write_to = "floods_html/_version.py"
+write_to_template = '''
+__version__ = "{version}"
+'''
+parentdir_prefix_version='floods-html-'  # get version from GitHub-like tarballs
+fallback_version=''
