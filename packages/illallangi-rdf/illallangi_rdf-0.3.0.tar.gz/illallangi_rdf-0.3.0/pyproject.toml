@@ -1,0 +1,93 @@
+[project]
+name = "illallangi-rdf"
+authors = [
+    { name = "Andrew Cole", email = "andrew.cole@illallangi.com" }
+]
+maintainers = [
+    { name = "Andrew Cole", email = "andrew.cole@illallangi.com" }
+]
+description = "A collection of command line tools to interact with RDF."
+readme = "README.md"
+requires-python = ">=3.10.1"
+dependencies = [
+    "click>=8.1.7",
+    "diffsync>=2.0.0",
+    "django-partial-date>=1.3.2",
+    "orjson>=3.10.7",
+    "python-dotenv>=1.0.1",
+    "rdflib>=7.0.0",
+    "requests>=2.32.3",
+    "tabulate>=0.9.0",
+]
+keywords = [
+    "rdf",
+    "cli",
+    "tools",
+]
+version = "0.3.0"
+classifiers =[
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+]
+license = { text = "MIT License" }
+[project.scripts]
+rdf-tools = "illallangi.rdf.tools:cli"
+[project.urls]
+Homepage = "https://github.com/illallangi/python-rdf"
+Repository = "https://github.com/illallangi/python-rdf.git"
+Issues = "https://github.com/illallangi/python-rdf/issues"
+Changelog = "https://github.com/illallangi/python-rdf/blob/master/CHANGELOG.md"
+[build-system]
+requires = [
+    "ruff>=0.6.9",
+    "hatchling>=1.25.0",
+]
+build-backend = "hatchling.build"
+[tool.deptry.per_rule_ignores]
+DEP002 = []
+[tool.ruff]
+lint.select = ["ALL"]
+lint.ignore = [
+    "D",
+    "COM812",
+    "E501",
+    "ISC001",
+]
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+[tool.uv]
+dev-dependencies = [
+    "commitizen>=3.29.1",
+    "deptry>=0.20.0",
+    "hatchling>=1.25.0",
+    "pre-commit>=3.8.0",
+    "ruff>=0.6.9",
+]
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "Makefile",
+    "uv.lock",
+]
+[tool.hatch.build.targets.wheel]
+packages = ["src/illallangi"]
+exclude = [
+    "Makefile",
+    "uv.lock",
+]
+[tool.commitizen]
+name = "cz_conventional_commits"
+version_provider = "pep621"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "src/illallangi/rdf/__version__.py:__version__",
+]
+pre_bump_hooks = [
+  "uv sync --no-dev"
+]
+update_changelog_on_bump = true
+major_version_zero = true
