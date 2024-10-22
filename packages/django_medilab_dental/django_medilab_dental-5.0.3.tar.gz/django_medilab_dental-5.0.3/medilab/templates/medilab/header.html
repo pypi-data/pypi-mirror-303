@@ -1,0 +1,63 @@
+{% load static %}
+{% load shared_tags %}
+
+<div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+      <div class="contact-info d-flex align-items-center">
+        {% if basic_info.consult_email %}
+        <i class="bi bi-envelope"></i> <a href="{{ basic_info.consult_email }}">{{ basic_info.consult_email }}</a>
+        {% endif %}
+        <i class="bi bi-phone"></i> {{ basic_info.phone }}
+      </div>
+      <div class="d-none d-lg-flex social-links align-items-center">
+        {% if social.twitter %}
+        <a href="{{ social.twitter }}" class="twitter" target="_blank"><i class="bi bi-twitter"></i></a>
+        {% endif %}
+        {% if social.facebook %}
+        <a href="{{ social.facebook }}" class="facebook" target="_blank"><i class="bi bi-facebook"></i></a>
+        {% endif %}
+        {% if social.instagram %}
+        <a href="{{ social.instagram }}" class="instagram" target="_blank"><i class="bi bi-instagram"></i></a>
+        {% endif %}
+        {% if social.youtube %}
+        <a href="{{ social.youtube }}" class="youtube" target="_blank"><i class="bi bi-youtube"></i></a>
+        {% endif %}
+        {% if social.blog %}
+        <a href="{{ social.blog }}" class="blog" target="_blank"><i class="bi bi-bootstrap-fill"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      {% if use_logo %}
+      <a href="{% url 'medilab:home' %}" class="logo me-auto"><img src="{% static 'medilab/img/logo.png' %}" alt="" class="img-fluid"></a>
+
+      {% else %}
+      <h1 class="logo me-auto"><a href="{% url 'medilab:home' %}">{{ logo_text }}</a></h1>
+      {% endif %}
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="{% url 'medilab:home' %}#hero">Home</a></li>
+          {% for component, etc, title, is_show in components %}
+          {% if is_show %}
+            {% if component == 'direct_link' %}
+              <li><a class="nav-link scrollto" href="{{ etc }}">{{ title }}</a></li>
+            {% else %}
+            <li><a class="nav-link scrollto" href="{% url 'medilab:home' %}#{{ component | underscore_to_hyphen }}">{{ title }}</a></li>
+            {% endif %}
+          {% endif %}
+          {% endfor %}
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+      {% for component, is_use, _, _ in components %}
+      {% if component == menu_btn.component and is_use %}
+      <a href="{% url 'medilab:home' %}#{{ menu_btn.component }}" class="appointment-btn scrollto"><span class="d-none d-md-inline">{{ menu_btn.title.0 }}</span>{{ menu_btn.title.1 }}</a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </header>

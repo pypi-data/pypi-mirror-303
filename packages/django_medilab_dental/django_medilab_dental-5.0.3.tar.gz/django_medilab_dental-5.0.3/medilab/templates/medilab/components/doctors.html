@@ -1,0 +1,39 @@
+{% load static %}
+
+<section id="doctors" class="doctors">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>{{ doctors_title }}</h2>
+      <p>{{ doctors_subtitle }}</p>
+    </div>
+
+    <div class="row">
+      {% for doctor in doctors %}
+      <div class="col-lg-6 {% cycle '' 'mt-4 mt-lg-0' 'mt-4' 'mt-4' %}">
+        <div class="member d-flex align-items-start">
+          {% cycle 'member1' 'member2' 'member3' 'member4' 'member5' 'member6' as member_dir silent %}
+          <div class="pic"><img src="{% static 'medilab/img/doctors/'|add:member_dir|add:'/'|add:doctor.image %}" class="img-fluid" alt=""></div>
+          <div class="member-info">
+            <h4>{{ doctor.name }}</h4>
+            <span>{{ doctor.title }}</span>
+            {% autoescape off %}
+            <p>{{ doctor.p }}<br></p>
+            {% endautoescape %}
+            <div class="social">
+              {% for title, filename in doctor.certs %}
+              <a href="{% static 'medilab/img/doctors/'|add:member_dir|add:'/'|add:filename %}"
+                data-bs-toggle="tooltip" title="{{ title }}" class="glightbox" target="_blank">
+              <i class="{% cycle 'ri-award-fill' 'ri-thumb-up-line' 'ri-trophy-line' 'ri-notification-line' 'ri-magic-line' %}"></i>
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</section>
