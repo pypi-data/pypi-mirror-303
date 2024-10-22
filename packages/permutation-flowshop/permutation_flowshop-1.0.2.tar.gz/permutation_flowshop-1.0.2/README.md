@@ -1,0 +1,264 @@
+# Permutational Flowshop Library Documentation
+
+## Overview
+The Permutational Flowshop Library was developed as a tool to assist  analyses and studies involving the Permutational Flowshop Scheduling Problem (PFSP), a classic optimization topic in the context of Operations Research.
+
+The main objective of the PFSP is to schedule a set of jobs on a set of machines, where each job is processed on each machine in the same order as it was processed on the previous machine (Ravetti et al., 2012)
+
+This library provides, among other resources, heuristic and metaheuristic methods that enable the creation of a schedule to process a set of n jobs on m machines. The metric used to determine the scheduling is the total time required to execute all n jobs on all m machines (makespan).
+
+
+## Table of Contents
+- [Installation](#installation)
+- [Functions](#functions)
+  - [Reading a File](#read_file)
+  - [Makespan](#makespan)
+  - [NEH](#neh)
+  - [NEHT](#neht)
+  - [Gantt Chart](#gantt_chart)
+  - [Local Search](#local_search)
+    - [Local Search with the Swap First Improvement Strategy](#local_search_swap_first_improvement)
+    - [Local Search with the Swap Best Improvement Strategy](#local_search_swap_best_improvement)
+  - [Multi-start](#multistart)
+  - [GRASP](#grasp)
+
+## [Installation]
+To install the package, run the command below:
+<pre><code> pip install permutation-flowshop </code></pre>
+
+## [Functions]
+### Reading a File
+The package allows reading files with processing times in txt and csv formats.
+
+For reading the file in txt format, it must be formatted according to the Taillard (1993) instances standard, as shown in the example below:
+
+![](pfsp/images/txt.png)
+
+20 5 <br>
+54 83 15 71 77 36 53 38 27 87 76 91 14 29 12 77 32 87 68 94 <br>
+79  3 11 99 56 70 99 60  5 56  3 61 73 75 47 14 21 86  5 77 <br>
+16 89 49 15 89 45 60 23 57 64  7  1 63 41 63 47 26 75 77 40 <br>
+66 58 31 68 78 91 13 59 49 85 85  9 39 41 56 40 54 77 51 31 <br>
+58 56 20 85 53 35 53 41 69 13 86 72  8 49 47 87 58 18 68 28 <br>
+
+The number of jobs should be placed in the first position, followed by the number of machines in the second position, In this example, 20 jobs and 5 machines. The processing time matrix has the number of columns representing the number of tasks and the number of rows representing the number of machines, forming the processing time of each job on each machine.
+
+Reading a file in txt format:
+<pre><code>
+#Usage Example
+
+from pfsp.read_file import read_txt
+
+file = "your_path/instance.txt"
+
+number_jobs, number_machines, processing_times_array = read_txt(file)
+
+</code></pre>
+
+
+For reading the file in csv format, it must be formatted, as shown below:
+
+54,83,15,71,77,36,53,38,27,87,76,91,14,29,12,77,32,87,68,94 <br>
+79,3,11,99,56,70,99,60,5,56,3,61,73,75,47,14,21,86,5,77 <br>
+16,89,49,15,89,45,60,23,57,64,7,1,63,41,63,47,26,75,77,40 <br>
+66,58,31,68,78,91,13,59,49,85,85,9,39,41,56,40,54,77,51,31 <br>
+58,56,20,85,53,35,53,41,69,13,86,72,8,49,47,87,58,18,68,28 <br>
+
+A file in CSV format separated by commas must be provided. The processing time matrix has the number of columns representing the number of jobs and the number of rows representing the number of machines, forming the processing time of each job on each machine.
+
+![](pfsp/images/csv.png)
+
+Reading a file in csv format:
+<pre><code>
+#Usage Example
+
+from pfsp.read_file import read_csv
+
+file = "your_path/instance.csv"
+
+number_jobs, number_machines, processing_times_array = read_csv(file)
+
+</code></pre>
+
+
+### Makespan
+
+The makespan function will calculate the completion time of a given sequence. This function can be used to calculate partial sequences,
+ but it will be necessary to specify the number of jobs and the number of machines according to the dimensions of the processing time matrix.
+
+<pre><code>
+#Usage example
+from pfsp.calculate_makespan import calculate_makespan
+
+sequence = [14, 7, 11, 3, 8, 5, 0, 9, 2, 15, 4, 16, 12, 18, 10, 1, 13, 17, 19, 6]
+
+makespan = calculate_makespan(sequence, number_jobs, number_machines, processing_times_array)
+print(f"Makespan = {makespan}")
+
+</code></pre>
+
+### NEH
+The NEH function will be able to find the sequence and the associated makespan following the logic of the  NEH  constructive heuristic (Nawaz et al., 1983).
+
+<pre><code>
+#Usage example
+from pfsp.NEH import NEH
+
+sequence_NEH, makespan_NEH = NEH(number_jobs, number_machines, processing_times_array, show=False)
+
+print(f"Sequence Obtained by the NEH: {sequence_NEH}")
+print(f"Makespan Obtained by the NEH = {makespan_NEH}")
+
+</code></pre>
+
+The parameter `show` is used to display the resulting information regarding the sequence found by the NEH heuristic and the associated makespan.
+The default value of the parameter is `show = False`, so nothing will be displayed. Only by setting  `show = True` will the information be shown at the end of the execution.
+
+### NEHT
+
+The NEHT function will be able to find the sequence and the associated makespan following the logic of the NEHT constructive heuristic (Taillard, 1990).
+It is important to highlight that the difference between NEH and NEHT is that NEHT offers greater efficiency.
+
+<pre><code>
+
+#Usage example
+from pfsp.NEHT import NEHT
+
+sequence_NEHT, makespan_NEHT = NEHT(number_jobs, number_machines, processing_times_array, show=False)
+
+print(f"Sequence Obtained by the NEHT: {sequence_NEHT}")
+print(f"Makespan Obtained by the NEHT = {makespan_NEHT}")
+
+</code></pre>
+
+"The parameter `show` is used to display the resulting information regarding the sequence found by the NEH heuristic and the associated makespan. The default value of the parameter is `show = False`, so nothing will be displayed. Only by setting  `show = True` will the information be shown at the end of the execution.
+
+### Gantt Chart
+The library is capable of generating an interactive Gantt chart, displaying the start and end times of each job on each machine. The chart will be opened in your computer's browser.
+
+<pre><code>
+
+#Usage example
+from pfsp.gantt import gantt_chart
+
+sequence = [14, 7, 11, 3, 8, 5, 0, 9, 2, 15, 4, 16, 12, 18, 10, 1, 13, 17, 19, 6]
+
+gantt_chart(number_jobs, number_machines, processing_times_array, sequence)
+
+
+</code></pre>
+
+### Local Search
+  #### Local Search with the Swap First Improvement
+
+  This function allows the execution of a local search on a given sequence of jobs, using the swap neighborhood operator, working under the first improvement strategy. The initialization of the makespan occurs from the value associated with the initial sequence.
+  <pre><code>
+
+  #Usage example
+  from pfsp.calculate_makespan import calculate_makespan
+  from pfsp.local_search import local_search_swap_first_improvement
+
+  initial_sequence = [14, 7, 11, 3, 8, 5, 0, 9, 2, 15, 4, 16, 12, 18, 10, 1, 13, 17, 19, 6]
+
+  initial_makespan = calculate_makespan(initial_sequence, number_jobs, number_machines, processing_times_array)
+
+  local_search_sequence, local_search_makespan = local_search_swap_first_improvement(number_jobs, number_machines, processing_times_array, initial_sequence, initial_makespan)
+
+  print(f"Local Search Sequence : {local_search_sequence}")
+  print(f"Local Search Makespan : {local_search_makespan}")
+
+  </code></pre>
+
+  #### Local Search with the Swap Best Improvement
+
+  This function allows the execution of a local search on a given sequence of jobs, using the swap neighborhood operator, working under the best improvement strategy. The initialization of the makespan occurs from the value associated with the initial sequence.
+
+  <pre><code>
+
+  #Usage example
+  from pfsp.calculate_makespan import calculate_makespan
+  from pfsp.local_search import local_search_swap_best_improvement
+
+  initial_sequence = [14, 7, 11, 3, 8, 5, 0, 9, 2, 15, 4, 16, 12, 18, 10, 1, 13, 17, 19, 6]
+
+  initial_makespan = calculate_makespan(initial_sequence, number_jobs, number_machines, processing_times_array)
+
+  local_search_sequence, local_search_makespan = local_search_swap_best_improvement(number_jobs, number_machines, processing_times_array, initial_sequence, initial_makespan)
+
+  print(f"Local Search Sequence : {local_search_sequence}")
+  print(f"Local Search Makespan = {local_search_makespan}")
+
+  </code></pre>
+
+### Multi-start
+
+The function executes the multi-start metaheuristic, where the constructive phase involves a randomly generated sequence of number_jobs. This is followed by a local search that uses the swap operator in conjunction with the best improvement or first improvement strategy. In the end, it will return the best sequence found, the best makespan associated, the number of starts executed, execution time, and the matrix with the completion times of each job in the each machine.
+
+| Parameter       | Description |
+|------------|-------|
+| number_jobs      | Number of jobs     |
+| number_machines  | Number of machines |
+| processing_times_array    | Matrix with processing times for each job of each machine|
+| starts    | Integer number of starts of multi-start metaheuristic|
+| ls        | Local search strategy, with two options: `ls=swapbi`, which performs local search with the swap neighborhood operator using the best improvement strategy. It is also possible to perform local search with the swap using the first improvement strategy. In this case, just initialize the parameter with `ls=swapfi`.|
+| logs      |The logs can display the process of updating sequences and the makespan associated with each local search, where the solution found is improved (minimized) compared to previous solutions during the metaheuristic. To  enable this feature, set the parameter to `logs = True`. If the user prefers not to monitor solution updates, the parameter should be initialized with `logs = False`.|
+
+Example involving Local Search with the Swap Best Improvement, bellow:
+
+<pre><code>
+#Usage example
+from pfsp.metaheuristics import multistart
+
+best_sequence_multistart, best_makespan_multistart, iterations, elapsed_time, completion_time_matrix = multistart(number_jobs, number_machines, processing_times_array, starts = 10, ls='swapbi', logs=True)
+
+</code></pre>
+
+Example involving Local Search with the Swap First Improvement, bellow:
+
+<pre><code>
+#Usage example
+from pfsp.metaheuristics import multistart
+
+best_sequence_multistart, best_makespan_multistart, iterations, elapsed_time, completion_time_matrix = multistart(number_jobs, number_machines, processing_times_array, starts = 10, ls='swapfi', logs=True)
+
+
+</code></pre>
+### GRASP
+The function implements the GRASP (Greedy Randomized Adaptive Search Procedure) metaheuristic (FEO and Resende, 1995) using a constructive approach based on the Restricted Candidate List, as detailed in Resende and Ribeiro (2019). This library approach includes a constructive phase followed by a local search that utilizes the swap operator, applying either the best improvement strategy or the first improvement strategy. Ultimately, the function returns the best sequence found, the best associated makespan, the number of iterations executed, the execution time, and the matrix of completion times for each task on each machine.
+
+Parameter       | Description |
+|------------|-------|
+| number_jobs      | Number of jobs     |
+| number_machines  | Number of machines |
+| processing_times_array    | Matrix with processing times for each job of each machine|
+| alpha    | between 0 and 1|
+| max_iterations    | Integer number of iterations executed |
+| ls        | Local search strategy, with two options: `ls=swapbi`, which performs local search with the swap neighborhood operator using the best improvement strategy. It is also possible to perform local search with the swap using the first improvement strategy. In this case, just initialize the parameter with `ls=swapfi`.|
+| logs      |The logs can display the process of updating sequences and the makespan associated with each local search, where the solution found is improved (minimized) compared to previous solutions during the metaheuristic.       To  enable this feature, set the parameter to `logs = True`. If the user prefers not to monitor solution updates, the parameter should be initialized with `logs = False`.|
+
+Example involving Local Search with the Swap Best Improvement, bellow:
+
+
+<pre><code>
+#Usage example
+from pfsp.metaheuristics import grasp
+
+best_sequence_grasp, best_makespan_grasp, iterations, elapsed_time, completion_time_matrix = grasp(number_jobs, number_machines, processing_times_array, alpha=0.5, max_iterations = 10, ls='swapbi', logs=True)
+
+</code></pre>
+
+Example involving Local Search with the Swap First Improvement, bellow:
+<pre><code>
+#Usage example
+from pfsp.metaheuristics import grasp
+
+best_sequence_grasp, best_makespan_grasp, iterations, elapsed_time, completion_time_matrix = grasp(number_jobs, number_machines, processing_times_array, alpha=0.5, max_iterations = 10, ls='swapfi', logs=True)
+</code></pre>
+
+## References
+- RAVETTI, M. G.; RIVEROS, C.; MENDES, A.; RESENDE, M. G.; PARDALOS, P. M. Parallel hybrid heuristics for the permutation flow shop problem. Annals of Operations Research, Springer, v. 199, p. 269–284, 2012.
+- NAWAZ, M.; ENSCORE, E. E.; HAM, I. A heuristic algorithm for the m-machine, n-job flow-shop sequencing problem. Omega, v. 11, n. 1, p. 91–95, 1983. ISSN 0305-0483. Access: https://www.sciencedirect.com/science/article/pii/0305048383900889.
+- TAILLARD, Scheduling instances: benchmarks for basic scheduling problems. 1993. 30 set. 2024. Access: http://mistic.heig-vd.ch/taillard/problemes.dirordonnancement.dir/ordonnancement.html.
+- TAILLARD, E. Some efficient heuristic methods for the flow shop sequencing problem. European Journal of Operational Research, 47(1), 65-74. 1990. Access: https://doi.org/10.1016/0377-2217(90)90090-X
+- FEO, T. A.; RESENDE, M. G. C. Greedy randomized adaptive search procedures. Journal of Global Optimization, v. 6, n. 2, p. 109–133, 1995.
+- RESENDE, Maurício G. C.; RIBEIRO, Celso C. Greedy Randomized Adaptive Search Procedures: Advances and Extensions. In: GENDREAU, Michel; POTVIN, Jean-Yves (Eds.). Handbook of metaheuristics. 3. ed. Cham: Springer, 2019. v. 272, p. 169–220.
