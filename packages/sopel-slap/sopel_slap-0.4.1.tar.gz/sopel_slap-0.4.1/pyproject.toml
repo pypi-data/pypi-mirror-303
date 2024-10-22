@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+platforms = ["Linux x86, x86-64"]
+
+[tool.setuptools.packages.find]
+include = ["sopel_slap", "sopel_slap.*"]
+namespaces = false
+
+[project]
+name = "sopel-slap"
+version = "0.4.1"
+description = "Plugin for Sopel that lets users slap each other in fun ways"
+keywords = [
+  "sopel",
+  "plugin",
+  "slap",
+  "pranks",
+  "bot",
+  "irc",
+]
+maintainers = [
+  { name="dgw" },
+]
+authors = [
+  { name="dgw" },
+  { name="Michael Yanovich" },
+]
+
+readme = "README.md"
+license = { text="EFL-2.0" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: Eiffel Forum License (EFL)",
+    "License :: OSI Approved :: Eiffel Forum License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat :: Internet Relay Chat",
+]
+requires-python = ">=3.8, <4"
+dependencies = [
+    "sopel>=7.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/sopel-irc/sopel-slap"
+"Bug Tracker" = "https://github.com/sopel-irc/sopel-slap/issues"
+
+[project.entry-points."sopel.plugins"]
+slap = "sopel_slap.plugin"
