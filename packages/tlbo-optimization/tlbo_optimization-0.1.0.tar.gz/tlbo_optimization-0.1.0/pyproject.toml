@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tlbo_optimization"
+version = "0.1.0"
+description = "Teaching-Learning-Based Optimization (TLBO) algorithm"
+readme = "README.rst"
+authors = [
+  {name = "mohamad bagher davoodi", email = "mohamadbagherdavoodi@gmail.com"}
+]
+maintainers = [
+  {name = "mohamad bagher davoodi", email = "mohamadbagherdavoodi@gmail.com"}
+]
+classifiers = [
+
+]
+license = {text = "GNU General Public License v3"}
+dependencies = [
+  
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage",  # testing
+    "mypy",  # linting
+    "pytest",  # testing
+    "ruff"  # linting
+]
+
+[project.urls]
+
+bugs = "https://github.com/smbd1368/tlbo_optimization/issues"
+changelog = "https://github.com/smbd1368/tlbo_optimization/blob/master/changelog.md"
+homepage = "https://github.com/smbd1368/tlbo_optimization"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
+
+
+
+
+# Mypy
+# ----
+
+[tool.mypy]
+files = "."
+
+# Use strict defaults
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[[tool.mypy.overrides]]
+# Don't require test functions to include types
+module = "tests.*"
+allow_untyped_defs = true
+disable_error_code = "attr-defined"
+
