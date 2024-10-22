@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "cli_tracker"
+version = "0.3.5"
+description = ""
+authors = ["Robert Stein <robert@blueshoe.de>", "Georg Krause <georg@blueshoe.de>"]
+readme = "README.md"
+homepage = "https://gefyra.dev"
+repository = "https://github.com/gefyrahq/cli_tracker/"
+documentation = "https://gefyra.dev"
+keywords = [
+    "CLI",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+sentry-sdk = "^2.17.0"
+# only required for python < 3.10 on linux
+distro = { version = "^1.7.0", markers = "sys_platform == 'linux'" } 
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
