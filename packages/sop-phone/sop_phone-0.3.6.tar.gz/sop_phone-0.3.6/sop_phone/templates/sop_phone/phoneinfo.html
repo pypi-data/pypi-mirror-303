@@ -1,0 +1,74 @@
+{% extends "generic/object.html" %}
+{% load buttons %}
+{% load custom_links %}
+{% load helpers %}
+{% load perms %}
+{% load plugins %}
+{% load tabs %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+    {% include 'sop_phone/tools/breadcrumbs.html' with object=object name=object|meta:"verbose_name" %}
+{% endblock %}
+
+
+{% block control-buttons %}
+  {% if perms.extras.add_bookmark and object.bookmarks %}
+    {% bookmark_button object %}
+  {% endif %}
+  {% if perms.extras.add_subscription and object.subscriptions %}
+    {% subscribe_button object %}
+  {% endif %}
+  {% if request.user|can_change:object %}
+    {% edit_button object %}
+  {% endif %}
+  {% if request.user|can_delete:object %}
+    {% delete_button object %}
+  {% endif %}
+{% endblock control-buttons %}
+
+
+{% block title %}{{object.site.name}} Phone {{object|meta:"verbose_name"|bettertitle}}{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col col-md-6">
+    <div class="card">
+
+      <h5 class="card-header">{{object|meta:"verbose_name"|bettertitle}}</h5>
+      <table class="table table-hover attr-table">
+
+        <tr>
+          <th scope="row">{% trans "Maintainer" %}</th>
+          <td>
+            {{object.maintainer|linkify}}
+          </td>
+        </tr>
+
+        <tr>
+          <th scope="row">{% trans "Maintainer status" %}</th>
+          <td>
+            {% badge object.maintainer.get_status_display bg_color=object.maintainer.get_status_color %}
+          </td>
+        </tr>
+
+        <tr>
+          <th scope="row">{% trans "Phone numbers maintained" %}</th>
+            <td>
+              {{num_did}} number(s)
+            </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    {% if object.site %}
+      {% include 'sop_phone/tools/site.html' with object=object maintainer=maintainer.maintainer %}
+    {% endif %}
+  </div>
+
+</div>
+{% endblock content %}
