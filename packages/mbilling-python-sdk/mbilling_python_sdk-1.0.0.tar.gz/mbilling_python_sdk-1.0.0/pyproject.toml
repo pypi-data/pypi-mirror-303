@@ -1,0 +1,37 @@
+[project]
+name = "mbilling-python-sdk"
+version = "1.0.0"
+authors = [{name="Vertoner"}]
+description = "Python SDK for the MagnusBilling API"
+requires-python = ">=3.6"
+readme = "README.md"
+
+
+[build-system]
+requires = ['setuptools>=69']
+build-backend = 'setuptools.build_meta'
+
+[tool.setuptools.packages.find]
+include = ["mbilling"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+	'E', 'F', 'I',
+	'YTT', 'COM', 'T10', 'ISC', 'G', 'PIE', 'Q', 'RSE',
+	'PLC', 'PLE',
+	'RUF',
+]
+
+ignore = [
+	'E101' # mixed-spaces-and-tabs
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = 'single'
+multiline-quotes = 'single'
+
+[tool.ruff.lint.isort]
+lines-after-imports = 1
