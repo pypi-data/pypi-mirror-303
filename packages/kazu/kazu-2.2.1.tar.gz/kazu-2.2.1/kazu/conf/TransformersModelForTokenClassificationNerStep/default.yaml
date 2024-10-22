@@ -1,0 +1,38 @@
+_target_: kazu.steps.ner.hf_token_classification.TransformersModelForTokenClassificationNerStep
+path: ${oc.env:KAZU_MODEL_PACK}/tinybern
+batch_size: 4
+stride: 16
+max_sequence_length: 128
+keys_to_use: #distilbert for token classification doesn't use token_type_ids
+  - input_ids
+  - attention_mask
+  - token_type_ids
+entity_splitter:
+  _target_: kazu.steps.ner.entity_post_processing.NonContiguousEntitySplitter
+  entity_conditions:
+    gene:
+      - _target_: kazu.steps.ner.entity_post_processing.SplitOnNumericalListPatternWithPrefix
+      - _target_: kazu.steps.ner.entity_post_processing.SplitOnConjunctionPattern
+        path: ${SciSpacyPipeline.path}
+    disease:
+      - _target_: kazu.steps.ner.entity_post_processing.SplitOnConjunctionPattern
+        path: ${SciSpacyPipeline.path}
+tokenized_word_processor:
+  _target_: kazu.steps.ner.tokenized_word_processor.TokenizedWordProcessor
+  labels:
+    - 'B-cell_line'
+    - 'B-cell_type'
+    - 'B-disease'
+    - 'B-drug'
+    - 'B-gene'
+    - 'B-species'
+    - 'I-cell_line'
+    - 'I-cell_type'
+    - 'I-disease'
+    - 'I-drug'
+    - 'I-gene'
+    - 'I-species'
+    - 'O'
+  strip_re:
+    gene: "( (gene|protein)s?)+$"
+  use_multilabel: false

@@ -1,0 +1,275 @@
+[project]
+name = "kazu"
+dynamic = ["version"]
+description = "Biomedical Named Entity Recognition and Entity Linking for Enterprise use cases"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "AstraZeneca AI and Korea University" }]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: Apache Software License",
+  "Typing :: Typed",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Healthcare Industry",
+  "Natural Language :: English",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+dependencies = [
+  # pinning spacy because larger versions cause dependcy issues with thinc and various packages on 7/10/2024
+  # Also needs to be at least 3.4.2 on python 3.11 (see https://github.com/explosion/spaCy/issues/12697)
+  "spacy==3.7.0",
+  # note to kazu devs: if the torch version changes in future,
+  # we need to change for CI jobs where we specify this install
+  # elsewhere because of the CPU wheel needing a different pypi index.
+  # search the project for --index-url https://download.pytorch.org/whl/cpu
+  # and/or torch>=2.0.0
+  "torch>=2.0.0",
+  "transformers>=4.0.0",
+  "rdflib>=6.0.0",
+  "requests>=2.20.0",
+  "hydra-core>=1.3.0",
+  "pandas",
+  "pyarrow",
+  "pyahocorasick",
+  "pymongo>=4.3.3",
+  "rapidfuzz>=1.0.0",
+  "scikit-learn>=0.24.0",
+  # scipy 1.12.0 introduced many changes to the sparse matrices api. https://docs.scipy.org/doc/scipy/reference/sparse.html#module-scipy.sparse
+  # This is causing our acceptance tests to fail. Pinning to <1.12.0 until it's confirmed other libraries (e.g. sk-learn) don't have issues.
+  "scipy<1.12.0",
+  "regex>=2020.1.7",
+  "psutil>=5.3.0",
+  "cachetools>=5.2.0",
+  "diskcache>=5.4.0",
+  "cattrs>=23.2.0",
+  "tqdm",
+]
+
+[project.urls]
+documentation = "https://astrazeneca.github.io/KAZU/index.html"
+repository = "https://github.com/AstraZeneca/KAZU"
+changelog = "https://astrazeneca.github.io/KAZU/changelog.html"
+
+[project.optional-dependencies]
+webserver = [
+  # the behaviour of declaring 'examples' for a FastAPI parameter changed in 0.99.0
+  # in a way that broke our docs.
+  # A new way was added in 0.103.0 , and we can handle both versions older than 0.99.0 and 0.103.0 or newer.
+  # However, releases in between don't work.
+  #  "fastapi!=0.99.0,!=0.99.1,!=0.100.0b1,!=0.100.0b2,!=0.100.0b3,!=0.100.0,!=0.100.1,!=0.101.0,!=0.101.1,!=0.102.0",
+  # UPDATE: 0.109.0 also no longer works. It seems like there's some incompatibility with ray serve here, so pinning to
+  # last known good version
+  "fastapi==0.108.0",
+  "pydantic<2.0",      # for the pinned spacy version pydantic should be > 1.8 as well.
+  "ray[serve]>=2.0.0",
+  "PyJWT>=2.0.0",
+]
+llm = [
+  "google-cloud-aiplatform", # Required for vertex API
+  "openai",                  # Required for OpenAI API
+]
+typed = [
+  # version 2.31.0.3 introduced
+  # overly strict typing of requests.HttpError
+  # which was fixed in 2.31.0.6
+  "types-requests",
+  "types-cachetools",
+  "types-regex",
+  "types-psutil",
+  "types-docutils",
+  "pandas-stubs>=2.0.0",
+  "types-tqdm",
+]
+all-steps = [
+  "py4j>=0.10.9",
+  "rdkit>=2023.3.1",
+  "stanza>=1.0.0,<1.6.0", # We're seeing IT test failures on linux with stanza 1.6.0
+  "gliner==0.1.7",        # GLINER is under active development, so pinning version until API stabilises
+]
+dev = [
+  "kazu[webserver,typed,all-steps,llm]",
+  "black~=24.0",
+  "blacken-docs",
+  "flake8",
+  "mypy",
+  "vulture",
+  "bump2version",
+  # docformatter breaks pre-commit on version 4.0. Need to pin this until this issue is resolved: https://github.com/PyCQA/docformatter/issues/289
+  "pre-commit<4.0.0",
+  # docformatter breaks pre-commit on version 4.0. Need to pin this until this issue is resolved: https://github.com/PyCQA/docformatter/issues/289
+  "pre-commit<4.0.0",
+  "pytest",
+  "pytest-mock",
+  "pytest-cov",
+  "pytest-timeout",
+  "hypothesis",
+  "sphinx>=7.2,<8.0", # 8.0.0 leads to strange SSL errors, both locally and on the runner",
+  "myst_parser",
+  "furo>=2023.08.17",
+  # to allow profiling
+  # of the steps.
+  "tensorboard",
+  # towncrier versions older than this are broken for
+  # importlib-resources version 6 or newer
+  "towncrier>=23.10.0",
+  "ray>=1.10.0",
+  # required for parsing wikimedia data for disambiguation
+  'mwparserfromhell',
+  # required for krt
+  'streamlit',
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["/kazu"]
+exclude = ["/kazu/tests"]
+
+[tool.hatch.version]
+path = "kazu/__init__.py"
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | .idea
+    | .pytest_cache
+  )/
+)
+'''
+
+[tool.docformatter]
+black = true
+recursive = true
+in-place = true
+
+[tool.pytest.ini_options]
+testpaths = "kazu/tests"
+filterwarnings = ["ignore::DeprecationWarning", "ignore::SyntaxWarning"]
+
+[tool.mypy]
+strict = true
+warn_unreachable = true
+# this is painful to have on because if there is an existing function that is 'untyped', any new
+# call site of it would raise a new error. We only really care about our own functions that are 'untyped',
+# which would raise an error anyway for having no/incomplete typing if one was introduced in a new file.
+disallow_untyped_calls = false
+# turning this on is a pain, as it means __init__.py files like kazu/steps/__init__.py
+# need additional work to 'reexport' symbols - probably the simplest is a redundant 'from x import y as y' (adding the as y)
+# but this seems more work than is justified by the benefit.
+no_implicit_reexport = false
+
+[[tool.mypy.overrides]]
+module = [
+  "seqeval.*",
+  "transformers.*",
+  "tokenizers.*",
+  "stanza.*",
+  "sklearn.*",
+  "srsly.*",
+  "py4j.*",
+  "diskcache.*",
+  "rdkit.*",
+  "ahocorasick.*",
+  "scipy.*",
+  "mwparserfromhell.*",
+  "gliner.*",
+  "vertexai.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["kazu.tests.*", "conftest"]
+# in particular, return types for pytest test
+# functions are always None, we don't want to have to annotate that
+disallow_incomplete_defs = false
+disallow_untyped_defs = false
+
+[[tool.mypy.overrides]]
+# the number in the comment after each line is the number of errors of this type for that file
+# the numbers can be re-calculated with:
+# mypy kazu docs conftest.py | cut -f 1,2 -d ':' | sed '$d' | sort | uniq | cut -f 1 -d ':' | uniq -c | sort --reverse | awk '{file_without_dot_py = substr($2, 0, length($2)-3); gsub("/", ".", file_without_dot_py); print "  \""file_without_dot_py"\",  # "$1}'
+module = [
+  "kazu.utils.spacy_pipeline", # 2
+]
+# we had a bunch of these in the codebase before we moved to a 'strict' mypy config, and it was too many
+# to fix at that time for the payoff. Having overrides for the modules that would error rather than
+# everywhere means that new files get the full 'strict' treatment (and also existing files that are already ok),
+# and the lines above (combined with the counts) should make it easier to 'chip away' at
+# these existing untyped functions file-by-file incrementally.
+disallow_untyped_defs = false
+
+
+[[tool.mypy.overrides]]
+# as above - number is errors for that file
+module = [
+  "kazu.data",                                                         # 13
+  "kazu.annotation.label_studio",                                      # 9
+  "kazu.steps.linking.post_processing.xref_manager",                   # 3
+  "kazu.steps.linking.post_processing.mapping_strategies.strategies",  # 3
+  "kazu.web.server",                                                   # 2
+  "kazu.web.jwtauth",                                                  # 2
+  "kazu.utils.link_index",                                             # 2
+  "kazu.utils.build_and_test_model_packs",                             # 2
+  "kazu.steps.ner.hf_token_classification",                            # 2
+  "kazu.steps.linking.post_processing.disambiguation.strategies",      # 2
+  "kazu.annotation.acceptance_test",                                   # 2
+  "kazu.utils.string_normalizer",                                      # 1
+  "kazu.steps.linking.post_processing.disambiguation.context_scoring", # 1
+  "kazu.steps.linking.entity_class_disambiguation",                    # 1
+  "kazu.pipeline",                                                     # 1
+  "kazu.ontology_matching.ontology_matcher",                           # 1
+]
+# as above, we want this to be true for files it can be, especially new files.
+disallow_any_generics = false
+
+[tool.towncrier]
+package = "kazu"
+directory = "docs/_changelog.d"
+package-dir = "kazu"
+filename = "CHANGELOG.md"
+title_format = "## {version} - {project_date}"
+underlines = ["", "", ""]
+start_string = "<!-- towncrier release notes start -->\n"
+
+[tool.vulture]
+exclude = ["kazu/tests/*"]
+make_whitelist = false
+# we may need to change this to 80 or 100 if we find it too noisy
+min_confidence = 60
+paths = ["kazu", ".vulture_whitelist.py"]
+
+[tool.docsig]
+check-class-constructor = true
+check-dunders = true
+check-overridden = true
+check-protected = true
+ignore-no-params = true
+check-property-returns = true
+disable = [
+  "E113", # function is missing a docstring
+  "E114", # class is missing a docstring
+  # docsig considers it a syntax error if there's no actual description
+  # of the parameter. This is the main syntax error this catches, so turning
+  # it off doesn't do much harm
+  "E115", # syntax error in description
+  # this isn't a problem, it just means there's a blank 'returns' section
+  # of the documentation. We could go back and clean this up.
+  "E104", # return statement documented for None
+]

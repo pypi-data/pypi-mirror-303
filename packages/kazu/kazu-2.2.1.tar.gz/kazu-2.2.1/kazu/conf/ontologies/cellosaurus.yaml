@@ -1,0 +1,19 @@
+indices:
+  cellosaurus_index:
+    _target_: kazu.utils.link_index.DictionaryIndex
+    parser: ${ontologies.parsers.cellosaurus_parser}
+    boolean_scorers: ${StringScorers.number_match_only}
+parsers:
+  cellosaurus_parser:
+    _target_: kazu.ontology_preprocessing.parsers.CellosaurusOntologyParser
+    name: CELLOSAURUS
+    in_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/cellosaurus.obo
+    data_origin: "50.0"
+    string_scorer: ${SapbertStringSimilarityScorer}
+    entity_class: cell_line
+    curations_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/${.name}_curations.jsonl
+    global_actions: ${global_actions}
+    autocurator: ${autocurator.cell_line_or_type}
+    ontology_downloader:
+      _target_: kazu.ontology_preprocessing.downloads.OBOOntologyDownloader
+      url: https://ftp.expasy.org/databases/cellosaurus/cellosaurus.obo

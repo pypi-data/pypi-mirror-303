@@ -1,0 +1,20 @@
+indices:
+  mondo_index:
+    _target_: kazu.utils.link_index.DictionaryIndex
+    parser: ${ontologies.parsers.mondo_parser}
+    boolean_scorers: ${StringScorers.disease}
+parsers:
+  mondo_parser:
+    _target_: kazu.ontology_preprocessing.parsers.MondoOntologyParser
+    name: MONDO
+    in_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/mondo.json
+    data_origin: "2024-10-15T13:28:52.008470"
+    string_scorer: ${SapbertStringSimilarityScorer}
+    synonym_generator: ${SynonymGeneration.default}
+    entity_class: disease
+    curations_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/${.name}_curations.jsonl
+    global_actions: ${global_actions}
+    autocurator: ${autocurator.basic}
+    ontology_downloader:
+      _target_: kazu.ontology_preprocessing.downloads.SimpleOntologyDownloader
+      url: http://purl.obolibrary.org/obo/mondo.json

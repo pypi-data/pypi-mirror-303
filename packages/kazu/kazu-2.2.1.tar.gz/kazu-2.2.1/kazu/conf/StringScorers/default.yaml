@@ -1,0 +1,14 @@
+gene:
+  - _target_: kazu.language.string_similarity_scorers.NumberMatchStringSimilarityScorer
+  - _target_: kazu.language.string_similarity_scorers.EntityNounModifierStringSimilarityScorer
+    noun_modifier_phrases:
+      - LIKE
+      - SUBUNIT
+      - PSEUDOGENE
+      - RECEPTOR
+  - _target_: kazu.language.string_similarity_scorers.EntitySubtypeStringSimilarityScorer
+number_match_only:
+  - _target_: kazu.language.string_similarity_scorers.NumberMatchStringSimilarityScorer
+disease:
+  - _target_: kazu.language.string_similarity_scorers.NumberMatchStringSimilarityScorer
+  - _target_: kazu.language.string_similarity_scorers.EntitySubtypeStringSimilarityScorer
