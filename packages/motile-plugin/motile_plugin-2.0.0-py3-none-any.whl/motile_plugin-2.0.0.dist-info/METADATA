@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: motile-plugin
+Version: 2.0.0
+Summary: Tracking with motile
+Author-email: Caroline Malin-Mayor <malinmayorc@janelia.hhmi.org>
+License: BSD 3-Clause License
+Project-URL: Bug Tracker, https://github.com/funkelab/motile-napari-plugin/issues
+Project-URL: Documentation, https://funkelab.github.io/motile_napari_plugin/
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Framework :: napari
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: napari[all]
+Requires-Dist: numpy
+Requires-Dist: magicgui
+Requires-Dist: qtpy
+Requires-Dist: scikit-image
+Requires-Dist: motile >=0.3
+Requires-Dist: motile-toolbox >=0.3.5
+Requires-Dist: pydantic
+Requires-Dist: tifffile[all]
+Requires-Dist: fonticon-fontawesome6
+Requires-Dist: pyqtgraph
+Requires-Dist: lxml-html-clean
+Provides-Extra: docs
+Requires-Dist: myst-parser ; extra == 'docs'
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-autoapi ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Requires-Dist: sphinxcontrib-video ; extra == 'docs'
+Provides-Extra: testing
+Requires-Dist: napari ; extra == 'testing'
+Requires-Dist: pyqt5 ; extra == 'testing'
+Requires-Dist: pytest ; extra == 'testing'
+Requires-Dist: pytest-cov ; extra == 'testing'
+Requires-Dist: pytest-qt ; extra == 'testing'
+
+# Motile Napari Plugin
+
+[![tests](https://github.com/funkelab/motile-napari-plugin/workflows/tests/badge.svg)](https://github.com/funkelab/motile-napari-plugin/actions)
+[![codecov](https://codecov.io/gh/funkelab/motile-napari-plugin/branch/main/graph/badge.svg)](https://codecov.io/gh/funkelab/motile-napari-plugin)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/motile-plugin)](https://napari-hub.org/plugins/motile-plugin)
+
+The full documentation of the plugin can be found [here](https://funkelab.github.io/motile_napari_plugin/).
+
+A plugin for tracking with [motile](https://github.com/funkelab/motile) in napari.
+Motile is a library that makes it easy to solve tracking problems using optimization
+by framing the task as an Integer Linear Program (ILP).
+See the motile [documentation](https://funkelab.github.io/motile)
+for more details on the concepts and method.
+
+----------------------------------
+
+## Installation
+
+This plugin depends on [motile](https://github.com/funkelab/motile), which in
+turn depends on gurobi and ilpy. These dependencies must be installed with
+conda before installing the plugin with pip.
+
+    conda create -n motile-plugin python=3.10
+    conda activate motile-plugin
+    conda install -c conda-forge -c funkelab -c gurobi ilpy
+    pip install motile-plugin
+
+## Issues
+
+If you encounter any problems, please
+[file an issue](https://github.com/funkelab/motile-napari-plugin/issues)
+along with a detailed description.
