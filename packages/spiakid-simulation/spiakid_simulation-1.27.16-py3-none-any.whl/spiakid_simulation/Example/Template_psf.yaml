@@ -1,0 +1,43 @@
+sim_file: Simulation_PSF.hdf5
+process_nb: 5
+
+1-Photon_Generation:
+  telescope:
+    exposition_time: 1
+    diameter: 3.5
+    obscuration: 1
+    latitude: 25
+    transmittance: spiakid_simulation/Example/Calib/Trans.csv
+    detector: 
+      pix_nbr: 10
+      pix_size: 0.5
+  star:
+    number: 1
+    distance: 
+      min: 5
+      max: 15
+    wavelength_array: 
+      min: 0.4
+      max: 0.8
+      nbr: 40
+    spectrum_folder: spiakid_simulation/Example/Spectrum
+  sky:
+    method: Simulation
+    contamination: False
+    rotation: True
+    fov_method: fix
+    guide:
+      alt: 25
+      az: 20
+  PSF:
+    method: turbulence
+    pix_nbr: 1000
+    size: 2
+    seeing: 0.1
+    wind: 0
+    L0: 30.
+    file: /spiakid/Simulation/PSF/psf_1000pix_2as_0_1seeing.fits
+
+
+2-Timeline:
+  point_nb: 1000000
