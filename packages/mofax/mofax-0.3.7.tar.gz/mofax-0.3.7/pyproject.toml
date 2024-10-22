@@ -1,0 +1,29 @@
+[build-system]
+# requires = ["flit"]
+# build-backend = "flit.buildapi"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "mofax"
+version = "0.3.7"
+description = "Work with MOFA+ models in Python"
+authors = ["Danila Bredikhin <danila.bredikhin@embl.de>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+numpy = ">=1.17.0"
+pandas = ">=1.0.0"
+h5py = ">=2.9.0"
+matplotlib = ">=3.1.0"
+seaborn = ">=0.9.0"
+scipy = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.4"
+
+[tool.flit.metadata]
+module = "mofax"
+author = "Danila Bredikhin"
+author-email = "danila.bredikhin@embl.de"
+home-page = "https://github.com/gtca/mofax"
