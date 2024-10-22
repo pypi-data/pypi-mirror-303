@@ -1,0 +1,101 @@
+Metadata-Version: 2.1
+Name: lume-py
+Version: 0.1.32
+Summary: An SDK to connect to the Lume API
+License: MIT
+Author: Aryan Panda
+Author-email: aryan@lume.ai
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: httpx (>=0.27.0,<0.28.0)
+Requires-Dist: pydantic (>=2.8.2,<3.0.0)
+Requires-Dist: pydantic_settings (>=2.4.0,<3.0.0)
+Project-URL: repository, https://github.com/Lume-ai/lume_py
+Description-Content-Type: text/markdown
+
+<p align="center">
+  <img src="https://app.lume.ai/assets/logo-256.png" width="300px">
+</p>
+<p align="center">
+  📚
+  <a href="https://docs.lume.ai/">Documentation</a>
+  &nbsp;
+  •
+  &nbsp;
+  🖥️
+  <a href="https://app.lume.ai/">Application</a>
+  &nbsp;
+  •
+  &nbsp;
+  🏠
+  <a href="https://www.lume.ai/">Home</a>
+</p>
+<p align="center">
+  <img src="https://icon2.cleanpng.com/20190623/fpb/kisspng-python-computer-icons-programming-language-executa-1713885557346.webp" width="64px">
+</p>
+
+
+# Lume Python SDK (`lume_py`)
+
+## Overview
+
+`lume_py` is a Python SDK designed to facilitate seamless interaction with the Lume API. It provides an intuitive and straightforward interface for developers to integrate Lume's services into their Python applications, enabling efficient access to Lume's powerful features.
+
+## Features
+
+- **Easy API Integration:** Quickly connect to and interact with the Lume API.
+- **Asynchronous Support:** Built on top of `httpx`, offering asynchronous capabilities for better performance.
+- **Pydantic Integration:** Utilizes `Pydantic` for data validation and settings management.
+- **Extensible:** Modular design allows for easy customization and extension.
+
+## Installation
+
+To install the `lume_py` SDK, use the following pip command:
+
+```bash
+pip install lume-py
+
+
+```
+
+## Quickstart
+
+Retrieve your `source_data` and `target_schema`.
+
+```python
+target_schema = {
+    "type": "object",
+    "properties": {
+        "f_name": {
+            "type": "string",
+            "description": "The first name of the user",
+        },
+        "l_name": {
+            "type": "string",
+            "description": "The last name of the user",
+        },
+    },
+    "required": ["f_name", "l_name"],
+}
+
+source_data = [
+    {"first_name": "John", "last_name": "Doe"},
+    {"first_name": "Jane", "last_name": "Smith"},
+]
+```
+
+
+## Status
+
+The Lume Python SDK is currently in beta. 
+Please reach out to support if you have any questions, encounter any bugs, or have any feature requests.
+
+
+## Additional Resources
+
+For detailed information on creating pipelines, running jobs, and managing other workflows, please refer to the `examples` folder.
+
+
+
