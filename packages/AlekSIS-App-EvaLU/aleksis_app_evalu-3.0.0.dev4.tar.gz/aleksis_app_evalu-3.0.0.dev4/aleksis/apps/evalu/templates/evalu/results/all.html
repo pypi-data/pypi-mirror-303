@@ -1,0 +1,46 @@
+{# -*- engine:django -*- #}
+
+{% extends 'core/base.html' %}
+
+{% load i18n static %}
+
+{% block browser_title %}
+  {% blocktrans %}Evaluation Results{% endblocktrans %}
+{% endblock %}
+{% block page_title %}
+  <a class="btn waves-effect waves-light right"
+     href="{% url 'evaluation_results_as_pdf' object.pk %}">{% trans 'Export results as PDF' %}</a>
+  {% blocktrans with phase=object.phase.name person=object.person %}Evaluation Results of {{ person }} for {{ phase }}
+  {% endblocktrans %}
+{% endblock %}
+{% block extra_head %}
+
+{% endblock %}
+{% block content %}
+  {{ results|json_script:'results-data' }}
+
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        {% for group in groups %}
+          <li class="tab">
+            <a href="#group-tab-{{ group.id }}">{{ group.group_name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% for group, results in results %}
+      <div id="group-tab-{{ group.id }}" class="col s12">
+      {% include "evalu/results/partial_group.html" with group=group results=results %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <script src="{% static 'js/helper.js' %}"></script>
+  <script src="{% static 'chart.js/dist/chart.umd.js' %}"></script>
+  <script>
+      const themeColor = '{{ SITE_PREFERENCES.theme__primary }}'
+      const themeSecondaryColor = '{{ SITE_PREFERENCES.theme__secondary }}'
+  </script>
+  <script src="{% static 'js/evalu/results.js' %}"></script>
+{% endblock %}

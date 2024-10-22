@@ -1,0 +1,38 @@
+{# -*- engine:django -*- #}
+
+{% extends "core/base_print.html" %}
+
+{% load i18n static %}
+
+{% block browser_title %}{% blocktrans %}Evaluation Results{% endblocktrans %}{% endblock %}
+{% block page_title %}
+  {% blocktrans %}
+    Evaluation Results
+  {% endblocktrans %}
+{% endblock %}
+{% block extra_head %}
+  <script src="{% url "javascript-catalog" %}?locale={{ LANGUAGE_CODE }}" type="text/javascript"></script>
+{% endblock %}
+{% block content %}
+  {{ results|json_script:"results-data" }}
+
+  <h4>
+    {% blocktrans with phase=object.phase.name person=object.person %}
+      Evaluation Results of {{ person }} for {{ phase }}
+    {% endblocktrans %}
+  </h4>
+  {% for group, results in results %}
+    {% include "evalu/results/partial_pdf_group.html" with group=group results=results %}
+    {% if not forloop.last %}
+      <div class="page-break">&nbsp;</div>
+    {% endif %}
+  {% endfor %}
+
+  <script src="{% static "js/helper.js" %}"></script>
+  <script src="{% static "chart.js/dist/chart.umd.js" %}"></script>
+  <script>
+      const themeColor = "{{ SITE_PREFERENCES.theme__primary }}";
+      const themeSecondaryColor = "{{ SITE_PREFERENCES.theme__secondary }}";
+  </script>
+  <script src="{% static "js/evalu/results.js" %}"></script>
+{% endblock %}

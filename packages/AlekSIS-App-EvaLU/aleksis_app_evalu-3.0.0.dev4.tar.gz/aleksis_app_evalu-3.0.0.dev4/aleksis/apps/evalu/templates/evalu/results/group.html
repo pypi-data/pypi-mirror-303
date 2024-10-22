@@ -1,0 +1,30 @@
+{# -*- engine:django -*- #}
+
+{% extends 'core/base.html' %}
+
+{% load i18n static %}
+
+{% block browser_title %}
+  {% blocktrans %}Evaluation Results{% endblocktrans %}
+{% endblock %}
+{% block page_title %}
+  <a class="btn waves-effect waves-light right"
+     href="{% url 'evaluation_results_for_group_as_pdf' object.pk %}">{% trans 'Export results as PDF' %}</a>
+  {% blocktrans with group=object.group_name person=object.registration.person %}Evaluation Results of {{ person }} for
+    {{ group }}
+  {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  {{ results|json_script:'results-data' }}
+
+  {% include "evalu/results/partial_group.html" with group=results.0.0 results=results.0.1 %}
+
+  <script src="{% static 'js/helper.js' %}"></script>
+  <script src="{% static 'chart.js/dist/chart.umd.js' %}"></script>
+  <script>
+      const themeColor = '{{ SITE_PREFERENCES.theme__primary }}'
+      const themeSecondaryColor = '{{ SITE_PREFERENCES.theme__secondary }}'
+  </script>
+  <script src="{% static 'js/evalu/results.js' %}"></script>
+{% endblock %}
