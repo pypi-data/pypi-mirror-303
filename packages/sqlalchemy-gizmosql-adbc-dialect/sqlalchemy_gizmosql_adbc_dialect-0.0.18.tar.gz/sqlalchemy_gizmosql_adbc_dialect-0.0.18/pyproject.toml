@@ -1,0 +1,72 @@
+[build-system]
+requires      = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["*"]  # package names should match these glob patterns (["*"] by default)
+
+[project]
+name = "sqlalchemy-gizmosql-adbc-dialect"
+version = "0.0.18"
+description = "A SQLAlchemy dialect for connecting to a [GizmoSQL](https://github.com/gizmodata/GizmoSQL) server with ADBC"
+readme = "README.md"
+authors = [{ name = "Philip Moore", email = "prmoore77@hotmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["sqlalchemy", "flight-sql", "gizmosql", "adbc", "dialect"]
+dependencies = [
+    "sqlalchemy==2.0.*",
+    "adbc-driver-flightsql==1.2.*",
+    "adbc-driver-manager==1.2.*",
+    "pyarrow==17.0.*",
+    "psycopg2==2.9.*",
+    "importlib-metadata==8.0.*"
+]
+requires-python = ">=3.9"
+
+[project.entry-points."sqlalchemy.dialects"]
+gizmosql = "sqlalchemy_gizmosql_adbc_dialect:GizmoSQLDialect"
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-snapshot",
+  "pytest-mock",
+  "filelock",
+  "duckdb",
+  "dask",
+  "distributed",
+  "pins[gcs]",
+  "docker"
+]
+
+dev = ["bumpver", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/gizmodata/sqlalchemy-gizmosql-adbc-dialect"
+
+[project.scripts]
+
+[tool.bumpver]
+current_version = "0.0.18"
+version_pattern = "MAJOR.MINOR.PATCH[PYTAGNUM]"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    '^version = "{version}"$',
+    '^current_version = "{version}"$',
+]
+"src/sqlalchemy_gizmosql_adbc_dialect/__init__.py" = [
+    '^__version__ = "{version}"$',
+]
