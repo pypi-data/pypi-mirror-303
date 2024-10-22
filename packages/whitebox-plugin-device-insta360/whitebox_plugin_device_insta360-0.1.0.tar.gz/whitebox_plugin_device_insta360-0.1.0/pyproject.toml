@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "whitebox-plugin-device-insta360"
+version = "0.1.0"
+description = "A plugin for whitebox to interface with Insta360 cameras"
+authors = ["Milos <hello@klined.org>", "WhiteBox <contact@whitebox.aero>"]
+license = "GNU Affero General Public License v3"
+readme = "README.md"
+include = [
+    { path = "whitebox_test_plugin_device_insta360", format = "wheel" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.5"
+coverage = "^7.6.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
