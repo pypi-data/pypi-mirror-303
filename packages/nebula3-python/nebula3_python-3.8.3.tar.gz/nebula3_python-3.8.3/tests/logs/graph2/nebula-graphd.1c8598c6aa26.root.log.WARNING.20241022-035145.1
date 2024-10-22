@@ -1,0 +1,16 @@
+Log file created at: 2024/10/22 03:51:45
+Running on machine: 1c8598c6aa26
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20241022 03:51:45.752244     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/32.000MiB
+E20241022 03:52:37.854497    19 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20241022 03:52:37.869506    20 Serializer.h:43] Thrift serialization is only defined for structs and unions, not containers thereof. Attemping to serialize a value of type `nebula::Value`.
+E20241022 03:52:42.909615    22 QueryInstance.cpp:151] SemanticError: `invalidTag': Unknown tag, query: MATCH (v:invalidTag {name: "Bob"}) RETURN v
+E20241022 03:53:11.992024    19 QueryInstance.cpp:151] SyntaxError: Variable definition conflicts with a parameter near `$p1', query: $p1=go from "Bob" over like yield like._dst;
+E20241022 03:53:11.992635    22 QueryInstance.cpp:151] SyntaxError: Parameter is not supported in vid near `$p3', query: go from $p3 over like yield like._dst;
+E20241022 03:53:11.993227    21 QueryInstance.cpp:151] SyntaxError: Parameter is not supported in vid near `$p3', query: fetch prop on person $p3 yield vertex as v
+E20241022 03:53:11.993801    21 QueryInstance.cpp:151] SyntaxError: Parameter is not supported in vid near `$p3', query: find all path from $p3 to "Yao Ming" over like yield path as p
+E20241022 03:53:11.994371    21 QueryInstance.cpp:151] SyntaxError: Parameter is not supported in vid near `$p3', query: get subgraph from $p3 both like yield vertices as v
+E20241022 03:53:11.994978    21 QueryInstance.cpp:151] SemanticError: Limit/Sample element type must be Integer., query: go 3 steps from "Bob" over like yield like._dst limit [1,$p1,3]
+E20241022 03:53:11.996913    20 QueryInstance.cpp:151] SyntaxError: Variable definition conflicts with a parameter near `$p1', query: $p1=go from "Bob" over like yield like._dst;
+E20241022 03:53:11.997660    20 QueryInstance.cpp:151] SyntaxError: Parameter is not supported in vid near `$p3', query: go from $p3 over like yield like._dst;

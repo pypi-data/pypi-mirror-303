@@ -1,0 +1,34 @@
+Log file created at: 2024/10/22 03:54:29
+Running on machine: fdfd0ba5ea70
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20241022 03:54:29.642370     1 MetaDaemon.cpp:137] localhost = "172.28.1.2":9559
+I20241022 03:54:29.644877     1 NebulaStore.cpp:48] Start the raft service...
+I20241022 03:54:29.645298     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20241022 03:54:29.719617     1 RaftexService.cpp:46] Start raft service on 9560
+I20241022 03:54:29.719717     1 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+I20241022 03:54:29.719759     1 NebulaStore.cpp:90] Scan path "/data/meta/nebula/0"
+I20241022 03:54:29.719779     1 NebulaStore.cpp:292] Init data from partManager for "172.28.1.2":9559
+I20241022 03:54:29.719796     1 NebulaStore.cpp:417] Create data space 0
+I20241022 03:54:29.754125    75 RocksEngine.cpp:107] open rocksdb on /data/meta/nebula/0/data
+I20241022 03:54:29.773247     1 NebulaStore.cpp:480] Space 0, part 0 has been added, asLearner 0
+I20241022 03:54:29.773295     1 NebulaStore.cpp:75] Register handler...
+I20241022 03:54:29.773308     1 MetaDaemonInit.cpp:106] Waiting for the leader elected...
+I20241022 03:54:29.773319     1 MetaDaemonInit.cpp:118] Leader has not been elected, sleep 1s
+I20241022 03:54:30.773470     1 MetaDaemonInit.cpp:153] Get meta version is 4
+I20241022 03:54:30.773525     1 MetaDaemonInit.cpp:169] Nebula store init succeeded, clusterId 8791577425119588781
+I20241022 03:54:30.773535     1 MetaDaemon.cpp:150] Start http service
+I20241022 03:54:30.773837     1 MetaDaemonInit.cpp:226] Starting Meta HTTP Service
+I20241022 03:54:30.775022    98 WebService.cpp:124] Web service started on HTTP[19559]
+I20241022 03:54:30.775051     1 MetaDaemonInit.cpp:192] Check root user
+I20241022 03:54:30.775103     1 RootUserMan.h:35] God user exists
+I20241022 03:54:30.777629     1 MetaDaemon.cpp:193] The meta daemon start on "172.28.1.2":9559
+I20241022 03:54:30.777652     1 JobManager.cpp:88] Not leader, skip reading remaining jobs
+I20241022 03:54:30.777714     1 JobManager.cpp:64] JobManager initialized
+I20241022 03:54:30.777719   104 JobManager.cpp:150] JobManager::scheduleThread enter
+I20241022 03:54:31.304741   114 HBProcessor.cpp:33] Receive heartbeat from "172.28.2.3":9779, role = STORAGE
+I20241022 03:54:31.304771   114 HBProcessor.cpp:41] Machine "172.28.2.3":9779 is not registered
+I20241022 03:54:31.422470   114 HBProcessor.cpp:33] Receive heartbeat from "172.28.2.1":9779, role = STORAGE
+I20241022 03:54:31.422497   114 HBProcessor.cpp:41] Machine "172.28.2.1":9779 is not registered
+I20241022 03:54:31.507375   114 HBProcessor.cpp:33] Receive heartbeat from "172.28.2.2":9779, role = STORAGE
+I20241022 03:54:31.507400   114 HBProcessor.cpp:41] Machine "172.28.2.2":9779 is not registered
