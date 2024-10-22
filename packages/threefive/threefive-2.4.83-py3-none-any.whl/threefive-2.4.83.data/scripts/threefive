@@ -1,0 +1,293 @@
+#!python
+
+"""
+threefive command line SCTE35 decoder.
+
+"""
+
+
+import sys
+from new_reader import reader
+from threefive import Cue, Stream, print2, decode, version
+from threefive.sixfix import sixfix
+from threefive.superkabuki import SuperKabuki
+
+REV = "\033[7;1m"
+NORM = "\033[27m\033[0m"
+NORM = "\033[0m"
+BLUE = "\033[36;1;51m"
+
+B = "\033[7;1m"
+U="\033[m"
+mapped = {
+    "base64": "encode",
+    "bytes": "get_bytes",
+    "hex": "encode2hex",
+    "json": "get_json",
+    "int": "encode2int",
+    "xml": "xml",
+}
+
+
+def xml_out(cue):
+    """
+    xml_out prints cue as xml
+    """
+    print2(cue.xml())
+
+
+class SupaStream(Stream):
+    """
+    SupaStream is subclass of Stream used
+    to print raw SCTE-35 packets.
+    """
+
+    def _parse_scte35(self, pkt, pid):
+        print2(pkt)
+        super()._parse_scte35(pkt, pid)
+
+
+def mk_sidecar(cue):
+    """
+    mk_sidecar generates a sidecar file with the SCTE-35 Cues
+    """
+    pts = 0.0
+    with open("sidecar.txt", "a") as sidecar:
+        cue.show()
+        if cue.packet_data.pts:
+            pts = cue.packet_data.pts
+        data = f"{pts},{cue.encode()}\n"
+        sidecar.write(data)
+
+
+HELP = f"""
+{B}   decode    {U}
+
+    {BLUE}base64: {NORM}\tthreefive '/DAWAAAAAAAAAP/wBQb+AKmKxwAACzuu2Q=='
+    {BLUE}hex: {NORM}\tthreefive '0xfc301600000000000000fff00506fe00a98ac700000b3baed9'
+    {BLUE}files: {NORM}\tthreefive myvideo.ts
+    {BLUE}stdin: {NORM}\tcat myvideo.ts | threefive
+    {BLUE}http(s): {NORM}\tthreefive https://futzu.com/xaa.ts
+    {BLUE}udp: {NORM}\tthreefive udp://127.0.0.1:3535
+    {BLUE}multicast:{NORM}threefive udp://@235.35.3.5:3535
+
+{B}    encode   {U}{BLUE}\tLoad JSON, XML, Base64 or Hex and encode to JSON,XML,Base64,Hex,Int or Bytes:{NORM}
+
+    {BLUE}Base64 to bytes:{NORM}\tthreefive {B} encode {U} {B} bytes {U}  '/DAlAAAAAAAAAP/wFAUAAAAOf+/+FOvVwP4ApMuAAA4AAAAAzBon0A=='
+    {BLUE}Base64 to hex:{NORM}\tthreefive {B} encode {U} {B} hex {U}  '/DBCAAGRZOeYAP/wBQb/ijB9aAAsAipDVUVJAAAAAX//AABSfTABFG1zbmJjX0VQMDE3MTc0MzEyNzg2NgEBAABDk4yN'
+    {BLUE}Base64 to xml:{NORM}\tthreefive {B} encode {U} {B} xml {U}  '/DAxAAGRZOeYAP/wFAUAAAAMf+//kCYroP4AUmXAAAAAAAAMAQpDVUVJUJ8xMjEq9sE7YA=='
+    {BLUE}Hex to int:{NORM}   \tthreefive {B} encode {U} {B} int {U} 0xfc302500000000000000fff014050000000e7feffe14ebd5c0fe00a4cb80000e00000000cc1a27d0
+    {BLUE}JSON to base64:{NORM}\tthreefive {B} encode {U} < json.json
+    {BLUE}JSON to xml:{NORM}\tthreefive {B} encode {U} {B} xml {U} < json.json
+    {BLUE}xml to hex:{NORM}   \tcat xml.xml | threefive {B} encode {U} {B} hex {U}
+
+{B}    inject   {U}{NORM}{BLUE}\tInject an mpegts stream with a SCTE-35 sidecar file at pid:{NORM}  threefive {B} inject {U} video.ts {B} with {U} sidecar.txt {B} at {U} 333
+
+{B}    packets  {U}{NORM}{BLUE}\tPrint raw SCTE-35 packets from multicast mpegts video:{NORM}  threefive {B} packets {U} udp://@235.35.3.5:3535
+
+{B}    proxy    {U}{NORM}{BLUE}\tParse a https stream and write raw video to stdout:{NORM}  threefive {B} proxy {U} https://example.com/video.ts
+
+{B}    pts      {U}{NORM}{BLUE}\tPrint PTS from mpegts video:{NORM}  threefive {B} pts {U} video.ts
+
+{B}    show     {U}{NORM}{BLUE}\tProbe mpegts video:{NORM}  threefive {B} show {U} video.ts
+
+{B}    sidecar  {U}{NORM}{BLUE}\tParse a stream, write pts,write SCTE-35 Cues to sidecar.txt:{NORM}  threefive {B} sidecar {U} https://example.com/video.ts
+
+{B}    sixfix   {U}{NORM}{BLUE}\tFix SCTE-35 data mangled by ffmpeg:{NORM}  threefive {B} sixfix {U} video.ts
+
+{B}    xml      {U}{NORM}{BLUE}\tParse an mpegts stream and output xml: {NORM} threefive {B} xml {U} video.ts
+
+{B}    version  {U}{NORM}{BLUE}\tShow version:{NORM} threefive {B} version {U}
+
+{B}    help     {U}{NORM} {BLUE}\tHelp:{NORM}  threefive {B} help {U}
+"""
+
+
+def print_help():
+    """
+    print_help checks sys.argv for the word help
+    and displays the help if found
+    """
+    print2(HELP)
+    sys.exit()
+
+
+def print_version():
+    """
+    version_chk checks for the version keyword.
+
+    """
+    print2(f"{version}")
+    sys.exit()
+
+
+def json_load():
+    """
+    json_load is used by encode
+    """
+    cmdlist = list(mapped.keys()) + ["encode"]
+    json = False
+    arglist = [arg for arg in sys.argv[1:] if arg not in cmdlist]
+    if not arglist:
+        with reader(sys.stdin.buffer) as stuff:
+            json = stuff.read().decode()
+            arglist.append(json)
+    for that in arglist:
+        try:
+            cue = Cue()
+            cue.load(that)
+        except:
+            try:
+                cue = Cue(that)
+                cue.decode()
+            except:
+                print2("threefive accepts json, xml, base64, or hex as input")
+                return False
+        cue.encode()
+        for k, v in mapped.items():
+            if k in sys.argv:
+                method = getattr(cue, v)
+                print2(method())
+                sys.exit()
+        print(cue.encode())
+        sys.exit()
+
+
+def superkabuki():
+    args = {}
+    if "inject" in sys.argv:
+        args["input"] = sys.argv[sys.argv.index("inject") + 1]
+        if "with" in sys.argv:
+            args["sidecar"] = sys.argv[sys.argv.index("with") + 1]
+            if "at" in sys.argv:
+                args["scte35_pid"] = sys.argv[sys.argv.index("at") + 1]
+                supak = SuperKabuki()
+                supak.apply_args(args)
+                supak.encode()
+                return True
+    print("threefive inject {infile} with {sidecar_file} at {pid}")
+    return False
+
+
+print_map = {
+    "help": print_help,
+    "version": print_version,
+    "encode": json_load,
+    "inject": superkabuki,
+}
+
+
+def no_op(cue):
+    """
+    no_op is just a dummy func to pass to Stream.decode()
+    to suppress output.
+    """
+    return cue
+
+
+def packet_chk(this):
+    """
+    packet_chk checks for the packet keyword
+    and displays SCTE-35 packets if present.
+    """
+    supa = SupaStream(this)
+    supa.decode()
+
+
+def proxy_chk(this):
+    """
+    proxy_chk checks for the proxy keyword
+    and proxies the stream to stdout if present.
+    proxy_chk also writes pts,cue pairs to sidecar.txt
+    """
+    strm = Stream(this)
+    strm.proxy(func=mk_sidecar)
+
+
+def pts_chk(this):
+    """
+    pts_chk is used to display PTS.
+    """
+    strm = Stream(this)
+    strm.show_pts()
+
+
+def show_chk(this):
+    """
+    show_chk checks for the show keyword
+    and displays the streams if present.
+    """
+    strm = Stream(this)
+    strm.show()
+
+
+def sidecar_chk(this):
+    """
+    sidecar_chk checks for the sidecar keyword and
+    generates a sidecar file if present.
+    """
+    strm = Stream(this)
+    strm.decode(func=mk_sidecar)
+
+
+def to_xml(this):
+    """
+    to_xml prints cues as xml instead of json.
+    """
+    try:
+        # Mpegts Video
+        strm = Stream(this)
+        strm.decode(func=xml_out)
+        return True
+
+    except:
+        try:
+            cue = Cue(this)
+            cue.decode()
+            print2(cue.xml())
+            return True
+        except:
+            return False
+
+
+func_map = {
+    "pts": pts_chk,
+    "show": show_chk,
+    "packets": packet_chk,
+    "proxy": proxy_chk,
+    "sidecar": sidecar_chk,
+    "xml": to_xml,
+    "sixfix": sixfix,
+}
+
+
+def chk_print_map():
+    """
+    chk_print_map checks for print_map.keys() in sys.argv
+    """
+    for k, v in print_map.items():
+        if k in sys.argv:
+            v()
+            sys.exit()
+
+
+def chk_func_map():
+    """
+    chk_func_map checks for func_map.keys() in sys.argv
+    """
+    for k, v in func_map.items():
+        if k in sys.argv:
+            args = [arg for arg in sys.argv[1:] if arg not in func_map]
+            for mo in args:
+                v(mo)
+            sys.exit()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        chk_print_map()
+        chk_func_map()
+        for arg in sys.argv[1:]:
+            decode(arg)
+    else:
+        decode(sys.stdin.buffer)
