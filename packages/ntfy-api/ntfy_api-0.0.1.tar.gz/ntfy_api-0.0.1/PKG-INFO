@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: ntfy-api
+Version: 0.0.1
+Summary: A Python wrapper around the ntfy API.
+Author-email: Tanner Corcoran <tannerbcorcoran@gmail.com>
+Maintainer-email: Tanner Corcoran <tannerbcorcoran@gmail.com>
+License: Apache 2.0
+Project-URL: Homepage, https://github.com/tanrbobanr/ntfy-api
+Project-URL: Documentation, https://github.com/tanrbobanr/ntfy-api/blob/main/README.md
+Project-URL: Changelog, https://github.com/tanrbobanr/ntfy-api/blob/main/CHANGELOG.md
+Project-URL: License, https://github.com/tanrbobanr/ntfy-api/blob/main/LICENSE
+Project-URL: Source, https://github.com/tanrbobanr/ntfy-api
+Project-URL: Bug Tracker, https://github.com/tanrbobanr/ntfy-api/issues
+Keywords: ntfy,nfty API
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Typing :: Typed
+Classifier: Topic :: Utilities
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing_extensions>=4.5.0; python_version < "3.12"
+
+A Python wrapper around the [ntfy](https://ntfy.sh) API.
+
+# Install
+`$ pip install ntfy-api`
+
+# Usage
+This package is in its early stages, and currently only supports sending
+messages:
+```py
+from ntfy_api import *
+
+
+# create NtfyPublisher instance
+ntfy_pub = NtfyPublisher("https://ntfy.example.com", basic=..., bearer=...)
+
+# create message
+msg = Message(
+    topic="my-topic",
+    message="**Hello World**",
+    title="Super Cool Message",
+    priority=Priority.urgent, # or just `5`
+    tags=[Tag._100], # or just `["100"]`
+    markdown=True,
+    delay="10m",
+    actions=[
+        ViewAction(label="GOOGLE", url="https://google.com"),
+        BroadcastAction(
+            label="Take picture",
+            extras={"cmd": "pic", "camera": "front"}
+        )
+    ],
+    click="https://youtube.com",
+    attach="https://docs.ntfy.sh/static/img/ntfy.png",
+    filename="ntfy.png",
+    icon="https://ntfy.sh/_next/static/media/logo.077f6a13.svg"
+)
+
+# send message
+ntfy_pub.publish(msg)
+
+# OR
+
+ntfy_pub << msg
+```
