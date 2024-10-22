@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "sqlmemo"
+version = "0.3.0"
+description = "Memoizing SQL-backed Computation Cache"
+authors = ["Tomas Gavenciak <gavento@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "^2.0.30"
+dill = { version = "^0.3.9", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+pytest = "^8.3.2"
+isort = "^5.13.2"
+pre-commit = "^4.0.1"
+pytest-cov = "^5.0.0"
+
+[tool.poetry.extras]
+dill = ["dill"]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.bandit]
+skips = [
+    "B101",  # Asserts are ok
+    "B403",  # Importing pickle and dill is ok
+    "B301",  # Using pickle and dill is ok
+]
