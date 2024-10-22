@@ -1,0 +1,1 @@
+from libname.main import run
