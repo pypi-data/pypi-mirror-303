@@ -1,0 +1,129 @@
+Metadata-Version: 2.1
+Name: pyMicroeconomics
+Version: 0.0.2
+Summary: Functions for microeconomic analysis
+Author-email: Josh Hilton <jhilton@wayne.edu>
+Requires-Python: >=3.8.1
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: sympy>=1.13
+Requires-Dist: numpy>=2.1.2
+Requires-Dist: scipy>=1.14
+Requires-Dist: IPython>=8.28
+Requires-Dist: matplotlib>=3.9
+Requires-Dist: ipywidgets>=8.1.5
+Requires-Dist: pyspark>=3.0.0 ; extra == "spark"
+Requires-Dist: bandit[toml]==1.7.5 ; extra == "test"
+Requires-Dist: black==23.3.0 ; extra == "test"
+Requires-Dist: check-manifest==0.49 ; extra == "test"
+Requires-Dist: flake8-bugbear==23.5.9 ; extra == "test"
+Requires-Dist: flake8-docstrings ; extra == "test"
+Requires-Dist: flake8-formatter_junit_xml ; extra == "test"
+Requires-Dist: flake8 ; extra == "test"
+Requires-Dist: flake8-pyproject ; extra == "test"
+Requires-Dist: pre-commit==3.3.1 ; extra == "test"
+Requires-Dist: pylint==2.17.4 ; extra == "test"
+Requires-Dist: pylint_junit ; extra == "test"
+Requires-Dist: pytest-cov==4.0.0 ; extra == "test"
+Requires-Dist: pytest-mock<3.10.1 ; extra == "test"
+Requires-Dist: pytest-runner ; extra == "test"
+Requires-Dist: pytest==7.3.1 ; extra == "test"
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == "test"
+Requires-Dist: shellcheck-py==0.9.0.2 ; extra == "test"
+Project-URL: Documentation, https://https://github.com/joshhilton/pyMicroeconomics/tree/main#readme
+Project-URL: Source, https://https://github.com/joshhilton/pyMicroeconomics
+Project-URL: Tracker, https://https://github.com/joshhilton/pyMicroeconomics/issues
+Provides-Extra: spark
+Provides-Extra: test
+
+# Market Equilibrium Analysis
+
+pyMicroeconomics is package for symbolic analysis and visualization of market equilibrium conditions with various supply and demand curve specifications.
+
+## Overview
+
+This package provides tools for:
+- Defining different types of supply and demand curves (linear, power, exponential, quadratic)
+- Calculating market equilibrium points
+- Computing consumer and producer surplus
+- Visualizing market equilibrium with interactive plots
+
+## Installation
+
+```bash
+pip install pyMicroeconomics
+```
+
+## Requirements
+
+- Python 3.x
+- SymPy
+- NumPy
+- Matplotlib
+- IPython
+- ipywidgets
+- SciPy
+
+## Usage Examples
+
+### Basic Market Equilibrium Analysis
+
+```python
+from market_equilibrium import linear_demand, linear_supply, market_equilibrium
+
+# Create demand and supply equations
+demand = linear_demand()
+supply = linear_supply(c_param=20, d_param=3)   # q = 20 + 3p
+
+# Calculate equilibrium
+results = market_equilibrium(demand, supply)
+
+# Display results
+from market_equilibrium import display_equilibrium_results
+display_equilibrium_results(results)
+```
+
+### Interactive Plotting
+
+```python
+from market_equilibrium import plot_market_equilibrium
+
+# Create interactive plot with adjustable parameters
+plot_market_equilibrium(results)
+```
+
+## Supported Curve Types
+
+### Demand Curves
+- Linear: $q = a - b p$
+- Power: $q = exp(a)*p^b$
+- Exponential: $q = exp(ap + b)$
+- Quadratic: $q = a - b p^2$
+
+### Supply Curves
+- Linear: $q = c + d p$
+- Power: $q = exp(c) * p^d$
+- Exponential: $q = exp(c*p + d)$
+- Quadratic: $q = c + d p^2$
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built using SymPy
+- Visualization powered by Matplotlib and ipywidgets
+
+
