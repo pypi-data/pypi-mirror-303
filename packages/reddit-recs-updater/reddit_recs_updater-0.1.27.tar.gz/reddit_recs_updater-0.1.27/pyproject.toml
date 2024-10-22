@@ -1,0 +1,41 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "reddit_recs_updater"
+version = "0.1.27"
+description = "Modules to get recs and update db"
+readme = "README.md"
+authors = ["Joo <joo@redditrecs.com>"]
+packages = [
+  { include = "updater" }
+]
+include = [
+  "updater/llm_prompts/*.txt"
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "2.8.2"
+asyncio = "*"
+openai = "*"
+groq = "*"
+python-dotenv = "1.0.1"
+praw = "7.7.1"
+
+prawcore = "2.4.0"
+asyncpraw = "7.7.1"
+asyncprawcore = "2.4.0"
+requests = "2.32.3"
+beautifulsoup4 = "4.12.3"
+six = "1.16.0"
+replit = "^4.0.0"
+sse-starlette = "^2.1.3"
+supabase = "^2.7.2"
+aiohttp = "^3.10.10"
+instructor = "^1.6.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"

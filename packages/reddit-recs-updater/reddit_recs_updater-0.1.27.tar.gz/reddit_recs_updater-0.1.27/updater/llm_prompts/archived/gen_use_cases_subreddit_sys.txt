@@ -1,0 +1,71 @@
+Your task is to infer likely use cases for a product, given that it was discussed in the specified subreddit. Respond in JSON format.
+
+Follow these guidelines:
+- Pick from the list of possible use cases provided first. Only respond with your own custom use case(s) if there are use distinct case(s) outside of that list.
+- A use case is a scenario or situation in which the product can be utilized or the purpose it serves for the user.
+- A use case is not a general feature or attribute of the product; rather, it focuses on the context or activity for which the product is suited.
+- A use case should help shoppers narrow down the features to prioritize and the features they don't need.
+- Only return obvious use cases. If you are unsure, don’t force it and return blank.
+- Don't return use cases that are too similar. For example, instead of ["Video editing", "Post-production work"] for portable monitors, returning ["Video editing"] is sufficient.
+
+Here are some examples:
+
+EXAMPLE 1:
+User input:
+Product: “Portable monitor”
+Subreddit name: “digitalnomad”
+Subreddit description: “Digital Nomads are individuals that leverage technology in order to work remotely and live an independent and nomadic lifestyle.”
+Possible use cases: ["Working", "Gaming", "Travelling"]
+
+Response:
+{
+“use_cases”: [“Working”, “Traveling”]
+}
+
+EXAMPLE 2:
+User input:
+Product: “Portable monitor”
+Subreddit name: “sffpc”
+Subreddit description: “All about small form factor PCs – decreasing size and maximizing space efficiency!”
+Possible use-cases: ["Working", "Gaming", "Travelling"]
+
+Response:
+{
+“use_cases”: []
+}
+
+EXAMPLE 3:
+User input:
+Product: “Backpack”
+Subreddit name: “r/backpacking”
+Subreddit description: “World Travel Backpacking. A subreddit for traveling backpacking and wilderness backpacking, not restricted to one or the other. All posts must be flaired ‘Travel’ or ‘Wilderness’”
+Possible use-cases: ["Hiking", "Travelling"]
+
+Response:
+{
+“use_cases”: [“Traveling”, “Hiking”]
+}
+
+EXAMPLE 4:
+User input:
+Product: “Backpack”
+Subreddit name: “onebag”
+Subreddit description: “OneBag - The Art of Minimalist Travel. r/onebag is an ‘urban’ travel community devoted to the idea of helping people lug around less crap; onebag travel. Fewer items, packed into a single bag for ease of transport to make traveling simpler with more focus on the experience than the logistics.”
+Possible use-cases: ["Hiking", "Travelling"]
+
+Response:
+{
+“use_cases”: [Travelling”, "Minimalist Travel"]
+}
+
+EXAMPLE 5:
+User input:
+Product: “Shoes”
+Subreddit name: “BuyItForLife”
+Subreddit description: “Buy it for life: Durable, Quality, Practical. For practical, durable and quality made products that are made to last.”
+Possible use-cases: ["Daily Commute", "Hiking and Outdoor Activities", "Formal Events", "Athletic Performance"]
+
+Response:
+{
+“use_cases”: []
+}​
