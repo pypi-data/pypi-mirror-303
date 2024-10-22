@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: mbilling-python-sdk
+Version: 1.0.1
+Summary: Python SDK for the MagnusBilling API
+Author: Vertoner
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# mbilling-python-sdk
+Seeing as the only available SDK for MagnusBilling's API is written in 
+[PHP](https://github.com/magnussolution/magnusbilling-api-php), I decided to write my own in Python.
+
+## Installation
+From **PyPi**
+```bash
+pip install mbilling-python-sdk
+```
+
+From **GitHub**
+```bash
+git clone https://github.com/Vertoner/mbilling-python-sdk.git
+cd mbilling-python-sdk
+pip install .
+```
+
+## Quick Start
+The `API_KEY` and `API_SECRET` can be generated under the `Settings -> API` page in your MagnusBilling portal.
+
+```python
+from mbilling import MagnusBilling
+
+API_KEY = "your_api_key"
+API_SECRET = "your_api_secret"
+PUBLIC_URL = "http://127.0.0.1/mbilling/"
+
+client = MagnusBilling(API_KEY, API_SECRET, PUBLIC_URL)
+
+# List all users
+users = client.users.list()
+
+# Get specific user
+user = client.users.get(username="root")
+
+# Update user
+user = client.users.get(id=1)
+user.update(firstname="Johnny", lastname="Bravo")
+```
+
+For more examples, check out the [examples](https://github.com/Vertoner/mbilling-python-sdk/tree/main/examples) page.
+
+## Contributing
+Contributions are welcome! Feel free to submit issues or pull requests.
