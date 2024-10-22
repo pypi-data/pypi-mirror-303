@@ -1,0 +1,26 @@
+indices:
+  hgnc_gene_family_index:
+    _target_: kazu.utils.link_index.DictionaryIndex
+    parser: ${ontologies.parsers.hgnc_gene_family_parser}
+    boolean_scorers: ${StringScorers.gene}
+parsers:
+  hgnc_gene_family_parser:
+    _target_: kazu.ontology_preprocessing.parsers.HGNCGeneFamilyParser
+    name: HGNC_GENE_FAMILY
+    in_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/gene_family.tsv
+    data_origin: '2024-06-25T17:17:54.202679'
+    string_scorer: ${SapbertStringSimilarityScorer}
+    synonym_generator: ${SynonymGeneration.gene}
+    entity_class: gene
+    curations_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/${.name}_curations.jsonl
+    global_actions: ${global_actions}
+    autocurator: ${autocurator.gene}
+    ontology_downloader:
+      _target_: kazu.ontology_preprocessing.downloads.SimpleOntologyDownloader
+      url: |
+        http://biomart.genenames.org/martservice/results?query=
+        <!DOCTYPE Query><Query client="biomartclient" processor="TSV" limit="-1" header="1">
+        <Dataset name="hgnc_family_mart" config="family_config">
+        <Attribute name="family__family_id_103"/><Attribute name="family__name_103"/>
+        <Attribute name="family__alias__alias_101"/><Attribute name="family__root_symbol_103"/><
+        /Dataset></Query>

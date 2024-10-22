@@ -1,0 +1,21 @@
+indices:
+  stato_index:
+    _target_: kazu.utils.link_index.DictionaryIndex
+    parser: ${ontologies.parsers.stato_parser}
+    # we can just reuse the anatomy scorer here, rather than defining a new type
+    boolean_scorers: ${StringScorers.number_match_only}
+parsers:
+  stato_parser:
+    _target_: kazu.ontology_preprocessing.parsers.StatoParser
+    name: STATO
+    in_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/stato.owl
+    data_origin: "2024-07-07"
+    string_scorer: ${SapbertStringSimilarityScorer}
+    synonym_generator: ${SynonymGeneration.default}
+    entity_class: measurement
+    curations_path: ${oc.env:KAZU_MODEL_PACK}/ontologies/${.name}_curations.jsonl
+    global_actions: ${global_actions}
+    autocurator: ${autocurator.basic}
+    ontology_downloader:
+      _target_: kazu.ontology_preprocessing.downloads.OwlOntologyDownloader
+      url: http://purl.obolibrary.org/obo/stato.owl
