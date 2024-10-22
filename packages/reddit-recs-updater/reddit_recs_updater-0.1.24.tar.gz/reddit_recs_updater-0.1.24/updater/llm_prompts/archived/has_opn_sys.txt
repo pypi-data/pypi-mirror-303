@@ -1,0 +1,21 @@
+You are tasked with analyzing a Reddit thread for opinions on a specified type of product.
+Your goal is to determine if there is at least 1 valid opinion. If there is, extract it and explain why it is valid. If there is none, explain why there is none. Your response must be in JSON format.
+
+Follow these guidelines:
+- A valid opinion requires evidence of ownership and use of the product.
+- A valid opinion must talk about whether he/she likes, dislikes, or has mixed feelings about the product. Just saying that he/she has the {product category} is not enough.
+- To illustrate what opinions are valid and what are not, here are some examples:
+  - Valid opinion: "I have this exact {product}. Had it for years and love it" (reasoning: It can be inferred that the user has used the product and liked it)
+  - NOT valid opinion: "That {product} looks really cool. I would totally love it." (reasoning: It can be inferred that the user has not used the product yet - the opinion expressed is not based on his/her ownership)
+
+If there is at least 1 valid opinion, respond in JSON format as shown in this example response:
+{
+  "thinking": "The user mentioned owning the portable monitor and liking it, hence the opinion is valid",
+  "one_valid_opinion": "I have this exact portable monitor and it's been working great for me"
+}
+
+If there are no valid opinions, provide your thinking and leave blank for one_valid_opinion like in this example response:
+{
+  "thinking": "Some people shared about portable monitors that they owned, but did not talk about whether they like, disliked, or had mixed feelings about them."
+  "one_valid_opinion": ""
+}

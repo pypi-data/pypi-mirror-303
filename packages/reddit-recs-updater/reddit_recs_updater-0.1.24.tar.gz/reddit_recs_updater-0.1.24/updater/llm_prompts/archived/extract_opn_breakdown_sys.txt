@@ -1,0 +1,132 @@
+Your task is to analyze the opinion of the specified Reddit user regarding his/her experience with the specified product in the provided Reddit thread, and generate a structured JSON response containing the user's opinions of the product.
+
+The response should include the following:
+`opinion_summary`: A summary dictionary that includes:
+  - `verbatims`: A dictionary with keys "positive", "neutral", and "negative", each containing a list of quotes expressing the corresponding sentiment (if any).
+  - `use-case-specific-sentiment`: A dictionary with keys representing use-cases from the use-cases list provided and values indicating the overall sentiment for each use-case (if any). If there are use-cases that do not fit the ones provided, you can come up with a custom use-case as the key.
+  - `overall-sentiment`: An overall sentiment for the product based on the entire discussion (either "Positive", "Neutral", or "Negative").
+
+---
+
+Here is an example:
+
+EXAMPLE INPUT:
+
+- Specified Reddit user: "heyyyjoo"
+- Specified product category: "portable monitor"
+- Specified product: "ASUS ZenScreen 15.6"
+- Possible use-cases: ["Working", "Gaming", "Travelling"]
+
+Reddit thread:
+{
+  "Subreddit Name": "digitalnomads",
+  "Subreddit Description": "Digital Nomads are individuals that leverage technology in order to work remotely and live an independent and nomadic lifestyle.",
+  "Submission Title": "Best Portable Monitor?",
+  "Submission Author": "DinoBaby0034",
+  "Submission Body": "Hi there! I want to surprise my spouse with a good quality portable monitor, since we’ve been talking about it forever. We are planning to use it when remote working in Greece. Can you guys please recommend a good one?",
+  "Comment Trees": [
+    {
+      "author": "heyyyjoo",
+      "body": "I recently got the ASUS ZenScreen 15.6" portable monitor, and I've been using it for work and light gaming. The image clarity is awesome, colors are as accurate as my macbook, and its plenty bright for working in bright settings.  Single USB-C connection is also sweet. I love how slim and lightweight it is and the aluminum frame is pretty solid. But the stand could be better - a little bit wobbly. However, note that the aspect ratio can't switch to 16:9. It can do 4:3, 16:10, and one other one I think, but not 16:9. It wont affect you if you don't do console gaming on it at all, but if you do, get something else otherwise your picture on your xbox/ps/switch will be stretched vertically.",
+      "in-reply-to": "DinoBaby0034",
+      "replies": [
+        {
+          "author": "092025",
+          "body": "I had the Zenscreen too but it broke after 6 months of usage. I think the build quality could have been better",
+          "in-reply-to": "heyyyjoo",
+          "replies": []
+        },
+        {
+          "author": "chickenwings",
+          "body": "Are you still liking it? I program outside in the shade and need a bright monitor. How does it do outside?",
+          "in-reply-to": "heyyyjoo",
+          "replies": [
+            {
+              "author": "heyyyjoo",
+              "body": "sorry for the late reply. im still liking it though i've never really used it outside. im using a different stand though.",
+              "in-reply-to": "chickenwings",
+              "replies": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+EXAMPLE RESPONSE:
+{
+  "opinion_summary": {
+    "verbatims": {
+      "positive": ["The image clarity is awesome", "colors are as accurate as my macbook", "its plenty bright for working in bright settings", "Single USB-C connection is also sweet", "I love how slim and lightweight it is", "aluminum frame is pretty solid", "im still liking it"],
+      "neutral": ["It wont affect you if you don't do console gaming on it at all, but if you do, get something else otherwise your picture on your xbox/ps/switch will be stretched vertically"],
+      "negative": ["But the stand could be better - a little bit wobbly", "the aspect ratio can't switch to 16:9. It can do 4:3, 16:10, and one other one I think, but not 16:9."]
+    },
+    "use-case-specific-sentiment": {
+      "Working": "Positive",
+      "Gaming": "Positive",
+      "Travelling": "Positive"
+    },
+    "overall-sentiment": "Positive"
+  }
+}
+
+---
+
+Here is another example:
+
+EXAMPLE INPUT:
+
+- Specified Reddit user: "doublepint"
+- Specified product category: "portable monitor"
+- Specified product: "UPERFECT 2K 120Hz Portable Gaming Monitor 16" 2560x1600 QHD"
+- Possible use cases: ["Working", "Gaming", "Travelling"]
+
+Reddit thread:
+{
+  "Subreddit Name": "sffpc",
+  "Subreddit Description": "All about small form factor PCs \u2013 decreasing size and maximizing space efficiency!",
+  "Submission Title": "17 inch portable monitor is better than 15 inch? For personal and traveling purposes.",
+  "Submission Author": "Moncavo",
+  "Submission Body": "",
+  "Comment Trees": [
+    {
+      "author": "doublepint",
+      "body": "I personally got the 16\u201d 16x10 monitor that popped up in a thread here a few months ago, as well as on a YouTube channel I frequent. It\u2019s honestly been great as my second monitor, and I\u2019ll be using it for traveling here soon. \n\nhttps://a.co/d/4cWM9qh (Amazon.com: UPERFECT 2K 120Hz Portable Gaming Monitor, 16\" 2560x1600 QHD Portable Monitor)",
+      "in-reply-to": "Moncavo",
+      "replies": [
+        {
+          "author": "Verdecken",
+          "body": "How is this holding up? I just ordered the same one.",
+          "in-reply-to": "doublepint",
+          "replies": [
+            {
+              "author": "doublepint",
+              "body": "I loved it until I accidently forced my USB-C cable into the mini-HDMI port while trying to connect it during QuakeCon this year.  I ended up grabbing one of the 17\" ViewSonic portable monitors from Microcenter, but it's not the same.  I'll probably end up ordering another one of these at some point!",
+              "in-reply-to": "Verdecken",
+              "replies": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+EXAMPLE RESPONSE:
+{
+  "opinion_summary": {
+    "verbatims": {
+      "positive": ["It's honestly been great as my second monitor, and I'll be using it for traveling here soon.", "I'll probably end up ordering another one of these at some point!"]
+    },
+    "use-case-specific-sentiment": {
+      "Travelling": "Positive",
+      "Gaming": "Positive"
+    },
+    "overall-sentiment": "Positive"
+  }
+}
+
+---
+
+Take a deep breath before you do the analysis. Do not miss out on anything. Consider the whole thread but only analyze the opinion of the specified Reddit user.
