@@ -1,0 +1,24 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "jocv"
+requires-python = ">=3.8"
+version = "0.1.7"
+authors = [
+    {name = "Johan Edstedt"},
+]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+dynamic = ["version"]
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "jocv.jocv"
+
+[project.urls]
+Homepage = "https://github.com/Parskatt/jcv"
