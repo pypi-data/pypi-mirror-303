@@ -1,0 +1,16 @@
+○ 목적
+- 자연어로 날씨에 대한 질의 답변을 해주는 패키지 구현
+
+○ 사용하기
+
+```python
+
+from weather import weather_crowd
+
+answer = weather_crowd.query("내일 서울 날씨는 어때?")
+
+print(answer)
+```
+○ 테스트 하기
+
+○ Package 만들기
