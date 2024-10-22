@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<root main_tree_to_execute="BehaviorTree">
+  <BehaviorTree ID="BehaviorTree">
+    <SubTree ID="I_01"/>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="I_01">
+    <Fallback>
+      <Sequence>
+        <Condition ID="condition_OS₃" name="Event_condition_OS₃"/>
+        <SubTree ID="OS₃"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₁" name="Event_condition_OS₁"/>
+        <SubTree ID="OS₁"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₂" name="Event_condition_OS₂"/>
+        <SubTree ID="OS₂"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₃">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_02"/>
+        <Action ID="SS_04" name="Action_SS_04"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_01"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="HZ_02">
+    <Fallback>
+      <Condition ID="E15" name="Event_E15"/>
+      <Condition ID="E14" name="Event_E14"/>
+      <Condition ID="E13" name="Event_E13"/>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="HZ_01">
+    <Fallback>
+      <Condition ID="E11" name="Event_E11"/>
+      <Sequence>
+        <Condition ID="E12B" name="Event_E12B"/>
+        <Condition ID="E12A" name="Event_E12A"/>
+      </Sequence>
+      <Condition ID="E10" name="Event_E10"/>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₁">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_01"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_02"/>
+        <Action ID="SS_02" name="Action_SS_02"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₂">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_01"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_02"/>
+        <Action ID="SS_03" name="Action_SS_03"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <TreeNodesModel>
+    <SubTree/>
+    <Condition/>
+  </TreeNodesModel>
+</root>
