@@ -1,0 +1,64 @@
+УСТАНОВКА:
+```commandline
+pip install onlinestoremanager
+```
+
+
+
+РАБОТА С КЛИЕНТАМИ:
+
+импортируем объекст класса:
+```commandline
+from onlinestoremanager import UserManager()
+```
+
+создадим экземпляр класса:
+```commandline
+user_manager = UserManager()
+```
+
+добавим пользователя:
+```commandline
+user_manager.add_user('user1@example.com', {'name': 'John Doe', 'age': 30})
+```
+
+обновим данные пользователя:
+```commandline
+user_manager.update_user('user1@example.com', {'age': 31})
+```
+
+выведем пользователя:
+```commandline
+print(user_manager.find_user('user1@example.com'))
+```
+
+удалим пользователя:
+```commandline
+user_manager.remove_user('user1@example.com')
+```
+
+РАБОТА с ЗАКАЗАМИ
+
+импортируем объекст класса:
+```commandline
+from onlinestoremanager import OrderManager()
+```
+
+создадим экземпляр класса:
+```commandline
+order_manager = OrderManager()
+```
+
+создадим новый заказ:
+```commandline
+order_manager.create_order('order1001', {'user': 'Alice', 'item': 'Smartphone', 'price': 799})
+```
+
+обновим данные заказа: 
+```commandline
+order_manager.update_order('order1001', {'status': 'shipped'})
+```
+отменим заказ: 
+```commandline
+order_manager.cancel_order('order1001')
+```

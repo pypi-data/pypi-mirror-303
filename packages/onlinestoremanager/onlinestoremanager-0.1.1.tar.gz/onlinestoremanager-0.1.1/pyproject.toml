@@ -1,0 +1,21 @@
+[build-system]
+requires = ['setuptools>=42']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'onlinestoremanager'
+version = '0.1.1'
+description = 'Исполняемый пакет для управления пользователями и заказами в онлайн-магазине'
+authors = [
+  {name = 'Dusya', email = 'Lev.khrobostov@mail.ru'}
+]
+readme = 'README.md'
+license = {text = 'MIT'}
+requires-python = '>=3.8'
+dependencies = []
+
+[project.optional-dependencies]
+dev = ['pytest>=6.2.1', 'flake8>=3.8.4']
+
+[project.scripts]
+investhelper = "onlinestoremanager.__main__:__main__"
