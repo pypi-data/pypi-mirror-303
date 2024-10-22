@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: leap-data-management-utils
+Version: 0.0.16
+Summary: LEAP / pangeo-forge-recipes extension library for logging data in Google Big Query
+Author-email: LEAP <leap@columbia.edu>
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: dask
+Requires-Dist: cftime
+Requires-Dist: ruamel.yaml
+Requires-Dist: xarray
+Requires-Dist: zarr
+Provides-Extra: bigquery
+Requires-Dist: tqdm; extra == "bigquery"
+Requires-Dist: google-api-core; extra == "bigquery"
+Requires-Dist: google-cloud-bigquery; extra == "bigquery"
+Requires-Dist: db-dtypes; extra == "bigquery"
+Requires-Dist: pangeo-forge-esgf>0.3.0; extra == "bigquery"
+Provides-Extra: catalog
+Requires-Dist: aiohttp; extra == "catalog"
+Requires-Dist: cf-xarray; extra == "catalog"
+Requires-Dist: pydantic-core; extra == "catalog"
+Requires-Dist: pydantic>=2; extra == "catalog"
+Requires-Dist: requests; extra == "catalog"
+Requires-Dist: universal-pathlib; extra == "catalog"
+Requires-Dist: kerchunk>=0.2.6; extra == "catalog"
+Provides-Extra: complete
+Requires-Dist: leap-data-management-utils[catalog,pangeo-forge]; extra == "complete"
+Provides-Extra: dev
+Requires-Dist: leap-data-management-utils[test]; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Provides-Extra: pangeo-forge
+Requires-Dist: pangeo-forge-recipes; extra == "pangeo-forge"
+Requires-Dist: apache-beam==2.58.0; extra == "pangeo-forge"
+Requires-Dist: dynamic-chunks; extra == "pangeo-forge"
+Requires-Dist: leap-data-management-utils[bigquery]; extra == "pangeo-forge"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: leap-data-management-utils[complete]; extra == "test"
+
+# LEAP Data Management Utils
+
+This Repo is intended to be installed via the `requirements.txt` during recipe execution in `pangeo-forge-recipes`. It currently contains beam transforms to log information into BigQuery tables. Additional shared utilities and checks that are commonly used between LEAP pangeo-forge-feedstocks can live here.
