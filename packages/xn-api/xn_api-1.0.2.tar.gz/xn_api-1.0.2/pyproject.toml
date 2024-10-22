@@ -1,0 +1,45 @@
+[project]
+name = "xn-api"
+requires-python = ">=3.12"
+authors = [
+    {name = "Artemiev", email = "mixartemev@gmail.com"},
+]
+keywords = ["starlette", "fastapi", "admin", "generator", "db-model", "crud", "tortoise-orm", "ASGI-admin"]
+description = "Simplest fastest minimal REST API CRUD generator for Tortoise ORM models"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+dependencies = [
+    "fastapi",
+#    "fastapi-cache2",
+    "uvicorn",
+    "xn-model",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "twine",
+]
+auth = ["xn-auth"]
+auth-pswd = ["pswd-auth"]
+auth-tg = ["xtg-auth"]
+
+[project.urls]
+Homepage = "https://github.com/XyncNet/x-api"
+Repository = "https://github.com/XyncNet/x-api"
+
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm[toml]>=8"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["x_api"]
+
+[tool.setuptools_scm]
+version_scheme = "python-simplified-semver" # if "feature" in `branch_name` SEMVER_MINOR++ else SEMVER_PATCH++
+local_scheme = "no-local-version"
+
+[tool.ruff]
+line-length = 120
