@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: webviewpy
+Version: 1.4.0
+Summary: ctypes binding of webview
+Author: HIllya51
+License: Copyright (c) 2013, Aldo Cortesi. All rights reserved.
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/HIllya51/webviewpy
+Project-URL: Repository, https://github.com/HIllya51/webviewpy
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# webviewpy
+
+A tiny webview library for Python.
+
+Based on [webview](https://github.com/webview/webview)
+
+
+# Getting started
+
+### Install
+
+
+``` bash
+pip install webviewpy
+```
+
+
+### Usage
+
+[Build a webview based app](example/test.py)
+
+[Embed a webview in PyQt](example/testpyqt.py)
+
+[Embed a webview in tkinter](example/testtkinter.py)
+
+[Embed a webview in win32 window](example/win32.py)
+
+[Build a webview based app with react and PyQt](example/fluent/main.py)
+
+
+### Specify library path
+
+
+Wheel includes pre-built libraries of Windows/Linux/Macos, and libraries are placed at platform/{sys.platform}/{x86|x64}/webview. 
+
+To specify a self-built library or use other platform's library, use api ```declare_library_path``` like this:
+
+``` python
+from webviewpy import declare_library_path
+declare_library_path(
+    r"C:\build\library\webview.dll"
+)
+```
