@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: rocket-0.8.7
+Version: 0.1
+Summary: A package for simulating rockets and space shuttles.
+Home-page: https://github.com/amaliahm/rocket
+Author: aminaghandouz
+Author-email: a.ghandouz@esi-sba.dz
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# Rocket Package
+
+This package provides classes for simulating rockets, shuttles, and circular rockets. It can be used for games or physics simulations.
+
+## Installation
+
+You can install the package via pip:
+
+```bash
+pip install rocket
+```
+## Usage
+from rocket import Rocket, Shuttle, CircleRocket
+
+### Create a rocket instance
+rocket = Rocket(0, 0)
+
+### Move the rocket
+rocket.move_rocket(3, 4)
+
+### Create a circular rocket and calculate its area
+circle_rocket = CircleRocket(0, 0, radius=5)
+area = circle_rocket.get_area()
+
