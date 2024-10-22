@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: examply
+Version: 0.0.1
+Summary: Example python packaging
+Author-email: James Kennington <jmk7376@psu.edu>
+License: MPL-2.0
+Project-URL: Homepage, https://git.ligo.org/james.kennington/examply
+Project-URL: Documentation, https://docs.ligo.org/james.kennington/examply
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pyyaml
+Provides-Extra: dev
+Requires-Dist: examply[docs]; extra == "dev"
+Requires-Dist: examply[lint]; extra == "dev"
+Requires-Dist: examply[test]; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: furo; extra == "docs"
+Requires-Dist: myst-parser; extra == "docs"
+Requires-Dist: sphinx; extra == "docs"
+Provides-Extra: lint
+Requires-Dist: black; extra == "lint"
+Requires-Dist: flake8; extra == "lint"
+Requires-Dist: flake8-bandit; extra == "lint"
+Requires-Dist: flake8-black; extra == "lint"
+Requires-Dist: flake8-bugbear; extra == "lint"
+Requires-Dist: flake8-future-annotations; extra == "lint"
+Requires-Dist: flake8-isort; extra == "lint"
+Requires-Dist: flake8-logging-format; extra == "lint"
+Requires-Dist: isort; extra == "lint"
+Requires-Dist: mypy; extra == "lint"
+Requires-Dist: mypy-extensions; extra == "lint"
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+
+<!-- index.rst content start -->
+
+# Examply
+
+The `examply` package is a simple example package that demonstrates how to create a Python package,
+with features including:
+
+- Basic python package structure
+- Simple example functions
+- Testing with `pytest`
+- Documentation with `sphinx`
+- Continuous integration with `GitLab CI Actions`
+- Code coverage with `pytest-cov`
+- Code quality with `flake8`
+- Package data access
+
+## Installation
+
+To install the package, run:
+
+```bash
+pip install examply
+```
