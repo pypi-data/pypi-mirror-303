@@ -1,0 +1,17 @@
+MQTT_BROKER=127.0.0.1                               # MQTT Broker host name or IP address, required
+MQTT_PORT=1883                                      # MQTT Port for connecting to broker, defaults to 1883
+MQTT_USER=                                          # MQTT Username for broker, required if using authenticated MQTT Server
+MQTT_PASSWORD=                                      # MQTT Password for broker
+MQTT_SSL=False                                      # Use SSL True for False for connecting to broker, default False
+MQTT_CACERT=                                        # Path to the CA Certficate if using SSL, optional
+MQTT_TOPIC_PREFIX=MyDomUK                           # MQTT Topic Prefix, required
+MQTT_DEVICE_TOPIC=sysmon/{{hostname}}               # MQTT Device Topic usually include {{hostname}}  in the string, required
+MQTT_VIP_TOPIC=                                     # Optional Topic for VIP monitoring
+MQTT_VIP_MONIT=                                     # Optional Comma Separated list of VIP NIC names to hostname ownership of
+MQTT_NIC_MONIT=                                     # Optional Comma Separated list of NIC names to report IP addresses on
+HASS_TOPIC_PREFIX=homeassistant                     # Homeassistant discovery topic prefix, default homeassistant
+HASS_DISCOVERY=True                                 # Discovery on True or False, default True
+HASS_DEVICE=MyDomUK Server {{hostname}}             # Homeassistant Device description can include {{hostname}}
+HASS_DEVICEID=mydomuk_sysmon_{{hostname}}           # Homeassistant unique Device can include {{hostname}}
+HASS_MANUFACTURER=Server Manufacturer               # Homeassistant Device manufacturer
+HASS_MODEL=Server Model                             # Homeassistant Device model information
