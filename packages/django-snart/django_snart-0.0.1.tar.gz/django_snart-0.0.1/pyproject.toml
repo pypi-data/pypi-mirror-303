@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 100
+profile = "black"
+
+[tool.flake8]
+ignore = "E226,E302,E41"
+max-line-length = 100
+max-complexity = 13
+
+
+[project]
+name = "django-snart"
+authors = [{ name = "Gregory Zhizhilkin", email = "gregory@stopdesign.ru" }]
+version = "0.0.1"
+description = "A Django app for text translation of non-model content"
+readme = "README.md"
+license = { file = "LICENSE" }
+
+requires-python = ">= 3.10"
+
+dependencies = [
+    "django-modeltranslation",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/stopdesign/django-snart"
+
+
+[project.optional-dependencies]
+dev = [
+    "requests",
+]
+
