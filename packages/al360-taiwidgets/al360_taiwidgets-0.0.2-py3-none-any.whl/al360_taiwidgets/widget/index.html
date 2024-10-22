@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AffectLog360° Dashboard</title>
+    <base href="/widget/">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Custom CSS Styles for Branding and Theme -->
+    <style>
+      /* Global font and color settings for AffectLog branding */
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f4f9; /* Light background */
+        color: #333; /* Text color */
+        margin: 0;
+        padding: 0;
+      }
+
+      #__al360_tai_app_id__ {
+        margin: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      /* AffectLog Branding Colors */
+      :root {
+        --primary-color: #0051ff; /* Example brand color */
+        --secondary-color: #8b9dc3;
+        --accent-color: #ffcc00; /* Accent color for buttons */
+        --background-color: #f4f4f9;
+        --text-color: #333;
+        --button-hover-color: #ffc107;
+      }
+
+      /* Header and Title */
+      h1 {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Custom button styles */
+      button {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: var(--button-hover-color);
+      }
+
+      /* Custom tooltip styles */
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: var(--primary-color);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; /* Position above the element */
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Footer branding */
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 14px;
+        color: var(--secondary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="__al360_tai_app_id__">
+      <!-- You can include a title or any other elements here -->
+      <h1>AffectLog360° Dashboard</h1>
+
+      <!-- Example interactive button -->
+      <button>Download Report</button>
+
+      <!-- Tooltip example -->
+      <div class="tooltip">
+        <button>Info</button>
+        <span class="tooltiptext">Additional details here</span>
+      </div>
+    </div>
+
+    <!-- Footer with branding -->
+    <footer>
+      &copy; 2024 AffectLog SAS. All rights reserved.
+    </footer>
+
+    <!-- JavaScript for widget functionality -->
+    <script src="runtime.28c323bf8ee123f67bad.esm.js" type="module"></script>
+    <script src="polyfills.2df2e8ae7005c1bbf442.esm.js" type="module"></script>
+    <script src="main.44959db93b9f59dff9b6.esm.js" type="module"></script>
+  </body>
+</html>
