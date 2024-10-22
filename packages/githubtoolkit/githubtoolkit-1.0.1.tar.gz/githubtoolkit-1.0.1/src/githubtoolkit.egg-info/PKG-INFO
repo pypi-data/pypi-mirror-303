@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: githubtoolkit
+Version: 1.0.1
+Summary: some tools for working with GitHub
+Author-email: Leander Kafemann <leander@kafemann.berlin>
+Project-URL: Homepage, https://github.com/LeanderKafemann/githubtools
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests
+
+# Githubtoolkit
+## Usage
+### Uploading a file
+You can upload a file using<br/>
+<code>githubtoolkit.upload_file_to_github(file, repo, token, branch, alias, comment)</code>, where<br/>
+#### Required
+<li>- <code>file</code> specifies the path to the file you want to load up</li>
+<li>- <code>repo</code> specifies the repository you want to upload to</li>
+<li>- <code>token</code> is your login method</li>
+
+#### Not required
+<li>- <code>branch</code> specifies the branch uploaded to (standard: <code>"main"</code>)</li>
+<li>- <code>alias</code> specifies the path the file is uploaded in (standard: <code>file</code>)</li>
+<li>- <code>comment</code> adds a comment to your changes (standard: <code>"Update "+filename_</code>)</li>
+
+### Other methods
+Also, you can call the <code>main()</code> method to get a uploading agent.<br/>
+The <code>about()</code> method returns information about your specific release.
+
+### More coming soon...
