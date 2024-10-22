@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "raphson_mp"
+version = "1.2.0"
+authors = [
+    { name = "Robin Slot", email = "robin@rslot.nl" },
+]
+description = "Raphson music player"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: Flask",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Natural Language :: Dutch",
+    "Operating System :: POSIX",
+    "Topic :: Multimedia :: Sound/Audio :: Players",
+    "Typing :: Typed"
+]
+dependencies = [
+    "gunicorn>=21.0", # previous versions have logging issues
+    "flask>=3.0",
+    "flask-babel>=4.0", # required for compat with flask 3
+    "requests>=2.25.0", # arbitrary somewhat recent version
+]
+
+[project.optional-dependencies]
+online = [
+    "beautifulsoup4>=4.0",
+    "lxml>=4.0",
+    "bcrypt>=3.0",
+    "yt-dlp"
+]
+prometheus = ["prometheus-client>=0.15.0"]
+
+[project.urls]
+Homepage = "https://github.com/Derkades/WebApp"
+Issues = "https://github.com/Derkades/WebApp/issues"
+
+[project.scripts]
+raphson-mp = "raphson_mp.__main__:main"
+
+[tool.hatch.build]
+artifacts = ["*.mo"]
