@@ -1,0 +1,380 @@
+/**
+\page software Software description
+
+<h1>Robohat</h1>
+
+Version: 0.6.0
+
+For the hardware description of the Robohat, see \ref hardware
+<BR>
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<h1>Robohat software description</h1>
+
+\image html robohat_small.png
+
+The Robohatlib is a piece of software written in Pyton, to be able to access the hardware. Some PCB-boards of the Robohat hardware, have user selectable addresses.
+Before using the Robohatlib, the user should know these addresses. For the hardware description see \ref hardware
+
+Boards with an address are the Topboard and the Servo-assemblies.
+
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<h1>Using Robohatlib</h1>
+
+The Startpoint of the RoboHat Library is the Robohat class. After constructing the Robohat class, the '\link  Robohat::Robohat::init init \endlink' function (of the Robohat class) has to be executed. The rest of the Robohat class consist of functions which can be used to access the Robohat hardware.
+
+<h2>An example of using the Robohat library</h2>
+
+\code
+# creation of the Robohat class (mandatory)
+robohat = Robohat(TestConfig.servoassembly_1_config, TestConfig.servoassembly_2_config, TestConfig.TOPBOARD_IO_EXPANDER_SW)
+
+# initialisation of the Robohat class (mandatory)
+robohat.init(TestConfig.SERVOBOARD_1_DATAS_LIST, TestConfig.SERVOBOARD_2_DATAS_LIST)
+
+# setting the callbacks for interrupt processing (not needed)
+robohat.set_topboard_io_expander_int_callback(self.__test_hat_io_expander_int_callback)
+robohat.set_assemblyboard_1_io_expander_int_callback(self.__test_assemblyboard_1_io_expander_int_callback)
+robohat.set_assemblyboard_2_io_expander_int_callback(self.__test_assemblyboard_2_io_expander_int_callback)
+
+# setting the color of the LED
+robohat.set_led_color(Color.GREEN)
+
+# moving the angles of the servo
+for i in range(1,1800, 1):
+    angle = i / 10.0
+    robohat.set_servo_multiple_angles([angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle])
+    print("-->" + str(robohat.get_servo_single_angle(1)) + " °")
+    time.sleep(1)
+
+\endcode <I>example sourcecode, which moves the angle of the servos</I>
+
+<h2>Robohat constructor</h2>
+
+The Robohat constructor, consist out of 3 parameters, 2 ServoAssemblyConfigs (for Servo-assembly board 1 and Servo-assembly board 2) and the switch value of the Topboard.<BR>
+
+\code
+robohat = Robohat(SERVOASSEMBLY_1_CONFIG, SERVOASSEMBLY_2_CONFIG, TOPBOARD_IO_SWITCH)
+\endcode <I>The parameters consist of 2 ServoAssemblyConfig and 1 switch value</I>
+
+<TABLE class="par">
+<TR><TH>SERVOASSEMBLY_1_CONFIG</TH>                     <TH>configuration of first servo assembly (ServoAssemblyConfig) </TH> </TR>
+<TR><TH>SERVOASSEMBLY_2_CONFIG</TH>                     <TH>configuration of second servo assembly (ServoAssemblyConfig) </TH> </TR>
+<TR><TH>TOPBOARD_ID_SWITCH</TH>                         <TH>Topboard ID switch value (int) </TH> </TR>
+</TABLE>
+<I>Parameters of Robohat class</I>
+
+If only 1 Servo assembly is used, the second SERVOASSEMBLY_2_CONFIG parameter can be None but can also be filled with data for a board which can be placed in the future.
+
+<h3>ServoAssemblyConfig</h3>
+
+A ServoAssemblyConfig is the configuration for a Servo assembly board, which consist out of 4 parameters and is needed by the Robohat constructor.
+
+\code
+servoassembly_1_config = ServoAssemblyConfig(SERVOASSEMBLY_1_NAME, SERVOASSEMBLY_1_SW1_PWM_ADDRESS,SERVOASSEMBLY_1_SW2_POWER_GOOD_ADDRESS, SERVOASSEMBLY_1_PWMPLUG)
+\endcode <I>The parameters consist of a name, 2 switch values and a plug ID</I>
+
+<TABLE class="par">
+<TR><TH>SERVOASSEMBLY_1_NAME</TH>                   <TH>a name for your own reference </TH> </TR>
+<TR><TH>SERVOASSEMBLY_1_SW1_PWM_ADDRESS</TH>        <TH>SW1, switch value of the 'PWM' address (a switch on the assembly board, default 0 or 1)  </TH> </TR>
+<TR><TH>SERVOASSEMBLY_1_SW2_POWER_GOOD_ADDRESS</TH> <TH>SW2, switch value if the 'POWER GOOD' address (a switch on the assembly board, default 0 or 1, but the same as SW1) </TH> </TR>
+<TR><TH>SERVOASSEMBLY_1_PWMPLUG</TH>                <TH>flat-cable connected to plug P3 or plug P4 of the Topboard</TH> </TR>
+</TABLE>
+<I>Parameters of ServoAssemblyConfig</I>
+
+<BR>
+See the \ref hardware of the Servo-assembly for SW1_PWM_ADDRESS, SW2_POWER_GOOD_ADDRESS and PWMPLUG
+
+<h3>TOPBOARD_ID_SWITCH</h3>
+
+The last parameter of the robohat constructor, is the 'topboard_switch_value' value. The default value is 7.<BR>
+This value determines the I2C-address of the IO-expander (MCP23008) of the Topboard.<BR>
+
+<B>Note</B>. see the \ref hardware of the Topboard. for the switch value
+
+<h2>robohat.init function</h2>
+Before we have some action, we have to initialize the robohat class. So using this function is mandatory.<BR>
+This function will give all the attached servos its needed parameters, and it will initialize the rest of the hardware.<BR>
+
+\code
+robohat.init(main_config.SERVOBOARD_1_DATAS_LIST, main_config.SERVOBOARD_2_DATAS_LIST)
+\endcode <I>The parameters consist of 2 lists of ServoData</I>
+
+<TABLE class="par">
+<TR><TH>SERVOBOARD_1_DATAS_LIST</TH>                     <TH>List of ServoData for the first group servos 0 - 15</TH> </TR>
+<TR><TH>SERVOBOARD_2_DATAS_LIST</TH>                     <TH>List of ServoData for the second group servos 16 - 31</TH> </TR>
+</TABLE>
+<I>Parameters of init function</I>
+
+
+\code
+SERVOBOARD_1_DATAS_LIST = [
+                 ServoData(1, 500, 2500, 0, 180, 0, 72.2058435743876, -22.8429203374794),
+                 ...
+                 ...
+\endcode <I>section of the servoboard config list</I>
+
+
+
+
+<h3>ServoData</h3>
+
+<TABLE class="par">
+<TR><TH>SERVO_NR</TH>                   <TH>servo nr of connected servo </TH> </TR>
+<TR><TH>MIN_TIME</TH>                   <TH>time of minimal angle of the servo in uS (example: 500 uS)  </TH> </TR>
+<TR><TH>MAX_TIME</TH>                   <TH>time of maximal angle of the servo in uS (example: 2500 uS)  </TH> </TR>
+<TR><TH>OFFSET_TIME</TH>                <TH>offset time of the servo in uS (example: 0 uS)  </TH> </TR>
+<TR><TH>RUNNING_DEGREE</TH>             <TH>range of the servo (example: 180)  </TH> </TR>
+<TR><TH>OFFSET_DEGREE</TH>              <TH>offset of the angle (example: 0)  </TH> </TR>
+<TR><TH>FORMULA_A</TH>                  <TH>first parameter of formula, servo measure-voltage to angle   </TH> </TR>
+<TR><TH>FORMULA_B</TH>                  <TH>second parameter of formula, servo measure-voltage to angle  </TH> </TR>
+</TABLE>
+<I>Parameters of ServoData</I>
+
+See for the MIN_TIME, MAX_TIME and RUNNING_DEGREE the datasheet of the used servo.
+In our prototype we use the <a href="DSS-M15.pdf" target="_blank"><b>DSS-M15</b></a> as servo.
+
+The internal conversion of measured-voltage (out of the servo) to degree, is in the Robohatlib done by a linear formula.<BR>
+Because each servo has its own linear formula parameters, each servo can be calibrated to get the best readout results.<BR>
+FORMULA_A is the first parameter of the formula, and FORMULA_B is the second parameter of the formula.
+
+\image html graph_voltage_to_angle.png servo readout-voltage to angle
+
+
+<BR>
+Auto calibration can be down with the api call:
+
+\code
+do_servo_fit_formula_readout_vs_angle_multiple_servos(limit_min, limit_max)
+\endcode
+
+<i>
+limit_min is the starting angle of the servo and limit_max the angle which the servo stops.
+Make sure that the given limits are physically possible. The movement of a limb can be out of reach.
+</i>
+
+This function will set all the servos at a minimum angle, readout the analog values. Next it will set all the servos at a maximum value and reads out the analog values.<BR>
+With those values read, the Robohatlib will calculate all formula parameters.
+
+The calculated values will be used (until a restart of the Robohatlib) and will be displayed on the console. To make the new parameter values permanent, use the parameter values in the ServoData.
+
+
+
+After initialisation of the Robohat class, a device scan will be performed and displayed onto the console.
+The Robohatlib is now ready to be used.
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Servos</h2>
+
+The maximum servos attached to the Robohat can be 32 or 16, depending on how much assembly boards are present. See \ref hardware.
+
+To test if a servo is attached use the function '\link   Robohat::Robohat::get_servo_is_connected get_servo_is_connected \endlink'.
+
+<b>multiple servo movement</b><BR>
+With the function '\link  Robohat::Robohat::set_servo_multiple_angles set_servo_multiple_angles \endlink' you set the angle of all the servos. The list has to be a size of 16 or 32 elements. When the size is 16 elements, only the first 16 servos will be addressed. When the list has 32 elements, all the servos will be addressed.
+If a servo isn't available, the value written to this register is discarded.
+
+\code
+robohat.set_servo_multiple_angles([angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle, angle])
+\endcode  <I>Setting multiple servos to an angle</I>
+
+<b>single servo movement</b>
+when only 1 servo has to be moved, use the function '\link  Robohat::Robohat::set_servo_single_angle set_servo_single_angle \endlink'
+
+\code
+robohat.set_servo_single_angle(5, 90.0)
+\endcode  <I>Setting servo 5 to an angle of 90°</I>
+
+When the servo isn't available, the value written to this register is discarded.
+To get more accurate reading, the user can calibrate the servos.
+The auto calibration is described at above, at the robohat.init function section.
+
+To read out a servo angle, use its counter part: \link Robohat::Robohat::get_servo_single_angle get_servo_single_angle \endlink'
+
+To check if the servo is at the wanted angle, use \link Robohat::Robohat::get_servo_is_single_servo_wanted_angle get_servo_is_single_servo_wanted_angle \endlink'
+
+The user can also use a blocking function: \link Robohat::Robohat::do_wait_until_servo_is_wanted_angle do_wait_until_servo_is_wanted_angle \endlink' to wait until the servo reached the angle.
+
+<b>Update modes</b>
+There are 2 modes to move the servos. Direct mode, and delayed mode.
+
+The function to user to change the mode is \link Robohat::Robohat::set_servo_direct_mode set_servo_direct_mode \endlink'
+
+When using the direct mode, the value of the angle is directly set, resulting in a direct movement. Because the movement is instant, (the movement will be fast), the needed force is high.
+A higher force results in a high current. The powersupply of the Robohat could limit the current, resulting in a strange movement of the servos
+See \ref hardware to distribute the servos in groups to even the current.
+
+Higher forces causes also more stress on the joints of the Robohat.
+
+To limit these problems, the servo steering could be set to delay mode.
+
+\code
+set_servo_direct_mode(False, 0.0001)
+\endcode  <I>Setting the servo steering to delay mode, with an update time of 1mS </I>
+
+The readout which update mode is used \link Robohat::Robohat::get_servo_is_direct_mode get_servo_is_direct_mode \endlink'
+
+
+
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<h2>Shutdown the robohat</h2>
+
+When to user wants to turn off the Robohat, a proper shutdown has to be performed. Shutting down only the power, could cause corruption of the SD card.
+
+By using the function '\link Robohat::Robohat::do_system_shutdown do_system_shutdown \endlink'
+all hardware will be stopped to an idle state. The OS will be nicely shut-downed closing all its resources, and after a minute the power will go off.
+
+Turning on, must be done by pressing the button as described in /ref hardware
+
+
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<h2>Interrupts</h2>
+The Robohat library can generate 3 interrupts. The first one is the interrupt of the Topboard IO-expander, the 2 other interrupts can be generated by the Servo-assembly-boards.
+
+<h4>Topboard interrupt</h4>
+When an I/O pin of the Topboard IO expander is set as an intput, it can generate an interrupt. To catch this interrupt, a callback function has to be set with the function 'set_topboard_io_expander_int_callback( _the_
+function)' of the Robohat library.
+This callback function has an integer as parameter. This parameter is set to tell the callback function which IO pin has cause the triggering of the interrupt.
+
+<h4>Assemblyboard interrupt</h4>
+Both assembly board has a IO-expander which is used to detect if the power delivery for the servos is working correctly. To detect a power fail, only 4 IO pins of the expander are used. IO pin 4,5 and 6 can be used by a user.
+When these pins a configured as an input, in can generate an interrupt.
+To catch this interrupt, a callback function has to be set (for board 1) with the function 'set_assemblyboard_1_io_expander_int_callback( _the_function)' of the Robohat library.
+This callback function has an integer as parameter. This parameter is set to tell the callback function which IO pin has cause the triggering of the interrupt.
+
+Use set_assemblyboard_2_io_expander_int_callback, for board 2
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Topboard functions</h2>
+At the Topboard of the Robohat, an ADC and some I/O are available for the user. See \ref hardware
+
+<B>ADC</B>
+The ADC has some functions, which will reply in volts measured.<BR>
+<B>Note</B>. The maximal voltage which the ADC can measure is 3 volts.<BR>
+For single channel use: '\link Robohat::Robohat::get_topboard_adc_single_channel get_topboard_adc_single_channel \endlink'
+For all the channels at once use: '\link Robohat::Robohat::get_topboard_adc_multiple_channels get_topboard_adc_multiple_channels \endlink'
+
+<B>I/O</B>
+
+There is also I/O pims avaible.
+To set the function of a pin, use: '\link Robohat::Robohat::set_topboard_io_expander_direction set_topboard_io_expander_direction \endlink'  <BR>
+When the pin is set an output, the output can set by '\link Robohat::Robohat::set_topboard_io_expander_output set_topboard_io_expander_output \endlink' <BR>
+
+When set a pin is set as input, the status can be read by '\link Robohat::Robohat::get_topboard_io_expander_input set_topboard_io_expander_output \endlink' <BR>
+At the pin an interrupt can be used. Do to so, a callback function has to be attached by: '\link Robohat::Robohat::set_topboard_io_expander_output set_topboard_io_expander_int_callback \endlink'<BR>
+
+For the connections of the ADC or I/O see \ref hardware
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>IMU</h2>
+An inertial measurement unit is present. This unit can be used to determine the position and direction of the movement of the Robohat.
+
+At this moment only raw values are avaible:
+'\link Robohat::Robohat::get_imu_magnetic_fields get_imu_magnetic_fields \endlink' for the detection of movement in X, Y, and Z direction<BR>
+'\link Robohat::Robohat::get_imu_acceleration get_imu_acceleration \endlink' for the detection of acceleration in X, Y, and Z direction<BR>
+'\link Robohat::Robohat::get_imu_gyro get_imu_gyro \endlink' for the detection of rotation in X, Y, and Z direction<BR>
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Battery</h2>
+When the capacity if battery falls below a threshold, the user will be notified (by an alarm and a message to the console). When the capacity is wat too low, the Robohat will be shutdown (to save the battery).
+
+If the user want to know the battery capacity, the user can use the function:
+'\link Robohat::Robohat::get_battery_percentage_capacity get_battery_percentage_capacity \endlink'
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Color LED</h2>
+
+At the top of the Robohat a LED is mounted. This LED with be illuminating white when the Robohatlib is initialized.
+
+By using the function
+'\link Robohat::Robohat::set_led_color set_led_color \endlink' you can set the LED to WHITE, RED, GREEN, BLUE, YELLOW, and PURPLE.
+This function will also turn on the LED.
+
+The user can turn off the LED by the function '\link Robohat::Robohat::turn_led_off turn_led_off \endlink'.
+
+If the user to turn on the LED again, the user should use '\link Robohat::Robohat::turn_led_on turn_led_on \endlink'. The color off the LED, will be the color last used.
+
+The user can also use OFF or ON with the function set_led_color. This will turn the LED off or on.
+
+When the user want to know which color the LED currently is, the function '\link Robohat::Robohat::get_led_color get_led_color \endlink' should be used
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Buzzer</h2>
+
+The Robohat is equipped with an buzzer.
+
+There are multiple function the user can use, to create a sound such as:
+'\link Robohat::Robohat::do_buzzer_random do_buzzer_random \endlink'
+'\link Robohat::Robohat::do_buzzer_slowwoop do_buzzer_slowwoop \endlink'
+'\link Robohat::Robohat::do_buzzer_beep do_buzzer_beep \endlink'
+.
+<BR>
+The duration of the sound is limited
+
+There is also a function which generates a sound until the sound is stopped
+
+The function: '\link Robohat::Robohat::do_buzzer_freq do_buzzer_freq \endlink', gives a sound at a given frequency, until it has turned off with '\link Robohat::Robohat::do_buzzer_release do_buzzer_release \endlink'
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Miscellaneous</h2>
+There are a lot more functions present in the Robohatlib. Take a look at the Robohat class for the full function list.
+
+<hr style="width:100%;text-align:left;margin-left:0">
+<hr style="width:100%;text-align:left;margin-left:0">
+<h2>Robohatlib test applications </h2>
+
+The Robohat library comes with 2 test-applications.
+
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<b>Test application</b><BR>
+The first one is the 'Test' application. This test application can test all the functions by typing commands at a console.
+
+Test.py         ( located at the root of the project )
+<BR>
+TestConfig.py   ( located in the testlib directory )
+<BR>
+
+These files should be placed in the directory where the 'robohatlib' is placed
+
+To execute the test application:
+
+\code
+cd ~/robohat
+python Test.py
+\endcode <I>example to execute the test python module. The commands can be placed in a batch file (see a batch ile called test, in the root directory of the project)</I>
+
+When starting the Test application (which initialises the Robohatlib) a summary of the IO will be printed on the console. The user will be notified when a IO device fails.
+
+By typing help (+ [RETURN] ) a list with commands will be displayed.
+
+By typing a command (+ [RETURN] ), a function of the Robohatlib will be executed.
+<BR>
+
+<hr style="width:100%;text-align:left;margin-left:0">
+
+<b>SerTest application</b><BR>
+The second application is 'SerTest'. This test application can test all the I/O by selecting a test item in a menu.
+
+SerTest.py         ( located at the root of the project )
+<BR>
+TestConfig.py   ( located in the testlib directory )
+<BR>
+
+\code
+cd ~/robohat
+python SerTest.py
+\endcode <I>example to execute the test python module. The commands can be placed in a batch file (see a batch ile called test, in the root directory of the project)</I>
+
+When starting the SerTest application (which initialises the Robohatlib) a summary of the IO will be printed on the console. The user will be notified when a IO device fails.
+
+A menu will appear. By section a menu entry (+ [RETURN] ), a function will be executed.
+
+A menu list will be displayed when only [RETURN] is typed.
+*/
