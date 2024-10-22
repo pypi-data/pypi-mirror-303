@@ -1,0 +1,99 @@
+{
+  "name": "escher",
+  "author": "Zachary King",
+  "version": "1.8.0-beta.1",
+  "post_version": null,
+  "schema_version": "1-0-0",
+  "map_model_version": "6",
+  "description": "Escher: A Web Application for Building, Sharing, and Embedding Data-Rich Visualizations of Metabolic Pathways",
+  "keywords": [
+    "visualization",
+    "pathway map",
+    "metabolism",
+    "genome-scale-model",
+    "web application",
+    "D3.js",
+    "biojs"
+  ],
+  "license": "MIT",
+  "homepage": "https://escher.github.io",
+  "repository": "https://github.com/zakandrewking/escher",
+  "bugs": "https://github.com/zakandrewking/escher/issues",
+  "files": [
+    "dist/*",
+    "jupyter/*"
+  ],
+  "main": "dist/escher.js",
+  "engines": {
+    "node": ">=15.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/plugin-transform-react-jsx": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "@jupyter-widgets/base": "^6.0.10",
+    "@vitest/coverage-v8": "^2.1.1",
+    "babel-loader": "^9.2.1",
+    "chai": "^5.1.1",
+    "coveralls": "^3.1.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "file-loader": "^6.2.0",
+    "intersection-observer": "^0.12.2",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^25.0.0",
+    "null-loader": "^4.0.1",
+    "nyc": "^17.0.0",
+    "raw-loader": "^4.0.2",
+    "standard": "^17.1.1",
+    "style-loader": "^4.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^4.1.1",
+    "vite-plugin-raw": "^1.0.3",
+    "vitest": "^2.1.1",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0",
+    "webpack-merge": "^6.0.1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "baconjs": "^3.0.19",
+    "d3-axis": "^3.0.0",
+    "d3-brush": "^3.0.0",
+    "d3-drag": "^3.0.0",
+    "d3-dsv": "^3.0.1",
+    "d3-request": "^1.0.6",
+    "d3-scale": "^4.0.2",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0",
+    "file-saver": "^2.0.5",
+    "gif.js": "^0.2.0",
+    "gsap": "^3.12.5",
+    "immutability-helper": "^3.1.1",
+    "mousetrap": "^1.5.3",
+    "preact": "^10.23.2",
+    "underscore": "^1.8.3",
+    "vkbeautify": "^0.99.1"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/webpack --config webpack.prod.js",
+    "watch": "./node_modules/.bin/webpack --config webpack.prod.js --watch",
+    "start": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js",
+    "clean": "rm -r dist/*; rm -r py/escher/static/*",
+    "test": "VITE_ESCHER_VERSION=$(npm pkg get version | tr -d '\"') vitest run src/tests/*.js",
+    "copy": "cp dist/escher.min.js dist/index.js && cp package.json py/escher/static/ && cp jupyter/notebook-extension.js py/escher/static/extension.js && cp dist/escher.min.* py/escher/static/ && mkdir -p py/escher/static/jsonschema; cp jsonschema/* py/escher/static/jsonschema/",
+    "coverage": "vitest run --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "nyc": {
+    "include": [
+      "src/*.js"
+    ],
+    "instrument": false,
+    "sourceMap": false
+  },
+  "jupyterlab": {
+    "extension": "jupyter/lab-extension"
+  }
+}
