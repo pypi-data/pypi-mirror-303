@@ -1,0 +1,29 @@
+[package]
+name = "snapr"
+edition = "2021"
+description = "Library enabling a flexible and frictionless way to render snapshots of maps with overlayed geometries. "
+categories = ["science::geo"]
+keywords = ["geo", "geography", "geospatial", "maps"]
+repository = "https://github.com/c1m50c/snapr"
+
+# Shared Package Configuration
+authors.workspace = true
+license.workspace = true
+version.workspace = true
+readme = "README.md"
+
+[features]
+default = ["drawing", "rayon", "svg"]
+drawing = ["dep:hex", "dep:tiny-skia"]
+rayon = ["dep:rayon"]
+svg = ["dep:resvg", "drawing"]
+
+[dependencies]
+anyhow.workspace = true
+geo.workspace = true
+hex = { workspace = true, optional = true }
+image.workspace = true
+rayon = { workspace = true, optional = true }
+resvg = { workspace = true, optional = true }
+thiserror.workspace = true
+tiny-skia = { workspace = true, optional = true }
