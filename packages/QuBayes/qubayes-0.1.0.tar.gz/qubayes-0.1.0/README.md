@@ -1,0 +1,75 @@
+# QuBayes
+
+QuBayes is a Python package for performing quantum Bayesian inference using Qiskit. It provides a framework for representing Bayesian networks, converting them into quantum circuits, and applying them to real-world problems such as chip yield analysis.
+
+## Features
+
+- Bayesian network representation and manipulation
+  - Create, modify, and analyze Bayesian networks
+  - Calculate node degrees and perform topological sorting
+  - Perform simple inference using variable elimination
+- Conversion of Bayesian networks to quantum circuits using Qiskit
+  - Map nodes to qubits and conditional probabilities to qubit states
+  - Generate efficient quantum circuits ready for visualization and verification
+- Inference on quantum circuits for probabilistic reasoning
+  - Perform inference tasks on the generated quantum circuits
+  - Interpret and visualize results for insights into the modeled problem
+- Application to real-world problems like chip yield analysis
+  - Easily adapt QuBayes to analyze chip fabrication data and predict yields
+  - Extensible design allows for accommodating different types of chip data and analysis needs
+- Modular and extensible design for easy adaptation to other domains
+  - Well-structured codebase following object-oriented design principles
+  - Documented and tested for reliability and ease of use
+
+## Installation
+
+To install QuBayes, simply run:
+```
+pip install qubayes
+```
+
+
+## Usage
+
+Here's a simple example of how to use QuBayes to create a Bayesian network and convert it to a quantum circuit:
+
+```python
+from qubayes.bayesnet import BayesNet
+from qubayes.quantum import QuantumBayesNet
+
+# Create a Bayesian network
+bn = BayesNet()
+bn.add_node('A')
+bn.add_node('B')
+bn.add_edge('A', 'B')
+
+# Convert to quantum circuit
+qbn = QuantumBayesNet(bn)
+qc = qbn.to_circuit()
+Visualize the circuit
+qc.draw()
+```
+
+(Not implemented yet) For more detailed examples and tutorials, please see the [Documentation](https://qubayes.readthedocs.io/).
+
+
+
+## Acknowledgements
+
+QuBayes is released under the [Apache License 2.0](LICENSE).
+
+If you use QuBayes in your research, please cite it as follows:
+
+```bibtex
+@misc{QuBayes,
+author = {Zi-ming Li, Zeji Li},
+title = {QuBayes: A Python Package for Quantum Bayesian Inference},
+year = {2024},
+publisher = {GitHub},
+journal = {GitHub repository},
+howpublished = {\url{https://github.com/BaksiLi/QuBayes}},
+primaryClass = {quant-ph}
+}
+```
+
+(Not implemented yet) Contributions to QuBayes are welcome! Please see the [Contributing Guide](CONTRIBUTING.md) for guidelines on how to contribute code, documentation, or bug reports.
