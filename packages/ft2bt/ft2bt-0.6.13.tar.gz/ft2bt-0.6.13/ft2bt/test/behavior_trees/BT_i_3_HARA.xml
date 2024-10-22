@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<root main_tree_to_execute="BehaviorTree">
+  <BehaviorTree ID="BehaviorTree">
+    <SubTree ID="I_3"/>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="I_3">
+    <Fallback>
+      <Sequence>
+        <Condition ID="condition_OS₁" name="Event_condition_OS₁"/>
+        <SubTree ID="OS₁"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₂" name="Event_condition_OS₂"/>
+        <SubTree ID="OS₂"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₃" name="Event_condition_OS₃"/>
+        <SubTree ID="OS₃"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₁">
+    <Fallback>
+      <Sequence>
+        <Condition ID="HZ_31_OS₁" name="Event_HZ_31_OS₁"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="HZ_32_OS₁" name="Event_HZ_32_OS₁"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₂">
+    <Fallback>
+      <Sequence>
+        <Condition ID="HZ_31_OS₂" name="Event_HZ_31_OS₂"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="HZ_32_OS₂" name="Event_HZ_32_OS₂"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₃">
+    <Fallback>
+      <Sequence>
+        <Condition ID="HZ_31_OS₃" name="Event_HZ_31_OS₃"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="HZ_32_OS₃" name="Event_HZ_32_OS₃"/>
+        <Action ID="SS_01" name="Action_SS_01"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <TreeNodesModel>
+    <SubTree/>
+    <Condition/>
+  </TreeNodesModel>
+</root>
