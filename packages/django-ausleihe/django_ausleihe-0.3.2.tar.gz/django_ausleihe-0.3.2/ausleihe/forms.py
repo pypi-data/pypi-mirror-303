@@ -1,0 +1,163 @@
+import re
+
+from django import forms
+from django.core.exceptions import ValidationError
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (
+    Submit,
+    Layout,
+    Div,
+    Field,
+    Row,
+    Column,
+)
+from crispy_forms.bootstrap import (
+    InlineCheckboxes,
+)
+
+from .models import (
+    Raum,
+    Skill,
+)
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = [
+            "nummer",
+            "name",
+            "anzahl_plaetze",
+            "min_personen",
+            "max_personen",
+            "dauer",
+            "beschreibung",
+            "raeume",
+        ]
+        widgets = {
+            "raeume": forms.CheckboxSelectMultiple(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "skill"
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "Speichern"))
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Field("nummer"),
+                    css_class="col-3",
+                ),
+                Column(
+                    Field("name"),
+                ),
+            ),
+            Row(
+                Column(
+                    Field("anzahl_plaetze"),
+                ),
+                Column(
+                    Field("min_personen"),
+                ),
+                Column(
+                    Field("max_personen"),
+                ),
+                Column(
+                    Field("dauer"),
+                ),
+            ),
+            Row(
+                Column(
+                    Field("beschreibung"),
+                ),
+            ),
+            Row(
+                Column(
+                    InlineCheckboxes("raeume"),
+                ),
+            ),
+        )
+
+
+class RaumForm(forms.ModelForm):
+    class Meta:
+        model = Raum
+        fields = [
+            "name",
+            "lsf_id",
+            "anzahl_plaetze",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "raum"
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "Speichern"))
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Field("name"),
+                ),
+            ),
+            Row(
+                Column(
+                    Field("lsf_id"),
+                ),
+                Column(
+                    Field("anzahl_plaetze"),
+                ),
+            ),
+        )
+
+
+class RaumImportForm(forms.Form):
+    url = forms.URLField(
+        label="LSF URL",
+        help_text="Öffne einen Raum im LSF und kopiere die URL hier rein."
+    )
+    anzahl_plaetze = forms.IntegerField(
+        label="Anzahl verfügbarer Plätze",
+        help_text="Wie viele Plätze hat der Raum?",
+        min_value=0,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "raum_import"
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "Importieren"))
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    Field("url"),
+                ),
+            ),
+            Row(
+                Column(
+                    Field(
+                        "anzahl_plaetze",
+                        css_class="col-3"
+                    ),
+                ),
+            ),
+        )
+
+    def clean_url(self):
+        url = self.cleaned_data["url"]
+        param_regex = r"raum.rgid=(?P<raum_id>\d+)"
+
+        m = re.search(param_regex, url)
+        if not m:
+            raise ValidationError("URL enthält keine Raum-ID (z.B. raum.rgid=2342)")
+        else:
+            self.raum_id = m.group("raum_id")
+
+        if Raum.objects.filter(lsf_id=self.raum_id).exists():
+            raise ValidationError("Dieser Raum existiert schon!")
+
+        return url
