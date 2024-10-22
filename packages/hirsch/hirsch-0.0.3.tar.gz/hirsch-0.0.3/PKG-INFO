@@ -1,0 +1,42 @@
+Metadata-Version: 2.3
+Name: hirsch
+Version: 0.0.3
+Summary: Abstracted, continuous, and normalised of version of the Hirsch index (h-index) from academic writing for use as a statistical measure of even distribution
+Project-URL: Homepage, https://github.com/mwinokan/Hirsch/issues
+Project-URL: Bug Tracker, https://github.com/mwinokan/Hirsch/issues
+Author-email: Max Winokan <max@winokan.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: numpy
+Description-Content-Type: text/markdown
+
+# Hirsch 🦌
+Abstracted, continuous, and normalised of version of the Hirsch index (h-index) from academic writing for use as a statistical measure of even distribution
+
+## Installation
+
+```
+pip install hirsch
+```
+
+## Usage
+
+Get the h-index of some discrete data, e.g. the number of citations an author has received on their papers:
+
+```
+from hirsch import hirsch
+citations = [0, 1, 1, 2, 1, 6, 5, 13, 14, 10, 59, 145, 68]
+h = hirsch(citations)
+
+```
+
+Calculate a continuous h-index for some normalised and binned data, e.g. fractional populations:
+
+```
+from hirsch import hirsch
+fractions = [0.1,0.5,0.6,0.3,0.2,0.5,0.4]
+h = hirsch(fractions, x_max=1, precision=0.01)
+```

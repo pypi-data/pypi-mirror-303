@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+name = "hirsch"
+version = "0.0.3"
+authors = [
+    { name = "Max Winokan", email = "max@winokan.com" },
+]
+description = "Abstracted, continuous, and normalised of version of the Hirsch index (h-index) from academic writing for use as a statistical measure of even distribution"
+readme = "README.md"
+requires-python = ">=3.7"
+requires = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+]
+[project.urls]
+"Homepage" = "https://github.com/mwinokan/Hirsch/issues"
+"Bug Tracker" = "https://github.com/mwinokan/Hirsch/issues"
+[tool.hatch.build]
+include = [
+    "hirsch/*.py",
+]
