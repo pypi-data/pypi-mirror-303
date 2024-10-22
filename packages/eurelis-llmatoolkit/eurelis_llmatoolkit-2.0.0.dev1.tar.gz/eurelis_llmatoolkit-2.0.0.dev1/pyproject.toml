@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eurelis-llmatoolkit"
+version = "2.0.0dev1"
+authors = [
+  { name="Vincent LAMBERT", email="v.lambert@eurelis.com" },
+  { name="Jérôme DIAZ", email="j.diaz@eurelis.com" },
+  { name="Nicolas LOISY", email="n.loisy@eurelis.com " }
+]
+description = "Framework to build and manage IA based applications. Based on Langchain and LlamaIndex under the hood."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "python-dotenv==1.0.0",
+    "click==8.1.7"
+]
+
+[project.optional-dependencies]
+langchain = [
+    "langchain==0.2.2",
+    "langchain-community==0.2.2",
+    "langchain-core>=0.2.0,<0.3.0",
+    "tenacity==8.2.0",
+    "langsmith==0.1.69",
+    "httpx>=0.15.4,<0.25.0",
+    "sqlalchemy==2.0.21",
+    "rich==13.4.2",
+    "numpy==1.26.0",
+    "sentry-sdk==2.13.0",
+]
+llamaindex = [
+    "llama-index==0.11.14",
+    "llama-index-readers-web==0.2.3",
+    "sentry-sdk==2.13.0",
+]
+huggingface = [
+    "sentence_transformers==3.2.0",
+    "transformers==4.45.2",
+    "llama-index-embeddings-huggingface==0.3.1",
+]
+openai = [
+    "langchain-openai==0.1.8",
+]
+solr = [
+    "eurelis-langchain-solr-vectorstore==0.0.3"
+]
+chroma = [
+    "chromadb==0.4.13",
+    "llama-index-vector-stores-chroma==0.2.0"
+]
+sitemap = [
+    "lxml==4.9.3",
+    "beautifulsoup4==4.12.3"
+]
+chatbot = [
+    "gradio==3.47.1"
+]
+pdf = [
+    "pypdf==3.16.4",
+    "cryptography==41.0.7"
+]
+mongodb = [
+    "pymongo==4.9.2",
+    "llama-index-vector-stores-mongodb==0.3.2",
+    "llama-index-storage-docstore-mongodb==0.2.0",
+    "motor==3.6.0" 
+]
+markdown = [
+    "markdown==3.5.1"
+]
+selfcheck = [
+    "selfcheckgpt==0.1.4",
+    "lark==1.1.8"
+]
+fastapi = [
+    "fastapi==0.109.1"
+]
+test = [
+    "pytest==8.3.3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Eurelis/Eurelis-LlmaToolkit"
+"Bug Tracker" = "https://github.com/Eurelis/Eurelis-LlmaToolkit/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[project.scripts]
+llmatoolkit = "eurelis_llmatoolkit.llamaindex.console:main_cli"
