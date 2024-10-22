@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mkdocs-frontmatter-url"
+version = "0.1.1"
+authors = [
+    { name = "Jens Penny", email = "jens.penny+pypi@gmail.com"}
+]
+description = "A MKDocs plugin that generates a button for a URL defined in the frontmatter"
+readme = "README.md"
+keywords = ['mkdocs', 'plugin', 'frontmatter', 'url']
+requires-python = ">=3.8"
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3 :: Only',
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'mkdocs'
+]
+
+[project.urls]
+Repository = "https://github.com/JensPenny/mkdocs-frontmatter-url.git"
+
+[project.entry-points."mkdocs.plugins"]
+frontmatter-url = 'mkdocs_frontmatter_url.plugin:FrontmatterUrlPlugin'
