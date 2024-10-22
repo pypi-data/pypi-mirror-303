@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=42.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["htmlcov"]
+
+[project]
+name = "pyzfn"
+version = "0.1.13"
+description = "micromagnetic post processing library"
+authors = [
+    { name = "Mathieu Moalic", email = "matmoa@amu.edu.pl" },
+    { name = "Mateusz Zelent", email = "mateusz.zelent@amu.edu.pl" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "cmocean>=3.0",
+    "ipympl>=0.9",
+    "ipytree>=0.2",
+    "matplotlib>=3.6",
+    "numpy>=1.23",
+    "psutil>=5.9",
+    "tqdm>=4.64",
+    "zarr>=2.13",
+    "pyfftw>=0.13",
+    "nptyping>=2.4",
+    "matplotx>=0.3",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+]
+
+
+[tool.pytest.ini_options]
+addopts = "-v -p no:warnings --cov=pyzfn --cov-report=html --doctest-modules "
+testpaths = ["tests"]
+
+[tool.mypy]
+mypy_path = "pyzfn"
+check_untyped_defs = true
+disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true
+disallow_untyped_calls = false
+strict = true
+plugins = "numpy.typing.mypy_plugin"
+
+[tool.pyright]
+reportOptionalMemberAccess = false
