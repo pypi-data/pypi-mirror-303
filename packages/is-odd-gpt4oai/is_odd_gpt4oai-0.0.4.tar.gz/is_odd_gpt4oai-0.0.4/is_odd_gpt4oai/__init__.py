@@ -1,0 +1,1 @@
+from .main import is_odd_gpt4o
