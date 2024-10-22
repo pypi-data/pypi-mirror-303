@@ -1,0 +1,23 @@
+[project]
+name = "fedmind"
+version = "0.1.1a1"
+description = "Federated Learning research framework in your mind"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.1.2",
+    "pytest>=8.3.3",
+    "torch>=2.4.1",
+    "torchvision>=0.19.1",
+    "wandb>=0.18.5",
+]
+
+[project.scripts]
+new = "fedmind:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pyright]
+reportPrivateImportUsage = "none"
