@@ -1,0 +1,164 @@
+Metadata-Version: 2.1
+Name: gwemopt
+Version: 0.3.6
+Summary: A python package for GW-EM Followup Optimization
+Author-email: Michael Coughlin <michael.coughlin@ligo.org>
+License: GPLv3
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numba
+Requires-Dist: numpy>=1.7.1
+Requires-Dist: scipy>=1.2.1
+Requires-Dist: matplotlib>=1.2.0
+Requires-Dist: astropy>=1.1.1
+Requires-Dist: astropy-healpix
+Requires-Dist: python-dateutil
+Requires-Dist: mocpy>=0.16.0
+Requires-Dist: astroquery
+Requires-Dist: astroplan
+Requires-Dist: ephem
+Requires-Dist: pyyaml
+Requires-Dist: joblib
+Requires-Dist: ligo-segments
+Requires-Dist: ligo.skymap
+Requires-Dist: lxml
+Requires-Dist: h5py
+Requires-Dist: healpy
+Requires-Dist: ortools
+Requires-Dist: pandas
+Requires-Dist: pulp
+Requires-Dist: shapely
+Requires-Dist: tables
+Requires-Dist: regions
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-runner; extra == "test"
+Requires-Dist: pytest-rerunfailures; extra == "test"
+Requires-Dist: coverage; extra == "test"
+Requires-Dist: coveralls; extra == "test"
+Requires-Dist: freezegun; extra == "test"
+
+# gwemopt
+Gravitational-wave Electromagnetic Optimization
+
+[![Coverage Status](https://coveralls.io/repos/github/skyportal/gwemopt/badge.svg?branch=main)](https://coveralls.io/github/skyportal/gwemopt?branch=main)
+[![CI](https://github.com/skyportal/gwemopt/actions/workflows/continous_integration.yml/badge.svg)](https://github.com/skyportal/gwemopt/actions/workflows/continous_integration.yml)
+[![PyPI version](https://badge.fury.io/py/gwemopt.svg)](https://badge.fury.io/py/gwemopt)
+
+### Citing gwemopt
+
+When utilizing this code for a publication, kindly make a reference to the package by its name, gwemopt, and a citation to the software papers [Optimizing searches for electromagnetic counterparts of gravitational wave triggers](https://academic.oup.com/mnras/article/478/1/692/4987229) and [Teamwork Makes the Dream Work: Optimizing Multi-Telescope Observations of Gravitational-Wave Counterparts](https://academic.oup.com/mnras/article/489/4/5775/5565053). The BibTeX entry for the papers are:
+```bibtex
+@article{Coughlin:2018lta,
+    author = "Coughlin, Michael W. and others",
+    title = "{Optimizing searches for electromagnetic counterparts of gravitational wave triggers}",
+    eprint = "1803.02255",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.IM",
+    doi = "10.1093/mnras/sty1066",
+    journal = "Mon. Not. Roy. Astron. Soc.",
+    volume = "478",
+    number = "1",
+    pages = "692--702",
+    year = "2018"
+}
+```
+and
+```bibtex
+@article{Coughlin:2019qkn,
+    author = "Coughlin, Michael W. and others",
+    title = "{Optimizing multitelescope observations of gravitational-wave counterparts}",
+    eprint = "1909.01244",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.IM",
+    doi = "10.1093/mnras/stz2485",
+    journal = "Mon. Not. Roy. Astron. Soc.",
+    volume = "489",
+    number = "4",
+    pages = "5775--5783",
+    year = "2019"
+}
+```
+
+and for the ability to balance field exposures [Dynamic scheduling: target of opportunity observations of gravitational wave events](https://academic.oup.com/mnras/article/495/4/4366/5849447).
+
+```bibtex
+@article{Almualla:2020hbs,
+    author = "Almualla, Mouza and Coughlin, Michael W. and Anand, Shreya and Alqassimi, Khalid and Guessoum, Nidhal and Singer, Leo P.",
+    title = "{Dynamic Scheduling: Target of Opportunity Observations of Gravitational Wave Events}",
+    eprint = "2003.09718",
+    archivePrefix = "arXiv",
+    primaryClass = "astro-ph.HE",
+    doi = "10.1093/mnras/staa1498",
+    month = "3",
+    year = "2020"
+}
+```
+
+# Setting up the environment
+
+If you want the latest version, we recommend creating a clean environment:
+
+```commandline
+conda create -n gwemopt python=3.11
+git clone git@github.com:skyportal/gwemopt.git
+cd gwemopt
+pip install -e .
+pre-commit install
+```
+
+or if you just want the latest version released on PyPI:
+
+```commandline
+pip install gwemopt
+```
+
+If you run into dependency issues, you can try installing dependencies via conda:
+
+```
+conda install numpy scipy matplotlib astropy h5py shapely
+conda install -c astropy astroquery
+conda install -c conda-forge voeventlib astropy-healpix python-ligo-lw ligo-segments ligo.skymap ffmpeg
+```
+
+And then run `pip install -e .` again.
+
+# Usage
+
+Once installed, You can use gwemopt via the command line:
+
+```commandline
+gwemopt-run ....
+```
+
+where ... corresponds to the various arguments. 
+
+# Tests
+
+To run the tests, you'll first need to install gwemopt with the testing dependencies:
+
+```commandline
+pip install -e ".[test]"
+```
+
+Then you can run the tests using:
+
+```commandline
+coverage run -m pytest -v -s
+```
