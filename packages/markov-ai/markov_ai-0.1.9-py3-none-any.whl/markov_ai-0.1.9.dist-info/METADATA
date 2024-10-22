@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: markov-ai
+Version: 0.1.9
+Summary: A Python SDK for interacting with Markov AI
+Home-page: https://github.com/markov-ai-xyz/markov-ai-python-sdk
+Author: Anant Chandra
+Author-email: anantchandra98@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.25.1
+Requires-Dist: requests-toolbelt>=1.0.0
+
+[![Downloads](https://static.pepy.tech/badge/markov-ai)](https://pepy.tech/project/markov-ai)
+
+# Markov AI SDK
+
+Welcome to the Markov AI SDK 👋 
+This SDK offers a robust framework for creating and deploying knowledge graphs with vector embeddings, 
+enabling seamless data processing across various modalities for your projects.
+
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+
+## Features
+
+- **Modular Design**: Easily create and manage components of your pipeline.
+- **Scalability**: Build knowledge graphs that can scale with your ever-increasing enterprise data.
+- **User-Friendly**: Designed with simplicity in mind, making it accessible for both beginners and experienced developers.
+
+## Installation
+
+To install the Markov AI SDK, use pip:
+
+```bash
+pip install markov-ai
+```
+Make sure to have Python 3.8 or higher installed.
+
+## Quick Start
+
+Here's a quick example to get you started:
+
+```
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+api_key = os.getenv('MARKOV_AI_API_KEY')
+db_uri = os.getenv('DB_URI')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+
+from markov_ai import Component, DatabaseService, Destination, Pipeline
+
+destination = Destination.from_credentials(DatabaseService.NEO4J, db_uri, db_user, db_password)
+pipeline = Pipeline(api_key=api_key, destination=destination)
+
+component = Component('DataLoader', source='./sample_content/apple.txt')
+pipeline.add(component)
+
+pipeline.run()
+```
+
+## Usage
+
+The SDK allows you to define various components of your pipeline, such as data loaders, preprocessors, model trainers, and evaluators. 
+You can customize each component to fit your specific needs.
+
+### Example Components
+* DataLoader: Load data from various sources (CSV, databases, etc.).
+* PreProcessor: Clean and preprocess your data.
+* ModelTrainer: Train your model using different algorithms.
+* Evaluator: Evaluate the performance of your model.
+
+## API Reference
+
+For detailed information about the API and available components, please refer to the [API Documentation](https://markovai.xyz/docs).
+
+## Contributing
+
+We welcome contributions! Please read our [Contributing Guidelines](https://markovai.xyz/contributing-guidelines) to get started.
