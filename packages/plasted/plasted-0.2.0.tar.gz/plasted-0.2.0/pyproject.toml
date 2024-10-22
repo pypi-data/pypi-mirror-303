@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "plasted"
+version = "0.2.0"
+description = "A WSGI app maded from a PLASTER_URI environment variable."
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+homepage = "https://github.com/mardiros/plasted"
+repository = "https://github.com/mardiros/plasted"
+readme = "README.md"
+include = ["CHANGELOG.md"]
+packages = [{ include = "plasted", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+plaster = "^1.1.2"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+plaster-yaml = "^2.0.0"
+mypy = "^1.12.0"
+webtest = "^3.0.1"
+
+[tool.poetry.group.functest]
+optional = true
+
+[tool.poetry.group.functest.dependencies]
+uwsgi = "^2.0.27"
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+    "B",   # bug bear security warning
+    "I",   # isort import order
+    "F",   # pyflakes
+    "UP",  # alter when better syntax is available
+    "RUF", #  the ruff devleoper's own rules
+]
+
+[[tool.mypy.overrides]]
+disallow_any_generics = true
+disallow_untyped_defs = true
+module = "plasted.*"
+
+[[tool.mypy.overrides]]
+module = ["plaster"]
+ignore_missing_imports = true
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

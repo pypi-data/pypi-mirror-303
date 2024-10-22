@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: plasted
+Version: 0.2.0
+Summary: A WSGI app maded from a PLASTER_URI environment variable.
+Home-page: https://github.com/mardiros/plasted
+Author: Guillaume Gauvrit
+Author-email: guillaume@gauvr.it
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: plaster (>=1.1.2,<2.0.0)
+Project-URL: Repository, https://github.com/mardiros/plasted
+Description-Content-Type: text/markdown
+
+# Plasted
+
+Fix the problem to run an WSGI app configured with plaster using uwsgi.
+
+uwsgi as many loader, but it does not support plaster, only the old paste.ini
+format.
+
+Plasted
+
+```bash
+export PLASTER_URI=file+yaml://test.yaml
+uwsgi -M --workers 1 --http 127.0.0.1:8000  --module pasted:app
+```
+
