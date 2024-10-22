@@ -1,0 +1,36 @@
+{% load static %}
+
+<section id="why-us" class="why-us">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="content">
+          <h3>{{ why_us_major.title }}</h3>
+          <p>
+            {{ why_us_major.contents|safe }}
+          </p>
+          <div class="text-center">
+            <a href="{{ why_us_major.btn.link }}" class="more-btn">{{ why_us_major.btn.title }} <i class="bx bx-chevron-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 d-flex align-items-stretch">
+        <div class="icon-boxes d-flex flex-column justify-content-center">
+          <div class="row">
+            {% for item in why_us_minors %}
+            <div class="col-xl-4 d-flex align-items-stretch">
+              <div class="icon-box mt-4 mt-xl-0">
+                <i class="bx {{ item.icon }}"></i>
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.contents }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div><!-- End .content-->
+      </div>
+    </div>
+
+  </div>
+</section>
