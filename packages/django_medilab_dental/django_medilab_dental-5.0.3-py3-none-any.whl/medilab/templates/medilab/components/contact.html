@@ -1,0 +1,91 @@
+<style>
+  .contact .info .timetable:hover i {
+    background: #1977cc;
+    color: #fff;
+  }
+  .contact .info .timetable table tr th, .contact .info table tr td {
+  color: #485664;
+  margin-bottom: 30px;
+  font-size: 15px;
+  }
+
+</style>
+<section id="contact" class="contact">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>{{ contact_title }}</h2>
+      <p>{{ contact_subtitle }}</p>
+    </div>
+  </div>
+
+  <div>
+    <iframe style="border:0; width: 100%; height: 350px;" src="{{ contact.google_map }}" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="container">
+    <div class="row mt-5">
+
+      <div class="col-lg-6">
+        <div class="info">
+          <div class="address">
+            <i class="bi {{ contact.info1.0 }}"></i>
+            <h4>{{ contact.info1.1 }}:</h4>
+            {% autoescape off %}
+            <p>{{ contact.info1.2 }}</p>
+            {% endautoescape %}
+          </div>
+
+          <div class="email">
+            <i class="bi {{ contact.info2.0 }}"></i>
+            <h4>{{ contact.info2.1 }}:</h4>
+            {% autoescape off %}
+            <p>{{ contact.info2.2 }}</p>
+            {% endautoescape %}
+          </div>
+
+          <div class="phone">
+            <i class="bi {{ contact.info3.0 }}"></i>
+            <h4>{{ contact.info3.1 }}:</h4>
+            {% autoescape off %}
+            <p>{{ contact.info3.2 }}</p>
+            {% endautoescape %}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="info">
+          <div class="timetable">
+            <i class="bi bi-alarm"></i>
+            <h4>{{ timetable.title }}:</h4>
+            <div class="mx-5">
+            <table class="table table-borderless">
+              <tbody>
+                {% for key, value in timetable.desc.items %}
+                <tr>
+                  <th scope="row">{{ key }}</th>
+                  <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            </div>
+            <div class="mx-4">
+              {% autoescape off%}
+              {% for p in timetable.note %}
+              <p class="fst-italic fw-light">{{ p }}</p>
+              {% endfor %}
+              {% endautoescape %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
