@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: arclight
+Version: 0.14.dev0
+Summary: A language server for Bioware's nwscript and more!
+Home-page: https://github.com/jd28/arclight-py
+Keywords: nwscript,Neverwinter Nights,completion,lsp,language-server-protocol
+Author: jmd
+Author-email: joshua.m.dean@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Dist: cattrs (>=23.1.2)
+Requires-Dist: docstring-to-markdown (==0.*)
+Requires-Dist: lsprotocol (>=2022.0.0a9)
+Requires-Dist: pygls (>=1.2.1,<2.0.0)
+Requires-Dist: rollnw (>=0.41.dev0)
+Project-URL: Repository, https://github.com/jd28/arclight-py
+Description-Content-Type: text/markdown
+
+[![PyPI version](https://badge.fury.io/py/arclight.svg)](https://badge.fury.io/py/arclight)
+
+# Arclight.py
+
+These are tools related to the Arclight project
+
+## Installation
+
+Ideally, create and activate a Python venv.
+
+```
+pip install arclight
+```
+
+To uninstall delete the venv created above.
+
+## [nwscriptd](arclight/nwscriptd/README.md)
+
+A language server for nwscript. See the [README](arclight/nwscriptd/README.md).
+
+## nwscript-lint
+
+A wrapper around the script parser and resolver
+
+```
+usage: nwscript-lint [-h] [-I INCLUDE] [--no-install] [--no-user] scripts [scripts ...]
+
+A linter for nwscript.
+
+positional arguments:
+  scripts               List of scripts to lint.
+
+options:
+  -h, --help            show this help message and exit
+  -I INCLUDE, --include INCLUDE
+                        Include path(s).
+  --no-install          Disable loading game install files.
+  --no-user             Disable user install files.
+```
+
+Sample output:
+
+![output](screenshots/nwscript-lint-2024-10-21.png)
+
