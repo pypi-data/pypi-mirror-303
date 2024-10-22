@@ -1,0 +1,173 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs",
+  "hatchling",
+]
+
+[project]
+name = "tap-dbf"
+description = "Singer tap for DBF files"
+readme = "README.md"
+keywords = [
+  "dBase",
+  "dbf",
+  "ELT",
+  "singer.io",
+]
+license = "Apache-2.0"
+maintainers = [
+  { name = "Edgar R. Mondragón", email = "edgarrm358@gmail.com" },
+]
+authors = [
+  { name = "Edgar R. Mondragón", email = "edgarrm358@gmail.com" },
+]
+requires-python = ">=3.8"
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Database",
+]
+dynamic = [
+  "version",
+]
+dependencies = [
+  "dbfread~=2.0.7",
+  "fsspec~=2024.10.0",
+  "singer-sdk~=0.41.0",
+]
+optional-dependencies.dev = [
+  "tap-dbf[gcs,s3,testing,typing]",
+]
+optional-dependencies.gcs = [
+  "gcsfs~=2024.10.0",
+]
+optional-dependencies.s3 = [
+  "s3fs~=2024.10.0",
+]
+optional-dependencies.testing = [
+  "deptry>=0.12",
+  "pytest>=7.4",
+  "pytest-github-actions-annotate-failures~=0.2.0",
+  "singer-sdk[testing]",
+]
+optional-dependencies.typing = [
+  "mypy",
+  "typing-extensions>=4.7.1; python_version<'3.11'",
+]
+urls.Documentation = "https://github.com/edgarrmondragon/tap-dbf#readme"
+urls.Homepage = "https://github.com/edgarrmondragon/tap-dbf"
+urls.Repository = "https://github.com/edgarrmondragon/tap-dbf"
+scripts."tap-dbf" = "tap_dbf.tap:TapDBF.cli"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.envs.sync]
+features = [
+  "gcs",
+  "s3",
+]
+[tool.hatch.envs.sync.scripts]
+console = "tap-dbf {args}"
+jsonl = "tap-dbf {args} > tap-dbf.jsonl"
+
+[tool.hatch.envs.test]
+features = [
+  "testing",
+]
+[tool.hatch.envs.test.scripts]
+integration = "pytest {args:tests}"
+dependencies = "deptry ."
+
+[tool.hatch.envs.all]
+template = "test"
+[[tool.hatch.envs.all.matrix]]
+python = [
+  "3.8",
+  "3.9",
+  "3.10",
+  "3.11",
+  "3.12",
+  "3.13",
+]
+
+[tool.hatch.envs.typing]
+features = [
+  "testing",
+  "typing",
+]
+[tool.hatch.envs.typing.scripts]
+check = "mypy --strict {args:tap_dbf tests}"
+
+[tool.ruff]
+src = [
+  "tap_dbf",
+  "tests",
+]
+lint.select = [
+  "ALL",
+]
+lint.ignore = [
+  "ANN101",
+  "COM812",
+  "CPY",
+  "DJ",
+  "ISC001",
+  "PD",
+]
+lint.per-file-ignores."tests/*" = [
+  "ANN201",
+]
+lint.unfixable = [
+  "ERA001", # commented-out-code
+]
+lint.flake8-annotations.allow-star-arg-any = true
+lint.isort.known-first-party = [
+  "tap_dbf",
+]
+lint.isort.required-imports = [
+  "from __future__ import annotations",
+]
+lint.pydocstyle.convention = "google"
+lint.preview = true
+
+[tool.deptry.package_module_name_map]
+mypy = "mypy"
+s3fs = "s3fs"
+tap-dbf = "tap_dbf"
+
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+  "deptry",
+  "gcsfs",
+  "mypy",
+  "pytest",
+  "pytest-github-actions-annotate-failures",
+  "s3fs",
+]
+
+[tool.pyproject-fmt]
+max_supported_python = "3.13"
+
+[tool.pytest.ini_options]
+addopts = "-vvv"
+
+[tool.mypy]
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "dbfread.*",
+  "fsspec.*",
+]
