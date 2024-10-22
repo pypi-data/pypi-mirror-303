@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: mbank-csv-export
+Version: 0.2.0
+Summary: Quick & reliable operations csv exporter for mBank.
+Author: Marcin Tyszkiewicz
+Author-email: 56219944+mtyszkiewicz@users.noreply.github.com
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: playwright (>=1.44.0,<2.0.0)
+Requires-Dist: pydantic-settings (>=2.3.1,<3.0.0)
+Requires-Dist: python-dateutil (>=2.9.0.post0,<3.0.0)
+Description-Content-Type: text/markdown
+
+# mbank-csv-export
+
+Hey, if you're looking for a tool to automagically export transactions from mBank then you've come to the right place!
+
+Many projects successfully attempt to parse the crappy mBank CSV operations, but few reliably automate the extraction process. 
+I adopted a modular architecture:
+
+`mbank-export` exports transaction CSV files from mBank as a string.
+ - Uses Playwright for automated browser interactions.
+ - Saves browser state to maintain session continuity, minimizing the need for repeated mobile authentication.
+
+`mbank-parser` parses the raw transactions and converts to a desired data format.
+
+## Installation
+```shell
+pip install mbank-csv-export
+```
+
+## Auth
+Set `MBANK_USERNAME` and `MBANK_PASSWORD` environment variables or quick start by running `mbank --username username --password password`.
+
+## CLI
+```shell
+# Export last month operations, parse and format as clean csv:  
+mbank-export | mbank-parser
+
+# Export raw operations data from 2024-05-01 to 2024-09-30:  
+mbank-export --date-from '2024-05-01' --date-to '2024-09-30' > raw-operations.txt
+
+# Then parse and format those raw operations into json:  
+cat raw-operations.txt | mbank-parser --format json
+
+# Or in one line:  
+mbank-export --date-from '2024-05-01' --date-to '2024-09-30' | mbank-parser --format json
+```
+
+## Python package
+```python
+from datetime import date
+
+from mbank_csv_export import MBank, parse_raw_operations, operations_to_csv
+
+mbank = MBank(headless=False)
+mbank.login(username="1111222233334444", password="***")
+
+csv_content: str = mbank.export_operations_csv(
+    date_from=date(2024, 5, 1), 
+    date_to=date(2024, 9, 30)
+)
+
+operations: list[dict] = parse_raw_operations(csv_content)
+operations_csv: str = operations_to_csv(operations)
+print(operations_csv)
+```
+
+
+
+
+
+
+
+
