@@ -1,0 +1,851 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "moapy",
+    "description": "Schema for moapy",
+    "version": "0.9.6"
+  },
+  "servers": [
+    {
+      "url": "https://moa.rpm.kr-dv-midasit.com/backend/python-executor/"
+    },
+    {
+      "url": "https://moa.rpm.kr-st-midasit.com/backend/function-executor/python-execute/"
+    }
+  ],
+  "paths": {
+    "/execute?functionId=moapy-wgsd-wgsd_sectionproperty-calc_sectprop": {
+      "post": {
+        "summary": "Calculate Section Property",
+        "description": "Calculate Section Property",
+        "operationId": "calc sectprop",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "polygon": {
+                    "properties": {
+                      "points": {
+                        "items": {
+                          "properties": {
+                            "x": {
+                              "properties": {
+                                "value": {
+                                  "type": "number",
+                                  "title": "Value",
+                                  "description": "Length",
+                                  "default": 0.0
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "enum": [
+                                    "mm",
+                                    "m",
+                                    "in",
+                                    "ft"
+                                  ],
+                                  "title": "enUnitLength",
+                                  "default": "mm"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Length",
+                              "description": "Length"
+                            },
+                            "y": {
+                              "properties": {
+                                "value": {
+                                  "type": "number",
+                                  "title": "Value",
+                                  "description": "Length",
+                                  "default": 0.0
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "enum": [
+                                    "mm",
+                                    "m",
+                                    "in",
+                                    "ft"
+                                  ],
+                                  "title": "enUnitLength",
+                                  "default": "mm"
+                                }
+                              },
+                              "type": "object",
+                              "title": "Length",
+                              "description": "Length"
+                            }
+                          },
+                          "type": "object",
+                          "required": [
+                            "x",
+                            "y"
+                          ],
+                          "title": "Point",
+                          "dataclassname": "moapy.data_pre.Point"
+                        },
+                        "type": "array",
+                        "title": "Points",
+                        "description": "Outer Polygon",
+                        "default": [
+                          {
+                            "x": {
+                              "unit": "mm",
+                              "value": 0.0
+                            },
+                            "y": {
+                              "unit": "mm",
+                              "value": 0.0
+                            }
+                          },
+                          {
+                            "x": {
+                              "unit": "mm",
+                              "value": 400.0
+                            },
+                            "y": {
+                              "unit": "mm",
+                              "value": 0.0
+                            }
+                          },
+                          {
+                            "x": {
+                              "unit": "mm",
+                              "value": 400.0
+                            },
+                            "y": {
+                              "unit": "mm",
+                              "value": 600.0
+                            }
+                          },
+                          {
+                            "x": {
+                              "unit": "mm",
+                              "value": 0.0
+                            },
+                            "y": {
+                              "unit": "mm",
+                              "value": 600.0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "type": "object",
+                    "title": "GSD Outer Polygon",
+                    "dataclassname": "moapy.data_pre.OuterPolygon"
+                  }
+                },
+                "type": "object",
+                "required": [
+                  "polygon"
+                ],
+                "title": "calc sectprop"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "Area": {
+                      "type": "number",
+                      "title": "Area",
+                      "description": "Area",
+                      "default": 0.0
+                    },
+                    "Asy": {
+                      "type": "number",
+                      "title": "Asy",
+                      "description": "Asy",
+                      "default": 0.0
+                    },
+                    "Asz": {
+                      "type": "number",
+                      "title": "Asz",
+                      "description": "Asz",
+                      "default": 0.0
+                    },
+                    "Ixx": {
+                      "type": "number",
+                      "title": "Ixx",
+                      "description": "Ixx",
+                      "default": 0.0
+                    },
+                    "Iyy": {
+                      "type": "number",
+                      "title": "Iyy",
+                      "description": "Iyy",
+                      "default": 0.0
+                    },
+                    "Izz": {
+                      "type": "number",
+                      "title": "Izz",
+                      "description": "Izz",
+                      "default": 0.0
+                    },
+                    "Cy": {
+                      "type": "number",
+                      "title": "Cy",
+                      "description": "Cy",
+                      "default": 0.0
+                    },
+                    "Cz": {
+                      "type": "number",
+                      "title": "Cz",
+                      "description": "Cz",
+                      "default": 0.0
+                    },
+                    "Syp": {
+                      "type": "number",
+                      "title": "Syp",
+                      "description": "Syp",
+                      "default": 0.0
+                    },
+                    "Sym": {
+                      "type": "number",
+                      "title": "Sym",
+                      "description": "Sym",
+                      "default": 0.0
+                    },
+                    "Szp": {
+                      "type": "number",
+                      "title": "Szp",
+                      "description": "Szp",
+                      "default": 0.0
+                    },
+                    "Szm": {
+                      "type": "number",
+                      "title": "Szm",
+                      "description": "Szm",
+                      "default": 0.0
+                    },
+                    "Ipyy": {
+                      "type": "number",
+                      "title": "Ipyy",
+                      "description": "Ipyy",
+                      "default": 0.0
+                    },
+                    "Ipzz": {
+                      "type": "number",
+                      "title": "Ipzz",
+                      "description": "Ipzz",
+                      "default": 0.0
+                    },
+                    "Zy": {
+                      "type": "number",
+                      "title": "Zy",
+                      "description": "Zy",
+                      "default": 0.0
+                    },
+                    "Zz": {
+                      "type": "number",
+                      "title": "Zz",
+                      "description": "Zz",
+                      "default": 0.0
+                    },
+                    "ry": {
+                      "type": "number",
+                      "title": "Ry",
+                      "description": "ry",
+                      "default": 0.0
+                    },
+                    "rz": {
+                      "type": "number",
+                      "title": "Rz",
+                      "description": "rz",
+                      "default": 0.0
+                    }
+                  },
+                  "type": "object",
+                  "title": "Section Property",
+                  "description": "Section Property"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "items": {
+                        "properties": {
+                          "loc": {
+                            "items": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "type": "array",
+                            "title": "Location"
+                          },
+                          "msg": {
+                            "type": "string",
+                            "title": "Message"
+                          },
+                          "type": {
+                            "type": "string",
+                            "title": "Error Type"
+                          }
+                        },
+                        "type": "object",
+                        "required": [
+                          "loc",
+                          "msg",
+                          "type"
+                        ],
+                        "title": "ValidationError"
+                      },
+                      "type": "array",
+                      "title": "Detail"
+                    }
+                  },
+                  "type": "object",
+                  "title": "HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "properties": {
+                "loc": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "title": "Location"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "Message"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Error Type"
+                }
+              },
+              "type": "object",
+              "required": [
+                "loc",
+                "msg",
+                "type"
+              ],
+              "title": "ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Length": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "title": "Value",
+            "description": "Length",
+            "default": 0.0
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "mm",
+              "m",
+              "in",
+              "ft"
+            ],
+            "title": "enUnitLength",
+            "default": "mm"
+          }
+        },
+        "type": "object",
+        "title": "Length",
+        "description": "Length"
+      },
+      "OuterPolygon": {
+        "properties": {
+          "points": {
+            "items": {
+              "properties": {
+                "x": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 0.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                },
+                "y": {
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "title": "Value",
+                      "description": "Length",
+                      "default": 0.0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "mm",
+                        "m",
+                        "in",
+                        "ft"
+                      ],
+                      "title": "enUnitLength",
+                      "default": "mm"
+                    }
+                  },
+                  "type": "object",
+                  "title": "Length",
+                  "description": "Length"
+                }
+              },
+              "type": "object",
+              "required": [
+                "x",
+                "y"
+              ],
+              "title": "Point",
+              "dataclassname": "moapy.data_pre.Point"
+            },
+            "type": "array",
+            "title": "Points",
+            "description": "Outer Polygon",
+            "default": [
+              {
+                "x": {
+                  "unit": "mm",
+                  "value": 0.0
+                },
+                "y": {
+                  "unit": "mm",
+                  "value": 0.0
+                }
+              },
+              {
+                "x": {
+                  "unit": "mm",
+                  "value": 400.0
+                },
+                "y": {
+                  "unit": "mm",
+                  "value": 0.0
+                }
+              },
+              {
+                "x": {
+                  "unit": "mm",
+                  "value": 400.0
+                },
+                "y": {
+                  "unit": "mm",
+                  "value": 600.0
+                }
+              },
+              {
+                "x": {
+                  "unit": "mm",
+                  "value": 0.0
+                },
+                "y": {
+                  "unit": "mm",
+                  "value": 600.0
+                }
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "GSD Outer Polygon",
+        "dataclassname": "moapy.data_pre.OuterPolygon"
+      },
+      "Point": {
+        "properties": {
+          "x": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 0.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Length"
+          },
+          "y": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "title": "Value",
+                "description": "Length",
+                "default": 0.0
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "mm",
+                  "m",
+                  "in",
+                  "ft"
+                ],
+                "title": "enUnitLength",
+                "default": "mm"
+              }
+            },
+            "type": "object",
+            "title": "Length",
+            "description": "Length"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "Point",
+        "dataclassname": "moapy.data_pre.Point"
+      },
+      "SectionProperty": {
+        "properties": {
+          "Area": {
+            "type": "number",
+            "title": "Area",
+            "description": "Area",
+            "default": 0.0
+          },
+          "Asy": {
+            "type": "number",
+            "title": "Asy",
+            "description": "Asy",
+            "default": 0.0
+          },
+          "Asz": {
+            "type": "number",
+            "title": "Asz",
+            "description": "Asz",
+            "default": 0.0
+          },
+          "Ixx": {
+            "type": "number",
+            "title": "Ixx",
+            "description": "Ixx",
+            "default": 0.0
+          },
+          "Iyy": {
+            "type": "number",
+            "title": "Iyy",
+            "description": "Iyy",
+            "default": 0.0
+          },
+          "Izz": {
+            "type": "number",
+            "title": "Izz",
+            "description": "Izz",
+            "default": 0.0
+          },
+          "Cy": {
+            "type": "number",
+            "title": "Cy",
+            "description": "Cy",
+            "default": 0.0
+          },
+          "Cz": {
+            "type": "number",
+            "title": "Cz",
+            "description": "Cz",
+            "default": 0.0
+          },
+          "Syp": {
+            "type": "number",
+            "title": "Syp",
+            "description": "Syp",
+            "default": 0.0
+          },
+          "Sym": {
+            "type": "number",
+            "title": "Sym",
+            "description": "Sym",
+            "default": 0.0
+          },
+          "Szp": {
+            "type": "number",
+            "title": "Szp",
+            "description": "Szp",
+            "default": 0.0
+          },
+          "Szm": {
+            "type": "number",
+            "title": "Szm",
+            "description": "Szm",
+            "default": 0.0
+          },
+          "Ipyy": {
+            "type": "number",
+            "title": "Ipyy",
+            "description": "Ipyy",
+            "default": 0.0
+          },
+          "Ipzz": {
+            "type": "number",
+            "title": "Ipzz",
+            "description": "Ipzz",
+            "default": 0.0
+          },
+          "Zy": {
+            "type": "number",
+            "title": "Zy",
+            "description": "Zy",
+            "default": 0.0
+          },
+          "Zz": {
+            "type": "number",
+            "title": "Zz",
+            "description": "Zz",
+            "default": 0.0
+          },
+          "ry": {
+            "type": "number",
+            "title": "Ry",
+            "description": "ry",
+            "default": 0.0
+          },
+          "rz": {
+            "type": "number",
+            "title": "Rz",
+            "description": "rz",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "title": "Section Property",
+        "description": "Section Property"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "calc_sectprop": {
+        "properties": {
+          "polygon": {
+            "properties": {
+              "points": {
+                "items": {
+                  "properties": {
+                    "x": {
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "title": "Value",
+                          "description": "Length",
+                          "default": 0.0
+                        },
+                        "unit": {
+                          "type": "string",
+                          "enum": [
+                            "mm",
+                            "m",
+                            "in",
+                            "ft"
+                          ],
+                          "title": "enUnitLength",
+                          "default": "mm"
+                        }
+                      },
+                      "type": "object",
+                      "title": "Length",
+                      "description": "Length"
+                    },
+                    "y": {
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "title": "Value",
+                          "description": "Length",
+                          "default": 0.0
+                        },
+                        "unit": {
+                          "type": "string",
+                          "enum": [
+                            "mm",
+                            "m",
+                            "in",
+                            "ft"
+                          ],
+                          "title": "enUnitLength",
+                          "default": "mm"
+                        }
+                      },
+                      "type": "object",
+                      "title": "Length",
+                      "description": "Length"
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "title": "Point",
+                  "dataclassname": "moapy.data_pre.Point"
+                },
+                "type": "array",
+                "title": "Points",
+                "description": "Outer Polygon",
+                "default": [
+                  {
+                    "x": {
+                      "unit": "mm",
+                      "value": 0.0
+                    },
+                    "y": {
+                      "unit": "mm",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "x": {
+                      "unit": "mm",
+                      "value": 400.0
+                    },
+                    "y": {
+                      "unit": "mm",
+                      "value": 0.0
+                    }
+                  },
+                  {
+                    "x": {
+                      "unit": "mm",
+                      "value": 400.0
+                    },
+                    "y": {
+                      "unit": "mm",
+                      "value": 600.0
+                    }
+                  },
+                  {
+                    "x": {
+                      "unit": "mm",
+                      "value": 0.0
+                    },
+                    "y": {
+                      "unit": "mm",
+                      "value": 600.0
+                    }
+                  }
+                ]
+              }
+            },
+            "type": "object",
+            "title": "GSD Outer Polygon",
+            "dataclassname": "moapy.data_pre.OuterPolygon"
+          }
+        },
+        "type": "object",
+        "required": [
+          "polygon"
+        ],
+        "title": "calc sectprop"
+      },
+      "enUnitLength": {
+        "type": "string",
+        "enum": [
+          "mm",
+          "m",
+          "in",
+          "ft"
+        ],
+        "title": "enUnitLength"
+      }
+    }
+  }
+}
