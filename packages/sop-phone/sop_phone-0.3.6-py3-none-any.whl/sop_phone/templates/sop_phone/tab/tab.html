@@ -1,0 +1,68 @@
+{% extends "dcim/site.html" %}
+{% load static %}
+{% load helpers %}
+{% load buttons %}
+{% load i18n %}
+
+
+<!--
+    __________________________
+    add extra controls buttons
+-->
+{% block extra_controls %}
+{% if 'add' in context.actions.DID %}
+    <a href="{% url 'plugins:sop_phone:phonedid_site_add' pk=object.id %}" type="button" class="btn btn-primary">
+      <i class="mdi mdi-plus-thick"></i>{% trans "Add DIDs" %}</a>
+{% endif %}
+{% if 'add' in context.actions.Delivery %}
+    <a href="{% url 'plugins:sop_phone:phonedelivery_site_add' pk=object.id %}" type="button" class="btn btn-primary">
+      <i class="mdi mdi-plus-thick"></i>{% trans "Add phone deliveries" %}</a>
+{% endif %}
+{% endblock extra_controls %}
+
+
+<!--
+    ________________________________
+    displays all phone models tables
+    using sop_phone/tools/table.html
+    and sop_phone/tab/*.html
+-->
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6">
+        {% include 'sop_phone/tab/phone_info.html' with object=context.phone_info site=object info_actions=context.actions.Info %}
+    </div>
+    <div class="col-md-12">
+        {% include 'sop_phone/tools/table.html' with object=context.delivery reversed_url='plugins:sop_phone:phonedelivery_site_add' pk=object.id permi=context.actions.Delivery %}
+        {% include 'sop_phone/tools/table.html' with object=context.did reversed_url='plugins:sop_phone:phonedid_site_add' pk=object.id permi=context.actions.DID %}
+    </div>
+</div>
+
+<!--
+    ____________________________________________________
+    load my scripts for tab
+-->
+<script>
+document.addEventListener('DOMContentLoaded', function ()
+{
+    const all_tabs = document.querySelectorAll('ul.nav.nav-tabs li.nav-item a');
+    update_current_tab_color(all_tabs, "Phone");
+
+    /*
+    * update tab front background color
+    */
+    function update_current_tab_color(all_tabs, name)
+    {
+        all_tabs.forEach(tab => {
+            if (tab.innerText == "Site") {
+                tab.classList.remove('active');
+            } else if (tab.innerText.split(' ')[0] == name) {
+                tab.classList.add('active');
+            }
+        });
+    }
+});
+</script>
+
+{% endblock content %}
