@@ -1,0 +1,44 @@
+{% extends "table.html" %}
+{% block table %}
+    <h2>Swims</h2>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Laps</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in page.object_list %}
+                <tr role="button" data-href="{{ o.get_absolute_url }}">
+                    <td>
+                        {% if o.date %}
+                            {{ o.date }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if o.distance %}
+                            {{ o.distance }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if o.laps %}
+                            {{ o.laps }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No swims found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}
