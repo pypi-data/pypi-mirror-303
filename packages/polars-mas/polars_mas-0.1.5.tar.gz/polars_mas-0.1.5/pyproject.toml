@@ -1,0 +1,21 @@
+[project]
+name = "polars-mas"
+version = "0.1.5"
+description = "polars-mas - a fast multiple asspciation library for python backed by polars"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "firthlogist>=0.5.0",
+    "loguru>=0.7.2",
+    "polars>=1.9.0",
+]
+
+[project.scripts]
+polars-mas = "polars_mas:multiple_association_study"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 105
