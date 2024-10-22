@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "plaster-yaml"
+version = "2.0.2"
+description = "A plaster plugin to configure pyramid app with Yaml"
+readme = "README.md"
+authors = ["Guillaume Gauvrit <guillaume@gauvr.it>"]
+homepage = "https://github.com/mardiros/plaster-yaml"
+repository = "https://github.com/mardiros/plaster-yaml"
+include = ["CHANGELOG.md"]
+license = "BSD-derived"
+packages = [
+    { include = "plaster_yaml", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+importlib-metadata = { version = "^7.1.0", python = "<3.10" }
+plaster = "^1.0"
+PyYAML = "^6.0.1"
+
+[tool.poetry.plugins."plaster.loader_factory"]
+"file+yaml" = "plaster_yaml:Loader"
+"file+yml" = "plaster_yaml:Loader"
+"file+json" = "plaster_yaml:Loader"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+isort = "^5.13.2"
+# Tests
+gunicorn = "^20.1.0"
+PasteDeploy = "^3.1.0"
+pytest = "^6.2.5"
+waitress = "^2.0.0"
+pyramid-helloworld = "^1.1.0"
+pytest-cov = "^5.0.0"
+flake8 = "^7.0.0"
+
+[tool.poetry.group.uwsgi]
+optional = true
+
+[tool.poetry.group.uwsgi.dependencies]
+pastedeploy = "^3.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
