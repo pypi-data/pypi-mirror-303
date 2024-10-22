@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: sopel-help
+Version: 0.5.2
+Summary: Help plugin for Sopel
+Author-email: dgw <dgw@technobabbl.es>, Florian Strzelecki <florian.strzelecki@gmail.com>
+Maintainer-email: dgw <dgw@technobabbl.es>, Florian Strzelecki <florian.strzelecki@gmail.com>
+License: EFL-2.0
+Project-URL: Bug Tracker, https://github.com/sopel-irc/sopel-help/issues
+Project-URL: Source, https://github.com/sopel-irc/sopel-help
+Keywords: sopel,irc,help,doc,plugin
+Platform: Linux x86, x86-64
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: Eiffel Forum License (EFL)
+Classifier: License :: OSI Approved :: Eiffel Forum License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Communications :: Chat :: Internet Relay Chat
+Requires-Python: >=3.8
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: sopel>=7.1
+Requires-Dist: requests
+Requires-Dist: importlib_metadata>=3.6
+
+==========
+sopel-help
+==========
+
+Sopel plugin ``.help`` command::
+
+    [Exirel]: .help help
+    [Sopel]: Generate help for Sopel's commands.
+    [Sopel]: e.g. .help help or .help
+
+Install
+=======
+
+The recommanded way to install this plugin is to use ``pip``::
+
+    $ pip install sopel-help
+
+Note that this plugin requires Python 3.8+ and Sopel 7.1+.
+
+Configure
+=========
+
+As with many other plugins, you can use ``sopel-config`` to launch the
+configuration wizard, like so::
+
+    $ sopel-plugins configure help
+
+Don't forget to use the ``-c <config-name>`` option to select the right config.
+
+Providers
+=========
+
+There are several providers built-in with this plugin:
+
+* ``base`` (the default): basic provider; it outputs help directly to the user
+* ``local``: it generates an HTML file and outputs an URL; you have to
+  install and configure your own origin server to serve that file
+* ``clbin``, ``0x0``, ``termbin``: all these providers post a plain-text file
+  to a pastebin service and then output the resulting URL
