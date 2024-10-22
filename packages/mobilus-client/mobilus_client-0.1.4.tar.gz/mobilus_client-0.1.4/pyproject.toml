@@ -1,0 +1,71 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mobilus-client"
+dynamic = ["version"]
+description = "Python client for Mobilus Cosmo GTW"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Zbigniew Pieślak", email = "zpieslak@gmail.com"}]
+dependencies = [
+  "paho-mqtt~=1.6.0",
+  "cryptography~=43.0",
+  "protobuf~=4.0"
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+test = [
+  "coverage~=7.0",
+  "factory-boy~=2.0",
+  "mypy~=1.0",
+  "mypy-protobuf~=3.0",
+  "ruff~=0.6.0",
+  "types-paho-mqtt~=1.0",
+  "types-protobuf~=4.0"
+]
+
+[project.urls]
+homepage = "https://github.com/zpieslak/mobilus-client"
+issues = "https://github.com/zpieslak/mobilus-client/issues"
+
+[tool.coverage.report]
+exclude_also = [
+  "if TYPE_CHECKING:"
+]
+
+[tool.coverage.run]
+omit = [
+  "*/proto/*",
+  "tests/*"
+]
+
+[tool.hatch.build]
+exclude = [
+  ".*",
+  "scripts/*",
+  "tests/*"
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = "factory"
+ignore_missing_imports = true
+
+[tool.ruff]
+exclude = ["*/proto/*"]
+line-length = 120
+
+[tool.ruff.lint]
+ignore = ["D", "PT", "TRY400"]
+select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S106"]
