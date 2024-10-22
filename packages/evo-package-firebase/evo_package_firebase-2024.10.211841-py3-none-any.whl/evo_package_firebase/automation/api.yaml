@@ -1,0 +1,42 @@
+#========================================================================================================================================
+# CyborgAI CC BY-NC-ND 4.0 Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Internation    https://github.com/cyborg-ai-git | 
+#========================================================================================================================================
+
+# VALID TYPE FOR INPUT/OUTPUT:
+#   EOBJECT EOBJECT_CLASS
+
+package: evo_package_firebase
+
+control:
+  CFirebaseApi:
+    _DOC_: "CFirebaseApi description"
+    
+    firebase-set:
+      description: "firebase-set description"
+      callback: onSet
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT EFirebaseMap
+
+    firebase-get:
+      description: "firebase-get description"
+      callback: onGet
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output:  EOBJECT EFirebaseMap
+
+    firebase-del:
+      description: "firebase-del description"
+      callback: onDel
+      input:  EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT EFirebaseMap
+
+    firebase-del_all:
+      description: "firebase-del_all description"
+      callback: onDelAll
+      input:  EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT EFirebaseMap
+
+    firebase-query:
+      description: "firebase-query description"
+      callback: onQuery
+      input: EOBJECT evo_framework.core.evo_core_api.entity.EApiQuery
+      output: EOBJECT EFirebaseMap
