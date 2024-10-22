@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "dendrite-sdk"
+version = "0.2.2"
+description = "Dendrite is a suite of tools that makes it easy to create web integrations for AI agents. With Dendrite your can: Authenticate on websites, Interact with elements, Extract structured data, Download and upload files, Fill out forms"
+
+authors = [
+   "Arian Hanifi <arian@dendrite.se>",
+   "Charles Maddock <charles@dendrite.se>",
+   "Sebastian Thunman <sebastian@dendrite.se"]
+readme = "README.md"
+homepage = "https://dendrite.systems"
+repository = "https://github.com/dendrite-systems/dendrite-python-sdk"
+documentation = "https://docs.dendrite.systems/introduction"
+
+
+
+keywords = ["AI agent", "playwright", "web", "web agents", "automation", "web extraction", "browser"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+include = ["dendrite_sdk/py.typed"]
+
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^2.6.0"
+playwright = "^1.43.0"
+bs4 = "^0.0.2"
+lxml = "^5.2.1"
+typing-extensions = "^4.12.0"
+loguru = "^0.7.2"
+httpx = "^0.27.2"
+markdownify = "^0.13.1"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.4"
+pylint = "^3.2.6"
+black = "^24.8.0"
+poethepoet = "^0.29.0"
+pylint-pydantic = "^0.3.2"
+flake8 = "^7.1.1"
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+
+[tool.pylint]
+load-plugins = "pylint_pydantic"
+
+[tool.poe.tasks]
+generate_sync = "python scripts/generate_sync.py"
+format_sync = "python -m black ./dendrite_sdk/sync_api/"
+build_sync = ["generate_sync", "format_sync"]
+test_sync = "pytest tests/tests_sync"
+
+[tool.poetry.scripts]
+dendrite = "dendrite_sdk._cli.main:main"
+
+[build-system]
+requires = ["poetry-core", "requests", "python-dotenv", "pydantic"]
+build-backend = "poetry.core.masonry.api"
