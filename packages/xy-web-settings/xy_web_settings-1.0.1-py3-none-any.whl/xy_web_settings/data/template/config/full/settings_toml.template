@@ -1,0 +1,226 @@
+# ######################## xy_web_work配置 ###########################
+# 默认配置文件位置为 当前工作目录下的 config/xy_web.toml
+
+
+# ######################## xy_web_work项目配置 ###########################
+[xy_web_project]
+
+# 项目名称, 仅支持英文
+name = "{xy_web_work_project_name}"
+
+# 项目标识
+identifier = "{xy_web_work_project_identifier}"
+
+# 项目名称, 支持中英文
+verbose_name = "{xy_web_work_project_verbose_name}"
+
+# 项目说明, 支持中英文
+description = "{xy_web_work_project_description}"
+
+# 项目路径
+path = "{xy_web_work_project_path}"
+
+# ######################## xy_web_work运行配置 ###########################
+
+[xy_web_runner]
+
+# 服务源码目录自动添加到sys.path 
+# 默认 当前工作目录下的 source/Runner
+path = "{xy_web_work_runner_path}"
+
+# 服务入口类，根据上文的path寻找对应的类初始化即为启动，字符串，若包含模块使用module.class根据importlib引入
+# 默认 Runner.Runner
+runner = "{xy_web_work_runner}"
+
+
+# ######################## 开发配置 ###########################
+
+[DEVELOPMENT]
+
+# 是否测试模式
+debug = {debug}
+
+
+# ####################### 服务配置 ###########################
+
+[SERVER]
+
+# 服务工作主目录， 主要保存各项服务的配置和日志保存
+path = "{server_path}"
+
+# 配置目录
+config_path = "{config_path}"
+
+# 站点服务目录
+site_path = "{site_path}"
+
+# 后台服务目录
+admin_path = "{server_admin_path}"
+
+# 日志目录
+logs_path = "{server_logs_path}"
+
+# ####################### 源码配置 ###########################
+
+[SOURCE]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 源码主目录
+path = "{source_path}"
+
+# 项目软件库目录
+library_path = "{library_path}"
+
+# 测试模块目录
+test_path = "{test_path}"
+
+# 服务模块用于服务启动，默认模块入口是Server.runcmd
+server_path = "{server_path}"
+
+
+# ####################### 资源配置 ###########################
+
+[RESOURCE]
+
+# 若在Docker容器内，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 媒体文件url路径
+media_url = "{media_url}"
+
+# 媒体文件目录
+media_path = "{media_path}"
+
+# 静态文件url路径
+static_url = "{static_url}"
+
+# 静态文件目录
+static_path = "{static_path}"
+
+# 缓存目录
+tmp_path = "{tmp_path}"
+
+# 模板目录
+template_path = "{template_path}"
+
+
+# ####################### 前台站点配置 ###########################
+
+[SITE]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 主机地址, 若在Docker容器内运行，可设置为Docker容器名称（当容器在同一个网络中）， 默认: 0.0.0.0
+host = "{site_host}"
+
+# 测试模式端口, 默认: 8400
+debug_port = {site_debug_port}
+
+# 发布模式端口组，由于主机资源或许有限建议不超过40个端口，若条件允许可支持无限个端口
+release_ports = {site_release_port_list}
+
+# Cookie密钥，Tornado，配置初始化之后，若该配置未设置，将初始化一个随机值
+cookie_secret = "{cookie_secret}"
+
+# 默认登录url路径，若用户未登录，则默认跳转该地址，可设置类似 https://domain/site/user/login 的地址
+login_url = "{login_url}"
+
+# 日志目录
+logs_path = "{site_logs_path}"
+
+# 备份目录
+backup_path = "{site_backup_path}"
+
+
+# ####################### 后台站点配置 ###########################
+
+[ADMIN]
+
+# 项目名称，仅允许英文, 用于设置Admin.settings环境
+name = "{admin_name}"
+
+# 主机地址, 若在Docker容器内运行，可设置为Docker容器名称（当容器在同一个网络中）， 默认: 0.0.0.0
+host = "{admin_host}"
+
+# 测试模式端口 默认: 8403
+debug_port = {admin_debug_port}
+
+# 发布模式端口组，由于主机资源或许有限建议不超过40个端口，若条件允许可支持无限个端口
+# 默认: [8404]
+release_ports = {admin_release_port}
+
+# 日志目录
+logs_path = "{site_logs_path}"
+
+# 备份目录
+backup_path = "{admin_backup_path}"
+
+# ####################### Nginx配置 ###########################
+
+[NGINX]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# nginx主目录
+path = "{nginx_path}"
+
+# 配置目录
+config_path = "{nginx_config_path}"
+
+# 日志目录
+logs_path = "{nginx_logs_path}"
+
+# ####################### 数据库配置 ###########################
+
+[DATABASE]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 数据库主机地址，支持远程主机地址, 可设置 域名 或 ip
+db_host = "{db_host}"
+
+# 数据库端口，默认 3306
+db_port = {db_port}
+
+# 数据库名称, 命名建议少于14个长度
+db_name = "{db_name}"
+
+# 数据库用户
+db_user = "{db_user}"
+
+# 数据库密码
+db_password = "{db_password}"
+
+# 数据库文件保存路径，通常用于sqlite数据库文件存放
+db_file_path = "{db_path}"
+
+# 数据库备份路径
+backup_path = "{db_backup_path}"
+
+# ####################### 日志配置 ###########################
+
+[LOG]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 日志主目录
+path = "{logs_path}"
+
+
+# ####################### 备份配置 ###########################
+
+[BACKUP]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+
+# 备份主目录
+path = "{backup_path}"
+
+
+# ####################### 工作空间配置 ###########################
+
+[WORKSPACE]
+
+# 若在Docker容器内运行，则为Docker容器内部路径, 如果为相对路径则相对于配置文件(settings.cfg)所在目录的路径
+# 工作空间主目录
+path = "{workspace_path}"
