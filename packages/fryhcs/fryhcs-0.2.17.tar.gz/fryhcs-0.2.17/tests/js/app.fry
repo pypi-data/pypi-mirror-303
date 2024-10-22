@@ -1,0 +1,44 @@
+from fryhcs import Element, html
+from flask import Flask
+
+app = Flask(__name__)
+
+def Sub2(v, create, children=[]):
+    <template>
+      <div ref=(foo)>
+        <p>Sub2: {v}</p>
+        <p>Sub2: [{v}](value)</p>
+        {children}
+      </div>
+    </template>
+    <script {create}>
+      const value = 999;
+      console.log(`sub2: ${foo}, create: ${create}`);
+    </script>
+
+def Sub1(bar, create, children=[]):
+    <template>
+      <Sub2 v={bar} {create}>
+        {children}
+      </Sub2>
+    </template>
+    <script>
+      console.log('sub1')
+    </script>
+
+def App():
+    <template>
+      <Sub1 bar="from app" create={False}>
+        <p>App: [0](v)</p>
+      </Sub1>
+    </template>
+    <script>
+      import {signal as create_signal} from 'fryhcs';
+      const v = create_signal(10);
+      console.log("app");
+    </script>
+
+
+@app.get('/')
+def index():
+    return html(App, title="Test JS")
