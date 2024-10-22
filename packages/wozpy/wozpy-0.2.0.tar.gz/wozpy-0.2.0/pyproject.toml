@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "wozpy"
+version = "0.2.0"
+description = "Simple package to retrieve data from wozwaardeloket.nl"
+authors = ["wpeterw <off@on.nl>"]
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+pydantic = {extras = ["extra"], version = "^2.9.2"}
+pytest = "^7.4.4"
+pytest-cov = "^4.1.0"
+pydantic-settings = "^2.1.0"
+requests-mock = "^1.11.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.12.1"
+types-requests = "^2.32.0.20241016"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
