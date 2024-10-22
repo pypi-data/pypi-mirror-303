@@ -1,0 +1,1009 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark">
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+
+  <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+  <title>sqlalchemy.sql._selectable_constructors - Data Solutions Python SDK 0.7.0 documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+
+
+
+
+  <style>
+    body {
+      --color-code-background: #f8f8f8;
+      --color-code-foreground: black;
+
+    }
+
+    @media not print {
+      body[data-theme="dark"] {
+        --color-code-background: #202020;
+        --color-code-foreground: #d0d0d0;
+
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body:not([data-theme="light"]) {
+          --color-code-background: #202020;
+          --color-code-foreground: #d0d0d0;
+
+        }
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="svg-toc" viewBox="0 0 24 24">
+      <title>Contents</title>
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+        <path
+          d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z" />
+      </svg>
+    </symbol>
+    <symbol id="svg-menu" viewBox="0 0 24 24">
+      <title>Menu</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </symbol>
+    <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+      <title>Expand</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </symbol>
+    <symbol id="svg-sun" viewBox="0 0 24 24">
+      <title>Light mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </symbol>
+    <symbol id="svg-moon" viewBox="0 0 24 24">
+      <title>Dark mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+      </svg>
+    </symbol>
+    <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+      <title>Auto light/dark, in light mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+        <path style="opacity: 50%"
+          d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z" />
+        <line x1="14.5" y1="3.25" x2="14.5" y2="1.25" />
+        <line x1="14.5" y1="15.85" x2="14.5" y2="17.85" />
+        <line x1="10.044" y1="5.094" x2="8.63" y2="3.68" />
+        <line x1="19" y1="14.05" x2="20.414" y2="15.464" />
+        <line x1="8.2" y1="9.55" x2="6.2" y2="9.55" />
+        <line x1="20.8" y1="9.55" x2="22.8" y2="9.55" />
+        <line x1="10.044" y1="14.006" x2="8.63" y2="15.42" />
+        <line x1="19" y1="5.05" x2="20.414" y2="3.636" />
+        <circle cx="14.5" cy="9.55" r="3.6" />
+      </svg>
+    </symbol>
+    <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+      <title>Auto light/dark, in dark mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+        <path
+          d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z" />
+        <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5" />
+        <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5" />
+        <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964" />
+        <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063" />
+        <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5" />
+        <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5" />
+        <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036" />
+        <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937" />
+        <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169" />
+      </svg>
+    </symbol>
+    <symbol id="svg-pencil" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+        <path d="M13.5 6.5l4 4" />
+        <path d="M20 21l2 -2l-2 -2" />
+        <path d="M17 17l-2 2l2 2" />
+      </svg>
+    </symbol>
+    <symbol id="svg-eye" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+        <path
+          d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+        <path d="M20 21l2 -2l-2 -2" />
+        <path d="M17 17l-2 2l2 2" />
+      </svg>
+    </symbol>
+  </svg>
+
+  <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+  <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+  <label class="overlay sidebar-overlay" for="__navigation">
+    <div class="visually-hidden">Hide navigation sidebar</div>
+  </label>
+  <label class="overlay toc-overlay" for="__toc">
+    <div class="visually-hidden">Hide table of contents sidebar</div>
+  </label>
+
+  <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+  <div class="page">
+    <header class="mobile-header">
+      <div class="header-left">
+        <label class="nav-overlay-icon" for="__navigation">
+          <div class="visually-hidden">Toggle site navigation sidebar</div>
+          <i class="icon"><svg>
+              <use href="#svg-menu"></use>
+            </svg></i>
+        </label>
+      </div>
+      <div class="header-center">
+        <a href="../../../index.html">
+          <div class="brand">Data Solutions Python SDK 0.7.0 documentation</div>
+        </a>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle-container theme-toggle-header">
+          <button class="theme-toggle">
+            <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <svg class="theme-icon-when-auto-light">
+              <use href="#svg-sun-with-moon"></use>
+            </svg>
+            <svg class="theme-icon-when-auto-dark">
+              <use href="#svg-moon-with-sun"></use>
+            </svg>
+            <svg class="theme-icon-when-dark">
+              <use href="#svg-moon"></use>
+            </svg>
+            <svg class="theme-icon-when-light">
+              <use href="#svg-sun"></use>
+            </svg>
+          </button>
+        </div>
+        <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+          <div class="visually-hidden">Toggle table of contents sidebar</div>
+          <i class="icon"><svg>
+              <use href="#svg-toc"></use>
+            </svg></i>
+        </label>
+      </div>
+    </header>
+    <aside class="sidebar-drawer">
+      <div class="sidebar-container">
+
+        <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+
+
+            <span class="sidebar-brand-text">Data Solutions Python SDK 0.7.0 documentation</span>
+
+          </a>
+          <form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+            <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+          </form>
+          <div id="searchbox"></div>
+          <div class="sidebar-scroll">
+            <div class="sidebar-tree">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <ul>
+                <li class="toctree-l1 has-children"><a class="reference internal"
+                    href="../../../modules.html">chainalysis</a><input class="toctree-checkbox" id="toctree-checkbox-1"
+                    name="toctree-checkbox-1" role="switch" type="checkbox" /><label for="toctree-checkbox-1">
+                    <div class="visually-hidden">Toggle navigation of chainalysis</div><i class="icon"><svg>
+                        <use href="#svg-arrow-right"></use>
+                      </svg></i>
+                  </label>
+                  <ul>
+                    <li class="toctree-l2 has-children"><a class="reference internal"
+                        href="../../../chainalysis.html">chainalysis package</a><input class="toctree-checkbox"
+                        id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox" /><label
+                        for="toctree-checkbox-2">
+                        <div class="visually-hidden">Toggle navigation of chainalysis package</div><i class="icon"><svg>
+                            <use href="#svg-arrow-right"></use>
+                          </svg></i>
+                      </label>
+                      <ul>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.data_solutions_table.html">chainalysis.data_solutions_table
+                            package</a></li>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.sql.html">chainalysis.sql package</a></li>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.utils.html">chainalysis.utils package</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container">
+            <div class="theme-toggle-container theme-toggle-content">
+              <button class="theme-toggle">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto-light">
+                  <use href="#svg-sun-with-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-auto-dark">
+                  <use href="#svg-moon-with-sun"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
+          </div>
+          <article role="main" id="furo-main-content">
+            <h1>Source code for sqlalchemy.sql._selectable_constructors</h1>
+            <div class="highlight">
+              <pre>
+<span></span><span class="c1"># sql/_selectable_constructors.py</span>
+<span class="c1"># Copyright (C) 2005-2024 the SQLAlchemy authors and contributors</span>
+<span class="c1"># &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of SQLAlchemy and is released under</span>
+<span class="c1"># the MIT License: https://www.opensource.org/licenses/mit-license.php</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">coercions</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">roles</span>
+<span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_ColumnsClauseArgument</span>
+<span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_no_kw</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">ColumnClause</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Alias</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">CompoundSelect</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Exists</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">FromClause</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Join</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Lateral</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">LateralFromClause</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">NamedFromClause</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Select</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">TableClause</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">TableSample</span>
+<span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">Values</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_FromClauseArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_OnClauseArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_SelectStatementForCompoundArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T0</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T1</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T2</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T3</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T4</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T5</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T6</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T7</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T8</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_T9</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_TypedColumnClauseArgument</span> <span class="k">as</span> <span class="n">_TCCA</span>
+    <span class="kn">from</span> <span class="nn">.functions</span> <span class="kn">import</span> <span class="n">Function</span>
+    <span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">CTE</span>
+    <span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">HasCTE</span>
+    <span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">ScalarSelect</span>
+    <span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">SelectBase</span>
+
+
+<span class="n">_T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Any</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">alias</span><span class="p">(</span>
+    <span class="n">selectable</span><span class="p">:</span> <span class="n">FromClause</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">flat</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NamedFromClause</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a named alias of the given :class:`.FromClause`.</span>
+
+<span class="sd">    For :class:`.Table` and :class:`.Join` objects, the return type is the</span>
+<span class="sd">    :class:`_expression.Alias` object. Other kinds of :class:`.NamedFromClause`</span>
+<span class="sd">    objects may be returned for other kinds of :class:`.FromClause` objects.</span>
+
+<span class="sd">    The named alias represents any :class:`_expression.FromClause` with an</span>
+<span class="sd">    alternate name assigned within SQL, typically using the ``AS`` clause when</span>
+<span class="sd">    generated, e.g. ``SELECT * FROM table AS aliasname``.</span>
+
+<span class="sd">    Equivalent functionality is available via the</span>
+<span class="sd">    :meth:`_expression.FromClause.alias`</span>
+<span class="sd">    method available on all :class:`_expression.FromClause` objects.</span>
+
+<span class="sd">    :param selectable: any :class:`_expression.FromClause` subclass,</span>
+<span class="sd">        such as a table, select statement, etc.</span>
+
+<span class="sd">    :param name: string name to be assigned as the alias.</span>
+<span class="sd">        If ``None``, a name will be deterministically generated at compile</span>
+<span class="sd">        time. Deterministic means the name is guaranteed to be unique against</span>
+<span class="sd">        other constructs used in the same statement, and will also be the same</span>
+<span class="sd">        name for each successive compilation of the same statement object.</span>
+
+<span class="sd">    :param flat: Will be passed through to if the given selectable</span>
+<span class="sd">     is an instance of :class:`_expression.Join` - see</span>
+<span class="sd">     :meth:`_expression.Join.alias` for details.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Alias</span><span class="o">.</span><span class="n">_factory</span><span class="p">(</span><span class="n">selectable</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="n">flat</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cte</span><span class="p">(</span>
+    <span class="n">selectable</span><span class="p">:</span> <span class="n">HasCTE</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CTE</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return a new :class:`_expression.CTE`,</span>
+<span class="sd">    or Common Table Expression instance.</span>
+
+<span class="sd">    Please see :meth:`_expression.HasCTE.cte` for detail on CTE usage.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">coercions</span><span class="o">.</span><span class="n">expect</span><span class="p">(</span><span class="n">roles</span><span class="o">.</span><span class="n">HasCTERole</span><span class="p">,</span> <span class="n">selectable</span><span class="p">)</span><span class="o">.</span><span class="n">cte</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="except_">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.except_">[docs]</a>
+<span class="k">def</span> <span class="nf">except_</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an ``EXCEPT`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_except</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="except_all">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.except_all">[docs]</a>
+<span class="k">def</span> <span class="nf">except_all</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an ``EXCEPT ALL`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_except_all</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="exists">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.exists">[docs]</a>
+<span class="k">def</span> <span class="nf">exists</span><span class="p">(</span>
+    <span class="n">__argument</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">_ColumnsClauseArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">SelectBase</span><span class="p">,</span> <span class="n">ScalarSelect</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Exists</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a new :class:`_expression.Exists` construct.</span>
+
+<span class="sd">    The :func:`_sql.exists` can be invoked by itself to produce an</span>
+<span class="sd">    :class:`_sql.Exists` construct, which will accept simple WHERE</span>
+<span class="sd">    criteria::</span>
+
+<span class="sd">        exists_criteria = exists().where(table1.c.col1 == table2.c.col2)</span>
+
+<span class="sd">    However, for greater flexibility in constructing the SELECT, an</span>
+<span class="sd">    existing :class:`_sql.Select` construct may be converted to an</span>
+<span class="sd">    :class:`_sql.Exists`, most conveniently by making use of the</span>
+<span class="sd">    :meth:`_sql.SelectBase.exists` method::</span>
+
+<span class="sd">        exists_criteria = (</span>
+<span class="sd">            with_columns(table2.c.col2).</span>
+<span class="sd">            where(table1.c.col1 == table2.c.col2).</span>
+<span class="sd">            exists()</span>
+<span class="sd">        )</span>
+
+<span class="sd">    The EXISTS criteria is then used inside of an enclosing SELECT::</span>
+
+<span class="sd">        stmt = with_columns(table1.c.col1).where(exists_criteria)</span>
+
+<span class="sd">    The above statement will then be of the form::</span>
+
+<span class="sd">        SELECT col1 FROM table1 WHERE EXISTS</span>
+<span class="sd">        (SELECT table2.col2 FROM table2 WHERE table2.col2 = table1.col1)</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_exists` - in the :term:`2.0 style` tutorial.</span>
+
+<span class="sd">        :meth:`_sql.SelectBase.exists` - method to transform a ``SELECT`` to an</span>
+<span class="sd">        ``EXISTS`` clause.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">return</span> <span class="n">Exists</span><span class="p">(</span><span class="n">__argument</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="intersect">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.intersect">[docs]</a>
+<span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an ``INTERSECT`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_intersect</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="intersect_all">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.intersect_all">[docs]</a>
+<span class="k">def</span> <span class="nf">intersect_all</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an ``INTERSECT ALL`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_intersect_all</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="join">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.join">[docs]</a>
+<span class="k">def</span> <span class="nf">join</span><span class="p">(</span>
+    <span class="n">left</span><span class="p">:</span> <span class="n">_FromClauseArgument</span><span class="p">,</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">_FromClauseArgument</span><span class="p">,</span>
+    <span class="n">onclause</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_OnClauseArgument</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">isouter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Join</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a :class:`_expression.Join` object, given two</span>
+<span class="sd">    :class:`_expression.FromClause`</span>
+<span class="sd">    expressions.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        j = join(user_table, address_table,</span>
+<span class="sd">                 user_table.c.id == address_table.c.user_id)</span>
+<span class="sd">        stmt = with_columns(user_table).select_from(j)</span>
+
+<span class="sd">    would emit SQL along the lines of::</span>
+
+<span class="sd">        SELECT user.id, user.name FROM user</span>
+<span class="sd">        JOIN address ON user.id = address.user_id</span>
+
+<span class="sd">    Similar functionality is available given any</span>
+<span class="sd">    :class:`_expression.FromClause` object (e.g. such as a</span>
+<span class="sd">    :class:`_schema.Table`) using</span>
+<span class="sd">    the :meth:`_expression.FromClause.join` method.</span>
+
+<span class="sd">    :param left: The left side of the join.</span>
+
+<span class="sd">    :param right: the right side of the join; this is any</span>
+<span class="sd">     :class:`_expression.FromClause` object such as a</span>
+<span class="sd">     :class:`_schema.Table` object, and</span>
+<span class="sd">     may also be a selectable-compatible object such as an ORM-mapped</span>
+<span class="sd">     class.</span>
+
+<span class="sd">    :param onclause: a SQL expression representing the ON clause of the</span>
+<span class="sd">     join.  If left at ``None``, :meth:`_expression.FromClause.join`</span>
+<span class="sd">     will attempt to</span>
+<span class="sd">     join the two tables based on a foreign key relationship.</span>
+
+<span class="sd">    :param isouter: if True, render a LEFT OUTER JOIN, instead of JOIN.</span>
+
+<span class="sd">    :param full: if True, render a FULL OUTER JOIN, instead of JOIN.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :meth:`_expression.FromClause.join` - method form,</span>
+<span class="sd">        based on a given left side.</span>
+
+<span class="sd">        :class:`_expression.Join` - the type of object produced.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Join</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">onclause</span><span class="p">,</span> <span class="n">isouter</span><span class="p">,</span> <span class="n">full</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="lateral">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.lateral">[docs]</a>
+<span class="k">def</span> <span class="nf">lateral</span><span class="p">(</span>
+    <span class="n">selectable</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">SelectBase</span><span class="p">,</span> <span class="n">_FromClauseArgument</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LateralFromClause</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`_expression.Lateral` object.</span>
+
+<span class="sd">    :class:`_expression.Lateral` is an :class:`_expression.Alias`</span>
+<span class="sd">    subclass that represents</span>
+<span class="sd">    a subquery with the LATERAL keyword applied to it.</span>
+
+<span class="sd">    The special behavior of a LATERAL subquery is that it appears in the</span>
+<span class="sd">    FROM clause of an enclosing SELECT, but may correlate to other</span>
+<span class="sd">    FROM clauses of that SELECT.   It is a special case of subquery</span>
+<span class="sd">    only supported by a small number of backends, currently more recent</span>
+<span class="sd">    PostgreSQL versions.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_lateral_correlation` -  overview of usage.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Lateral</span><span class="o">.</span><span class="n">_factory</span><span class="p">(</span><span class="n">selectable</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="outerjoin">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.outerjoin">[docs]</a>
+<span class="k">def</span> <span class="nf">outerjoin</span><span class="p">(</span>
+    <span class="n">left</span><span class="p">:</span> <span class="n">_FromClauseArgument</span><span class="p">,</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">_FromClauseArgument</span><span class="p">,</span>
+    <span class="n">onclause</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_OnClauseArgument</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Join</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return an ``OUTER JOIN`` clause element.</span>
+
+<span class="sd">    The returned object is an instance of :class:`_expression.Join`.</span>
+
+<span class="sd">    Similar functionality is also available via the</span>
+<span class="sd">    :meth:`_expression.FromClause.outerjoin` method on any</span>
+<span class="sd">    :class:`_expression.FromClause`.</span>
+
+<span class="sd">    :param left: The left side of the join.</span>
+
+<span class="sd">    :param right: The right side of the join.</span>
+
+<span class="sd">    :param onclause:  Optional criterion for the ``ON`` clause, is</span>
+<span class="sd">      derived from foreign key relationships established between</span>
+<span class="sd">      left and right otherwise.</span>
+
+<span class="sd">    To chain joins together, use the :meth:`_expression.FromClause.join`</span>
+<span class="sd">    or</span>
+<span class="sd">    :meth:`_expression.FromClause.outerjoin` methods on the resulting</span>
+<span class="sd">    :class:`_expression.Join` object.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Join</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">onclause</span><span class="p">,</span> <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="n">full</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># START OVERLOADED FUNCTIONS select Select 1-10</span>
+
+<span class="c1"># code within this block is **programmatically,</span>
+<span class="c1"># statically generated** by tools/generate_tuple_map_overloads.py</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span> <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span> <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span> <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+    <span class="n">__ent5</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T5</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">,</span> <span class="n">_T5</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+    <span class="n">__ent5</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T5</span><span class="p">],</span>
+    <span class="n">__ent6</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T6</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">,</span> <span class="n">_T5</span><span class="p">,</span> <span class="n">_T6</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+    <span class="n">__ent5</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T5</span><span class="p">],</span>
+    <span class="n">__ent6</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T6</span><span class="p">],</span>
+    <span class="n">__ent7</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T7</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">,</span> <span class="n">_T5</span><span class="p">,</span> <span class="n">_T6</span><span class="p">,</span> <span class="n">_T7</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+    <span class="n">__ent5</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T5</span><span class="p">],</span>
+    <span class="n">__ent6</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T6</span><span class="p">],</span>
+    <span class="n">__ent7</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T7</span><span class="p">],</span>
+    <span class="n">__ent8</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T8</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">,</span> <span class="n">_T5</span><span class="p">,</span> <span class="n">_T6</span><span class="p">,</span> <span class="n">_T7</span><span class="p">,</span> <span class="n">_T8</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="n">__ent0</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T0</span><span class="p">],</span>
+    <span class="n">__ent1</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T1</span><span class="p">],</span>
+    <span class="n">__ent2</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T2</span><span class="p">],</span>
+    <span class="n">__ent3</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T3</span><span class="p">],</span>
+    <span class="n">__ent4</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T4</span><span class="p">],</span>
+    <span class="n">__ent5</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T5</span><span class="p">],</span>
+    <span class="n">__ent6</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T6</span><span class="p">],</span>
+    <span class="n">__ent7</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T7</span><span class="p">],</span>
+    <span class="n">__ent8</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T8</span><span class="p">],</span>
+    <span class="n">__ent9</span><span class="p">:</span> <span class="n">_TCCA</span><span class="p">[</span><span class="n">_T9</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">_T0</span><span class="p">,</span> <span class="n">_T1</span><span class="p">,</span> <span class="n">_T2</span><span class="p">,</span> <span class="n">_T3</span><span class="p">,</span> <span class="n">_T4</span><span class="p">,</span> <span class="n">_T5</span><span class="p">,</span> <span class="n">_T6</span><span class="p">,</span> <span class="n">_T7</span><span class="p">,</span> <span class="n">_T8</span><span class="p">,</span> <span class="n">_T9</span><span class="p">]]:</span> <span class="o">...</span>
+
+
+<span class="c1"># END OVERLOADED FUNCTIONS select</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">entities</span><span class="p">:</span> <span class="n">_ColumnsClauseArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">__kw</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span> <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="o">*</span><span class="n">entities</span><span class="p">:</span> <span class="n">_ColumnsClauseArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">__kw</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Select</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a new :class:`_expression.Select`.</span>
+
+
+<span class="sd">    .. versionadded:: 1.4 - The :func:`_sql.select` function now accepts</span>
+<span class="sd">       column arguments positionally.   The top-level :func:`_sql.select`</span>
+<span class="sd">       function will automatically use the 1.x or 2.x style API based on</span>
+<span class="sd">       the incoming arguments; using :func:`_sql.select` from the</span>
+<span class="sd">       ``sqlalchemy.future`` module will enforce that only the 2.x style</span>
+<span class="sd">       constructor is used.</span>
+
+<span class="sd">    Similar functionality is also available via the</span>
+<span class="sd">    :meth:`_expression.FromClause.select` method on any</span>
+<span class="sd">    :class:`_expression.FromClause`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_selecting_data` - in the :ref:`unified_tutorial`</span>
+
+<span class="sd">    :param \*entities:</span>
+<span class="sd">      Entities to SELECT from.  For Core usage, this is typically a series</span>
+<span class="sd">      of :class:`_expression.ColumnElement` and / or</span>
+<span class="sd">      :class:`_expression.FromClause`</span>
+<span class="sd">      objects which will form the columns clause of the resulting</span>
+<span class="sd">      statement.   For those objects that are instances of</span>
+<span class="sd">      :class:`_expression.FromClause` (typically :class:`_schema.Table`</span>
+<span class="sd">      or :class:`_expression.Alias`</span>
+<span class="sd">      objects), the :attr:`_expression.FromClause.c`</span>
+<span class="sd">      collection is extracted</span>
+<span class="sd">      to form a collection of :class:`_expression.ColumnElement` objects.</span>
+
+<span class="sd">      This parameter will also accept :class:`_expression.TextClause`</span>
+<span class="sd">      constructs as</span>
+<span class="sd">      given, as well as ORM-mapped classes.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># the keyword args are a necessary element in order for the typing</span>
+    <span class="c1"># to work out w/ the varargs vs. having named &quot;keyword&quot; arguments that</span>
+    <span class="c1"># aren&#39;t always present.</span>
+    <span class="k">if</span> <span class="n">__kw</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_no_kw</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Select</span><span class="p">(</span><span class="o">*</span><span class="n">entities</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">columns</span><span class="p">:</span> <span class="n">ColumnClause</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TableClause</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a new :class:`_expression.TableClause`.</span>
+
+<span class="sd">    The object returned is an instance of</span>
+<span class="sd">    :class:`_expression.TableClause`, which</span>
+<span class="sd">    represents the &quot;syntactical&quot; portion of the schema-level</span>
+<span class="sd">    :class:`_schema.Table` object.</span>
+<span class="sd">    It may be used to construct lightweight table constructs.</span>
+
+<span class="sd">    :param name: Name of the table.</span>
+
+<span class="sd">    :param columns: A collection of :func:`_expression.column` constructs.</span>
+
+<span class="sd">    :param schema: The schema name for this table.</span>
+
+<span class="sd">        .. versionadded:: 1.3.18 :func:`_expression.table` can now</span>
+<span class="sd">           accept a ``schema`` argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">TableClause</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">columns</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">tablesample</span><span class="p">(</span>
+    <span class="n">selectable</span><span class="p">:</span> <span class="n">_FromClauseArgument</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Function</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">roles</span><span class="o">.</span><span class="n">ExpressionElementRole</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TableSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`_expression.TableSample` object.</span>
+
+<span class="sd">    :class:`_expression.TableSample` is an :class:`_expression.Alias`</span>
+<span class="sd">    subclass that represents</span>
+<span class="sd">    a table with the TABLESAMPLE clause applied to it.</span>
+<span class="sd">    :func:`_expression.tablesample`</span>
+<span class="sd">    is also available from the :class:`_expression.FromClause`</span>
+<span class="sd">    class via the</span>
+<span class="sd">    :meth:`_expression.FromClause.tablesample` method.</span>
+
+<span class="sd">    The TABLESAMPLE clause allows selecting a randomly selected approximate</span>
+<span class="sd">    percentage of rows from a table. It supports multiple sampling methods,</span>
+<span class="sd">    most commonly BERNOULLI and SYSTEM.</span>
+
+<span class="sd">    e.g.::</span>
+
+<span class="sd">        from sqlalchemy import func</span>
+
+<span class="sd">        selectable = people.tablesample(</span>
+<span class="sd">                    func.bernoulli(1),</span>
+<span class="sd">                    name=&#39;alias&#39;,</span>
+<span class="sd">                    seed=func.random())</span>
+<span class="sd">        stmt = with_columns(selectable.c.people_id)</span>
+
+<span class="sd">    Assuming ``people`` with a column ``people_id``, the above</span>
+<span class="sd">    statement would render as::</span>
+
+<span class="sd">        SELECT alias.people_id FROM</span>
+<span class="sd">        people AS alias TABLESAMPLE bernoulli(:bernoulli_1)</span>
+<span class="sd">        REPEATABLE (random())</span>
+
+<span class="sd">    :param sampling: a ``float`` percentage between 0 and 100 or</span>
+<span class="sd">        :class:`_functions.Function`.</span>
+
+<span class="sd">    :param name: optional alias name</span>
+
+<span class="sd">    :param seed: any real-valued SQL expression.  When specified, the</span>
+<span class="sd">     REPEATABLE sub-clause is also rendered.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TableSample</span><span class="o">.</span><span class="n">_factory</span><span class="p">(</span><span class="n">selectable</span><span class="p">,</span> <span class="n">sampling</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="union">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.union">[docs]</a>
+<span class="k">def</span> <span class="nf">union</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return a ``UNION`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    A similar :func:`union()` method is available on all</span>
+<span class="sd">    :class:`_expression.FromClause` subclasses.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+<span class="sd">    :param \**kwargs:</span>
+<span class="sd">      available keyword arguments are the same as those of</span>
+<span class="sd">      :func:`select`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_union</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="union_all">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.union_all">[docs]</a>
+<span class="k">def</span> <span class="nf">union_all</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">selects</span><span class="p">:</span> <span class="n">_SelectStatementForCompoundArgument</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompoundSelect</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return a ``UNION ALL`` of multiple selectables.</span>
+
+<span class="sd">    The returned object is an instance of</span>
+<span class="sd">    :class:`_expression.CompoundSelect`.</span>
+
+<span class="sd">    A similar :func:`union_all()` method is available on all</span>
+<span class="sd">    :class:`_expression.FromClause` subclasses.</span>
+
+<span class="sd">    :param \*selects:</span>
+<span class="sd">      a list of :class:`_expression.Select` instances.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CompoundSelect</span><span class="o">.</span><span class="n">_create_union_all</span><span class="p">(</span><span class="o">*</span><span class="n">selects</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">values</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">columns</span><span class="p">:</span> <span class="n">ColumnClause</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">literal_binds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Values</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a :class:`_expression.Values` construct.</span>
+
+<span class="sd">    The column expressions and the actual data for</span>
+<span class="sd">    :class:`_expression.Values` are given in two separate steps.  The</span>
+<span class="sd">    constructor receives the column expressions typically as</span>
+<span class="sd">    :func:`_expression.column` constructs,</span>
+<span class="sd">    and the data is then passed via the</span>
+<span class="sd">    :meth:`_expression.Values.data` method as a list,</span>
+<span class="sd">    which can be called multiple</span>
+<span class="sd">    times to add more data, e.g.::</span>
+
+<span class="sd">        from sqlalchemy import column</span>
+<span class="sd">        from sqlalchemy import values</span>
+
+<span class="sd">        value_expr = values(</span>
+<span class="sd">            column(&#39;id&#39;, Integer),</span>
+<span class="sd">            column(&#39;name&#39;, String),</span>
+<span class="sd">            name=&quot;my_values&quot;</span>
+<span class="sd">        ).data(</span>
+<span class="sd">            [(1, &#39;name1&#39;), (2, &#39;name2&#39;), (3, &#39;name3&#39;)]</span>
+<span class="sd">        )</span>
+
+<span class="sd">    :param \*columns: column expressions, typically composed using</span>
+<span class="sd">     :func:`_expression.column` objects.</span>
+
+<span class="sd">    :param name: the name for this VALUES construct.  If omitted, the</span>
+<span class="sd">     VALUES construct will be unnamed in a SQL expression.   Different</span>
+<span class="sd">     backends may have different requirements here.</span>
+
+<span class="sd">    :param literal_binds: Defaults to False.  Whether or not to render</span>
+<span class="sd">     the data values inline in the SQL output, rather than using bound</span>
+<span class="sd">     parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Values</span><span class="p">(</span><span class="o">*</span><span class="n">columns</span><span class="p">,</span> <span class="n">literal_binds</span><span class="o">=</span><span class="n">literal_binds</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+</pre>
+            </div>
+          </article>
+        </div>
+        <footer>
+
+          <div class="related-pages">
+
+
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
+                Copyright &#169; 2024, Rah Tarar, Kurt Bugbee
+              </div>
+              Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link"
+                href="https://pradyunsg.me">@pradyunsg</a>'s
+
+              <a href="https://github.com/pradyunsg/furo">Furo</a>
+
+            </div>
+            <div class="right-details">
+
+            </div>
+          </div>
+
+        </footer>
+      </div>
+      <aside class="toc-drawer no-toc">
+
+
+
+      </aside>
+    </div>
+  </div>
+  <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+  <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+  <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+  <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</body>
+
+</html>

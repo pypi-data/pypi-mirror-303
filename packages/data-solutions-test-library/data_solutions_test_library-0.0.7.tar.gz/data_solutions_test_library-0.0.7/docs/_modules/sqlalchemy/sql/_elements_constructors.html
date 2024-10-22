@@ -1,0 +1,2209 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark">
+  <link rel="index" title="Index" href="../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../search.html" />
+
+  <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+  <title>sqlalchemy.sql._elements_constructors - Data Solutions Python SDK 0.7.0 documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+  <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+
+
+
+
+  <style>
+    body {
+      --color-code-background: #f8f8f8;
+      --color-code-foreground: black;
+
+    }
+
+    @media not print {
+      body[data-theme="dark"] {
+        --color-code-background: #202020;
+        --color-code-foreground: #d0d0d0;
+
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body:not([data-theme="light"]) {
+          --color-code-background: #202020;
+          --color-code-foreground: #d0d0d0;
+
+        }
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+
+
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="svg-toc" viewBox="0 0 24 24">
+      <title>Contents</title>
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+        <path
+          d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z" />
+      </svg>
+    </symbol>
+    <symbol id="svg-menu" viewBox="0 0 24 24">
+      <title>Menu</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </symbol>
+    <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+      <title>Expand</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </symbol>
+    <symbol id="svg-sun" viewBox="0 0 24 24">
+      <title>Light mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </symbol>
+    <symbol id="svg-moon" viewBox="0 0 24 24">
+      <title>Dark mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+      </svg>
+    </symbol>
+    <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+      <title>Auto light/dark, in light mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+        <path style="opacity: 50%"
+          d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z" />
+        <line x1="14.5" y1="3.25" x2="14.5" y2="1.25" />
+        <line x1="14.5" y1="15.85" x2="14.5" y2="17.85" />
+        <line x1="10.044" y1="5.094" x2="8.63" y2="3.68" />
+        <line x1="19" y1="14.05" x2="20.414" y2="15.464" />
+        <line x1="8.2" y1="9.55" x2="6.2" y2="9.55" />
+        <line x1="20.8" y1="9.55" x2="22.8" y2="9.55" />
+        <line x1="10.044" y1="14.006" x2="8.63" y2="15.42" />
+        <line x1="19" y1="5.05" x2="20.414" y2="3.636" />
+        <circle cx="14.5" cy="9.55" r="3.6" />
+      </svg>
+    </symbol>
+    <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+      <title>Auto light/dark, in dark mode</title>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+        <path
+          d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z" />
+        <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5" />
+        <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5" />
+        <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964" />
+        <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063" />
+        <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5" />
+        <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5" />
+        <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036" />
+        <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937" />
+        <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169" />
+      </svg>
+    </symbol>
+    <symbol id="svg-pencil" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+        <path d="M13.5 6.5l4 4" />
+        <path d="M20 21l2 -2l-2 -2" />
+        <path d="M17 17l-2 2l2 2" />
+      </svg>
+    </symbol>
+    <symbol id="svg-eye" viewBox="0 0 24 24">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+        stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+        <path
+          d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+        <path d="M20 21l2 -2l-2 -2" />
+        <path d="M17 17l-2 2l2 2" />
+      </svg>
+    </symbol>
+  </svg>
+
+  <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+  <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+  <label class="overlay sidebar-overlay" for="__navigation">
+    <div class="visually-hidden">Hide navigation sidebar</div>
+  </label>
+  <label class="overlay toc-overlay" for="__toc">
+    <div class="visually-hidden">Hide table of contents sidebar</div>
+  </label>
+
+  <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+  <div class="page">
+    <header class="mobile-header">
+      <div class="header-left">
+        <label class="nav-overlay-icon" for="__navigation">
+          <div class="visually-hidden">Toggle site navigation sidebar</div>
+          <i class="icon"><svg>
+              <use href="#svg-menu"></use>
+            </svg></i>
+        </label>
+      </div>
+      <div class="header-center">
+        <a href="../../../index.html">
+          <div class="brand">Data Solutions Python SDK 0.7.0 documentation</div>
+        </a>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle-container theme-toggle-header">
+          <button class="theme-toggle">
+            <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <svg class="theme-icon-when-auto-light">
+              <use href="#svg-sun-with-moon"></use>
+            </svg>
+            <svg class="theme-icon-when-auto-dark">
+              <use href="#svg-moon-with-sun"></use>
+            </svg>
+            <svg class="theme-icon-when-dark">
+              <use href="#svg-moon"></use>
+            </svg>
+            <svg class="theme-icon-when-light">
+              <use href="#svg-sun"></use>
+            </svg>
+          </button>
+        </div>
+        <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+          <div class="visually-hidden">Toggle table of contents sidebar</div>
+          <i class="icon"><svg>
+              <use href="#svg-toc"></use>
+            </svg></i>
+        </label>
+      </div>
+    </header>
+    <aside class="sidebar-drawer">
+      <div class="sidebar-container">
+
+        <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+
+
+            <span class="sidebar-brand-text">Data Solutions Python SDK 0.7.0 documentation</span>
+
+          </a>
+          <form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+            <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+          </form>
+          <div id="searchbox"></div>
+          <div class="sidebar-scroll">
+            <div class="sidebar-tree">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <ul>
+                <li class="toctree-l1 has-children"><a class="reference internal"
+                    href="../../../modules.html">chainalysis</a><input class="toctree-checkbox" id="toctree-checkbox-1"
+                    name="toctree-checkbox-1" role="switch" type="checkbox" /><label for="toctree-checkbox-1">
+                    <div class="visually-hidden">Toggle navigation of chainalysis</div><i class="icon"><svg>
+                        <use href="#svg-arrow-right"></use>
+                      </svg></i>
+                  </label>
+                  <ul>
+                    <li class="toctree-l2 has-children"><a class="reference internal"
+                        href="../../../chainalysis.html">chainalysis package</a><input class="toctree-checkbox"
+                        id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox" /><label
+                        for="toctree-checkbox-2">
+                        <div class="visually-hidden">Toggle navigation of chainalysis package</div><i class="icon"><svg>
+                            <use href="#svg-arrow-right"></use>
+                          </svg></i>
+                      </label>
+                      <ul>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.data_solutions_table.html">chainalysis.data_solutions_table
+                            package</a></li>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.sql.html">chainalysis.sql package</a></li>
+                        <li class="toctree-l3"><a class="reference internal"
+                            href="../../../chainalysis.utils.html">chainalysis.utils package</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container">
+            <div class="theme-toggle-container theme-toggle-content">
+              <button class="theme-toggle">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto-light">
+                  <use href="#svg-sun-with-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-auto-dark">
+                  <use href="#svg-moon-with-sun"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
+          </div>
+          <article role="main" id="furo-main-content">
+            <h1>Source code for sqlalchemy.sql._elements_constructors</h1>
+            <div class="highlight">
+              <pre>
+<span></span><span class="c1"># sql/_elements_constructors.py</span>
+<span class="c1"># Copyright (C) 2005-2024 the SQLAlchemy authors and contributors</span>
+<span class="c1"># &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of SQLAlchemy and is released under</span>
+<span class="c1"># the MIT License: https://www.opensource.org/licenses/mit-license.php</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">typing</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span> <span class="k">as</span> <span class="n">typing_Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">coercions</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">roles</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">_NoArg</span>
+<span class="kn">from</span> <span class="nn">.coercions</span> <span class="kn">import</span> <span class="n">_document_text_coercion</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">BindParameter</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">BooleanClauseList</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Case</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Cast</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">CollationClause</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">CollectionAggregate</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">ColumnClause</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">ColumnElement</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Extract</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">False_</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">FunctionFilter</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Label</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Null</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Over</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">TextClause</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">True_</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">TryCast</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">TypeCoerce</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">UnaryExpression</span>
+<span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">WithinGroup</span>
+<span class="kn">from</span> <span class="nn">.functions</span> <span class="kn">import</span> <span class="n">FunctionElement</span>
+<span class="kn">from</span> <span class="nn">..util.typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="k">if</span> <span class="n">typing</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_ByArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_ColumnExpressionArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_ColumnExpressionOrLiteralArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_ColumnExpressionOrStrLabelArgument</span>
+    <span class="kn">from</span> <span class="nn">._typing</span> <span class="kn">import</span> <span class="n">_TypeEngineArgument</span>
+    <span class="kn">from</span> <span class="nn">.elements</span> <span class="kn">import</span> <span class="n">BinaryExpression</span>
+    <span class="kn">from</span> <span class="nn">.selectable</span> <span class="kn">import</span> <span class="n">FromClause</span>
+    <span class="kn">from</span> <span class="nn">.type_api</span> <span class="kn">import</span> <span class="n">TypeEngine</span>
+
+<span class="n">_T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;_T&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">all_</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">CollectionAggregate</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce an ALL expression.</span>
+
+<span class="sd">    For dialects such as that of PostgreSQL, this operator applies</span>
+<span class="sd">    to usage of the :class:`_types.ARRAY` datatype, for that of</span>
+<span class="sd">    MySQL, it may apply to a subquery.  e.g.::</span>
+
+<span class="sd">        # renders on PostgreSQL:</span>
+<span class="sd">        # &#39;5 = ALL (somearray)&#39;</span>
+<span class="sd">        expr = 5 == all_(mytable.c.somearray)</span>
+
+<span class="sd">        # renders on MySQL:</span>
+<span class="sd">        # &#39;5 = ALL (SELECT value FROM table)&#39;</span>
+<span class="sd">        expr = 5 == all_(with_columns(table.c.value))</span>
+
+<span class="sd">    Comparison to NULL may work using ``None``::</span>
+
+<span class="sd">        None == all_(mytable.c.somearray)</span>
+
+<span class="sd">    The any_() / all_() operators also feature a special &quot;operand flipping&quot;</span>
+<span class="sd">    behavior such that if any_() / all_() are used on the left side of a</span>
+<span class="sd">    comparison using a standalone operator such as ``==``, ``!=``, etc.</span>
+<span class="sd">    (not including operator methods such as</span>
+<span class="sd">    :meth:`_sql.ColumnOperators.is_`) the rendered expression is flipped::</span>
+
+<span class="sd">        # would render &#39;5 = ALL (column)`</span>
+<span class="sd">        all_(mytable.c.column) == 5</span>
+
+<span class="sd">    Or with ``None``, which note will not perform</span>
+<span class="sd">    the usual step of rendering &quot;IS&quot; as is normally the case for NULL::</span>
+
+<span class="sd">        # would render &#39;NULL = ALL(somearray)&#39;</span>
+<span class="sd">        all_(mytable.c.somearray) == None</span>
+
+<span class="sd">    .. versionchanged:: 1.4.26  repaired the use of any_() / all_()</span>
+<span class="sd">       comparing to NULL on the right side to be flipped to the left.</span>
+
+<span class="sd">    The column-level :meth:`_sql.ColumnElement.all_` method (not to be</span>
+<span class="sd">    confused with :class:`_types.ARRAY` level</span>
+<span class="sd">    :meth:`_types.ARRAY.Comparator.all`) is shorthand for</span>
+<span class="sd">    ``all_(col)``::</span>
+
+<span class="sd">        5 == mytable.c.somearray.all_()</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :meth:`_sql.ColumnOperators.all_`</span>
+
+<span class="sd">        :func:`_expression.any_`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CollectionAggregate</span><span class="o">.</span><span class="n">_create_all</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">and_</span><span class="p">(</span>  <span class="c1"># type: ignore[empty-body]</span>
+    <span class="n">initial_clause</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">]],</span>
+    <span class="o">*</span><span class="n">clauses</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ColumnElement</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a conjunction of expressions joined by ``AND``.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import and_</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(</span>
+<span class="sd">                        and_(</span>
+<span class="sd">                            users_table.c.name == &#39;wendy&#39;,</span>
+<span class="sd">                            users_table.c.enrolled == True</span>
+<span class="sd">                        )</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The :func:`.and_` conjunction is also available using the</span>
+<span class="sd">    Python ``&amp;`` operator (though note that compound expressions</span>
+<span class="sd">    need to be parenthesized in order to function with Python</span>
+<span class="sd">    operator precedence behavior)::</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(</span>
+<span class="sd">                        (users_table.c.name == &#39;wendy&#39;) &amp;</span>
+<span class="sd">                        (users_table.c.enrolled == True)</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The :func:`.and_` operation is also implicit in some cases;</span>
+<span class="sd">    the :meth:`_expression.Select.where`</span>
+<span class="sd">    method for example can be invoked multiple</span>
+<span class="sd">    times against a statement, which will have the effect of each</span>
+<span class="sd">    clause being combined using :func:`.and_`::</span>
+
+<span class="sd">        stmt = with_columns(users_table).\</span>
+<span class="sd">                where(users_table.c.name == &#39;wendy&#39;).\</span>
+<span class="sd">                where(users_table.c.enrolled == True)</span>
+
+<span class="sd">    The :func:`.and_` construct must be given at least one positional</span>
+<span class="sd">    argument in order to be valid; a :func:`.and_` construct with no</span>
+<span class="sd">    arguments is ambiguous.   To produce an &quot;empty&quot; or dynamically</span>
+<span class="sd">    generated :func:`.and_`  expression, from a given list of expressions,</span>
+<span class="sd">    a &quot;default&quot; element of :func:`_sql.true` (or just ``True``) should be</span>
+<span class="sd">    specified::</span>
+
+<span class="sd">        from sqlalchemy import true</span>
+<span class="sd">        criteria = and_(true(), *expressions)</span>
+
+<span class="sd">    The above expression will compile to SQL as the expression ``true``</span>
+<span class="sd">    or ``1 = 1``, depending on backend, if no other expressions are</span>
+<span class="sd">    present.  If expressions are present, then the :func:`_sql.true` value is</span>
+<span class="sd">    ignored as it does not affect the outcome of an AND expression that</span>
+<span class="sd">    has other elements.</span>
+
+<span class="sd">    .. deprecated:: 1.4  The :func:`.and_` element now requires that at</span>
+<span class="sd">       least one argument is passed; creating the :func:`.and_` construct</span>
+<span class="sd">       with no arguments is deprecated, and will emit a deprecation warning</span>
+<span class="sd">       while continuing to produce a blank SQL string.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.or_`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="o">...</span>
+
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="c1"># handle deprecated case which allows zero-arguments</span>
+<div class="viewcode-block" id="and_">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.and_">[docs]</a>
+    <span class="k">def</span> <span class="nf">and_</span><span class="p">(</span><span class="o">*</span><span class="n">clauses</span><span class="p">):</span>  <span class="c1"># noqa: F811</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a conjunction of expressions joined by ``AND``.</span>
+
+<span class="sd">        E.g.::</span>
+
+<span class="sd">            from sqlalchemy import and_</span>
+
+<span class="sd">            stmt = with_columns(users_table).where(</span>
+<span class="sd">                            and_(</span>
+<span class="sd">                                users_table.c.name == &#39;wendy&#39;,</span>
+<span class="sd">                                users_table.c.enrolled == True</span>
+<span class="sd">                            )</span>
+<span class="sd">                        )</span>
+
+<span class="sd">        The :func:`.and_` conjunction is also available using the</span>
+<span class="sd">        Python ``&amp;`` operator (though note that compound expressions</span>
+<span class="sd">        need to be parenthesized in order to function with Python</span>
+<span class="sd">        operator precedence behavior)::</span>
+
+<span class="sd">            stmt = with_columns(users_table).where(</span>
+<span class="sd">                            (users_table.c.name == &#39;wendy&#39;) &amp;</span>
+<span class="sd">                            (users_table.c.enrolled == True)</span>
+<span class="sd">                        )</span>
+
+<span class="sd">        The :func:`.and_` operation is also implicit in some cases;</span>
+<span class="sd">        the :meth:`_expression.Select.where`</span>
+<span class="sd">        method for example can be invoked multiple</span>
+<span class="sd">        times against a statement, which will have the effect of each</span>
+<span class="sd">        clause being combined using :func:`.and_`::</span>
+
+<span class="sd">            stmt = with_columns(users_table).\</span>
+<span class="sd">                    where(users_table.c.name == &#39;wendy&#39;).\</span>
+<span class="sd">                    where(users_table.c.enrolled == True)</span>
+
+<span class="sd">        The :func:`.and_` construct must be given at least one positional</span>
+<span class="sd">        argument in order to be valid; a :func:`.and_` construct with no</span>
+<span class="sd">        arguments is ambiguous.   To produce an &quot;empty&quot; or dynamically</span>
+<span class="sd">        generated :func:`.and_`  expression, from a given list of expressions,</span>
+<span class="sd">        a &quot;default&quot; element of :func:`_sql.true` (or just ``True``) should be</span>
+<span class="sd">        specified::</span>
+
+<span class="sd">            from sqlalchemy import true</span>
+<span class="sd">            criteria = and_(true(), *expressions)</span>
+
+<span class="sd">        The above expression will compile to SQL as the expression ``true``</span>
+<span class="sd">        or ``1 = 1``, depending on backend, if no other expressions are</span>
+<span class="sd">        present.  If expressions are present, then the :func:`_sql.true` value</span>
+<span class="sd">        is ignored as it does not affect the outcome of an AND expression that</span>
+<span class="sd">        has other elements.</span>
+
+<span class="sd">        .. deprecated:: 1.4  The :func:`.and_` element now requires that at</span>
+<span class="sd">          least one argument is passed; creating the :func:`.and_` construct</span>
+<span class="sd">          with no arguments is deprecated, and will emit a deprecation warning</span>
+<span class="sd">          while continuing to produce a blank SQL string.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :func:`.or_`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BooleanClauseList</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="o">*</span><span class="n">clauses</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">any_</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">CollectionAggregate</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce an ANY expression.</span>
+
+<span class="sd">    For dialects such as that of PostgreSQL, this operator applies</span>
+<span class="sd">    to usage of the :class:`_types.ARRAY` datatype, for that of</span>
+<span class="sd">    MySQL, it may apply to a subquery.  e.g.::</span>
+
+<span class="sd">        # renders on PostgreSQL:</span>
+<span class="sd">        # &#39;5 = ANY (somearray)&#39;</span>
+<span class="sd">        expr = 5 == any_(mytable.c.somearray)</span>
+
+<span class="sd">        # renders on MySQL:</span>
+<span class="sd">        # &#39;5 = ANY (SELECT value FROM table)&#39;</span>
+<span class="sd">        expr = 5 == any_(with_columns(table.c.value))</span>
+
+<span class="sd">    Comparison to NULL may work using ``None`` or :func:`_sql.null`::</span>
+
+<span class="sd">        None == any_(mytable.c.somearray)</span>
+
+<span class="sd">    The any_() / all_() operators also feature a special &quot;operand flipping&quot;</span>
+<span class="sd">    behavior such that if any_() / all_() are used on the left side of a</span>
+<span class="sd">    comparison using a standalone operator such as ``==``, ``!=``, etc.</span>
+<span class="sd">    (not including operator methods such as</span>
+<span class="sd">    :meth:`_sql.ColumnOperators.is_`) the rendered expression is flipped::</span>
+
+<span class="sd">        # would render &#39;5 = ANY (column)`</span>
+<span class="sd">        any_(mytable.c.column) == 5</span>
+
+<span class="sd">    Or with ``None``, which note will not perform</span>
+<span class="sd">    the usual step of rendering &quot;IS&quot; as is normally the case for NULL::</span>
+
+<span class="sd">        # would render &#39;NULL = ANY(somearray)&#39;</span>
+<span class="sd">        any_(mytable.c.somearray) == None</span>
+
+<span class="sd">    .. versionchanged:: 1.4.26  repaired the use of any_() / all_()</span>
+<span class="sd">       comparing to NULL on the right side to be flipped to the left.</span>
+
+<span class="sd">    The column-level :meth:`_sql.ColumnElement.any_` method (not to be</span>
+<span class="sd">    confused with :class:`_types.ARRAY` level</span>
+<span class="sd">    :meth:`_types.ARRAY.Comparator.any`) is shorthand for</span>
+<span class="sd">    ``any_(col)``::</span>
+
+<span class="sd">        5 = mytable.c.somearray.any_()</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :meth:`_sql.ColumnOperators.any_`</span>
+
+<span class="sd">        :func:`_expression.all_`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CollectionAggregate</span><span class="o">.</span><span class="n">_create_any</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">asc</span><span class="p">(</span>
+    <span class="n">column</span><span class="p">:</span> <span class="n">_ColumnExpressionOrStrLabelArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce an ascending ``ORDER BY`` clause element.</span>
+
+<span class="sd">    e.g.::</span>
+
+<span class="sd">        from sqlalchemy import asc</span>
+<span class="sd">        stmt = with_columns(users_table).order_by(asc(users_table.c.name))</span>
+
+<span class="sd">    will produce SQL as::</span>
+
+<span class="sd">        SELECT id, name FROM user ORDER BY name ASC</span>
+
+<span class="sd">    The :func:`.asc` function is a standalone version of the</span>
+<span class="sd">    :meth:`_expression.ColumnElement.asc`</span>
+<span class="sd">    method available on all SQL expressions,</span>
+<span class="sd">    e.g.::</span>
+
+
+<span class="sd">        stmt = with_columns(users_table).order_by(users_table.c.name.asc())</span>
+
+<span class="sd">    :param column: A :class:`_expression.ColumnElement` (e.g.</span>
+<span class="sd">     scalar SQL expression)</span>
+<span class="sd">     with which to apply the :func:`.asc` operation.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.desc`</span>
+
+<span class="sd">        :func:`.nulls_first`</span>
+
+<span class="sd">        :func:`.nulls_last`</span>
+
+<span class="sd">        :meth:`_expression.Select.order_by`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_asc</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">collate</span><span class="p">(</span>
+    <span class="n">expression</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">collation</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the clause ``expression COLLATE collation``.</span>
+
+<span class="sd">    e.g.::</span>
+
+<span class="sd">        collate(mycolumn, &#39;utf8_bin&#39;)</span>
+
+<span class="sd">    produces::</span>
+
+<span class="sd">        mycolumn COLLATE utf8_bin</span>
+
+<span class="sd">    The collation expression is also quoted if it is a case sensitive</span>
+<span class="sd">    identifier, e.g. contains uppercase characters.</span>
+
+<span class="sd">    .. versionchanged:: 1.2 quoting is automatically applied to COLLATE</span>
+<span class="sd">       expressions if they are case sensitive.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CollationClause</span><span class="o">.</span><span class="n">_create_collation_expression</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">collation</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="between">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.between">[docs]</a>
+<span class="k">def</span> <span class="nf">between</span><span class="p">(</span>
+    <span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionOrLiteralArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+    <span class="n">lower_bound</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">upper_bound</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">symmetric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a ``BETWEEN`` predicate clause.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import between</span>
+<span class="sd">        stmt = with_columns(users_table).where(between(users_table.c.id, 5, 7))</span>
+
+<span class="sd">    Would produce SQL resembling::</span>
+
+<span class="sd">        SELECT id, name FROM user WHERE id BETWEEN :id_1 AND :id_2</span>
+
+<span class="sd">    The :func:`.between` function is a standalone version of the</span>
+<span class="sd">    :meth:`_expression.ColumnElement.between` method available on all</span>
+<span class="sd">    SQL expressions, as in::</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(users_table.c.id.between(5, 7))</span>
+
+<span class="sd">    All arguments passed to :func:`.between`, including the left side</span>
+<span class="sd">    column expression, are coerced from Python scalar values if a</span>
+<span class="sd">    the value is not a :class:`_expression.ColumnElement` subclass.</span>
+<span class="sd">    For example,</span>
+<span class="sd">    three fixed values can be compared as in::</span>
+
+<span class="sd">        print(between(5, 3, 7))</span>
+
+<span class="sd">    Which would produce::</span>
+
+<span class="sd">        :param_1 BETWEEN :param_2 AND :param_3</span>
+
+<span class="sd">    :param expr: a column expression, typically a</span>
+<span class="sd">     :class:`_expression.ColumnElement`</span>
+<span class="sd">     instance or alternatively a Python scalar expression to be coerced</span>
+<span class="sd">     into a column expression, serving as the left side of the ``BETWEEN``</span>
+<span class="sd">     expression.</span>
+
+<span class="sd">    :param lower_bound: a column or Python scalar expression serving as the</span>
+<span class="sd">     lower bound of the right side of the ``BETWEEN`` expression.</span>
+
+<span class="sd">    :param upper_bound: a column or Python scalar expression serving as the</span>
+<span class="sd">     upper bound of the right side of the ``BETWEEN`` expression.</span>
+
+<span class="sd">    :param symmetric: if True, will render &quot; BETWEEN SYMMETRIC &quot;. Note</span>
+<span class="sd">     that not all databases support this syntax.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :meth:`_expression.ColumnElement.between`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">col_expr</span> <span class="o">=</span> <span class="n">coercions</span><span class="o">.</span><span class="n">expect</span><span class="p">(</span><span class="n">roles</span><span class="o">.</span><span class="n">ExpressionElementRole</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">col_expr</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="n">symmetric</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">outparam</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TypeEngine</span><span class="p">[</span><span class="n">_T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BindParameter</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an &#39;OUT&#39; parameter for usage in functions (stored procedures),</span>
+<span class="sd">    for databases which support them.</span>
+
+<span class="sd">    The ``outparam`` can be used like a regular function parameter.</span>
+<span class="sd">    The &quot;output&quot; value will be available from the</span>
+<span class="sd">    :class:`~sqlalchemy.engine.CursorResult` object via its ``out_parameters``</span>
+<span class="sd">    attribute, which returns a dictionary containing the values.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">BindParameter</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">type_</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">isoutparam</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">not_</span><span class="p">(</span><span class="n">clause</span><span class="p">:</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span> <span class="o">...</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span> <span class="nf">not_</span><span class="p">(</span><span class="n">clause</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ColumnElement</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span> <span class="o">...</span>
+
+
+<div class="viewcode-block" id="not_">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.not_">[docs]</a>
+<span class="k">def</span> <span class="nf">not_</span><span class="p">(</span><span class="n">clause</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ColumnElement</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a negation of the given clause, i.e. ``NOT(clause)``.</span>
+
+<span class="sd">    The ``~`` operator is also overloaded on all</span>
+<span class="sd">    :class:`_expression.ColumnElement` subclasses to produce the</span>
+<span class="sd">    same result.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">coercions</span><span class="o">.</span><span class="n">expect</span><span class="p">(</span><span class="n">roles</span><span class="o">.</span><span class="n">ExpressionElementRole</span><span class="p">,</span> <span class="n">clause</span><span class="p">)</span><span class="o">.</span><span class="fm">__invert__</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">bindparam</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">_NoArg</span><span class="o">.</span><span class="n">NO_ARG</span><span class="p">,</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">required</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="n">_NoArg</span><span class="o">.</span><span class="n">NO_ARG</span><span class="p">]]</span> <span class="o">=</span> <span class="n">_NoArg</span><span class="o">.</span><span class="n">NO_ARG</span><span class="p">,</span>
+    <span class="n">quote</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">callable_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">expanding</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">isoutparam</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">literal_execute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BindParameter</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a &quot;bound expression&quot;.</span>
+
+<span class="sd">    The return value is an instance of :class:`.BindParameter`; this</span>
+<span class="sd">    is a :class:`_expression.ColumnElement`</span>
+<span class="sd">    subclass which represents a so-called</span>
+<span class="sd">    &quot;placeholder&quot; value in a SQL expression, the value of which is</span>
+<span class="sd">    supplied at the point at which the statement in executed against a</span>
+<span class="sd">    database connection.</span>
+
+<span class="sd">    In SQLAlchemy, the :func:`.bindparam` construct has</span>
+<span class="sd">    the ability to carry along the actual value that will be ultimately</span>
+<span class="sd">    used at expression time.  In this way, it serves not just as</span>
+<span class="sd">    a &quot;placeholder&quot; for eventual population, but also as a means of</span>
+<span class="sd">    representing so-called &quot;unsafe&quot; values which should not be rendered</span>
+<span class="sd">    directly in a SQL statement, but rather should be passed along</span>
+<span class="sd">    to the :term:`DBAPI` as values which need to be correctly escaped</span>
+<span class="sd">    and potentially handled for type-safety.</span>
+
+<span class="sd">    When using :func:`.bindparam` explicitly, the use case is typically</span>
+<span class="sd">    one of traditional deferment of parameters; the :func:`.bindparam`</span>
+<span class="sd">    construct accepts a name which can then be referred to at execution</span>
+<span class="sd">    time::</span>
+
+<span class="sd">        from sqlalchemy import bindparam</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(</span>
+<span class="sd">            users_table.c.name == bindparam(&quot;username&quot;)</span>
+<span class="sd">        )</span>
+
+<span class="sd">    The above statement, when rendered, will produce SQL similar to::</span>
+
+<span class="sd">        SELECT id, name FROM user WHERE name = :username</span>
+
+<span class="sd">    In order to populate the value of ``:username`` above, the value</span>
+<span class="sd">    would typically be applied at execution time to a method</span>
+<span class="sd">    like :meth:`_engine.Connection.execute`::</span>
+
+<span class="sd">        result = connection.execute(stmt, {&quot;username&quot;: &quot;wendy&quot;})</span>
+
+<span class="sd">    Explicit use of :func:`.bindparam` is also common when producing</span>
+<span class="sd">    UPDATE or DELETE statements that are to be invoked multiple times,</span>
+<span class="sd">    where the WHERE criterion of the statement is to change on each</span>
+<span class="sd">    invocation, such as::</span>
+
+<span class="sd">        stmt = (</span>
+<span class="sd">            users_table.update()</span>
+<span class="sd">            .where(user_table.c.name == bindparam(&quot;username&quot;))</span>
+<span class="sd">            .values(fullname=bindparam(&quot;fullname&quot;))</span>
+<span class="sd">        )</span>
+
+<span class="sd">        connection.execute(</span>
+<span class="sd">            stmt,</span>
+<span class="sd">            [</span>
+<span class="sd">                {&quot;username&quot;: &quot;wendy&quot;, &quot;fullname&quot;: &quot;Wendy Smith&quot;},</span>
+<span class="sd">                {&quot;username&quot;: &quot;jack&quot;, &quot;fullname&quot;: &quot;Jack Jones&quot;},</span>
+<span class="sd">            ],</span>
+<span class="sd">        )</span>
+
+<span class="sd">    SQLAlchemy&#39;s Core expression system makes wide use of</span>
+<span class="sd">    :func:`.bindparam` in an implicit sense.   It is typical that Python</span>
+<span class="sd">    literal values passed to virtually all SQL expression functions are</span>
+<span class="sd">    coerced into fixed :func:`.bindparam` constructs.  For example, given</span>
+<span class="sd">    a comparison operation such as::</span>
+
+<span class="sd">        expr = users_table.c.name == &#39;Wendy&#39;</span>
+
+<span class="sd">    The above expression will produce a :class:`.BinaryExpression`</span>
+<span class="sd">    construct, where the left side is the :class:`_schema.Column` object</span>
+<span class="sd">    representing the ``name`` column, and the right side is a</span>
+<span class="sd">    :class:`.BindParameter` representing the literal value::</span>
+
+<span class="sd">        print(repr(expr.right))</span>
+<span class="sd">        BindParameter(&#39;%(4327771088 name)s&#39;, &#39;Wendy&#39;, type_=String())</span>
+
+<span class="sd">    The expression above will render SQL such as::</span>
+
+<span class="sd">        user.name = :name_1</span>
+
+<span class="sd">    Where the ``:name_1`` parameter name is an anonymous name.  The</span>
+<span class="sd">    actual string ``Wendy`` is not in the rendered string, but is carried</span>
+<span class="sd">    along where it is later used within statement execution.  If we</span>
+<span class="sd">    invoke a statement like the following::</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(users_table.c.name == &#39;Wendy&#39;)</span>
+<span class="sd">        result = connection.execute(stmt)</span>
+
+<span class="sd">    We would see SQL logging output as::</span>
+
+<span class="sd">        SELECT &quot;user&quot;.id, &quot;user&quot;.name</span>
+<span class="sd">        FROM &quot;user&quot;</span>
+<span class="sd">        WHERE &quot;user&quot;.name = %(name_1)s</span>
+<span class="sd">        {&#39;name_1&#39;: &#39;Wendy&#39;}</span>
+
+<span class="sd">    Above, we see that ``Wendy`` is passed as a parameter to the database,</span>
+<span class="sd">    while the placeholder ``:name_1`` is rendered in the appropriate form</span>
+<span class="sd">    for the target database, in this case the PostgreSQL database.</span>
+
+<span class="sd">    Similarly, :func:`.bindparam` is invoked automatically when working</span>
+<span class="sd">    with :term:`CRUD` statements as far as the &quot;VALUES&quot; portion is</span>
+<span class="sd">    concerned.   The :func:`_expression.insert` construct produces an</span>
+<span class="sd">    ``INSERT`` expression which will, at statement execution time, generate</span>
+<span class="sd">    bound placeholders based on the arguments passed, as in::</span>
+
+<span class="sd">        stmt = users_table.insert()</span>
+<span class="sd">        result = connection.execute(stmt, {&quot;name&quot;: &quot;Wendy&quot;})</span>
+
+<span class="sd">    The above will produce SQL output as::</span>
+
+<span class="sd">        INSERT INTO &quot;user&quot; (name) VALUES (%(name)s)</span>
+<span class="sd">        {&#39;name&#39;: &#39;Wendy&#39;}</span>
+
+<span class="sd">    The :class:`_expression.Insert` construct, at</span>
+<span class="sd">    compilation/execution time, rendered a single :func:`.bindparam`</span>
+<span class="sd">    mirroring the column name ``name`` as a result of the single ``name``</span>
+<span class="sd">    parameter we passed to the :meth:`_engine.Connection.execute` method.</span>
+
+<span class="sd">    :param key:</span>
+<span class="sd">      the key (e.g. the name) for this bind param.</span>
+<span class="sd">      Will be used in the generated</span>
+<span class="sd">      SQL statement for dialects that use named parameters.  This</span>
+<span class="sd">      value may be modified when part of a compilation operation,</span>
+<span class="sd">      if other :class:`BindParameter` objects exist with the same</span>
+<span class="sd">      key, or if its length is too long and truncation is</span>
+<span class="sd">      required.</span>
+
+<span class="sd">      If omitted, an &quot;anonymous&quot; name is generated for the bound parameter;</span>
+<span class="sd">      when given a value to bind, the end result is equivalent to calling upon</span>
+<span class="sd">      the :func:`.literal` function with a value to bind, particularly</span>
+<span class="sd">      if the :paramref:`.bindparam.unique` parameter is also provided.</span>
+
+<span class="sd">    :param value:</span>
+<span class="sd">      Initial value for this bind param.  Will be used at statement</span>
+<span class="sd">      execution time as the value for this parameter passed to the</span>
+<span class="sd">      DBAPI, if no other value is indicated to the statement execution</span>
+<span class="sd">      method for this particular parameter name.  Defaults to ``None``.</span>
+
+<span class="sd">    :param callable\_:</span>
+<span class="sd">      A callable function that takes the place of &quot;value&quot;.  The function</span>
+<span class="sd">      will be called at statement execution time to determine the</span>
+<span class="sd">      ultimate value.   Used for scenarios where the actual bind</span>
+<span class="sd">      value cannot be determined at the point at which the clause</span>
+<span class="sd">      construct is created, but embedded bind values are still desirable.</span>
+
+<span class="sd">    :param type\_:</span>
+<span class="sd">      A :class:`.TypeEngine` class or instance representing an optional</span>
+<span class="sd">      datatype for this :func:`.bindparam`.  If not passed, a type</span>
+<span class="sd">      may be determined automatically for the bind, based on the given</span>
+<span class="sd">      value; for example, trivial Python types such as ``str``,</span>
+<span class="sd">      ``int``, ``bool``</span>
+<span class="sd">      may result in the :class:`.String`, :class:`.Integer` or</span>
+<span class="sd">      :class:`.Boolean` types being automatically selected.</span>
+
+<span class="sd">      The type of a :func:`.bindparam` is significant especially in that</span>
+<span class="sd">      the type will apply pre-processing to the value before it is</span>
+<span class="sd">      passed to the database.  For example, a :func:`.bindparam` which</span>
+<span class="sd">      refers to a datetime value, and is specified as holding the</span>
+<span class="sd">      :class:`.DateTime` type, may apply conversion needed to the</span>
+<span class="sd">      value (such as stringification on SQLite) before passing the value</span>
+<span class="sd">      to the database.</span>
+
+<span class="sd">    :param unique:</span>
+<span class="sd">      if True, the key name of this :class:`.BindParameter` will be</span>
+<span class="sd">      modified if another :class:`.BindParameter` of the same name</span>
+<span class="sd">      already has been located within the containing</span>
+<span class="sd">      expression.  This flag is used generally by the internals</span>
+<span class="sd">      when producing so-called &quot;anonymous&quot; bound expressions, it</span>
+<span class="sd">      isn&#39;t generally applicable to explicitly-named :func:`.bindparam`</span>
+<span class="sd">      constructs.</span>
+
+<span class="sd">    :param required:</span>
+<span class="sd">      If ``True``, a value is required at execution time.  If not passed,</span>
+<span class="sd">      it defaults to ``True`` if neither :paramref:`.bindparam.value`</span>
+<span class="sd">      or :paramref:`.bindparam.callable` were passed.  If either of these</span>
+<span class="sd">      parameters are present, then :paramref:`.bindparam.required`</span>
+<span class="sd">      defaults to ``False``.</span>
+
+<span class="sd">    :param quote:</span>
+<span class="sd">      True if this parameter name requires quoting and is not</span>
+<span class="sd">      currently known as a SQLAlchemy reserved word; this currently</span>
+<span class="sd">      only applies to the Oracle backend, where bound names must</span>
+<span class="sd">      sometimes be quoted.</span>
+
+<span class="sd">    :param isoutparam:</span>
+<span class="sd">      if True, the parameter should be treated like a stored procedure</span>
+<span class="sd">      &quot;OUT&quot; parameter.  This applies to backends such as Oracle which</span>
+<span class="sd">      support OUT parameters.</span>
+
+<span class="sd">    :param expanding:</span>
+<span class="sd">      if True, this parameter will be treated as an &quot;expanding&quot; parameter</span>
+<span class="sd">      at execution time; the parameter value is expected to be a sequence,</span>
+<span class="sd">      rather than a scalar value, and the string SQL statement will</span>
+<span class="sd">      be transformed on a per-execution basis to accommodate the sequence</span>
+<span class="sd">      with a variable number of parameter slots passed to the DBAPI.</span>
+<span class="sd">      This is to allow statement caching to be used in conjunction with</span>
+<span class="sd">      an IN clause.</span>
+
+<span class="sd">      .. seealso::</span>
+
+<span class="sd">        :meth:`.ColumnOperators.in_`</span>
+
+<span class="sd">        :ref:`baked_in` - with baked queries</span>
+
+<span class="sd">      .. note:: The &quot;expanding&quot; feature does not support &quot;executemany&quot;-</span>
+<span class="sd">         style parameter sets.</span>
+
+<span class="sd">      .. versionadded:: 1.2</span>
+
+<span class="sd">      .. versionchanged:: 1.3 the &quot;expanding&quot; bound parameter feature now</span>
+<span class="sd">         supports empty lists.</span>
+
+<span class="sd">    :param literal_execute:</span>
+<span class="sd">      if True, the bound parameter will be rendered in the compile phase</span>
+<span class="sd">      with a special &quot;POSTCOMPILE&quot; token, and the SQLAlchemy compiler will</span>
+<span class="sd">      render the final value of the parameter into the SQL statement at</span>
+<span class="sd">      statement execution time, omitting the value from the parameter</span>
+<span class="sd">      dictionary / list passed to DBAPI ``cursor.execute()``.  This</span>
+<span class="sd">      produces a similar effect as that of using the ``literal_binds``,</span>
+<span class="sd">      compilation flag,  however takes place as the statement is sent to</span>
+<span class="sd">      the DBAPI ``cursor.execute()`` method, rather than when the statement</span>
+<span class="sd">      is compiled.   The primary use of this</span>
+<span class="sd">      capability is for rendering LIMIT / OFFSET clauses for database</span>
+<span class="sd">      drivers that can&#39;t accommodate for bound parameters in these</span>
+<span class="sd">      contexts, while allowing SQL constructs to be cacheable at the</span>
+<span class="sd">      compilation level.</span>
+
+<span class="sd">      .. versionadded:: 1.4 Added &quot;post compile&quot; bound parameters</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :ref:`change_4808`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_sending_parameters` - in the</span>
+<span class="sd">        :ref:`unified_tutorial`</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">BindParameter</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="n">type_</span><span class="p">,</span>
+        <span class="n">unique</span><span class="p">,</span>
+        <span class="n">required</span><span class="p">,</span>
+        <span class="n">quote</span><span class="p">,</span>
+        <span class="n">callable_</span><span class="p">,</span>
+        <span class="n">expanding</span><span class="p">,</span>
+        <span class="n">isoutparam</span><span class="p">,</span>
+        <span class="n">literal_execute</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="case">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.case">[docs]</a>
+<span class="k">def</span> <span class="nf">case</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">whens</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">typing_Tuple</span><span class="p">[</span><span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">],</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">else_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Case</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a ``CASE`` expression.</span>
+
+<span class="sd">    The ``CASE`` construct in SQL is a conditional object that</span>
+<span class="sd">    acts somewhat analogously to an &quot;if/then&quot; construct in other</span>
+<span class="sd">    languages.  It returns an instance of :class:`.Case`.</span>
+
+<span class="sd">    :func:`.case` in its usual form is passed a series of &quot;when&quot;</span>
+<span class="sd">    constructs, that is, a list of conditions and results as tuples::</span>
+
+<span class="sd">        from sqlalchemy import case</span>
+
+<span class="sd">        stmt = with_columns(users_table).\</span>
+<span class="sd">                    where(</span>
+<span class="sd">                        case(</span>
+<span class="sd">                            (users_table.c.name == &#39;wendy&#39;, &#39;W&#39;),</span>
+<span class="sd">                            (users_table.c.name == &#39;jack&#39;, &#39;J&#39;),</span>
+<span class="sd">                            else_=&#39;E&#39;</span>
+<span class="sd">                        )</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The above statement will produce SQL resembling::</span>
+
+<span class="sd">        SELECT id, name FROM user</span>
+<span class="sd">        WHERE CASE</span>
+<span class="sd">            WHEN (name = :name_1) THEN :param_1</span>
+<span class="sd">            WHEN (name = :name_2) THEN :param_2</span>
+<span class="sd">            ELSE :param_3</span>
+<span class="sd">        END</span>
+
+<span class="sd">    When simple equality expressions of several values against a single</span>
+<span class="sd">    parent column are needed, :func:`.case` also has a &quot;shorthand&quot; format</span>
+<span class="sd">    used via the</span>
+<span class="sd">    :paramref:`.case.value` parameter, which is passed a column</span>
+<span class="sd">    expression to be compared.  In this form, the :paramref:`.case.whens`</span>
+<span class="sd">    parameter is passed as a dictionary containing expressions to be</span>
+<span class="sd">    compared against keyed to result expressions.  The statement below is</span>
+<span class="sd">    equivalent to the preceding statement::</span>
+
+<span class="sd">        stmt = with_columns(users_table).\</span>
+<span class="sd">                    where(</span>
+<span class="sd">                        case(</span>
+<span class="sd">                            {&quot;wendy&quot;: &quot;W&quot;, &quot;jack&quot;: &quot;J&quot;},</span>
+<span class="sd">                            value=users_table.c.name,</span>
+<span class="sd">                            else_=&#39;E&#39;</span>
+<span class="sd">                        )</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The values which are accepted as result values in</span>
+<span class="sd">    :paramref:`.case.whens` as well as with :paramref:`.case.else_` are</span>
+<span class="sd">    coerced from Python literals into :func:`.bindparam` constructs.</span>
+<span class="sd">    SQL expressions, e.g. :class:`_expression.ColumnElement` constructs,</span>
+<span class="sd">    are accepted</span>
+<span class="sd">    as well.  To coerce a literal string expression into a constant</span>
+<span class="sd">    expression rendered inline, use the :func:`_expression.literal_column`</span>
+<span class="sd">    construct,</span>
+<span class="sd">    as in::</span>
+
+<span class="sd">        from sqlalchemy import case, literal_column</span>
+
+<span class="sd">        case(</span>
+<span class="sd">            (</span>
+<span class="sd">                orderline.c.qty &gt; 100,</span>
+<span class="sd">                literal_column(&quot;&#39;greaterthan100&#39;&quot;)</span>
+<span class="sd">            ),</span>
+<span class="sd">            (</span>
+<span class="sd">                orderline.c.qty &gt; 10,</span>
+<span class="sd">                literal_column(&quot;&#39;greaterthan10&#39;&quot;)</span>
+<span class="sd">            ),</span>
+<span class="sd">            else_=literal_column(&quot;&#39;lessthan10&#39;&quot;)</span>
+<span class="sd">        )</span>
+
+<span class="sd">    The above will render the given constants without using bound</span>
+<span class="sd">    parameters for the result values (but still for the comparison</span>
+<span class="sd">    values), as in::</span>
+
+<span class="sd">        CASE</span>
+<span class="sd">            WHEN (orderline.qty &gt; :qty_1) THEN &#39;greaterthan100&#39;</span>
+<span class="sd">            WHEN (orderline.qty &gt; :qty_2) THEN &#39;greaterthan10&#39;</span>
+<span class="sd">            ELSE &#39;lessthan10&#39;</span>
+<span class="sd">        END</span>
+
+<span class="sd">    :param \*whens: The criteria to be compared against,</span>
+<span class="sd">     :paramref:`.case.whens` accepts two different forms, based on</span>
+<span class="sd">     whether or not :paramref:`.case.value` is used.</span>
+
+<span class="sd">     .. versionchanged:: 1.4 the :func:`_sql.case`</span>
+<span class="sd">        function now accepts the series of WHEN conditions positionally</span>
+
+<span class="sd">     In the first form, it accepts multiple 2-tuples passed as positional</span>
+<span class="sd">     arguments; each 2-tuple consists of ``(&lt;sql expression&gt;, &lt;value&gt;)``,</span>
+<span class="sd">     where the SQL expression is a boolean expression and &quot;value&quot; is a</span>
+<span class="sd">     resulting value, e.g.::</span>
+
+<span class="sd">        case(</span>
+<span class="sd">            (users_table.c.name == &#39;wendy&#39;, &#39;W&#39;),</span>
+<span class="sd">            (users_table.c.name == &#39;jack&#39;, &#39;J&#39;)</span>
+<span class="sd">        )</span>
+
+<span class="sd">     In the second form, it accepts a Python dictionary of comparison</span>
+<span class="sd">     values mapped to a resulting value; this form requires</span>
+<span class="sd">     :paramref:`.case.value` to be present, and values will be compared</span>
+<span class="sd">     using the ``==`` operator, e.g.::</span>
+
+<span class="sd">        case(</span>
+<span class="sd">            {&quot;wendy&quot;: &quot;W&quot;, &quot;jack&quot;: &quot;J&quot;},</span>
+<span class="sd">            value=users_table.c.name</span>
+<span class="sd">        )</span>
+
+<span class="sd">    :param value: An optional SQL expression which will be used as a</span>
+<span class="sd">      fixed &quot;comparison point&quot; for candidate values within a dictionary</span>
+<span class="sd">      passed to :paramref:`.case.whens`.</span>
+
+<span class="sd">    :param else\_: An optional SQL expression which will be the evaluated</span>
+<span class="sd">      result of the ``CASE`` construct if all expressions within</span>
+<span class="sd">      :paramref:`.case.whens` evaluate to false.  When omitted, most</span>
+<span class="sd">      databases will produce a result of NULL if none of the &quot;when&quot;</span>
+<span class="sd">      expressions evaluate to true.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Case</span><span class="p">(</span><span class="o">*</span><span class="n">whens</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">else_</span><span class="o">=</span><span class="n">else_</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">cast</span><span class="p">(</span>
+    <span class="n">expression</span><span class="p">:</span> <span class="n">_ColumnExpressionOrLiteralArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cast</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a ``CAST`` expression.</span>
+
+<span class="sd">    :func:`.cast` returns an instance of :class:`.Cast`.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import cast, Numeric</span>
+
+<span class="sd">        stmt = with_columns(cast(product_table.c.unit_price, Numeric(10, 4)))</span>
+
+<span class="sd">    The above statement will produce SQL resembling::</span>
+
+<span class="sd">        SELECT CAST(unit_price AS NUMERIC(10, 4)) FROM product</span>
+
+<span class="sd">    The :func:`.cast` function performs two distinct functions when</span>
+<span class="sd">    used.  The first is that it renders the ``CAST`` expression within</span>
+<span class="sd">    the resulting SQL string.  The second is that it associates the given</span>
+<span class="sd">    type (e.g. :class:`.TypeEngine` class or instance) with the column</span>
+<span class="sd">    expression on the Python side, which means the expression will take</span>
+<span class="sd">    on the expression operator behavior associated with that type,</span>
+<span class="sd">    as well as the bound-value handling and result-row-handling behavior</span>
+<span class="sd">    of the type.</span>
+
+<span class="sd">    An alternative to :func:`.cast` is the :func:`.type_coerce` function.</span>
+<span class="sd">    This function performs the second task of associating an expression</span>
+<span class="sd">    with a specific type, but does not render the ``CAST`` expression</span>
+<span class="sd">    in SQL.</span>
+
+<span class="sd">    :param expression: A SQL expression, such as a</span>
+<span class="sd">     :class:`_expression.ColumnElement`</span>
+<span class="sd">     expression or a Python string which will be coerced into a bound</span>
+<span class="sd">     literal value.</span>
+
+<span class="sd">    :param type\_: A :class:`.TypeEngine` class or instance indicating</span>
+<span class="sd">     the type to which the ``CAST`` should apply.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_casts`</span>
+
+<span class="sd">        :func:`.try_cast` - an alternative to CAST that results in</span>
+<span class="sd">        NULLs when the cast fails, instead of raising an error.</span>
+<span class="sd">        Only supported by some dialects.</span>
+
+<span class="sd">        :func:`.type_coerce` - an alternative to CAST that coerces the type</span>
+<span class="sd">        on the Python side only, which is often sufficient to generate the</span>
+<span class="sd">        correct SQL and data coercion.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Cast</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">try_cast</span><span class="p">(</span>
+    <span class="n">expression</span><span class="p">:</span> <span class="n">_ColumnExpressionOrLiteralArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TryCast</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a ``TRY_CAST`` expression for backends which support it;</span>
+<span class="sd">    this is a ``CAST`` which returns NULL for un-castable conversions.</span>
+
+<span class="sd">    In SQLAlchemy, this construct is supported **only** by the SQL Server</span>
+<span class="sd">    dialect, and will raise a :class:`.CompileError` if used on other</span>
+<span class="sd">    included backends.  However, third party backends may also support</span>
+<span class="sd">    this construct.</span>
+
+<span class="sd">    .. tip:: As :func:`_sql.try_cast` originates from the SQL Server dialect,</span>
+<span class="sd">       it&#39;s importable both from ``sqlalchemy.`` as well as from</span>
+<span class="sd">       ``sqlalchemy.dialects.mssql``.</span>
+
+<span class="sd">    :func:`_sql.try_cast` returns an instance of :class:`.TryCast` and</span>
+<span class="sd">    generally behaves similarly to the :class:`.Cast` construct;</span>
+<span class="sd">    at the SQL level, the difference between ``CAST`` and ``TRY_CAST``</span>
+<span class="sd">    is that ``TRY_CAST`` returns NULL for an un-castable expression,</span>
+<span class="sd">    such as attempting to cast a string ``&quot;hi&quot;`` to an integer value.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import select, try_cast, Numeric</span>
+
+<span class="sd">        stmt = with_columns(</span>
+<span class="sd">            try_cast(product_table.c.unit_price, Numeric(10, 4))</span>
+<span class="sd">        )</span>
+
+<span class="sd">    The above would render on Microsoft SQL Server as::</span>
+
+<span class="sd">        SELECT TRY_CAST (product_table.unit_price AS NUMERIC(10, 4))</span>
+<span class="sd">        FROM product_table</span>
+
+<span class="sd">    .. versionadded:: 2.0.14  :func:`.try_cast` has been</span>
+<span class="sd">       generalized from the SQL Server dialect into a general use</span>
+<span class="sd">       construct that may be supported by additional dialects.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TryCast</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">column</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">is_literal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">_selectable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">FromClause</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ColumnClause</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a :class:`.ColumnClause` object.</span>
+
+<span class="sd">    The :class:`.ColumnClause` is a lightweight analogue to the</span>
+<span class="sd">    :class:`_schema.Column` class.  The :func:`_expression.column`</span>
+<span class="sd">    function can</span>
+<span class="sd">    be invoked with just a name alone, as in::</span>
+
+<span class="sd">        from sqlalchemy import column</span>
+
+<span class="sd">        id, name = column(&quot;id&quot;), column(&quot;name&quot;)</span>
+<span class="sd">        stmt = with_columns(id, name).select_from(&quot;user&quot;)</span>
+
+<span class="sd">    The above statement would produce SQL like::</span>
+
+<span class="sd">        SELECT id, name FROM user</span>
+
+<span class="sd">    Once constructed, :func:`_expression.column`</span>
+<span class="sd">    may be used like any other SQL</span>
+<span class="sd">    expression element such as within :func:`_expression.select`</span>
+<span class="sd">    constructs::</span>
+
+<span class="sd">        from sqlalchemy.sql import column</span>
+
+<span class="sd">        id, name = column(&quot;id&quot;), column(&quot;name&quot;)</span>
+<span class="sd">        stmt = with_columns(id, name).select_from(&quot;user&quot;)</span>
+
+<span class="sd">    The text handled by :func:`_expression.column`</span>
+<span class="sd">    is assumed to be handled</span>
+<span class="sd">    like the name of a database column; if the string contains mixed case,</span>
+<span class="sd">    special characters, or matches a known reserved word on the target</span>
+<span class="sd">    backend, the column expression will render using the quoting</span>
+<span class="sd">    behavior determined by the backend.  To produce a textual SQL</span>
+<span class="sd">    expression that is rendered exactly without any quoting,</span>
+<span class="sd">    use :func:`_expression.literal_column` instead,</span>
+<span class="sd">    or pass ``True`` as the</span>
+<span class="sd">    value of :paramref:`_expression.column.is_literal`.   Additionally,</span>
+<span class="sd">    full SQL</span>
+<span class="sd">    statements are best handled using the :func:`_expression.text`</span>
+<span class="sd">    construct.</span>
+
+<span class="sd">    :func:`_expression.column` can be used in a table-like</span>
+<span class="sd">    fashion by combining it with the :func:`.table` function</span>
+<span class="sd">    (which is the lightweight analogue to :class:`_schema.Table`</span>
+<span class="sd">    ) to produce</span>
+<span class="sd">    a working table construct with minimal boilerplate::</span>
+
+<span class="sd">        from sqlalchemy import table, column, select</span>
+
+<span class="sd">        user = table(&quot;user&quot;,</span>
+<span class="sd">                column(&quot;id&quot;),</span>
+<span class="sd">                column(&quot;name&quot;),</span>
+<span class="sd">                column(&quot;description&quot;),</span>
+<span class="sd">        )</span>
+
+<span class="sd">        stmt = with_columns(user.c.description).where(user.c.name == &#39;wendy&#39;)</span>
+
+<span class="sd">    A :func:`_expression.column` / :func:`.table`</span>
+<span class="sd">    construct like that illustrated</span>
+<span class="sd">    above can be created in an</span>
+<span class="sd">    ad-hoc fashion and is not associated with any</span>
+<span class="sd">    :class:`_schema.MetaData`, DDL, or events, unlike its</span>
+<span class="sd">    :class:`_schema.Table` counterpart.</span>
+
+<span class="sd">    :param text: the text of the element.</span>
+
+<span class="sd">    :param type: :class:`_types.TypeEngine` object which can associate</span>
+<span class="sd">      this :class:`.ColumnClause` with a type.</span>
+
+<span class="sd">    :param is_literal: if True, the :class:`.ColumnClause` is assumed to</span>
+<span class="sd">      be an exact expression that will be delivered to the output with no</span>
+<span class="sd">      quoting rules applied regardless of case sensitive settings. the</span>
+<span class="sd">      :func:`_expression.literal_column()` function essentially invokes</span>
+<span class="sd">      :func:`_expression.column` while passing ``is_literal=True``.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :class:`_schema.Column`</span>
+
+<span class="sd">        :func:`_expression.literal_column`</span>
+
+<span class="sd">        :func:`.table`</span>
+
+<span class="sd">        :func:`_expression.text`</span>
+
+<span class="sd">        :ref:`tutorial_select_arbitrary_text`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ColumnClause</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">is_literal</span><span class="p">,</span> <span class="n">_selectable</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">desc</span><span class="p">(</span>
+    <span class="n">column</span><span class="p">:</span> <span class="n">_ColumnExpressionOrStrLabelArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a descending ``ORDER BY`` clause element.</span>
+
+<span class="sd">    e.g.::</span>
+
+<span class="sd">        from sqlalchemy import desc</span>
+
+<span class="sd">        stmt = with_columns(users_table).order_by(desc(users_table.c.name))</span>
+
+<span class="sd">    will produce SQL as::</span>
+
+<span class="sd">        SELECT id, name FROM user ORDER BY name DESC</span>
+
+<span class="sd">    The :func:`.desc` function is a standalone version of the</span>
+<span class="sd">    :meth:`_expression.ColumnElement.desc`</span>
+<span class="sd">    method available on all SQL expressions,</span>
+<span class="sd">    e.g.::</span>
+
+
+<span class="sd">        stmt = with_columns(users_table).order_by(users_table.c.name.desc())</span>
+
+<span class="sd">    :param column: A :class:`_expression.ColumnElement` (e.g.</span>
+<span class="sd">     scalar SQL expression)</span>
+<span class="sd">     with which to apply the :func:`.desc` operation.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.asc`</span>
+
+<span class="sd">        :func:`.nulls_first`</span>
+
+<span class="sd">        :func:`.nulls_last`</span>
+
+<span class="sd">        :meth:`_expression.Select.order_by`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_desc</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="distinct">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.distinct">[docs]</a>
+<span class="k">def</span> <span class="nf">distinct</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce an column-expression-level unary ``DISTINCT`` clause.</span>
+
+<span class="sd">    This applies the ``DISTINCT`` keyword to an **individual column</span>
+<span class="sd">    expression** (e.g. not the whole statement), and renders **specifically</span>
+<span class="sd">    in that column position**; this is used for containment within</span>
+<span class="sd">    an aggregate function, as in::</span>
+
+<span class="sd">        from sqlalchemy import distinct, func</span>
+<span class="sd">        stmt = with_columns(users_table.c.id, func.count(distinct(users_table.c.name)))</span>
+
+<span class="sd">    The above would produce an statement resembling::</span>
+
+<span class="sd">        SELECT user.id, count(DISTINCT user.name) FROM user</span>
+
+<span class="sd">    .. tip:: The :func:`_sql.distinct` function does **not** apply DISTINCT</span>
+<span class="sd">       to the full SELECT statement, instead applying a DISTINCT modifier</span>
+<span class="sd">       to **individual column expressions**.  For general ``SELECT DISTINCT``</span>
+<span class="sd">       support, use the</span>
+<span class="sd">       :meth:`_sql.Select.distinct` method on :class:`_sql.Select`.</span>
+
+<span class="sd">    The :func:`.distinct` function is also available as a column-level</span>
+<span class="sd">    method, e.g. :meth:`_expression.ColumnElement.distinct`, as in::</span>
+
+<span class="sd">        stmt = with_columns(func.count(users_table.c.name.distinct()))</span>
+
+<span class="sd">    The :func:`.distinct` operator is different from the</span>
+<span class="sd">    :meth:`_expression.Select.distinct` method of</span>
+<span class="sd">    :class:`_expression.Select`,</span>
+<span class="sd">    which produces a ``SELECT`` statement</span>
+<span class="sd">    with ``DISTINCT`` applied to the result set as a whole,</span>
+<span class="sd">    e.g. a ``SELECT DISTINCT`` expression.  See that method for further</span>
+<span class="sd">    information.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :meth:`_expression.ColumnElement.distinct`</span>
+
+<span class="sd">        :meth:`_expression.Select.distinct`</span>
+
+<span class="sd">        :data:`.func`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_distinct</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">bitwise_not</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a unary bitwise NOT clause, typically via the ``~`` operator.</span>
+
+<span class="sd">    Not to be confused with boolean negation :func:`_sql.not_`.</span>
+
+<span class="sd">    .. versionadded:: 2.0.2</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`operators_bitwise`</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_bitwise_not</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Extract</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`.Extract` construct.</span>
+
+<span class="sd">    This is typically available as :func:`.extract`</span>
+<span class="sd">    as well as ``func.extract`` from the</span>
+<span class="sd">    :data:`.func` namespace.</span>
+
+<span class="sd">    :param field: The field to extract.</span>
+
+<span class="sd">    :param expr: A column or Python scalar expression serving as the</span>
+<span class="sd">      right side of the ``EXTRACT`` expression.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import extract</span>
+<span class="sd">        from sqlalchemy import table, column</span>
+
+<span class="sd">        logged_table = table(&quot;user&quot;,</span>
+<span class="sd">                column(&quot;id&quot;),</span>
+<span class="sd">                column(&quot;date_created&quot;),</span>
+<span class="sd">        )</span>
+
+<span class="sd">        stmt = with_columns(logged_table.c.id).where(</span>
+<span class="sd">            extract(&quot;YEAR&quot;, logged_table.c.date_created) == 2021</span>
+<span class="sd">        )</span>
+
+<span class="sd">    In the above example, the statement is used to select ids from the</span>
+<span class="sd">    database where the ``YEAR`` component matches a specific value.</span>
+
+<span class="sd">    Similarly, one can also select an extracted component::</span>
+
+<span class="sd">        stmt = with_columns(</span>
+<span class="sd">            extract(&quot;YEAR&quot;, logged_table.c.date_created)</span>
+<span class="sd">        ).where(logged_table.c.id == 1)</span>
+
+<span class="sd">    The implementation of ``EXTRACT`` may vary across database backends.</span>
+<span class="sd">    Users are reminded to consult their database documentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Extract</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">false</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">False_</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`.False_` construct.</span>
+
+<span class="sd">    E.g.:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; from sqlalchemy import false</span>
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(false()))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE false</span>
+
+<span class="sd">    A backend which does not support true/false constants will render as</span>
+<span class="sd">    an expression against 1 or 0:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(false()))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE 0 = 1</span>
+
+<span class="sd">    The :func:`.true` and :func:`.false` constants also feature</span>
+<span class="sd">    &quot;short circuit&quot; operation within an :func:`.and_` or :func:`.or_`</span>
+<span class="sd">    conjunction:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(or_(t.c.x &gt; 5, true())))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE true{stop}</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(and_(t.c.x &gt; 5, false())))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE false{stop}</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.true`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">False_</span><span class="o">.</span><span class="n">_instance</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">funcfilter</span><span class="p">(</span>
+    <span class="n">func</span><span class="p">:</span> <span class="n">FunctionElement</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span> <span class="o">*</span><span class="n">criterion</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionFilter</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a :class:`.FunctionFilter` object against a function.</span>
+
+<span class="sd">    Used against aggregate and window functions,</span>
+<span class="sd">    for database backends that support the &quot;FILTER&quot; clause.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import funcfilter</span>
+<span class="sd">        funcfilter(func.count(1), MyClass.name == &#39;some name&#39;)</span>
+
+<span class="sd">    Would produce &quot;COUNT(1) FILTER (WHERE myclass.name = &#39;some name&#39;)&quot;.</span>
+
+<span class="sd">    This function is also available from the :data:`~.expression.func`</span>
+<span class="sd">    construct itself via the :meth:`.FunctionElement.filter` method.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_functions_within_group` - in the</span>
+<span class="sd">        :ref:`unified_tutorial`</span>
+
+<span class="sd">        :meth:`.FunctionElement.filter`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">FunctionFilter</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">criterion</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">label</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">element</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Label</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`Label` object for the</span>
+<span class="sd">    given :class:`_expression.ColumnElement`.</span>
+
+<span class="sd">    A label changes the name of an element in the columns clause of a</span>
+<span class="sd">    ``SELECT`` statement, typically via the ``AS`` SQL keyword.</span>
+
+<span class="sd">    This functionality is more conveniently available via the</span>
+<span class="sd">    :meth:`_expression.ColumnElement.label` method on</span>
+<span class="sd">    :class:`_expression.ColumnElement`.</span>
+
+<span class="sd">    :param name: label name</span>
+
+<span class="sd">    :param obj: a :class:`_expression.ColumnElement`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Label</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">null</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Null</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a constant :class:`.Null` construct.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Null</span><span class="o">.</span><span class="n">_instance</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">nulls_first</span><span class="p">(</span><span class="n">column</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce the ``NULLS FIRST`` modifier for an ``ORDER BY`` expression.</span>
+
+<span class="sd">    :func:`.nulls_first` is intended to modify the expression produced</span>
+<span class="sd">    by :func:`.asc` or :func:`.desc`, and indicates how NULL values</span>
+<span class="sd">    should be handled when they are encountered during ordering::</span>
+
+
+<span class="sd">        from sqlalchemy import desc, nulls_first</span>
+
+<span class="sd">        stmt = with_columns(users_table).order_by(</span>
+<span class="sd">            nulls_first(desc(users_table.c.name)))</span>
+
+<span class="sd">    The SQL expression from the above would resemble::</span>
+
+<span class="sd">        SELECT id, name FROM user ORDER BY name DESC NULLS FIRST</span>
+
+<span class="sd">    Like :func:`.asc` and :func:`.desc`, :func:`.nulls_first` is typically</span>
+<span class="sd">    invoked from the column expression itself using</span>
+<span class="sd">    :meth:`_expression.ColumnElement.nulls_first`,</span>
+<span class="sd">    rather than as its standalone</span>
+<span class="sd">    function version, as in::</span>
+
+<span class="sd">        stmt = with_columns(users_table).order_by(</span>
+<span class="sd">            users_table.c.name.desc().nulls_first())</span>
+
+<span class="sd">    .. versionchanged:: 1.4 :func:`.nulls_first` is renamed from</span>
+<span class="sd">        :func:`.nullsfirst` in previous releases.</span>
+<span class="sd">        The previous name remains available for backwards compatibility.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.asc`</span>
+
+<span class="sd">        :func:`.desc`</span>
+
+<span class="sd">        :func:`.nulls_last`</span>
+
+<span class="sd">        :meth:`_expression.Select.order_by`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_nulls_first</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">nulls_last</span><span class="p">(</span><span class="n">column</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">UnaryExpression</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce the ``NULLS LAST`` modifier for an ``ORDER BY`` expression.</span>
+
+<span class="sd">    :func:`.nulls_last` is intended to modify the expression produced</span>
+<span class="sd">    by :func:`.asc` or :func:`.desc`, and indicates how NULL values</span>
+<span class="sd">    should be handled when they are encountered during ordering::</span>
+
+
+<span class="sd">        from sqlalchemy import desc, nulls_last</span>
+
+<span class="sd">        stmt = with_columns(users_table).order_by(</span>
+<span class="sd">            nulls_last(desc(users_table.c.name)))</span>
+
+<span class="sd">    The SQL expression from the above would resemble::</span>
+
+<span class="sd">        SELECT id, name FROM user ORDER BY name DESC NULLS LAST</span>
+
+<span class="sd">    Like :func:`.asc` and :func:`.desc`, :func:`.nulls_last` is typically</span>
+<span class="sd">    invoked from the column expression itself using</span>
+<span class="sd">    :meth:`_expression.ColumnElement.nulls_last`,</span>
+<span class="sd">    rather than as its standalone</span>
+<span class="sd">    function version, as in::</span>
+
+<span class="sd">        stmt = with_columns(users_table).order_by(</span>
+<span class="sd">            users_table.c.name.desc().nulls_last())</span>
+
+<span class="sd">    .. versionchanged:: 1.4 :func:`.nulls_last` is renamed from</span>
+<span class="sd">        :func:`.nullslast` in previous releases.</span>
+<span class="sd">        The previous name remains available for backwards compatibility.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.asc`</span>
+
+<span class="sd">        :func:`.desc`</span>
+
+<span class="sd">        :func:`.nulls_first`</span>
+
+<span class="sd">        :meth:`_expression.Select.order_by`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">UnaryExpression</span><span class="o">.</span><span class="n">_create_nulls_last</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">or_</span><span class="p">(</span>  <span class="c1"># type: ignore[empty-body]</span>
+    <span class="n">initial_clause</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">],</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">]],</span>
+    <span class="o">*</span><span class="n">clauses</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ColumnElement</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a conjunction of expressions joined by ``OR``.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import or_</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(</span>
+<span class="sd">                        or_(</span>
+<span class="sd">                            users_table.c.name == &#39;wendy&#39;,</span>
+<span class="sd">                            users_table.c.name == &#39;jack&#39;</span>
+<span class="sd">                        )</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The :func:`.or_` conjunction is also available using the</span>
+<span class="sd">    Python ``|`` operator (though note that compound expressions</span>
+<span class="sd">    need to be parenthesized in order to function with Python</span>
+<span class="sd">    operator precedence behavior)::</span>
+
+<span class="sd">        stmt = with_columns(users_table).where(</span>
+<span class="sd">                        (users_table.c.name == &#39;wendy&#39;) |</span>
+<span class="sd">                        (users_table.c.name == &#39;jack&#39;)</span>
+<span class="sd">                    )</span>
+
+<span class="sd">    The :func:`.or_` construct must be given at least one positional</span>
+<span class="sd">    argument in order to be valid; a :func:`.or_` construct with no</span>
+<span class="sd">    arguments is ambiguous.   To produce an &quot;empty&quot; or dynamically</span>
+<span class="sd">    generated :func:`.or_`  expression, from a given list of expressions,</span>
+<span class="sd">    a &quot;default&quot; element of :func:`_sql.false` (or just ``False``) should be</span>
+<span class="sd">    specified::</span>
+
+<span class="sd">        from sqlalchemy import false</span>
+<span class="sd">        or_criteria = or_(false(), *expressions)</span>
+
+<span class="sd">    The above expression will compile to SQL as the expression ``false``</span>
+<span class="sd">    or ``0 = 1``, depending on backend, if no other expressions are</span>
+<span class="sd">    present.  If expressions are present, then the :func:`_sql.false` value is</span>
+<span class="sd">    ignored as it does not affect the outcome of an OR expression which</span>
+<span class="sd">    has other elements.</span>
+
+<span class="sd">    .. deprecated:: 1.4  The :func:`.or_` element now requires that at</span>
+<span class="sd">       least one argument is passed; creating the :func:`.or_` construct</span>
+<span class="sd">       with no arguments is deprecated, and will emit a deprecation warning</span>
+<span class="sd">       while continuing to produce a blank SQL string.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.and_`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="o">...</span>
+
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="c1"># handle deprecated case which allows zero-arguments</span>
+<div class="viewcode-block" id="or_">
+<a class="viewcode-back" href="../../../chainalysis.data_solutions_table.html#chainalysis.data_solutions_table.data_solutions_table.or_">[docs]</a>
+    <span class="k">def</span> <span class="nf">or_</span><span class="p">(</span><span class="o">*</span><span class="n">clauses</span><span class="p">):</span>  <span class="c1"># noqa: F811</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Produce a conjunction of expressions joined by ``OR``.</span>
+
+<span class="sd">        E.g.::</span>
+
+<span class="sd">            from sqlalchemy import or_</span>
+
+<span class="sd">            stmt = with_columns(users_table).where(</span>
+<span class="sd">                            or_(</span>
+<span class="sd">                                users_table.c.name == &#39;wendy&#39;,</span>
+<span class="sd">                                users_table.c.name == &#39;jack&#39;</span>
+<span class="sd">                            )</span>
+<span class="sd">                        )</span>
+
+<span class="sd">        The :func:`.or_` conjunction is also available using the</span>
+<span class="sd">        Python ``|`` operator (though note that compound expressions</span>
+<span class="sd">        need to be parenthesized in order to function with Python</span>
+<span class="sd">        operator precedence behavior)::</span>
+
+<span class="sd">            stmt = with_columns(users_table).where(</span>
+<span class="sd">                            (users_table.c.name == &#39;wendy&#39;) |</span>
+<span class="sd">                            (users_table.c.name == &#39;jack&#39;)</span>
+<span class="sd">                        )</span>
+
+<span class="sd">        The :func:`.or_` construct must be given at least one positional</span>
+<span class="sd">        argument in order to be valid; a :func:`.or_` construct with no</span>
+<span class="sd">        arguments is ambiguous.   To produce an &quot;empty&quot; or dynamically</span>
+<span class="sd">        generated :func:`.or_`  expression, from a given list of expressions,</span>
+<span class="sd">        a &quot;default&quot; element of :func:`_sql.false` (or just ``False``) should be</span>
+<span class="sd">        specified::</span>
+
+<span class="sd">            from sqlalchemy import false</span>
+<span class="sd">            or_criteria = or_(false(), *expressions)</span>
+
+<span class="sd">        The above expression will compile to SQL as the expression ``false``</span>
+<span class="sd">        or ``0 = 1``, depending on backend, if no other expressions are</span>
+<span class="sd">        present.  If expressions are present, then the :func:`_sql.false` value</span>
+<span class="sd">        is ignored as it does not affect the outcome of an OR expression which</span>
+<span class="sd">        has other elements.</span>
+
+<span class="sd">        .. deprecated:: 1.4  The :func:`.or_` element now requires that at</span>
+<span class="sd">           least one argument is passed; creating the :func:`.or_` construct</span>
+<span class="sd">           with no arguments is deprecated, and will emit a deprecation warning</span>
+<span class="sd">           while continuing to produce a blank SQL string.</span>
+
+<span class="sd">        .. seealso::</span>
+
+<span class="sd">            :func:`.and_`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BooleanClauseList</span><span class="o">.</span><span class="n">or_</span><span class="p">(</span><span class="o">*</span><span class="n">clauses</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">over</span><span class="p">(</span>
+    <span class="n">element</span><span class="p">:</span> <span class="n">FunctionElement</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+    <span class="n">partition_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ByArgument</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">order_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_ByArgument</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">range_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">typing_Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">typing_Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Over</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce an :class:`.Over` object against a function.</span>
+
+<span class="sd">    Used against aggregate or so-called &quot;window&quot; functions,</span>
+<span class="sd">    for database backends that support window functions.</span>
+
+<span class="sd">    :func:`_expression.over` is usually called using</span>
+<span class="sd">    the :meth:`.FunctionElement.over` method, e.g.::</span>
+
+<span class="sd">        func.row_number().over(order_by=mytable.c.some_column)</span>
+
+<span class="sd">    Would produce::</span>
+
+<span class="sd">        ROW_NUMBER() OVER(ORDER BY some_column)</span>
+
+<span class="sd">    Ranges are also possible using the :paramref:`.expression.over.range_`</span>
+<span class="sd">    and :paramref:`.expression.over.rows` parameters.  These</span>
+<span class="sd">    mutually-exclusive parameters each accept a 2-tuple, which contains</span>
+<span class="sd">    a combination of integers and None::</span>
+
+<span class="sd">        func.row_number().over(</span>
+<span class="sd">            order_by=my_table.c.some_column, range_=(None, 0))</span>
+
+<span class="sd">    The above would produce::</span>
+
+<span class="sd">        ROW_NUMBER() OVER(ORDER BY some_column</span>
+<span class="sd">        RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)</span>
+
+<span class="sd">    A value of ``None`` indicates &quot;unbounded&quot;, a</span>
+<span class="sd">    value of zero indicates &quot;current row&quot;, and negative / positive</span>
+<span class="sd">    integers indicate &quot;preceding&quot; and &quot;following&quot;:</span>
+
+<span class="sd">    * RANGE BETWEEN 5 PRECEDING AND 10 FOLLOWING::</span>
+
+<span class="sd">        func.row_number().over(order_by=&#39;x&#39;, range_=(-5, 10))</span>
+
+<span class="sd">    * ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW::</span>
+
+<span class="sd">        func.row_number().over(order_by=&#39;x&#39;, rows=(None, 0))</span>
+
+<span class="sd">    * RANGE BETWEEN 2 PRECEDING AND UNBOUNDED FOLLOWING::</span>
+
+<span class="sd">        func.row_number().over(order_by=&#39;x&#39;, range_=(-2, None))</span>
+
+<span class="sd">    * RANGE BETWEEN 1 FOLLOWING AND 3 FOLLOWING::</span>
+
+<span class="sd">        func.row_number().over(order_by=&#39;x&#39;, range_=(1, 3))</span>
+
+<span class="sd">    :param element: a :class:`.FunctionElement`, :class:`.WithinGroup`,</span>
+<span class="sd">     or other compatible construct.</span>
+<span class="sd">    :param partition_by: a column element or string, or a list</span>
+<span class="sd">     of such, that will be used as the PARTITION BY clause</span>
+<span class="sd">     of the OVER construct.</span>
+<span class="sd">    :param order_by: a column element or string, or a list</span>
+<span class="sd">     of such, that will be used as the ORDER BY clause</span>
+<span class="sd">     of the OVER construct.</span>
+<span class="sd">    :param range\_: optional range clause for the window.  This is a</span>
+<span class="sd">     tuple value which can contain integer values or ``None``,</span>
+<span class="sd">     and will render a RANGE BETWEEN PRECEDING / FOLLOWING clause.</span>
+
+<span class="sd">    :param rows: optional rows clause for the window.  This is a tuple</span>
+<span class="sd">     value which can contain integer values or None, and will render</span>
+<span class="sd">     a ROWS BETWEEN PRECEDING / FOLLOWING clause.</span>
+
+<span class="sd">    This function is also available from the :data:`~.expression.func`</span>
+<span class="sd">    construct itself via the :meth:`.FunctionElement.over` method.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_window_functions` - in the :ref:`unified_tutorial`</span>
+
+<span class="sd">        :data:`.expression.func`</span>
+
+<span class="sd">        :func:`_expression.within_group`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Over</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">partition_by</span><span class="p">,</span> <span class="n">order_by</span><span class="p">,</span> <span class="n">range_</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+
+
+<span class="nd">@_document_text_coercion</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;:func:`.text`&quot;</span><span class="p">,</span> <span class="s2">&quot;:paramref:`.text.text`&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextClause</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a new :class:`_expression.TextClause` clause,</span>
+<span class="sd">    representing</span>
+<span class="sd">    a textual SQL string directly.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import text</span>
+
+<span class="sd">        t = text(&quot;SELECT * FROM users&quot;)</span>
+<span class="sd">        result = connection.execute(t)</span>
+
+<span class="sd">    The advantages :func:`_expression.text`</span>
+<span class="sd">    provides over a plain string are</span>
+<span class="sd">    backend-neutral support for bind parameters, per-statement</span>
+<span class="sd">    execution options, as well as</span>
+<span class="sd">    bind parameter and result-column typing behavior, allowing</span>
+<span class="sd">    SQLAlchemy type constructs to play a role when executing</span>
+<span class="sd">    a statement that is specified literally.  The construct can also</span>
+<span class="sd">    be provided with a ``.c`` collection of column elements, allowing</span>
+<span class="sd">    it to be embedded in other SQL expression constructs as a subquery.</span>
+
+<span class="sd">    Bind parameters are specified by name, using the format ``:name``.</span>
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        t = text(&quot;SELECT * FROM users WHERE id=:user_id&quot;)</span>
+<span class="sd">        result = connection.execute(t, {&quot;user_id&quot;: 12})</span>
+
+<span class="sd">    For SQL statements where a colon is required verbatim, as within</span>
+<span class="sd">    an inline string, use a backslash to escape::</span>
+
+<span class="sd">        t = text(r&quot;SELECT * FROM users WHERE name=&#39;\:username&#39;&quot;)</span>
+
+<span class="sd">    The :class:`_expression.TextClause`</span>
+<span class="sd">    construct includes methods which can</span>
+<span class="sd">    provide information about the bound parameters as well as the column</span>
+<span class="sd">    values which would be returned from the textual statement, assuming</span>
+<span class="sd">    it&#39;s an executable SELECT type of statement.  The</span>
+<span class="sd">    :meth:`_expression.TextClause.bindparams`</span>
+<span class="sd">    method is used to provide bound</span>
+<span class="sd">    parameter detail, and :meth:`_expression.TextClause.columns`</span>
+<span class="sd">    method allows</span>
+<span class="sd">    specification of return columns including names and types::</span>
+
+<span class="sd">        t = text(&quot;SELECT * FROM users WHERE id=:user_id&quot;).\</span>
+<span class="sd">                bindparams(user_id=7).\</span>
+<span class="sd">                columns(id=Integer, name=String)</span>
+
+<span class="sd">        for id, name in connection.execute(t):</span>
+<span class="sd">            print(id, name)</span>
+
+<span class="sd">    The :func:`_expression.text` construct is used in cases when</span>
+<span class="sd">    a literal string SQL fragment is specified as part of a larger query,</span>
+<span class="sd">    such as for the WHERE clause of a SELECT statement::</span>
+
+<span class="sd">        s = with_columns(users.c.id, users.c.name).where(text(&quot;id=:user_id&quot;))</span>
+<span class="sd">        result = connection.execute(s, {&quot;user_id&quot;: 12})</span>
+
+<span class="sd">    :func:`_expression.text` is also used for the construction</span>
+<span class="sd">    of a full, standalone statement using plain text.</span>
+<span class="sd">    As such, SQLAlchemy refers</span>
+<span class="sd">    to it as an :class:`.Executable` object and may be used</span>
+<span class="sd">    like any other statement passed to an ``.execute()`` method.</span>
+
+<span class="sd">    :param text:</span>
+<span class="sd">      the text of the SQL statement to be created.  Use ``:&lt;param&gt;``</span>
+<span class="sd">      to specify bind parameters; they will be compiled to their</span>
+<span class="sd">      engine-specific format.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_select_arbitrary_text`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TextClause</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">true</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">True_</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a constant :class:`.True_` construct.</span>
+
+<span class="sd">    E.g.:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; from sqlalchemy import true</span>
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(true()))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE true</span>
+
+<span class="sd">    A backend which does not support true/false constants will render as</span>
+<span class="sd">    an expression against 1 or 0:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(true()))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE 1 = 1</span>
+
+<span class="sd">    The :func:`.true` and :func:`.false` constants also feature</span>
+<span class="sd">    &quot;short circuit&quot; operation within an :func:`.and_` or :func:`.or_`</span>
+<span class="sd">    conjunction:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(or_(t.c.x &gt; 5, true())))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE true{stop}</span>
+
+<span class="sd">        &gt;&gt;&gt; print(with_columns(t.c.x).where(and_(t.c.x &gt; 5, false())))</span>
+<span class="sd">        {printsql}SELECT x FROM t WHERE false{stop}</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`.false`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">True_</span><span class="o">.</span><span class="n">_instance</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">tuple_</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">clauses</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a :class:`.Tuple`.</span>
+
+<span class="sd">    Main usage is to produce a composite IN construct using</span>
+<span class="sd">    :meth:`.ColumnOperators.in_` ::</span>
+
+<span class="sd">        from sqlalchemy import tuple_</span>
+
+<span class="sd">        tuple_(table.c.col1, table.c.col2).in_(</span>
+<span class="sd">            [(1, 2), (5, 12), (10, 19)]</span>
+<span class="sd">        )</span>
+
+<span class="sd">    .. versionchanged:: 1.3.6 Added support for SQLite IN tuples.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The composite IN construct is not supported by all backends, and is</span>
+<span class="sd">        currently known to work on PostgreSQL, MySQL, and SQLite.</span>
+<span class="sd">        Unsupported backends will raise a subclass of</span>
+<span class="sd">        :class:`~sqlalchemy.exc.DBAPIError` when such an expression is</span>
+<span class="sd">        invoked.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Tuple</span><span class="p">(</span><span class="o">*</span><span class="n">clauses</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="n">types</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">type_coerce</span><span class="p">(</span>
+    <span class="n">expression</span><span class="p">:</span> <span class="n">_ColumnExpressionOrLiteralArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="n">_TypeEngineArgument</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TypeCoerce</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Associate a SQL expression with a particular type, without rendering</span>
+<span class="sd">    ``CAST``.</span>
+
+<span class="sd">    E.g.::</span>
+
+<span class="sd">        from sqlalchemy import type_coerce</span>
+
+<span class="sd">        stmt = with_columns(type_coerce(log_table.date_string, StringDateTime()))</span>
+
+<span class="sd">    The above construct will produce a :class:`.TypeCoerce` object, which</span>
+<span class="sd">    does not modify the rendering in any way on the SQL side, with the</span>
+<span class="sd">    possible exception of a generated label if used in a columns clause</span>
+<span class="sd">    context:</span>
+
+<span class="sd">    .. sourcecode:: sql</span>
+
+<span class="sd">        SELECT date_string AS date_string FROM log</span>
+
+<span class="sd">    When result rows are fetched, the ``StringDateTime`` type processor</span>
+<span class="sd">    will be applied to result rows on behalf of the ``date_string`` column.</span>
+
+<span class="sd">    .. note:: the :func:`.type_coerce` construct does not render any</span>
+<span class="sd">       SQL syntax of its own, including that it does not imply</span>
+<span class="sd">       parenthesization.   Please use :meth:`.TypeCoerce.self_group`</span>
+<span class="sd">       if explicit parenthesization is required.</span>
+
+<span class="sd">    In order to provide a named label for the expression, use</span>
+<span class="sd">    :meth:`_expression.ColumnElement.label`::</span>
+
+<span class="sd">        stmt = with_columns(</span>
+<span class="sd">            type_coerce(log_table.date_string, StringDateTime()).label(&#39;date&#39;)</span>
+<span class="sd">        )</span>
+
+
+<span class="sd">    A type that features bound-value handling will also have that behavior</span>
+<span class="sd">    take effect when literal values or :func:`.bindparam` constructs are</span>
+<span class="sd">    passed to :func:`.type_coerce` as targets.</span>
+<span class="sd">    For example, if a type implements the</span>
+<span class="sd">    :meth:`.TypeEngine.bind_expression`</span>
+<span class="sd">    method or :meth:`.TypeEngine.bind_processor` method or equivalent,</span>
+<span class="sd">    these functions will take effect at statement compilation/execution</span>
+<span class="sd">    time when a literal value is passed, as in::</span>
+
+<span class="sd">        # bound-value handling of MyStringType will be applied to the</span>
+<span class="sd">        # literal value &quot;some string&quot;</span>
+<span class="sd">        stmt = with_columns(type_coerce(&quot;some string&quot;, MyStringType))</span>
+
+<span class="sd">    When using :func:`.type_coerce` with composed expressions, note that</span>
+<span class="sd">    **parenthesis are not applied**.   If :func:`.type_coerce` is being</span>
+<span class="sd">    used in an operator context where the parenthesis normally present from</span>
+<span class="sd">    CAST are necessary, use the :meth:`.TypeCoerce.self_group` method:</span>
+
+<span class="sd">    .. sourcecode:: pycon+sql</span>
+
+<span class="sd">        &gt;&gt;&gt; some_integer = column(&quot;someint&quot;, Integer)</span>
+<span class="sd">        &gt;&gt;&gt; some_string = column(&quot;somestr&quot;, String)</span>
+<span class="sd">        &gt;&gt;&gt; expr = type_coerce(some_integer + 5, String) + some_string</span>
+<span class="sd">        &gt;&gt;&gt; print(expr)</span>
+<span class="sd">        {printsql}someint + :someint_1 || somestr{stop}</span>
+<span class="sd">        &gt;&gt;&gt; expr = type_coerce(some_integer + 5, String).self_group() + some_string</span>
+<span class="sd">        &gt;&gt;&gt; print(expr)</span>
+<span class="sd">        {printsql}(someint + :someint_1) || somestr{stop}</span>
+
+<span class="sd">    :param expression: A SQL expression, such as a</span>
+<span class="sd">     :class:`_expression.ColumnElement`</span>
+<span class="sd">     expression or a Python string which will be coerced into a bound</span>
+<span class="sd">     literal value.</span>
+
+<span class="sd">    :param type\_: A :class:`.TypeEngine` class or instance indicating</span>
+<span class="sd">     the type to which the expression is coerced.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_casts`</span>
+
+<span class="sd">        :func:`.cast`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa</span>
+    <span class="k">return</span> <span class="n">TypeCoerce</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">within_group</span><span class="p">(</span>
+    <span class="n">element</span><span class="p">:</span> <span class="n">FunctionElement</span><span class="p">[</span><span class="n">_T</span><span class="p">],</span> <span class="o">*</span><span class="n">order_by</span><span class="p">:</span> <span class="n">_ColumnExpressionArgument</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WithinGroup</span><span class="p">[</span><span class="n">_T</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Produce a :class:`.WithinGroup` object against a function.</span>
+
+<span class="sd">    Used against so-called &quot;ordered set aggregate&quot; and &quot;hypothetical</span>
+<span class="sd">    set aggregate&quot; functions, including :class:`.percentile_cont`,</span>
+<span class="sd">    :class:`.rank`, :class:`.dense_rank`, etc.</span>
+
+<span class="sd">    :func:`_expression.within_group` is usually called using</span>
+<span class="sd">    the :meth:`.FunctionElement.within_group` method, e.g.::</span>
+
+<span class="sd">        from sqlalchemy import within_group</span>
+<span class="sd">        stmt = with_columns(</span>
+<span class="sd">            department.c.id,</span>
+<span class="sd">            func.percentile_cont(0.5).within_group(</span>
+<span class="sd">                department.c.salary.desc()</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+
+<span class="sd">    The above statement would produce SQL similar to</span>
+<span class="sd">    ``SELECT department.id, percentile_cont(0.5)</span>
+<span class="sd">    WITHIN GROUP (ORDER BY department.salary DESC)``.</span>
+
+<span class="sd">    :param element: a :class:`.FunctionElement` construct, typically</span>
+<span class="sd">     generated by :data:`~.expression.func`.</span>
+<span class="sd">    :param \*order_by: one or more column elements that will be used</span>
+<span class="sd">     as the ORDER BY clause of the WITHIN GROUP construct.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`tutorial_functions_within_group` - in the</span>
+<span class="sd">        :ref:`unified_tutorial`</span>
+
+<span class="sd">        :data:`.expression.func`</span>
+
+<span class="sd">        :func:`_expression.over`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">WithinGroup</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="o">*</span><span class="n">order_by</span><span class="p">)</span>
+</pre>
+            </div>
+          </article>
+        </div>
+        <footer>
+
+          <div class="related-pages">
+
+
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
+                Copyright &#169; 2024, Rah Tarar, Kurt Bugbee
+              </div>
+              Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link"
+                href="https://pradyunsg.me">@pradyunsg</a>'s
+
+              <a href="https://github.com/pradyunsg/furo">Furo</a>
+
+            </div>
+            <div class="right-details">
+
+            </div>
+          </div>
+
+        </footer>
+      </div>
+      <aside class="toc-drawer no-toc">
+
+
+
+      </aside>
+    </div>
+  </div>
+  <script src="../../../_static/documentation_options.js?v=fe7df9b0"></script>
+  <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+  <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+  <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+</body>
+
+</html>
