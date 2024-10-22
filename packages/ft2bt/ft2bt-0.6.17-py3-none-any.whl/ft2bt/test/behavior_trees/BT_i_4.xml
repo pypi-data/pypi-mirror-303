@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<root main_tree_to_execute="BehaviorTree">
+  <BehaviorTree ID="BehaviorTree">
+    <SubTree ID="I_4"/>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="I_4">
+    <Fallback>
+      <Sequence>
+        <Condition ID="condition_OS₁" name="Event_condition_OS₁"/>
+        <SubTree ID="OS₁"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₂" name="Event_condition_OS₂"/>
+        <SubTree ID="OS₂"/>
+      </Sequence>
+      <Sequence>
+        <Condition ID="condition_OS₃" name="Event_condition_OS₃"/>
+        <SubTree ID="OS₃"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₁">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_41"/>
+        <Action ID="SS_411" name="Action_SS_411"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_42"/>
+        <Action ID="SS_421" name="Action_SS_421"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="HZ_41">
+    <Condition ID="E41" name="Event_E41"/>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="HZ_42">
+    <Fallback>
+      <Condition ID="E42" name="Event_E42"/>
+      <Condition ID="E43" name="Event_E43"/>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₂">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_41"/>
+        <Action ID="SS_411" name="Action_SS_411"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_42"/>
+        <Action ID="SS_421" name="Action_SS_421"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <!-- ////////// -->
+  <BehaviorTree ID="OS₃">
+    <Fallback>
+      <Sequence>
+        <SubTree ID="HZ_41"/>
+        <Action ID="SS_411" name="Action_SS_411"/>
+      </Sequence>
+      <Sequence>
+        <SubTree ID="HZ_42"/>
+        <Action ID="SS_421" name="Action_SS_421"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+  <TreeNodesModel>
+    <Condition/>
+    <SubTree/>
+  </TreeNodesModel>
+</root>
