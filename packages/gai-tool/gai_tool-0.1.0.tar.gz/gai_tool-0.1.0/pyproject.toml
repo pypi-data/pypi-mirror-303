@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gai-tool"
+version = "0.1.0"
+description = "AI-powered automation tool for git"
+authors = [{ name = "Daniel Ratmiroff", email = "danielratmiroff@pm.me" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["git", "ai", "automation", "commit", "merge-request"]
+dependencies = ["pyyaml", "requests", "pick", "groq"]
+
+[project.scripts]
+gai = "gai.main:main"
+
+[project.urls]
+"Homepage" = "https://github.com/Danielratmiroff/gai"
+"Source" = "https://github.com/Danielratmiroff/gai"
+"Bug Tracker" = "https://github.com/Danielratmiroff/gai/issues"
+"Documentation" = "https://github.com/Danielratmiroff/gai#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gai*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+gai = ["config.yaml"]
