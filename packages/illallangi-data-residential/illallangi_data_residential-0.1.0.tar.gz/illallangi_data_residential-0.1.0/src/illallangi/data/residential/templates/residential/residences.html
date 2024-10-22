@@ -1,0 +1,44 @@
+{% extends "table.html" %}
+{% block table %}
+    <h2>Residences</h2>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Residence</th>
+                <th scope="col">Start</th>
+                <th scope="col">Finish</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in page.object_list %}
+                <tr role="button" data-href="{{ obj.get_absolute_url }}">
+                    <td>
+                        {% if obj.label %}
+                            {{ obj.label }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.start %}
+                            {{ obj.start }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.finish %}
+                            {{ obj.finish }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No residences found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}
