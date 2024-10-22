@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: iclearn
+Version: 0.0.2
+Summary: A collection of utilities for machine learning applications.
+Author-email: "James Grogan, Irish Centre for High End Computing" <james.grogan@ichec.ie>
+Project-URL: Repository, https://git.ichec.ie/performance/toolshed/iclearn
+Project-URL: Homepage, https://git.ichec.ie/performance/toolshed/iclearn
+Keywords: Machine Learning,Workflow,HPC
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: System :: Distributed Computing
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: icflow==0.1.0
+Requires-Dist: mlflow
+Requires-Dist: tensorboard
+Requires-Dist: opencv-python-headless
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-sugar; extra == "test"
+Requires-Dist: black; extra == "test"
+Requires-Dist: flake8; extra == "test"
+Requires-Dist: pylint; extra == "test"
+Requires-Dist: mypy; extra == "test"
+Provides-Extra: torch
+Requires-Dist: torch; extra == "torch"
+Requires-Dist: torchvision; extra == "torch"
+
+# iclearn
+
+This project has tools for building and running machine learning tasks. It is used in some ICHEC projects and [demos](https://git.ichec.ie/performance/recipes/machine_learning).
+
+## Installing ##
+
+The package is available on PyPI, you can install it with:
+
+``` shell
+pip install iclearn
+```
+
+## License ##
+
+This software is Copyright ICHEC 2024 and can be re-used under the terms of the GPL v3+. See the included `LICENSE` file for details.
