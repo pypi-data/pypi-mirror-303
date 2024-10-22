@@ -1,0 +1,645 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+        <title>sqlalchemy.dialects.postgresql.json - Data Solutions Python SDK 0.7.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">Data Solutions Python SDK 0.7.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">Data Solutions Python SDK 0.7.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../modules.html">chainalysis</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of chainalysis</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../chainalysis.html">chainalysis package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of chainalysis package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../chainalysis.orm.html">chainalysis.orm package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../chainalysis.sql.html">chainalysis.sql package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../chainalysis.utils.html">chainalysis.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for sqlalchemy.dialects.postgresql.json</h1><div class="highlight"><pre>
+<span></span><span class="c1"># dialects/postgresql/json.py</span>
+<span class="c1"># Copyright (C) 2005-2024 the SQLAlchemy authors and contributors</span>
+<span class="c1"># &lt;see AUTHORS file&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># This module is part of SQLAlchemy and is released under</span>
+<span class="c1"># the MIT License: https://www.opensource.org/licenses/mit-license.php</span>
+<span class="c1"># mypy: ignore-errors</span>
+
+
+<span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="n">ARRAY</span>
+<span class="kn">from</span> <span class="nn">.array</span> <span class="kn">import</span> <span class="n">array</span> <span class="k">as</span> <span class="n">_pg_array</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">ASTEXT</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">CONTAINED_BY</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">CONTAINS</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">DELETE_PATH</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">HAS_ALL</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">HAS_ANY</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">HAS_KEY</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">JSONPATH_ASTEXT</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">PATH_EXISTS</span>
+<span class="kn">from</span> <span class="nn">.operators</span> <span class="kn">import</span> <span class="n">PATH_MATCH</span>
+<span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">sqltypes</span>
+<span class="kn">from</span> <span class="nn">...sql</span> <span class="kn">import</span> <span class="n">cast</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;JSON&quot;</span><span class="p">,</span> <span class="s2">&quot;JSONB&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">JSONPathType</span><span class="p">(</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">JSON</span><span class="o">.</span><span class="n">JSONPathType</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialect</span><span class="p">,</span> <span class="n">super_proc</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="c1"># If it&#39;s already a string assume that it&#39;s in json path</span>
+                <span class="c1"># format. This allows using cast with json paths literals</span>
+                <span class="k">return</span> <span class="n">value</span>
+            <span class="k">elif</span> <span class="n">value</span><span class="p">:</span>
+                <span class="c1"># If it&#39;s already a string assume that it&#39;s in json path</span>
+                <span class="c1"># format. This allows using cast with json paths literals</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;{</span><span class="si">%s</span><span class="s2">}&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">super_proc</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">super_proc</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">process</span>
+
+    <span class="k">def</span> <span class="nf">bind_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialect</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processor</span><span class="p">(</span><span class="n">dialect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">string_bind_processor</span><span class="p">(</span><span class="n">dialect</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">literal_processor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dialect</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processor</span><span class="p">(</span><span class="n">dialect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">string_literal_processor</span><span class="p">(</span><span class="n">dialect</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">JSONPATH</span><span class="p">(</span><span class="n">JSONPathType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;JSON Path Type.</span>
+
+<span class="sd">    This is usually required to cast literal values to json path when using</span>
+<span class="sd">    json search like function, such as ``jsonb_path_query_array`` or</span>
+<span class="sd">    ``jsonb_path_exists``::</span>
+
+<span class="sd">        stmt = sa.select(</span>
+<span class="sd">            sa.func.jsonb_path_query_array(</span>
+<span class="sd">                table.c.jsonb_col, cast(&quot;$.address.id&quot;, JSONPATH)</span>
+<span class="sd">            )</span>
+<span class="sd">        )</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__visit_name__</span> <span class="o">=</span> <span class="s2">&quot;JSONPATH&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">JSON</span><span class="p">(</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">JSON</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent the PostgreSQL JSON type.</span>
+
+<span class="sd">    :class:`_postgresql.JSON` is used automatically whenever the base</span>
+<span class="sd">    :class:`_types.JSON` datatype is used against a PostgreSQL backend,</span>
+<span class="sd">    however base :class:`_types.JSON` datatype does not provide Python</span>
+<span class="sd">    accessors for PostgreSQL-specific comparison methods such as</span>
+<span class="sd">    :meth:`_postgresql.JSON.Comparator.astext`; additionally, to use</span>
+<span class="sd">    PostgreSQL ``JSONB``, the :class:`_postgresql.JSONB` datatype should</span>
+<span class="sd">    be used explicitly.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :class:`_types.JSON` - main documentation for the generic</span>
+<span class="sd">        cross-platform JSON datatype.</span>
+
+<span class="sd">    The operators provided by the PostgreSQL version of :class:`_types.JSON`</span>
+<span class="sd">    include:</span>
+
+<span class="sd">    * Index operations (the ``-&gt;`` operator)::</span>
+
+<span class="sd">        data_table.c.data[&#39;some key&#39;]</span>
+
+<span class="sd">        data_table.c.data[5]</span>
+
+
+<span class="sd">    * Index operations returning text (the ``-&gt;&gt;`` operator)::</span>
+
+<span class="sd">        data_table.c.data[&#39;some key&#39;].astext == &#39;some value&#39;</span>
+
+<span class="sd">      Note that equivalent functionality is available via the</span>
+<span class="sd">      :attr:`.JSON.Comparator.as_string` accessor.</span>
+
+<span class="sd">    * Index operations with CAST</span>
+<span class="sd">      (equivalent to ``CAST(col -&gt;&gt; [&#39;some key&#39;] AS &lt;type&gt;)``)::</span>
+
+<span class="sd">        data_table.c.data[&#39;some key&#39;].astext.cast(Integer) == 5</span>
+
+<span class="sd">      Note that equivalent functionality is available via the</span>
+<span class="sd">      :attr:`.JSON.Comparator.as_integer` and similar accessors.</span>
+
+<span class="sd">    * Path index operations (the ``#&gt;`` operator)::</span>
+
+<span class="sd">        data_table.c.data[(&#39;key_1&#39;, &#39;key_2&#39;, 5, ..., &#39;key_n&#39;)]</span>
+
+<span class="sd">    * Path index operations returning text (the ``#&gt;&gt;`` operator)::</span>
+
+<span class="sd">        data_table.c.data[(&#39;key_1&#39;, &#39;key_2&#39;, 5, ..., &#39;key_n&#39;)].astext == &#39;some value&#39;</span>
+
+<span class="sd">    Index operations return an expression object whose type defaults to</span>
+<span class="sd">    :class:`_types.JSON` by default,</span>
+<span class="sd">    so that further JSON-oriented instructions</span>
+<span class="sd">    may be called upon the result type.</span>
+
+<span class="sd">    Custom serializers and deserializers are specified at the dialect level,</span>
+<span class="sd">    that is using :func:`_sa.create_engine`.  The reason for this is that when</span>
+<span class="sd">    using psycopg2, the DBAPI only allows serializers at the per-cursor</span>
+<span class="sd">    or per-connection level.   E.g.::</span>
+
+<span class="sd">        engine = create_engine(&quot;postgresql+psycopg2://scott:tiger@localhost/test&quot;,</span>
+<span class="sd">                                json_serializer=my_serialize_fn,</span>
+<span class="sd">                                json_deserializer=my_deserialize_fn</span>
+<span class="sd">                        )</span>
+
+<span class="sd">    When using the psycopg2 dialect, the json_deserializer is registered</span>
+<span class="sd">    against the database using ``psycopg2.extras.register_default_json``.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :class:`_types.JSON` - Core level JSON type</span>
+
+<span class="sd">        :class:`_postgresql.JSONB`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa</span>
+
+    <span class="n">astext_type</span> <span class="o">=</span> <span class="n">sqltypes</span><span class="o">.</span><span class="n">Text</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">none_as_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">astext_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a :class:`_types.JSON` type.</span>
+
+<span class="sd">        :param none_as_null: if True, persist the value ``None`` as a</span>
+<span class="sd">         SQL NULL value, not the JSON encoding of ``null``.   Note that</span>
+<span class="sd">         when this flag is False, the :func:`.null` construct can still</span>
+<span class="sd">         be used to persist a NULL value::</span>
+
+<span class="sd">             from sqlalchemy import null</span>
+<span class="sd">             conn.execute(table.insert(), {&quot;data&quot;: null()})</span>
+
+<span class="sd">         .. seealso::</span>
+
+<span class="sd">              :attr:`_types.JSON.NULL`</span>
+
+<span class="sd">        :param astext_type: the type to use for the</span>
+<span class="sd">         :attr:`.JSON.Comparator.astext`</span>
+<span class="sd">         accessor on indexed attributes.  Defaults to :class:`_types.Text`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">none_as_null</span><span class="o">=</span><span class="n">none_as_null</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">astext_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">astext_type</span> <span class="o">=</span> <span class="n">astext_type</span>
+
+    <span class="k">class</span> <span class="nc">Comparator</span><span class="p">(</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">JSON</span><span class="o">.</span><span class="n">Comparator</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define comparison operations for :class:`_types.JSON`.&quot;&quot;&quot;</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">astext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;On an indexed expression, use the &quot;astext&quot; (e.g. &quot;-&gt;&gt;&quot;)</span>
+<span class="sd">            conversion when rendered in SQL.</span>
+
+<span class="sd">            E.g.::</span>
+
+<span class="sd">                select(data_table.c.data[&#39;some key&#39;].astext)</span>
+
+<span class="sd">            .. seealso::</span>
+
+<span class="sd">                :meth:`_expression.ColumnElement.cast`</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">sqltypes</span><span class="o">.</span><span class="n">JSON</span><span class="o">.</span><span class="n">JSONPathType</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span>
+                    <span class="n">JSONPATH_ASTEXT</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                    <span class="n">result_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">astext_type</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span>
+                    <span class="n">ASTEXT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">astext_type</span>
+                <span class="p">)</span>
+
+    <span class="n">comparator_factory</span> <span class="o">=</span> <span class="n">Comparator</span>
+
+
+<div class="viewcode-block" id="JSONB">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB">[docs]</a>
+<span class="k">class</span> <span class="nc">JSONB</span><span class="p">(</span><span class="n">JSON</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represent the PostgreSQL JSONB type.</span>
+
+<span class="sd">    The :class:`_postgresql.JSONB` type stores arbitrary JSONB format data,</span>
+<span class="sd">    e.g.::</span>
+
+<span class="sd">        data_table = Table(&#39;data_table&#39;, metadata,</span>
+<span class="sd">            Column(&#39;id&#39;, Integer, primary_key=True),</span>
+<span class="sd">            Column(&#39;data&#39;, JSONB)</span>
+<span class="sd">        )</span>
+
+<span class="sd">        with engine.connect() as conn:</span>
+<span class="sd">            conn.execute(</span>
+<span class="sd">                data_table.insert(),</span>
+<span class="sd">                data = {&quot;key1&quot;: &quot;value1&quot;, &quot;key2&quot;: &quot;value2&quot;}</span>
+<span class="sd">            )</span>
+
+<span class="sd">    The :class:`_postgresql.JSONB` type includes all operations provided by</span>
+<span class="sd">    :class:`_types.JSON`, including the same behaviors for indexing</span>
+<span class="sd">    operations.</span>
+<span class="sd">    It also adds additional operators specific to JSONB, including</span>
+<span class="sd">    :meth:`.JSONB.Comparator.has_key`, :meth:`.JSONB.Comparator.has_all`,</span>
+<span class="sd">    :meth:`.JSONB.Comparator.has_any`, :meth:`.JSONB.Comparator.contains`,</span>
+<span class="sd">    :meth:`.JSONB.Comparator.contained_by`,</span>
+<span class="sd">    :meth:`.JSONB.Comparator.delete_path`,</span>
+<span class="sd">    :meth:`.JSONB.Comparator.path_exists` and</span>
+<span class="sd">    :meth:`.JSONB.Comparator.path_match`.</span>
+
+<span class="sd">    Like the :class:`_types.JSON` type, the :class:`_postgresql.JSONB`</span>
+<span class="sd">    type does not detect</span>
+<span class="sd">    in-place changes when used with the ORM, unless the</span>
+<span class="sd">    :mod:`sqlalchemy.ext.mutable` extension is used.</span>
+
+<span class="sd">    Custom serializers and deserializers</span>
+<span class="sd">    are shared with the :class:`_types.JSON` class,</span>
+<span class="sd">    using the ``json_serializer``</span>
+<span class="sd">    and ``json_deserializer`` keyword arguments.  These must be specified</span>
+<span class="sd">    at the dialect level using :func:`_sa.create_engine`.  When using</span>
+<span class="sd">    psycopg2, the serializers are associated with the jsonb type using</span>
+<span class="sd">    ``psycopg2.extras.register_default_jsonb`` on a per-connection basis,</span>
+<span class="sd">    in the same way that ``psycopg2.extras.register_default_json`` is used</span>
+<span class="sd">    to register these handlers with the json type.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :class:`_types.JSON`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__visit_name__</span> <span class="o">=</span> <span class="s2">&quot;JSONB&quot;</span>
+
+<div class="viewcode-block" id="JSONB.Comparator">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator">[docs]</a>
+    <span class="k">class</span> <span class="nc">Comparator</span><span class="p">(</span><span class="n">JSON</span><span class="o">.</span><span class="n">Comparator</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define comparison operations for :class:`_types.JSON`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="JSONB.Comparator.has_key">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.has_key">[docs]</a>
+        <span class="k">def</span> <span class="nf">has_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression.  Test for presence of a key (equivalent of</span>
+<span class="sd">            the ``?`` operator).  Note that the key may be a SQLA expression.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span><span class="n">HAS_KEY</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.has_all">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.has_all">[docs]</a>
+        <span class="k">def</span> <span class="nf">has_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression.  Test for presence of all keys in jsonb</span>
+<span class="sd">            (equivalent of the ``?&amp;`` operator)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span><span class="n">HAS_ALL</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.has_any">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.has_any">[docs]</a>
+        <span class="k">def</span> <span class="nf">has_any</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression.  Test for presence of any key in jsonb</span>
+<span class="sd">            (equivalent of the ``?|`` operator)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span><span class="n">HAS_ANY</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.contains">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.contains">[docs]</a>
+        <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression.  Test if keys (or array) are a superset</span>
+<span class="sd">            of/contained the keys of the argument jsonb expression</span>
+<span class="sd">            (equivalent of the ``@&gt;`` operator).</span>
+
+<span class="sd">            kwargs may be ignored by this operator but are required for API</span>
+<span class="sd">            conformance.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span><span class="n">CONTAINS</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.contained_by">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.contained_by">[docs]</a>
+        <span class="k">def</span> <span class="nf">contained_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression.  Test if keys are a proper subset of the</span>
+<span class="sd">            keys of the argument jsonb expression</span>
+<span class="sd">            (equivalent of the ``&lt;@`` operator).</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span>
+                <span class="n">CONTAINED_BY</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.delete_path">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.delete_path">[docs]</a>
+        <span class="k">def</span> <span class="nf">delete_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;JSONB expression. Deletes field or array element specified in</span>
+<span class="sd">            the argument array (equivalent of the ``#-`` operator).</span>
+
+<span class="sd">            The input may be a list of strings that will be coerced to an</span>
+<span class="sd">            ``ARRAY`` or an instance of :meth:`_postgres.array`.</span>
+
+<span class="sd">            .. versionadded:: 2.0</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">_pg_array</span><span class="p">):</span>
+                <span class="n">array</span> <span class="o">=</span> <span class="n">_pg_array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+            <span class="n">right_side</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">ARRAY</span><span class="p">(</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">TEXT</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span><span class="n">DELETE_PATH</span><span class="p">,</span> <span class="n">right_side</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">JSONB</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.path_exists">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.path_exists">[docs]</a>
+        <span class="k">def</span> <span class="nf">path_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression. Test for presence of item given by the</span>
+<span class="sd">            argument JSONPath expression (equivalent of the ``@?`` operator).</span>
+
+<span class="sd">            .. versionadded:: 2.0</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span>
+                <span class="n">PATH_EXISTS</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JSONB.Comparator.path_match">
+<a class="viewcode-back" href="../../../../chainalysis.html#chainalysis.types.JSONB.Comparator.path_match">[docs]</a>
+        <span class="k">def</span> <span class="nf">path_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Boolean expression. Test if JSONPath predicate given by the</span>
+<span class="sd">            argument JSONPath expression matches</span>
+<span class="sd">            (equivalent of the ``@@`` operator).</span>
+
+<span class="sd">            Only the first item of the result is taken into account.</span>
+
+<span class="sd">            .. versionadded:: 2.0</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operate</span><span class="p">(</span>
+                <span class="n">PATH_MATCH</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="n">sqltypes</span><span class="o">.</span><span class="n">Boolean</span>
+            <span class="p">)</span></div>
+</div>
+
+
+    <span class="n">comparator_factory</span> <span class="o">=</span> <span class="n">Comparator</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Rah Tarar, Kurt Bugbee
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
