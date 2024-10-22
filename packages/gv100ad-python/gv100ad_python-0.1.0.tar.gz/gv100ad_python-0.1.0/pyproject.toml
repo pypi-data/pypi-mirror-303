@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gv100ad-python"
+version = "0.1.0"
+description = "A reader for official GV100AD (Gemeindeverzeichnis) files"
+readme = "README.md"
+authors = [{name = "STÜBER SYSTEMS GmbH", email = "opensource@stueber.de"}]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src/gv100ad"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
