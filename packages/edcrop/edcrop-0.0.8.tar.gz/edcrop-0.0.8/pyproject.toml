@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edcrop"
+authors = [
+  { name="Steen Christensen", email="sc@geo.au.dk" },
+]
+description = "A Python package to simulate field-scale evapotranspiration and drainage"
+readme = "README.md"
+license = { file="LICENSE" }
+keywords = ["Precipitation", "Evapotranspiration", "Drainage", "Root zone"]
+classifiers = [
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Hydrology",
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.8.8"
+dependencies = [
+    "numpy >=1.20.1",
+    "matplotlib >= 3.3.4",
+    "pandas >=1.2.4",
+    "pyyaml >=5.4.1",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Source Code" = "https://github.com/SteenChr/edcrop"
+"Online Documentation" = "https://steenchr.github.io/edcrop"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "edcrop.version.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["edcrop"]
+
+[tool.setuptools.package-data]
+"edcrop" = ["Example/*.*"]
