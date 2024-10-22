@@ -1,0 +1,24 @@
+Analyze the input provided to determine the relationship between the user '{username}' and the {pd_category}, specifically the '{pd_info}'. 
+
+Then, assess whether:
+1. It is evident that the user '{username}' has owned and used the {pd_category} specified
+2. It is evident that the user '{username}' has NOT owned and used the {pd_category} specified
+3. It is unclear if the user '{username}' has owned and used the {pd_category} specified
+
+Consider the mention of personal experiences, specific details about the {pd_category}, and any expressions of sentiment or evaluation that suggest firsthand use or ownership. Evaluate the text for indicators such as direct mentions of purchasing, using, problems encountered, comparisons with other {pd_category}s, and any explicit statements of ownership or usage.
+
+Guidelines for Analysis:
+1. Ownership and Use Evidence: Look for explicit mentions of the author buying, receiving, or using the {pd_category}. Phrases like "I bought," "I've been using," or descriptions of personal interactions with the {pd_category} (e.g., issues faced, comparisons made) strongly indicate ownership and use.
+2. Lack of Ownership and Use Evidence: Identify if the text only includes general statements about the {pd_category} without personal anecdotes or specific details. Use of impersonal language or lack of detailed experience could suggest no direct ownership or use.
+3. Unclear Evidence: Sometimes, the text may contain ambiguous statements that could imply ownership or use but without clear confirmation. If the text lacks definitive phrases or detailed personal experiences related to the {pd_category}, the relationship may be considered unclear.
+
+Task:
+Based on the guidelines and the input provided, classify the relationship between the author '{username}' and the specified {pd_category}. Format your analysis outcome in JSON as follows:
+{
+  "answer": "Your classification here."
+}
+
+Use one of these phrases for "Your classification here":
+"1. It is evident that the author '{username}' has owned and used the {pd_category} specified"
+"2. It is evident that the author '{username}' has NOT owned and used the {pd_category} specified"
+"3. It is unclear if the author '{username}' has owned and used the {pd_category} specified"
