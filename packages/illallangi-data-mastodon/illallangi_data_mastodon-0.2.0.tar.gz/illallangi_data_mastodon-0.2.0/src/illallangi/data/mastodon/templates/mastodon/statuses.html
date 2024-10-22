@@ -1,0 +1,36 @@
+{% extends "table.html" %}
+{% block table %}
+    <h2>Statuses</h2>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Content</th>
+                <th scope="col">Date Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in page.object_list %}
+                <tr role="button" data-href="{{ o.get_absolute_url }}">
+                    <td>
+                        {% if o.content %}
+                            {{ o.content }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if o.datetime %}
+                            {{ o.datetime }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="2">No statuses found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}
