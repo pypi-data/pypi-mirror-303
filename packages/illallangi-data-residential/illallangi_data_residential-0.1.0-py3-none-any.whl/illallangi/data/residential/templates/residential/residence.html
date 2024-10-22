@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>{{ obj }}</h2>
+    {% if obj.label %}
+        <p>
+            <em>a residence at {{ obj.street }}, {{ obj.locality }}</em>
+        </p>
+    {% endif %}
+    <table class="table table-hover table-sm">
+        <tbody>
+            <tr>
+                <th scope="row">Start</th>
+                <td>
+                    {% if obj.start %}
+                        {{ obj.start }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Finish</th>
+                <td>
+                    {% if obj.finish %}
+                        {{ obj.finish }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Street</th>
+                <td>
+                    {% if obj.street %}
+                        {{ obj.street }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Locality</th>
+                <td>
+                    {% if obj.locality %}
+                        {{ obj.locality }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Region</th>
+                <td>
+                    {% if obj.region %}
+                        {{ obj.region }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Postal Code</th>
+                <td>
+                    {% if obj.postal_code %}
+                        {{ obj.postal_code }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Country</th>
+                <td>
+                    {% if obj.country %}
+                        {{ obj.country }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr {% if obj.get_olc_url %}role="button" data-href="{{ obj.get_olc_url }}"{% endif %}>
+                <th scope="row">OLC</th>
+                <td>
+                    {% if obj.olc %}
+                        {{ obj.olc }}
+                    {% else %}
+                        <em>Unknown</em>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock content %}
