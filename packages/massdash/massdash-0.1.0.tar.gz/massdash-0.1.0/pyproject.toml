@@ -1,0 +1,52 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+module = "massdash"
+name = "massdash"
+version = "0.1.0"
+authors = [{ name="Justin Sing", email="justincsing@gmai.com"} ]
+homepage = "https://github.com/Roestlab/massdash"
+description = "A visualization and data exploration platform for Data-Independent Acquisition mass spectrometry data"
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Chemistry",
+]
+requires-python = ">=3.10, <=3.12"
+dependencies = [
+    "bokeh>3.0",
+    "click>=8.1",
+    "joblib",
+    "matplotlib",
+    "numpy>=1.9.0",
+    "pandas>=0.17",
+    "plotly==5.24.1",
+    "psutil",
+    "pyopenms>=3.2.0",
+    "scipy>=1.12.0",
+    "tqdm",
+    "upsetplot",
+    "requests",
+    "pyopenms_viz"
+]
+
+[project.optional-dependencies]
+
+conformer= [ 'onnxruntime' ]
+docs = [ 'nbsphinx', 'sphinx-copybutton', 'sphinx-rtd-theme', 'sphinx==5.3.0', 'ipykernel' ]
+gui = [ 'streamlit>=1.30.0', 'streamlit-javascript', 'tk', 'pyautogui' ] 
+testing = ["pytest", "syrupy", "tables" ]
+
+[project.scripts]
+massdash = 'massdash.main:cli'
+
+[tool.flit.sdist]
+exclude = ["tests*"]
