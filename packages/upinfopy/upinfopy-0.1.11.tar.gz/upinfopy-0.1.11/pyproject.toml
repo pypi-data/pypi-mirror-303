@@ -1,0 +1,43 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "upinfopy"
+version = "0.1.11"
+description = "Python implementation of UpInfo78"
+authors = ["frieda <www778878net@189.cn>"]
+readme = "README.md"
+license = "Apache-2.0"
+homepage = "https://github.com/www778878net/UpinfoPy"
+documentation = "http://www.778878.net/docs/#/upinfopy/"
+packages = [{include = "upinfopy", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+invoke = "^1.7.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+build = "^1.2.2.post1"
+
+[tool.poetry.scripts]
+build = "tasks:build"
+install = "tasks:install"
+test = "pytest:main"
+all = "tasks:run_all"
+setup = "tasks:setup"
+publish = "tasks:publish"
+
+[tool.poetry.group.dev.dependencies]
+docutils = "^0.21.2"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+#poetry install
+#poetry run setup
+#poetry run all
+#poetry publish --build
+
