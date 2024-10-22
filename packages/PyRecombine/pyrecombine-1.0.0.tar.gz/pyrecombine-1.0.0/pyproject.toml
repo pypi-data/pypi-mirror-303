@@ -1,0 +1,92 @@
+[project]
+name = "PyRecombine"
+author = "Sam Morley and the DataSig team"
+author_email = "info@datasig.ac.uk"
+license = { text = "BSD-3-Clause" }
+
+packages = [ "src/pyrecombine" ]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS"
+]
+version = "1.0.0"
+dynamic = [ "readme" ]
+
+dependencies = [
+    "numpy >= 2.0",
+    "intel_openmp; (platform_machine == 'AMD64' or platform_machine == 'x86_64') and sys_platform != 'darwin'"
+]
+
+
+[build-system]
+requires = [
+    "scikit-build-core[pyproject]",
+    "ninja; platform_system != 'Windows'",
+    "numpy >= 2.0.0",
+    "mkl-devel < 2024.0.0; (platform_machine == 'AMD64' or platform_machine == 'x86_64') and sys_platform != 'darwin'",
+    "mkl-static < 2024.0.0; (platform_machine == 'AMD64' or platform_machine == 'x86_64') and sys_platform != 'darwin'"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.version = ">=3.26"
+ninja.version = ">=1.11"
+wheel.packages = []
+build.verbose = true
+logging.level = "INFO"
+cmake.build-type = "Release"
+experimental=true
+metadata.readme.provider = "scikit_build_core.metadata.fancy_pypi_readme"
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+
+
+[tool.cibuildwheel]
+skip = [
+    "*win32",
+    "*-musl*",
+    "pp*",
+    "*linux_i686",
+    "*universal2",
+    "cp3{6,7,8}-*",
+    "cp3{9}-macos*"
+]
+
+test-requires = ["pytest"]
+test-command = [
+    "pytest -v -s {project}/tests"
+]
+
+
+
+
+
+[tool.cibuildwheel.windows]
+before-build = "pip install delvewheel"
+repair-wheel-command = "delvewheel repair -w {dest_dir} --exclude \"mkl_core.2.dll\" --exclude \"mkl_intel_thread.2.dll\" --exclude \"libiomp5md.dll\" {wheel}"
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel} --exclude libiomp5.so --exclude libmkl_core.so.2 --exclude libmkl_intel_ilp64.so.2 --exclude libmkl_intel_thread.so.2"
+
+[tool.cibuildwheel.macos]
+repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} --ignore-missing-dependencies -w {dest_dir} -v {wheel}"
