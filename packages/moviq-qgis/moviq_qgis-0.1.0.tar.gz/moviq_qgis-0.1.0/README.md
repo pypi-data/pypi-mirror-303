@@ -1,0 +1,120 @@
+# Create annimated GIF from GeoTiff
+
+
+## QGIS
+
+
+An introduction about using QGIS can be found [here](https://gitlab.ilabt.imec.be/gcarvalho/moviq_seg/-/tree/main/qgis_tut?ref_type=heads).
+
+
+## Installation
+
+- Linux
+
+The script provided here was tested on Ubuntu 22.04:
+
+```
+bash sh.install
+```
+
+This shell script will install all python dependencies using poetry and also install qgis application on Ubuntu, which has a python library need to run the current code.
+PyQGIS is (normally) at `/usr/lib/python3/dist-packages/`.
+
+Read more about QGIS installation in [quickstart](https://www.qgis.org/en/site/forusers/alldownloads.html#debian-ubuntu).
+
+- Windows
+
+You can download the [msi installer in this page](https://www.qgis.org/en/site/forusers/alldownloads.html#windows).
+I'm using the `Latest Release` but if you want a more stable version, use `Long Term Release`.
+After downloading, just proceed with the installation (next-next-install).
+
+
+
+## Add Google Maps
+
+- Open QGIS
+- On the left side, right click on `XYZ Tiles`, and select `New connection`
+- Fill in the fields with the appropriate information. It will be similar to the image below.
+
+<img src="new_connection.png" width="50%" height="50%">
+
+According to [this tutorial](https://hatarilabs.com/ih-en/how-to-add-a-google-map-in-qgis-3-tutorial), there are different links for the available Google Maps layers:
+
+| Layer | Link |
+|---------|---------------------------------------------------------|
+| Roadmap | http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z} |
+| Terrain | http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z} |
+| Altered roadmap | http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z} |
+| Satellite only | http://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z} |
+| Terrain only | http://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z} |
+| Hybrid | http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z} |
+
+
+# Testing
+
+The following line tests the standalone implementation (i.e., you don't need to open QGIS) that reads a set of three geotiff images using pyQGIS, saves them as png files and also output an annimated gif with all three.
+This set contains the original image, the ground truth and the prediction maps.
+
+## Calling it on Windows
+```
+& 'C:\Program Files\QGIS 3.36.3\apps\Python312\python.exe' qgis_annimated.py --base images/Greece_2_hsi.tif --gt images/Greece_2_gt.tif --prediction images/Greece_2_prediction.tif
+```
+
+All paths shown here refers to my computer. You must change them accordingly.
+This example uses the sample image in the `images` folder.
+
+Check the program parameters issuing:
+```
+& 'C:\Program Files\QGIS 3.36.3\apps\Python312\python.exe' qgis_annimated.py  --help
+```
+<pre>
+DEBUG:root:adding to sys.path: C:/Program Files/QGIS 3.36.3
+Usage: qgis_annimated.py [OPTIONS]
+
+Options:
+  --base TEXT        Path to the real geotiff image  [required]
+  --gt TEXT          Path to the ground truth geotiff image  [required]
+  --prediction TEXT  Path to the predictions geotiff image  [required]
+  --output TEXT      Path to save the png and gif images
+  --debug / --info   set logging level to debug or info (default)
+  --help             Show this message and exit.
+</pre>
+
+
+The resulting gif is shown [here](results/Greece_2.gif).
+
+
+# Calling PyQGIS on Ubuntu
+
+The code was tested on Ubuntu 22.04 with the default Python 3.10.12 installed.
+After installing QGIS as described in [Debian/Ubuntu Quickstart](https://qgis.org/en/site/forusers/alldownloads.html#debian-ubuntu), you will see that python-qgis is also installed.
+You can check the version using the following command inside python3 prompt
+
+<pre>
+>>> import qgis.utils
+>>> qgis.utils.Qgis.QGIS_VERSION
+'3.22.4-Bialowieza'
+</pre>
+
+# Create GIF
+
+You can call the program using:
+
+```
+cd moviq_qgis
+poetry shell
+python3 -m moviq_qgis --base images/Greece_2_hsi.tif --gt images/Greece_2_gt.tif --prediction images/Greece_2_prediction.tif
+```
+
+It will read the 3 images provided in the arguments, convert them to PNG and save these images on `results`. Those 3 PNG images are them merged in an annimated GIF, which will be also saved on `results`.
+
+# Distribute
+
+You can use `poetry` to create the distribution (wheel) package to install in another project, e.g., moviq-segmentation.
+
+```
+cd moviq_qgis
+poetry build
+```
+
+After running the command above, it will create in the folder `dist` a package `moviq_qgis-0.1.0-py3-none-any.whl` that you can install.
