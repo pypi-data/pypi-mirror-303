@@ -1,0 +1,423 @@
+"""Functions and decorators for common tasks in Python programming."""
+
+import logging
+import os
+import re
+import shutil
+import subprocess
+import tempfile
+from functools import wraps
+from pathlib import Path
+from typing import Callable, Dict, List, Optional, TypeVar
+
+logger = logging.getLogger("Utils")
+
+
+# Type variable for decorator
+F = TypeVar("F", bound=Callable[..., any])  # type: ignore
+
+
+def io_in_tempdir(dir: str = "./tmp") -> Callable[[F], F]:
+    """
+    Create a temporary directory for I/O operations during function execution.
+
+    This decorator creates a temporary directory before executing the decorated function and
+    provides the path to this directory via the `temp_dir` keyword argument. After the function
+    execution, the temporary directory is removed based on the logging level:
+    - If the logging level is set to `INFO` or higher, the temporary directory is deleted.
+    - If the logging level is lower than `INFO` (e.g., `DEBUG`), the directory is retained for inspection.
+
+    Parameters
+    ----------
+    dir : str, optional
+        The parent directory where the temporary directory will be created, by default "./tmp".
+
+    Returns
+    -------
+    Callable[[F], F]
+        A decorator that manages a temporary directory for the decorated function.
+
+    Raises
+    ------
+    OSError
+        If the temporary directory cannot be created.
+
+    Examples
+    --------
+    ```python
+    @io_in_tempdir(dir="./temporary")
+    def process_data(temp_dir: str, data: str) -> None:
+        # Perform I/O operations using temp_dir
+        with open(f"{temp_dir}/data.txt", "w") as file:
+            file.write(data)
+
+    process_data(data="Sample data")
+    ```
+    """
+
+    def decorator(func: F) -> F:
+        @wraps(func)
+        def wrapper(*args, **kwargs) -> any:  # type: ignore
+            if not os.path.exists(dir):
+                os.makedirs(dir, exist_ok=True)
+            temp_dir = tempfile.mkdtemp(dir=dir)
+            logger = logging.getLogger("IO")
+            logger.debug(f"Created temporary directory: {temp_dir}")
+
+            try:
+                # Inject temp_dir into the function's keyword arguments
+                result = func(*args, temp_dir=temp_dir, **kwargs)
+            except Exception as e:
+                logger.error(f"An error occurred in function '{func.__name__}': {e}")
+                raise
+            else:
+                # Determine whether to remove the temporary directory based on the logging level
+                if logger.getEffectiveLevel() >= logging.INFO:
+                    try:
+                        shutil.rmtree(temp_dir)
+                        logger.debug(f"Removed temporary directory: {temp_dir}")
+                    except Exception as cleanup_error:
+                        logger.warning(
+                            f"Failed to remove temporary directory '{temp_dir}': {cleanup_error}"
+                        )
+                else:
+                    logger.debug(
+                        f"Retaining temporary directory '{temp_dir}' for inspection due to logging level."
+                    )
+                return result
+
+        return wrapper  # type: ignore
+
+    return decorator
+
+
+def check_r_package(package_name: str) -> Optional[None]:
+    """
+    Check if R version is 4.0 or later and if a specified R package is installed.
+
+    This function first checks the R version, then verifies if the specified
+    R package is installed on the system.
+
+    Parameters
+    ----------
+    package_name : str
+        The name of the R package to check.
+
+    Returns
+    -------
+    None
+        If the R version is 4.0 or later and the package is installed.
+
+    Raises
+    ------
+    RuntimeError
+        If R version is earlier than 4.0 or if the specified package is not installed.
+    subprocess.CalledProcessError
+        If there's an error executing the R commands.
+    FileNotFoundError
+        If R is not installed or not found in the system PATH.
+
+    Examples
+    --------
+    >>> check_r_package("ggplot2")
+    None
+    >>> check_r_package("nonexistentpackage")
+    RuntimeError: R package 'nonexistentpackage' is not installed.
+    """
+    # Check R version
+    try:
+        r_version_cmd = "R --version"
+        r_version_output = subprocess.check_output(
+            r_version_cmd, shell=True, universal_newlines=True
+        )
+        version_match = re.search(r"R version (\d+\.\d+\.\d+)", r_version_output)
+        if version_match:
+            r_version = version_match.group(1)
+            if tuple(map(int, r_version.split("."))) < (4, 0, 0):
+                raise RuntimeError(f"R version {r_version} is earlier than 4.0")
+        else:
+            raise RuntimeError("Unable to determine R version")
+    except subprocess.CalledProcessError:
+        raise RuntimeError("Failed to check R version")
+    except FileNotFoundError:
+        raise FileNotFoundError("R is not installed or not found in the system PATH.")
+
+    # Check if the package is installed
+    r_command = f"R --slave -e \"if (requireNamespace('{package_name}', quietly = TRUE)) quit(status = 0) else quit(status = 1)\""
+
+    try:
+        result = subprocess.run(
+            r_command,
+            shell=True,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"R package '{package_name}' is not installed.")
+        return None
+    except subprocess.CalledProcessError:
+        raise RuntimeError(f"R package '{package_name}' is not installed.")
+
+
+class ExternalTool:
+    """
+    A class to manage and run external tools.
+
+    Attributes
+    ----------
+    name : str
+        The name of the external tool.
+    default_path : Optional[str]
+        The default path to the tool if not found in the system PATH.
+    custom_path : Optional[str]
+        A custom path set by the user.
+
+    Methods
+    -------
+    set_custom_path(path: str) -> None
+        Sets a custom path for the tool if it exists.
+    get_path() -> str
+        Retrieves the path to the tool, checking custom, system, and default paths.
+    run(args: List[str]) -> subprocess.CompletedProcess
+        Runs the tool with the given arguments.
+    """
+
+    def __init__(self, name: str, default_path: Optional[str] = None):
+        """
+        Initialize the ExternalTool with a name and an optional default path.
+
+        Parameters
+        ----------
+        name : str
+            The name of the external tool.
+        default_path : Optional[str], optional
+            The default path to the tool if not found in the system PATH (default is None).
+        """
+        self.name = name
+        self.default_path = default_path
+        self.custom_path: Optional[str] = None
+
+    def set_custom_path(self, path: str) -> None:
+        """
+        Set a custom path for the tool if it exists.
+
+        Parameters
+        ----------
+        path : str
+            The custom path to set.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the custom path does not exist.
+        """
+        if os.path.exists(path):
+            self.custom_path = path
+        else:
+            raise FileNotFoundError(
+                f"Custom path for {self.name} does not exist: {path}"
+            )
+
+    def get_path(self) -> str:
+        """
+        Retrieve the path to the tool, checking custom, system, and default paths.
+
+        Returns
+        -------
+        str
+            The path to the tool.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the tool cannot be found in any of the paths.
+        """
+        if self.custom_path:
+            return self.custom_path
+
+        system_tool = shutil.which(self.name)
+        if system_tool:
+            return system_tool
+
+        if self.default_path:
+            package_dir = Path(__file__).parent
+            internal_tool = package_dir / self.default_path
+            if internal_tool.exists():
+                return str(internal_tool)
+
+        raise FileNotFoundError(f"Could not find {self.name} executable")
+
+    def run(self, command: List[str], output_file_path: Optional[str] = None) -> None:
+        """
+        Execute a command line instruction, log the output, and handle errors.
+
+        This function runs the given command, captures stdout and stderr,
+        logs them using logging.debug, and raises exceptions for command failures
+        or missing output files.
+
+        Parameters
+        ----------
+        command : List[str]
+            The command line instruction to be executed.
+        output_file_path : str, optional
+            The expected output file path. If provided, the function will check
+            if this file exists after command execution.
+
+        Raises
+        ------
+        subprocess.CalledProcessError
+            If the command execution fails.
+        FileNotFoundError
+            If the specified output file is not found after command execution.
+
+        Examples
+        --------
+        >>> execute_command("echo 'Hello, World!'")
+        >>> execute_command("ls -l", "/tmp/output.txt")
+        """
+        command = [self.get_path()] + command
+        try:
+            # Run the command and capture output
+            logger.debug(f"Run command: {command}")
+            result = subprocess.run(
+                command, shell=True, check=True, text=True, capture_output=True
+            )
+
+            # Log stdout and stderr
+            logger.debug(f"Command stdout:\n{result.stdout}")
+            logger.debug(f"Command stderr:\n{result.stderr}")
+
+            # Check for output file if path is provided
+            if output_file_path and not os.path.exists(output_file_path):
+                raise FileNotFoundError(
+                    f"Expected output file not found: {output_file_path}"
+                )
+
+        except subprocess.CalledProcessError as e:
+            # Log error details
+            logger.error(f"Command execution failed: {e}")
+            logger.error(f"Command stdout:\n{e.stdout}")
+            logger.error(f"Command stderr:\n{e.stderr}")
+            raise
+
+        except FileNotFoundError as e:
+            logger.error(str(e))
+            raise
+
+
+class ToolManager:
+    """
+    A class to manage multiple external tools.
+
+    Attributes
+    ----------
+    tools : Dict[str, ExternalTool]
+        A dictionary to store registered tools by their names.
+
+    Methods
+    -------
+    register_tool(name: str, default_path: Optional[str] = None) -> None
+        Registers a new tool with an optional default path.
+    set_tool_path(name: str, path: str) -> None
+        Sets a custom path for a registered tool.
+    get_tool(name: str) -> ExternalTool
+        Retrieves a registered tool by its name.
+    run_tool(name: str, args: List[str]) -> subprocess.CompletedProcess
+        Runs a registered tool with the given arguments.
+    """
+
+    def __init__(self):
+        self.tools: Dict[str, ExternalTool] = {}
+
+    def register_tool(self, name: str, default_path: Optional[str] = None) -> None:
+        """
+        Register a new tool with an optional default path.
+
+        Parameters
+        ----------
+        name : str
+            The name of the tool to register.
+        default_path : Optional[str], optional
+            The default path to the tool if not found in the system PATH (default is None).
+        """
+        self.tools[name] = ExternalTool(name, default_path)
+
+    def set_tool_path(self, name: str, path: str) -> None:
+        """
+        Set a custom path for a registered tool.
+
+        Parameters
+        ----------
+        name : str
+            The name of the registered tool.
+        path : str
+            The custom path to set for the tool.
+
+        Raises
+        ------
+        KeyError
+            If the tool is not registered.
+        """
+        if name not in self.tools:
+            raise KeyError(f"Tool {name} is not registered")
+        self.tools[name].set_custom_path(path)
+
+    def get_tool(self, name: str) -> ExternalTool:
+        """
+        Retrieve a registered tool by its name.
+
+        Parameters
+        ----------
+        name : str
+            The name of the registered tool.
+
+        Returns
+        -------
+        ExternalTool
+            The registered tool.
+
+        Raises
+        ------
+        KeyError
+            If the tool is not registered.
+        """
+        if name not in self.tools:
+            raise KeyError(f"Tool {name} is not registered")
+        return self.tools[name]
+
+    def run_tool(
+        self, name: str, args: List[str], output_file_path: Optional[str] = None
+    ) -> None:
+        """
+        Run a registered tool with the given arguments.
+
+        Parameters
+        ----------
+        name : str
+            The name of the registered tool.
+        args : List[str]
+            The arguments to pass to the tool.
+        output_file_path : str, optional
+            The expected output file path. If provided, the function will check
+            if this file exists after command execution.
+
+        Returns
+        -------
+        subprocess.CompletedProcess
+            The result of the subprocess run.
+
+        Raises
+        ------
+        KeyError
+            If the tool is not registered.
+        subprocess.CalledProcessError
+            If the subprocess call fails.
+        """
+        if name not in self.tools:
+            raise KeyError(f"Tool {name} is not registered")
+        return self.get_tool(name).run(args, output_file_path)
+
+
+tool_manager = ToolManager()
+tool_manager.register_tool("finemap", "bin/finemap")
