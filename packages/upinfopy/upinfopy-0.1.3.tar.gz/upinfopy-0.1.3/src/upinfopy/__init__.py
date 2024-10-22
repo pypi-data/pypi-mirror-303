@@ -1,0 +1,1 @@
+from .upinfo import UpinfoPy
