@@ -1,0 +1,189 @@
+name: build macos and windows wheels
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        os: [macos-latest] # , windows-latest
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Cache cargo crates
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-cargo-${{ matrix.python-version }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - uses: actions/cache@v4
+        if: matrix.os == 'windows-latest'
+        with:
+          path: ./vcpkg
+          key: vcpkg-openblas
+          save-always: true
+
+
+      - uses: Swatinem/rust-cache@v2
+        continue-on-error: true
+
+      - name: Install maturin on non-linux (without patchelf)
+        if: matrix.os != 'ubuntu-latest'
+        run: pip install maturin
+
+      - name: Install OpenBLAS on macOS
+        if: matrix.os == 'macos-latest'
+        run: brew install openblas
+
+      - name: Set up vcpkg
+        if: matrix.os == 'windows-latest'
+        run: |
+          git clone https://github.com/Microsoft/vcpkg.git --depth 1
+          cd vcpkg
+          .\bootstrap-vcpkg.bat
+        shell: cmd
+
+      - name: Install OpenBLAS by vcpkg
+        if: matrix.os == 'windows-latest'
+        run: |
+          ./vcpkg/vcpkg.exe install openblas:x64-windows-static-md
+
+      - name: Set VCPKG_ROOT environment variable on Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          setx VCPKG_ROOT "%cd%\vcpkg"
+          setx PATH "%PATH%;%cd%\vcpkg\installed\x64-windows\bin"
+        shell: cmd
+
+      - name: Run cargo tests
+        run: cargo test
+        env:
+          OPENBLAS_DIR: ${{ matrix.os == 'windows-latest' && '%VCPKG_ROOT%/installed/x64-windows' || '/usr/local/opt/openblas' }}
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+
+
+      - name: Run cargo clippy
+        run: cargo clippy --all -- -D warnings
+        env:
+          OPENBLAS_DIR: ${{ matrix.os == 'windows-latest' && '%VCPKG_ROOT%/installed/x64-windows' || '/usr/local/opt/openblas' }}
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+
+      - name: Build wheels with maturin on macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          maturin build --release --out dist
+        env:
+          OPENBLAS_DIR: /usr/local/opt/openblas
+          CARGO_FEATURES: "--no-default-features --features accelerate"
+
+      - name: Build wheels with maturin on Windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          maturin build --release --out dist
+        env:
+          OPENBLAS_DIR: "%VCPKG_ROOT%/installed/x64-windows"
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+
+      - name: Install the built package
+        run: |
+          pip install --find-links dist .
+
+      - name: Install pytest
+        run: |
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          pytest
+        env:
+          PYTHONPATH: .
+
+      - name: Upload wheel artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          path: dist
+  release:
+    name: Release and Publish
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' }}
+    needs: build
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: Upload wheels to PyPI
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |
+          pip install twine
+          twine upload dist/**/*.whl --skip-existing
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: cargo-release Cache
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        id: cargo_release_cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-release
+          key: ${{ runner.os }}-cargo-release
+
+      - name: Install cargo-release
+        if: ${{ steps.cargo_release_cache.outputs.cache-hit != 'true' && startsWith(github.ref, 'refs/tags/v') }}
+        run: cargo install cargo-release
+
+      - name: cargo login
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
+
+      - name: Publish crate to crates.io
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        run: |-
+          cargo release \
+            publish \
+            --workspace \
+            --all-features \
+            --allow-branch HEAD \
+            --no-confirm \
+            --no-verify \
+            --execute
