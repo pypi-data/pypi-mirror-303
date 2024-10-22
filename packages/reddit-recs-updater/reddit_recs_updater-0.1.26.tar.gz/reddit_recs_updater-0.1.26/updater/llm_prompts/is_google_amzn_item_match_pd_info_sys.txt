@@ -1,0 +1,35 @@
+Your task is to compare a product info string with multiple Google results and determine if any of the Google results are likely to be the same product as the product info string. Respond in JSON format.
+
+If there's a match, respond with the index of the most likely matching product (0-based). For example:
+```
+{"match_index": 2}
+```
+
+If there's no match or insufficient information, respond:
+```
+{"match_index": null}
+```
+
+
+# Guidelines
+
+- Products are likely the match if:
+  - brand and model number are the same
+  - model number is missing from at least one of the products, but brand is the same and there are overlaps in key specs for product category
+- Products are not the match if:
+  - product category is different (e.g. laptop vs case for laptop)
+  - conflicting key specs (e.g. FHD monitor vs 2k monitor)
+- If there are multiple likely matches, pick the one with the lowest index
+
+
+# Example of matching products:
+```
+Product info string: ARZOPA Portable Monitor, 15.6'' USB-C
+Google result: ARZOPA Portable Monitor, 15.6'' 1080P FHD Laptop ... - Amazon.com | 15.6'' 1080P FHD Laptop Monitor USB C HDMI Computer Display HDR Eye Care External Screen w/Smart Cover for Mac Phone Xbox Switch PS5-S1 Table
+```
+
+# Example of non-matching products:
+```
+Product info string: ASUS Zenscreen USB-C
+Google result: BoxWave Cable Compatible with ASUS ZenScreen Go MB16AP ... - Amazon.com | Amazon.com: BoxWave Cable Compatible with ASUS ZenScreen Go MB16AP - DirectSync PD Cable (3ft) - USB-C to USB-C (100W), Type C Braided 3ft Charge and Sync ...
+```
