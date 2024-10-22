@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: data-pipeline-ml-caqtl-visualization
+Version: 0.2.1
+Summary: ML visualization pipeline for caQTL evaluation
+Home-page: https://github.com/mcvickerlab/CaVarCNN/blob/master
+License: MIT
+Keywords: machine-learning,visualization,caQTL,PyTorch
+Author: Jaureguy760
+Author-email: jeffpjaureguy@gmail.com
+Requires-Python: >=3.10,<3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: click
+Requires-Dist: h5py
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: polars
+Requires-Dist: scipy
+Requires-Dist: statsmodels
+Project-URL: Repository, https://github.com/mcvickerlab/CaVarCNN/blob/master
+Description-Content-Type: text/markdown
+
+## Data Pipeline
+
+Processes inference models predictions and observed data, exploratory data analysis, data vizualization.
+
+## Configuration
+
+Before running the pipelines, you need to configure them. Configuration files are located in the `/config/` directory. For custom configurations:
+
+    This will create the following files that the user needs to fill out:
+
+    - `pipelines/data_pipeline/configs/direct_input_config.json`
+    - `pipelines/data_pipeline/configs/personal_config.json`
+
+2. **Edit Config Files**: Modify the configuration files to match your data and setup. These files contain the necessary parameters and paths required to run the pipelines successfully. Ensure that all paths, model checkpoints, and settings are correctly specified to match your environment.
+
+
+
+### Option 1: Default Repository Structure
+
+Use this option if you're following the default setup as structured in the repository:
+
+```bash
+python generate_config.py --config_file configs/default_config.json
+```
+
+### Option 2: Custom Configuration
+
+Use this option if you need to specify custom paths and settings:
+
+```bash
+python generate_config.py --direct_input --config_file configs/direct_input_config.json
+```
+
+3. **Usage**: Once the configuration is complete, you can run the pipeline.
+
+## Running the pipeline
+
+### Data Frame Generation
+
+### Exploratory Data Analysis(EDA)
+
+### Data Visualization
+
+
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details
+
+
