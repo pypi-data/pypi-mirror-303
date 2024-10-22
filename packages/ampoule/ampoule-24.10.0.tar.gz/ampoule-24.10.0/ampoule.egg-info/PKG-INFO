@@ -1,0 +1,43 @@
+Metadata-Version: 2.1
+Name: ampoule
+Version: 24.10.0
+Summary: A process pool built on Twisted and AMP.
+Home-page: https://github.com/twisted/ampoule
+Author: Valentino Volonghi
+Author-email: dialtone@gmail.com
+Maintainer: Glyph Lefkowitz
+Maintainer-email: glyph@twistedmatrix.com
+License: MIT License
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: System
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+License-File: COPYING.txt
+Requires-Dist: Twisted[tls]>=17
+Requires-Dist: incremental
+
+
+Ampoule - a process pool for Twisted, based on AMP
+==================================================
+
+Ampoule is a process pool written on top of
+[Twisted](https://twistedmatrix.com/). Its name comes from the use of
+[AMP](https://amp-protocol.net/) as the default communication protocol between
+the pool and all its children.
+
+It provides an API very close to that of the built-in Twisted `ThreadPool`. As
+an helper function it also provides a `deferToAMPProcess` function that creates
+the `ProcessPool` and submits jobs to it.
