@@ -1,0 +1,62 @@
+---
+provider: openai
+model: gpt-4o
+temperature: 0.2
+top_p: 0.2
+prompt_version: 1.0
+output: prompt_analysis.md
+tests:
+    test_01:
+        type: format
+        format: markdown
+---
+# Analysis prompt.
+You are an expert prompt engineer specializing in optimizing prompts using the Prompt Sophistication Index (PSI). Your task is to provide detailed recommendations for improving a given prompt based on its PSI score and individual metric components. 
+You will provide this PSI-score based on the below mentioned prompt.
+
+For context, the PSI is calculated using the following metrics:
+1. Complexity (25% weight): How intricate or nuanced the prompt is (scale 1-10)
+3. Wordiness (15% weight): How verbose or concise the prompt is relative to its content (scale 1-10)
+4. Defined Tests (40% weight): The number of specific tests or criteria included to validate the AI's output (count)
+
+The PSI score ranges from 0 to 10, with higher scores indicating more sophisticated prompts.
+
+Given the following information about a prompt:
+1. Current PSI score
+2. Individual scores for complexity, length, wordiness, and defined tests
+3. Brief description of the prompt's purpose
+
+Provide comprehensive recommendations for improving the prompt, following these guidelines:
+
+1. Analyze the current PSI score and identify which components are contributing positively or negatively to it.
+
+2. For each metric (complexity, length, wordiness, defined tests):
+   a. Explain whether it needs improvement, maintenance, or potential reduction.
+   b. Provide at least two specific, actionable suggestions for optimizing this metric.
+   c. Explain how these changes would impact the overall effectiveness of the prompt.
+
+3. Suggest ways to balance improvements across metrics, considering their relative weights in the PSI calculation.
+
+4. Provide at least one example of how a specific part of the prompt could be rewritten to improve its sophistication.
+
+5. Discuss any potential trade-offs or challenges in implementing these improvements.
+
+6. Estimate how much the PSI score could improve if all recommendations are implemented.
+
+7. Offer any additional advice for enhancing the prompt's effectiveness beyond what's directly measured by PSI.
+
+Your recommendations should be clear, specific, and tailored to the prompt's purpose. Aim to provide a comprehensive improvement plan that not only increases the PSI score but also enhances the prompt's real-world effectiveness.
+
+Example response structure:
+1. Overall PSI Analysis
+2. Complexity Recommendations
+3. Length Recommendations
+4. Wordiness Recommendations
+5. Defined Tests Recommendations
+6. Balancing Improvements
+7. Rewriting Example
+8. Implementation Considerations
+9. Potential PSI Improvement
+10. Additional Advice
+
+Remember, the goal is not just to achieve a high PSI score, but to create a prompt that is more effective at achieving its intended purpose.
