@@ -1,0 +1,20 @@
+[package]
+name = "boytacean-libretro"
+version = "0.10.14"
+authors = ["João Magalhães <joamag@gmail.com>"]
+description = "A Libretro frontend for Boytacen"
+license = "Apache-2.0"
+keywords = ["gameboy", "emulator", "rust", "libretro"]
+edition = "2021"
+readme = "README.md"
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+debug = ["boytacean/debug"]
+pedantic = ["boytacean/pedantic"]
+cpulog = ["boytacean/cpulog"]
+
+[dependencies]
+boytacean = { path = "../..", version = "0.10.14" }
