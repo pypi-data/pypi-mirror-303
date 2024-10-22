@@ -1,0 +1,2 @@
+import{d as r,c as s,i as e,j as n,o as l,k as o,l as a,d0 as u,d1 as _}from"./index-L873bng3.js";import{u as c}from"./usePageTitle-FYGtSu7C.js";const k=r({__name:"WorkPoolCreate",setup(p){return c("Create Work Pool"),(d,f)=>{const t=n("p-layout-default");return l(),s(t,null,{header:e(()=>[o(a(u))]),default:e(()=>[o(a(_))]),_:1})}}});export{k as default};
+//# sourceMappingURL=WorkPoolCreate-CAeXr80C.js.map
