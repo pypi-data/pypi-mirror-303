@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name='scrachy'
+version='0.12.0'
+
+description="Enhanced functionality for Scrapy."
+authors = [
+    {name = "Reid Swanson", email = "reid@reidswanson.com" }
+]
+readme = "README.md"
+license = {file = "LICENSE.md"}
+dependencies = [
+    'cron-converter',
+    'msgspec',
+    'psutil',
+    'scrapy',
+    'selenium',
+    'sqlalchemy',
+    'twisted',
+    'w3lib',
+    'pywin32; os_name=="nt"'
+]
+keywords = ["scrapy", "scraping", "httpcache", "selenium"]
+
+[project.optional-dependencies]
+benchmark   = ['tabulate']
+content     = ['beautifulsoup4', 'boilerpy3']
+html        = ['html5lib', 'lxml']
+mysql       = ['pymysql']
+postgresql  = ['psycopg2-binary']
+testing     = ['pytest', 'pytest-twisted', 'python-dotenv', 'pyyaml']
+versioning  = ['bump-my-version']
+all         = ["scrachy[content, html, mysql, postgresql, testing]"]
+
+[project.urls]
+Homepage = "https://bitbucket.org/reidswanson/scrachy"
+Documentation = "https://scrachy.readthedocs.io/en/latest"
