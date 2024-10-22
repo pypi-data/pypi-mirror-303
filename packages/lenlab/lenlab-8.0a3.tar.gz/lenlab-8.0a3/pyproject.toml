@@ -1,0 +1,40 @@
+[project]
+name = "lenlab"
+readme = "README.md"
+authors = [{name = "Christoph Simon", email = "christoph.simon@kit.edu"}]
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: Apache Software License"]
+dynamic = ["version", "description"]
+# Python 3.10 introduced Structural Pattern Matching
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "pyside6>=6.8.0.1,<7",
+]
+
+[project.urls]
+Home = "https://github.com/kalanzun/lenlab_mspm0"
+
+[build-system]
+requires = ["hatchling>=1.12.0,<2"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+lenlab = "lenlab.app:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest-random-order>=1.1.1",
+    "pytest-repeat>=0.9.3",
+    "pytest>=8.3.3",
+]
+cache-keys = [{file = "workspace/lenlab_firmware/version.h"}]
+
+[tool.hatch.version]
+path = "workspace/lenlab_firmware/version.h"
+pattern = '#define VERSION "(?P<version>[^"]+)"'
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["workspace/lenlab_firmware/Debug/lenlab_firmware.bin"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"workspace/lenlab_firmware/Debug/lenlab_firmware.bin" = "lenlab/lenlab_firmware.bin"
