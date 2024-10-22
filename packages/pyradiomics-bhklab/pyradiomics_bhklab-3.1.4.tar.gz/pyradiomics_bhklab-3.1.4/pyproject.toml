@@ -1,0 +1,148 @@
+
+[project]
+name = "pyradiomics-bhklab"
+version = "3.1.4"
+authors = [
+    { name = "PyRadiomics Community", email = "pyradiomics@googlegroups.com"}
+]
+description = "Radiomics features library for python"
+readme = "README.md"
+requires-python =">=3.5"
+license = { file = "LICENSE.txt"}
+keywords = [ "radiomics", "cancerimaging", "medicalresearch", "computationalimaging" ]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Console',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: C',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Scientific/Engineering :: Bio-Informatics'
+]
+dependencies = [
+    "numpy",
+    "SimpleITK",
+    "PyWavelets",
+    "pykwalify",
+    "six"
+]
+
+
+[project.scripts]
+pyradiomics = "radiomics.scripts.__init__:parse_args"
+
+[project.urls]
+"Homepaget" = "http://github.com/AIM-Harvard/pyradiomics#readme"
+"Radiomics.io" = "https://www.radiomics.io/"
+"Documentation" = "https://pyradiomics.readthedocs.io/en/latest/index.html"
+"Docker" = "https://hub.docker.com/r/radiomics/pyradiomics/"
+"Github" = "https://github.com/AIM-Harvard/pyradiomics"
+
+
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+
+[tool.pixi.build-dependencies]
+numpy = ">=1.9.2"
+
+[tool.pixi.pypi-dependencies]
+pyradiomics-bhklab = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.environments]
+dev = {features = ["test"]}
+build = {features = ["build"]}
+py310 = ["py310", "test"]
+py311 = ["py311", "test"]
+py312 = ["py312", "test"]
+py313 = ["py313", "test"]
+
+############################################## python ###############################################
+
+[tool.pixi.feature.py310.dependencies]
+python = "3.10.*"
+[tool.pixi.feature.py311.dependencies]
+python = "3.11.*"
+[tool.pixi.feature.py312.dependencies]
+python = "3.12.*"
+[tool.pixi.feature.py313.dependencies]
+python = "3.13.*"
+
+############################################## TEST ################################################
+
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+ipykernel = ">=6.29.3,<6.30"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest -n auto --cov=radiomics --cov-report=xml --cov-report=term-missing"
+
+[tool.pixi.feature.build.dependencies]
+wheel = ">=0.29.0"
+numpy = ">=1.9.2"
+setuptools= ">=38.6.0"
+simpleitk = "*"
+
+[build-system]
+requires = ["setuptools>=61.0", "numpy", "versioneer"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+build = ["auditwheel>=6.1.0,<7", "twine>=5.1.1,<6"]
+
+# hatch = ">=1.13.0,<2"
+
+
+# [tool.hatch.build.targets.sdist]
+# include = [
+#     "/radiomics",
+# ]
+# [build-system]
+# requires = ["hatchling"]
+# build-backend = "hatchling.build"
+
+
+# [build-system]
+# requires = ["hatchling", "numpy", "versioneer"]
+# build-backend = "hatchling.build"
+
+
+# [project.optional-dependencies]
+# build = [ "build>=1.2.2.post1,<2", "twine>=5.1.1,<6"]
+
+
+# [tool.hatch.build.targets.wheel]
+# packages = ["radiomics", "radiomics.scripts"]
+# extensions = [
+#     { name = "radiomics._cmatrices", sources = ["radiomics/src/_cmatrices.c", "radiomics/src/cmatrices.c"] },
+#     { name = "radiomics._cshape", sources = ["radiomics/src/_cshape.c", "radiomics/src/cshape.c"] },
+# ]
+
+# [tool.hatch.build.targets.sdist]
+# packages =  ["radiomics", "radiomics.scripts"]
+# extensions = [
+#     { name = "radiomics._cmatrices", sources = ["radiomics/src/_cmatrices.c", "radiomics/src/cmatrices.c"] },
+#     { name = "radiomics._cshape", sources = ["radiomics/src/_cshape.c", "radiomics/src/cshape.c"] },
+# ]
+
+# [tool.hatch.build.targets.wheel.hooks.cython]
+# dependencies = ["hatch-cython"]
+
+# pytest
+# flake8
+# flake8-import-order
+# sphinx>=1.4
+# sphinx_rtd_theme>=0.2.2
