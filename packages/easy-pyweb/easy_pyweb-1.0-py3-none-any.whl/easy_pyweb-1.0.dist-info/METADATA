@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: easy_pyweb
+Version: 1.0
+Summary: web helper
+Home-page: https://github.com/xiaoxigithub
+Author: xiaoxi
+Author-email: xiaoxiggnet@gmail.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: playwright
+
+# 说明
+playwright助手，内置函数
+
+win系统如需控制隐藏窗口，需安装pywin32
+
+# 打包操作
+需要安装包
+pip install build twine
+
+执行打包
+python -m build
+
+推送分支`[testpypi|pypi]`
+
+python -m twine upload --repository testpypi dist/*
