@@ -1,0 +1,48 @@
+[project]
+requires-python = ">=3.12"
+
+[tool.poetry]
+name = "logicblocks.event.store"
+version = "0.1.3a4"
+description = "Event store for event sourced architectures."
+authors = ["Toby Clemson <tobyclemson@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "logicblocks", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+frozendict = "^2.4.6"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.9"
+poethepoet = "^0.29.0"
+pyright = "^1.1.383"
+pytest = "^8.3.3"
+
+[tool.pyright]
+include = ["src", "tests/unit"]
+strict = ["src"]
+reportMissingTypeStubs = "error"
+
+[tool.ruff]
+namespace-packages = ["logicblocks/event"]
+line-length = 79
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = ["--import-mode=importlib"]
+
+[tool.poe.tasks]
+lint-check = "ruff check"
+lint-fix = "ruff check --fix"
+format-check = "ruff format --check"
+format-fix = "ruff format"
+type-check = "pyright"
+test-unit = "pytest tests/unit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
