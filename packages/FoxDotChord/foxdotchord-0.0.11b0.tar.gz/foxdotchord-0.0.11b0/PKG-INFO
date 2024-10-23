@@ -1,0 +1,136 @@
+Metadata-Version: 2.3
+Name: FoxDotChord
+Version: 0.0.11b0
+Summary: Chords for use in renardo or FoxDot
+Home-page: https://codeberg.org/taconi/FoxDotChord
+License: GPL-3.0-or-later
+Keywords: FoxDot,foxdot,renardo,chord,algorave,live-coding,music,patterns
+Author: taconi
+Author-email: igor.taconi@protonmail.com
+Maintainer: taconi
+Maintainer-email: igor.taconi@protonmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Utilities
+Classifier: Topic :: Artistic Software
+Classifier: Topic :: Multimedia :: Sound/Audio
+Project-URL: Contributor Guide, https://foxdotchord.readthedocs.io/contributing
+Project-URL: Changelog, https://foxdotchord.readthedocs.io/changelog/
+Project-URL: Documentation, https://foxdotchord.readthedocs.io
+Project-URL: Issues, https://codeberg.org/taconi/FoxDotChord/issues
+Project-URL: Repository, https://codeberg.org/taconi/FoxDotChord
+Description-Content-Type: text/markdown
+
+# FoxDotChord
+
+[![Documentation](https://custom-icon-badges.demolab.com/badge/Docs-latest-%23b1f889.svg?logo=book&logoColor=%23b1f889)](https://foxdotchord.readthedocs.io)
+[![License](https://custom-icon-badges.demolab.com/badge/License-GPLv3-%23b1f889.svg?logo=law&logoColor=%23b1f889)](https://spdx.org/licenses/)
+[![Issue Tracker](https://custom-icon-badges.demolab.com/badge/Issue-Tracker-%23b1f889.svg?logo=issue-opened&logoColor=%23b1f889)](https://codeberg.org/taconi/FoxDotChord/issues)
+[![Contributing](https://custom-icon-badges.demolab.com/badge/Contributor-Guide-%23b1f889.svg?logo=git-pull-request&logoColor=%23b1f889)](https://foxdotchord.readthedocs.io/contributing)
+[![Source Code](https://custom-icon-badges.demolab.com/badge/Source-Code-%23b1f889.svg?logo=codeberg&logoColor=%23b1f889)](https://codeberg.org/taconi/FoxDotChord/)
+
+[![PyPI version](https://img.shields.io/pypi/v/FoxDotChord.svg?logo=pypi&label=PyPI&color=%234e71b2&logoColor=%2389b1f8)](https://pypi.org/project/FoxDotChord/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/FoxDotChord.svg?logo=python&label=Python&color=%234e71b2&logoColor=%2389b1f8)](https://pypi.python.org/pypi/FoxDotChord/)
+[![Downloads](https://img.shields.io/pypi/dm/FoxDotChord?logo=pypi&label=Downloads&color=%234e71b2&logoColor=%2389b1f8)](https://pypistats.org/packages/foxdotchord)
+
+---
+
+Chords to use in [renardo](https://renardo.org) or [FoxDot](https://foxdot.org).
+
+## Installation
+
+Use the package manager you prefer
+
+```sh
+pip install FoxDotChord
+```
+
+## Examples
+
+```python
+from FoxDotChord import PChord as c
+
+c0 = c['C Am7 Dm Em']
+t0 >> keys(
+    c0.every(3, 'bubble'),
+    dur=PDur(3, 8)
+)
+
+b0 >> sawbass(c0, amp=1, pan=[0, 1, -1, 0])
+
+d0 >> play('x-o({-=}[--])')
+```
+
+```python
+from FoxDotChord import PChord as c
+
+Clock.bpm = 180
+
+d1 >> play('(C(ES))   ')
+
+c1 >> swell(
+    c['F#6!4 Dm7/9!8 Bm5/7!4'],
+    dur=PDur(5, 9)*2,
+    oct=var([4, 5], 16),
+    amp=1.5,
+)
+
+d2 >> play('pn u', amp=2)
+```
+
+```python
+import FoxDotChord
+
+Clock.bpm = 70
+
+chords = c[
+    'Am7M/9!2 F7/11+!2 Bm7/5-!2 E7/13-!2 ' * 3,
+    'Am7M/9!2 F7/11+!2 Dm7/9!2 G7/4/9, F7/11+',
+    'Em7/b-!4 A7/13-!2 Eb7/9!2',
+    'Dm7/9!4 G7/4/9!2 Db7/9+!2',
+    'C7M/5+!2 C7M!2 F7/11+!4',
+    'Bm7/5-!4 E7/13-!4',
+    'Am7M/9!2 F7/11+!2 Bm7/5-!2 E7/13-!2',
+]
+v1 >> pasha(
+    chords,
+    dur=PDur(3, 8), lpf=linvar([500, 1000, 500], 50),
+)
+
+p1 >> play('<S><P>({!b} )', room=.7, mix=.5, lpf=linvar([1_000, 5_000], [50, 100]))
+p2 >> play('--')
+p3 >> play('VpOe', hpf=2_000)
+
+b0 >> ambi(v1.degree, lpf=1000)
+```
+
+```python
+import FoxDotChord
+
+Clock.bpm = 90
+
+chords = c[
+    'B7M D7 G7M Bb7!.7 Eb7M!2.3 Am7!.7 D7!1.3',
+    'G7M B7 Eb7M F#7!.7 B7M!2.3 Fm7 Bb7!.7',
+    'Eb7M!2.3 Am7 D7!.7 G7M!2.3 C#m7 F#7!.7',
+    'B7M!2.3 Fm7 B7M!.7 Eb7M!2.3 C#m7!.7 F#7!1.3',
+]
+c1 >> play('o-x-')
+s1 >> pianovel(chords, dur=chords.dur)
+l1 >> sawbass(chords.values.i, dur=chords.dur)
+```
+
+## Contribute
+
+See the [Contributor Guide](https://foxdotchord.readthedocs.io/contributing).
+
