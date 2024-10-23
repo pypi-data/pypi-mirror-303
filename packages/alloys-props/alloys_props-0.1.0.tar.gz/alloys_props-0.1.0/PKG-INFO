@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: alloys-props
+Version: 0.1.0
+Summary: Formula-based calculator for alloy properties
+Author: abdoulfataoh
+Author-email: abdoulfataoh@gmail.com
+Requires-Python: >=3.10,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: chempy (>=0.9.0,<0.10.0)
+Requires-Dist: mendeleev (>=0.18.1,<0.19.0)
+Requires-Dist: numpy (<2.0)
+Description-Content-Type: text/markdown
+
+## Alloy Properties Calculator
+
+Formula-based calculator for alloy properties
+
+### Features
+
+- **VEC (Valence Electron Concentration)**
+- **Atomic Size Mismatch (Δ)**
+- **Pauling Electronegativity**
+- **Entropy of Mixing**
+
+### Installation
+
+1. Install with pip:
+    ```bash
+    pip install alloys-props
+    ```
+
+2. Install with poetry:
+    ```bash
+    poetry add alloys-props
+    ```
+
+### Usage
+
+```python
+# coding: utf-8
+
+from alloys_props import vec, delta, pauling_negativities, entropy_of_mixing
+
+alloy = 'Al0.5Fe'
+print(f'vec: {vec(alloy)}')
+print(f'pauling_negativities: {pauling_negativities(alloy)}')
+print(f'delta: {delta(alloy)}')
+
