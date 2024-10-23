@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "locify"
+version = "0.0.2"
+description = "A library for navigating over large codebases."
+authors = ["Hoang Tran <descience.thh10@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "locify/**/*" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+litellm = "*"
+tree-sitter = "0.21.3"
+grep-ast = "0.3.3"
+gitpython = "*"
+networkx = "*"
+numpy = "*"
+pandas = "*"
+scipy = "*"
+fire = "*"
+
+
+[tool.poetry.group.tests.dependencies]
+pytest = "^8.3.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.0"
+pre-commit = "^4.0.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = [
+  "poetry-core",
+]
+
+[tool.autopep8]
+# autopep8 fights with mypy on line length issue
+ignore = [ "E501" ]
+
+[tool.black]
+# prevent black (if installed) from changing single quotes to double quotes
+skip-string-normalization = true
+
+[tool.ruff.lint]
+select = ["D"]
+# ignore warnings for missing docstrings
+ignore = ["D1"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
