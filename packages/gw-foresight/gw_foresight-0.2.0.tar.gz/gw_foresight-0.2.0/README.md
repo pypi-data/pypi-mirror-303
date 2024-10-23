@@ -1,0 +1,39 @@
+# Foresight: Advanced Malware Prediction Library
+
+Foresight is a sophisticated malware prediction library that harnesses the power of deep Content Disarm & 
+Reconstruction (CDR) analysis data from the Glasswall CDR engine. This data is then fed into a 
+Machine Learning (ML) model to achieve its primary objective: providing a probability metric that indicates the 
+likelihood of malware presence within a file.
+
+The `gw_foresight` Python module serves as a convenient Python wrapper for the Glasswall Foresight library APIs. 
+It allows users to seamlessly integrate malware prediction capabilities into their Python applications.
+
+## Installation
+
+To get started with the `gw_foresight` module, install it via pip:
+
+```sh
+pip install gw_foresight
+```
+
+## Usage
+Here’s a simple example to demonstrate its usage:
+
+```python
+import gw_foresight
+
+# Initialize the Foresight object with the path to the Glasswall Foresight library
+foresight = gw_foresight.Foresight(r"path-to-foresight-library")
+
+# Define paths to the necessary files
+input_file = "path-to-input-file"
+model_path = "path-to-machine-learning-model"
+output_file = "path-to-output-file"
+config_file = "path-to-configuration-file"
+
+# Analyze the file and get the malware probability report
+fs_report, _, _ = foresight.predict(input_file, model_path, output_file, config_file)
+
+# Print the prediction report
+print(fs_report)
+```
