@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrndr"
+version = "0.1.0"
+description = "Platform-agnostic Python mesh renderer with minimum features"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Yuki Kawana"}]
+dependencies = [
+    "trimesh",
+    "scipy",
+    "Rtree",
+    "embreex; platform_machine=='x86_64'",
+]
+
+[project.optional-dependencies]
+vis = [
+    "matplotlib",
+    "ipykernel",
+]
+dev = [
+    "pre-commit",
+    "build",
+    "twin",
+]
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+src_paths = ["."]
+
+[tool.setuptools]
+packages = ["pyrndr"]
