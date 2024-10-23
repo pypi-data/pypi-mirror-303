@@ -1,0 +1,31 @@
+{% load static %}
+
+<section id="recent-blog-posts" class="recent-blog-posts">
+  <div class="container" data-aos="fade-up">
+    <div class="section-header">
+      <h2>{{ title }}</h2>
+      <p>{{ subtitle }}</p>
+    </div>
+
+    <div class="row">
+      {% for item in top_n %}
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="{% cycle '200' '400' '600' %}">
+        <div class="post-box">
+          <div class="post-img">
+            <div class="ratio ratio-4x3">
+              <img src="{{ item.thumbnail.url }}" class="img-fluid" alt="">
+            </div>
+          </div>
+          <div class="meta">
+            <span class="post-date">{{ item.updated_on | date:"D, F d"}}</span>
+            <span class="post-author"> / {{ item.author.name}}</span>
+          </div>
+          <h3 class="post-title">{{ item.title }}</h3>
+          <p>{{ item.content | truncatechars:200 }}</p>
+          <a href="{% url 'herobiz:blog_details' item.slug  %}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
