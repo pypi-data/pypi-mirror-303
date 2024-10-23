@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: charloratools
+Version: 1.1.0
+Summary: Python package including tools that facilitate training images scraping, management, and filtering for stable diffusion character LoRa training.
+Author-email: svdC1 <svdc1mail@gmail.com>
+Maintainer-email: svdC1 <svdc1mail@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 svdC1
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: repository, https://github.com/svdC1/charloratools
+Project-URL: documentation, https://svdc1.github.io/charloratools/
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy<2.0.0,>=1.24.0
+Requires-Dist: requests<3.0.0,>=2.0.0
+Requires-Dist: Pillow<10.3.0,>=10.2.0
+Requires-Dist: opencv-python<5.0.0,>=4.7
+Requires-Dist: scipy<2.0.0,>=1.10.0
+Requires-Dist: tqdm<5.0.0,>=4.0.0
+Requires-Dist: pandas<3.0.0,>=2.0.0
+Requires-Dist: imagehash>=4.0.0
+Requires-Dist: selenium<5.0.0,>=4.8.0
+Requires-Dist: webdriver-manager>=3.0.0
+Requires-Dist: onnx>=1.14.0
+Requires-Dist: matplotlib<4.0.0,>=3.5.0
+Requires-Dist: scikit-learn<2.0.0,>=1.2.0
+Requires-Dist: scikit-image<1.0.0,>=0.19.0
+Requires-Dist: easydict
+Requires-Dist: cython>=3.0.2
+Requires-Dist: albumentations<2.0.0,>=1.2.0
+Requires-Dist: prettytable
+Requires-Dist: coloredlogs>=15.0
+Requires-Dist: flatbuffers>=23.3.3
+Provides-Extra: dev
+Requires-Dist: coverage<8.0.0,>=7.0.0; extra == "dev"
+Requires-Dist: codecov<3.0.0,>=2.0.0; extra == "dev"
+Requires-Dist: jupyter>=1.0.0; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Provides-Extra: cpu
+Requires-Dist: torch; extra == "cpu"
+Requires-Dist: torchvision; extra == "cpu"
+Requires-Dist: torchaudio; extra == "cpu"
+Provides-Extra: docs
+Requires-Dist: black; extra == "docs"
+Requires-Dist: mkdocs; extra == "docs"
+Requires-Dist: mkdocstrings; extra == "docs"
+Requires-Dist: mkdocstrings-python; extra == "docs"
+Requires-Dist: mkdocs-autorefs; extra == "docs"
+Requires-Dist: mkdocs-get-deps; extra == "docs"
+Requires-Dist: mkdocs-material>9.5.0; extra == "docs"
+Requires-Dist: mkdocs-material-extensions; extra == "docs"
+Requires-Dist: markdown; extra == "docs"
+Requires-Dist: pymdown-extensions; extra == "docs"
+Requires-Dist: Pygments; extra == "docs"
+
+## ![Charloratools Logo](https://imagedelivery.net/YCQ3OFRYiR1R_AeUslNHiw/88185031-1ee7-40df-e3e8-d632d668c600/w=1280,h=640,fit=crop)
+
+>![version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FsvdC1%2Fcharloratools%2Fmain%2Fpyproject.toml&query=%24.project.version&style=flat-square&logoSize=auto&label=version)
+>![build](https://github.com/svdC1/charloratools/actions/workflows/test-publish-package.yml/badge.svg)
+>![tests](https://github.com/svdC1/charloratools/actions/workflows/lint-run-tests.yml/badge.svg)
+>[![codecov](https://codecov.io/github/svdC1/charloratools/branch/main/graph/badge.svg?token=C6VUUTO5PN)](https://codecov.io/github/svdC1/charloratools)
+
+
+### Compreheensive tools for easier management of image directories with python.
+
+
+
+## Installation
+
+<a href=https://pypi.org/project/charloratools/><img src=https://imagedelivery.net/YCQ3OFRYiR1R_AeUslNHiw/9e17a46e-346c-4475-11f3-fd0d661c1800/400x400><a href=https://pypi.org/project/charloratools/></a></img>
+
+### **No Torch**
+```bash
+pip install charloratools
+```
+### Torch CPU-Only
+```bash 
+pip install charloratools[cpu]
+```
+## Documentation
+### Check the Full [API Reference](https://svdc1.github.io/charloratools)
+
+## Torch Install Script
+
+### *Available after pip installation*
+  - ### Skips Installation if torch is already installed
+  - ### Detects and Installs correct PyTorch Distribution for system 
+
+## Installing and Running The Script
+
+```bash
+pip install charloratools
+charloratools install_torch
+```
+## Installing Torch Manually
+
+### If you don't want to run the script and prefer installing torch yourself I recommend [following the steps described in their website](https://pytorch.org/get-started/locally/). Once torch is installed the package should work correctly.
+  
