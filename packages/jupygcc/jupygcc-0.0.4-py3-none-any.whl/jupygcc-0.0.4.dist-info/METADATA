@@ -1,0 +1,73 @@
+Metadata-Version: 2.3
+Name: jupygcc
+Version: 0.0.4
+Project-URL: Documentation, https://github.com/benabel/jupygcc#readme
+Project-URL: Issues, https://github.com/benabel/jupygcc/issues
+Project-URL: Source, https://github.com/benabel/jupygcc
+Author-email: Benjamin Abel <dev.abel@free.fr>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: hatch>=1.13.0
+Description-Content-Type: text/markdown
+
+# jupygcc
+
+[![PyPI - Version](https://img.shields.io/pypi/v/jupygcc.svg)](https://pypi.org/project/jupygcc)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jupygcc.svg)](https://pypi.org/project/jupygcc)
+
+-----
+
+## Installation
+
+```console
+pip install jupygcc
+```
+
+## Usage
+
+### Configuration
+
+Currently, the kernel can't be configured and will always use:
+
+- `-std=c99 -Wall` for C code
+- Wrap the code in a ``main`` function if it doesn't already have one with:
+
+  ```c
+  #include <stdbool.h>
+  #include <stddef.h>
+  #include <stdint.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <math.h>
+  ```
+
+### Cell metadata
+
+Currently, the only cell metadata handled is `stdin` for non-interactive `scanf` and `gets` calls:
+
+```{c}
+//| stdin: 10
+int n;
+printf("How many lines? ");
+scanf("%d", &n);
+printf("\n%d lines\n");
+```
+
+## Development
+
+- Test: `hatch run test`
+- Coverage: `htach run coverage`
+- 
+## License
+
+`jupygcc` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
