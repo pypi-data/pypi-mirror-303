@@ -1,0 +1,84 @@
+queries:
+  - name: "orcl__columns__data"
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID,
+          owner,
+          table_name,
+          column_name,
+          data_type,
+          data_length,
+          data_precision,
+          data_scale,
+          nullable,
+          'Oracle' AS DMA_SOURCE_ID, 
+          NULL AS DMA_MANUAL_ID
+      FROM <view_type>_tab_columns
+      WHERE owner NOT IN ('SYS', 'SYSTEM')
+      ORDER BY owner, table_name, column_id
+  - name: "orcl__instances__data"
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID
+      FROM dual
+  - name: "orcl__views__data"
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID, 
+          owner,
+          view_name, 
+          'Oracle' AS DMA_SOURCE_ID, 
+          NULL AS DMA_MANUAL_ID 
+      FROM <view_type>_views
+      WHERE owner NOT IN ('SYS', 'SYSTEM')
+  - name: "orcl__dbobjectnames__data" 
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID, 
+          owner,
+          CASE 
+              WHEN object_type = 'TABLE PARTITION'  THEN object_name||'_'||SUBOBJECT_NAME
+              ELSE object_name 
+          END AS object_name,
+          CASE 
+              WHEN object_type = 'TABLE' AND EXISTS (SELECT 1 FROM <view_type>_TAB_PARTITIONS WHERE table_owner = o.owner AND table_name = o.object_name) THEN 'PARTITIONED TABLE' 
+              ELSE object_type 
+          END AS object_type,
+          'Oracle' AS DMA_SOURCE_ID, 
+          NULL AS DMA_MANUAL_ID 
+      FROM <view_type>_objects o
+      WHERE owner NOT IN ('SYS', 'SYSTEM')
+      ORDER BY owner, object_type, object_name
+  - name: "orcl__sourcecodedetailed__data" 
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID, a.*, 'Oracle' AS DMA_SOURCE_ID, 
+          NULL AS DMA_MANUAL_ID 
+          from (
+                Select owner,
+                name, 
+                type, 
+                max(line) NR_LINES
+            FROM <view_type>_source
+            WHERE owner NOT IN ('SYS', 'SYSTEM')
+            GROUP BY owner, name, type) a
+      ORDER BY owner, name, type
+  - name: "orcl__triggers__data" 
+    query: |
+      SELECT 
+          'oracle<db-name>' AS PKEY,
+          1 AS CON_ID,
+          owner,
+          trigger_name,
+          table_name, 
+          status, 
+          'Oracle' AS DMA_SOURCE_ID, 
+          NULL AS DMA_MANUAL_ID 
+      FROM <view_type>_triggers
+      WHERE owner NOT IN ('SYS', 'SYSTEM')
+      ORDER by owner, trigger_name
