@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: wwai_sdk
+Version: 0.0.14
+Summary: 万网AI云平台SDK
+Home-page: 
+Author: mrhua
+Author-email: 
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: diskcache
+Requires-Dist: redis
+Requires-Dist: cryptography
+Requires-Dist: pycryptodome
+Requires-Dist: requests-toolbelt
+
+# WWAI云平台SDK
+
+## 参数注入方式
+| 参数名称          | 描述                                          |
+|---------------|---------------------------------------------|
+| server        | WWAI云平台地址，默认为 http://ai.api.wwai.wwxckj.com |
+| grant_type    | 授权类型,支持password、client_credential，默认为 client_credential      |
+| authorization | 客户端模式时的授权信息，路径：系统管理 > 终端管理 > 新建终端            |
+| username      | 密码模式时的用户名                                  |
+| password      | 密码模式时的密码                                   |
+| tenant_code   | 密码模式时的租户号                                   |
+| cache_type    | 缓存类型，支持 redis、local，默认为 local               |
+| redis_host    | redis地址，默认为 localhost                        |
+| redis_port    | redis端口，默认为 6379                           |
+| redis_password | redis密码，默认为 None                           |
+| redis_db      | redis数据库，默认为 0                           |
+
+
+## 环境变量方式
+| 环境变量名称 | 描述                                          |
+| --- |---------------------------------------------|
+| WWAI_SERVER | WWAI云平台地址，默认为 http://ai.api.wwai.wwxckj.com |
+| WWAI_GRANT_TYPE | 授权类型，默认为 client_credential                  |
+| WWAI_AUTHORIZATION | 客户端模式时的授权信息，路径：系统管理 > 终端管理 > 新建终端           |
+| WWAI_USERNAME | 密码模式的用户名                                    |
+| WWAI_PASSWORD | 密码模式的密码                                     |
+| WWAI_TENANT_CODE | 密码模式时的租户号                                   |
+| WWAI_CACHE_TYPE | 缓存类型，默认为 local，支持 redis、local               |
+| REDIS_HOST | redis地址，默认为 localhost |
+| REDIS_PORT | redis端口，默认为 6379 |
+| REDIS_PASSWORD | redis密码，默认为 None |
+| REDIS_DB | redis数据库，默认为 0 |
+
+## 功能矩阵
+| 接口名称 | 描述                  |
+| --- |---------------------|
+| ocr_idcard | 身份证识别               |
+| ocr_vehicle | 行驶证识别               |
+| ocr_driving_license | 行驶证驾驶证识别            |
+| ocr_vehicle_certificate | 机动车登记证书识别           |
+| ocr_invoice | 发票识别                |
+| ocr_bank_card | 银行卡识别               |
+| other_classify | 通用图片分类              |
+| ocr_img_quality | 图片质量检测              |
+| ocr_cards_correction | 卡片矫正                |
+| ocr_cards_angle | 卡片矫正角度检测            |
+| ocr_car_plate_detection | 车牌检测                |
+| ocr_common | 通用文字识别              |
+| ocr_chat_ocr | 关键信息识别              |
+| ocr_handwriting | 手写识字识别              |
+| ocr_entity_mosaic | 图像实体信息打码            |
+| speech_asr_iat | 讯飞短语音识别             |
+| aigc_models | AIGC模型列表            |
+| huaweicloud_obs_get_ak_sk | 获取临时OBS的 AK/SK      |
+| face_compare_face_image | 人脸图片比对              |
+| tts_offline | 离线语音合成              |
+| llm_generate | 大模型文本生成             |
+| llm_car_info_identify | 基于大模型判断文本中的信息是否与车有关 |
+| llm_text_extract_json | 基于大模型提取文本中的关键信息     |
+| llm_sensitive_word_detection | 基于大模型检测文本中是否包含敏感词   |
+| data_center_dealer_address | 数据中心-获取车商地址         |
+
+
+## demo 示例
+```shell
+pip install wwai-sdk
+```
+
+```python
+import wwai_sdk
+import asyncio
+
+# grant_type="client_credential" 为客户端模式
+# authorization 从WWAI云平台获取，路径：系统管理 > 终端管理 > 新建终端
+client = wwai_sdk.create_client(
+    grant_type="client_credential",
+    authorization="Basic xxxxxxx"
+)
+
+# 身份证识别
+res = asyncio.run(client.ocr_idcard("https://ai.bdstatic.com/file/96D2F45674F54D4287EB9FBF9E6AB19A", "front"))
+print(res)
+```
