@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFSS</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <div class="container header" id="settings">
+        <div class="input-group" style="min-width: 300px;">
+            <label for="endpoint">Endpoint</label>
+            <input type="text" id="endpoint" placeholder="http://localhost:8000" autocomplete="off">
+        </div>
+        <div class="input-group" style="min-width: 300px;">
+            <label for="token">Token</label>
+            <input type="text" id="token" placeholder="" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <span id='back-btn'>⬅️</span>
+            <input type="text" id="path" placeholder="path/to/files/" autocomplete="off">
+        </div>
+    </div>
+
+    <div class="container content" id="view">
+        <div id="position-hint" class='disconnected'>
+            <span></span>
+            <label></label>
+        </div>
+        <table id="files">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Accessed</th>
+                    <th>Read access</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="files-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container footer" id="upload">
+        <div class="input-group">
+            <input type="file" id="file-selector" accept="*">
+            <label for="file-name" id="upload-file-prefix"></label>
+            <div class="input-group">
+                <input type="text" id="file-name" placeholder="Destination file path" autocomplete="off">
+                <span id='randomize-fname-btn'>🎲</span>
+                <button id="upload-btn">Upload</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="./scripts.js" type="module" async defer></script>
+</html>
