@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: vicivalve
+Version: 0.0.13
+Summary: Python API for VICI Valco Universal Electric Actuator
+Home-page: https://gitlab.com/heingroup/vicivalve
+Author: Sebastian Steiner
+Author-email: sebastiansteiner@chem.ubc.ca
+License: MIT
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ftdi-serial
+
+
+# VICI valve
+
+This repo contains a driver class for the VICI Valco Universal Electric Actuator (aka VICI valve). The code should work
+for both the USB and the RS232/485 variety.
+
+This is an unofficial package; we are not affiliated with VICI (Valco Instruments Company Inc.).
+
+## Installation
+
+Install `vicivalve` from PyPI by running `pip install vicivalve` or add `vicivalve` to your `requirements.txt` file.
+
+Alternately, run `pip install git+https://gitlab.com/heingroup/vicivalve` or add `git+https://gitlab.com/heingroup/vicivalve` to your
+`requirements.txt` file.
+
+## Getting started
+
+This package is intended for use with the [VICI Universal Electric Actuator](https://www.vici.com/act/ua.php).
+This actuator works for two position and multiposition valves, and comes in two varieties: one with a USB B receptacle
+at the back, and one with three pins that can be used with either RS232 or RS485. A third variety uses BCD (binary coded
+decimal) but this version is not compatible with this library. Note also that the RS232/485 versions have two different
+order codes, but according to the [manual](https://www.vici.com/support/manuals/universal-actuator.pdf) they can be
+converted by setting a switch on the PCB.
+
+The USB variety uses an FTDI chip and shows up as virtual COM port or VCP on your PC. The USB version works with this
+package directly, just plug it into your PC and crack on. The RS232/485 version uses two
+internally connected 3 pin TE Connectivity AMP connector headers. The valve comes with a mating cable assembly, the user
+can also make their own connector (Housing: [102241-1](https://www.digikey.ca/products/en?keywords=%20A26982-ND), contacts:
+[87756-4](https://www.digikey.ca/products/en?keywords=A25969CT-ND)). Either way, in order to work with this package, an
+[FTDI USB to serial converter cable](https://www.ftdichip.com/Products/Cables/USBRS232.htm) is required (I personally
+recommend buying the wire ended FTDI cable and crimping on a connector). The `ftdi_serial` library currently does not
+work properly with non-FTDI converter cables!
+
+## Usage
+
+The package is meant to be as simple and user friendly as possible. The VICI class takes a Serial object as argument:
+
+```python
+from ftdi_serial import Serial
+from vicivalve import VICI
+
+serial = Serial(device_serial='FOO', baudrate=9600)
+valve = VICI(serial=serial)
+```
+
+The `device_serial` is the unique serial number of your valve (if it's USB) or your converter cable. In order to find
+that ID, plug in your valve/cable and run `Serial.list_device_serials()` from a Python console.
+
+The Baud rate is a property of the controller and needs to be set explicitly. 9600 is the default baud rate. If you can't
+establish communication, a wrong baud rate is the most likely cause. Refer to the [manual](https://www.vici.com/support/manuals/universal-actuator.pdf)
+for viewing and changing the baud rate of a controller.
+
+With RS485, multiple actuators can be daisy-chained and used with one USB converter. In that case, the same `Serial`
+object is passed to both valve instances:
+
+```python
+valve1 = VICI(serial=serial, address=1)
+valve2 = VICI(serial=serial, address=2)
+```
+
+However, in that case, every valve has to have its own address. Refer to the manual for details on multidrop communication
+and how to set the device address.
+
+Once instantiated, the valve can be switched like so:
+
+```python
+valve.home()  # sends the valve to position A or 1
+valve.switch_valve("B")  # sends the valve to position B
+valve.switch_valve(1)  # sends the valve back to position A, using an integer as argument
+valve.toggle()  # sends the valve to position B, since it was in A before
+valve.toggle()  # sends the valve back to position A
+```
+
+Lastly, if a new valve head is installed, the actuator needs to "learn" the new end stop positions:
+
+```python
+valve.learn()
+```
+
+This will stall the actuator against both end stops and record those positions. This takes a few seconds and sounds pretty
+awful, but don't worry, it's supposed to work that way.
+
+## Authors
+
+* **Sebastian Steiner** - *Initial work, current maintainer*
+* **Sean Clark** - *Tech support*
+
+## License
+
+MIT
+
+## Acknowledgements
+
+* VICI Valco
+* Stack Overflow
