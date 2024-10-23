@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=70", "wheel", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mapof-roommates"
+authors = [
+ {name = "Stanislaw Szufa", email = "s.szufa@gmail.com"},
+ {name = "Niclas Boehmer", email = "niclas.boehmer@tu-berlin.de"},
+]
+description = "Map of Roommates"
+classifiers=[
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+requires-python = ">=3.10"
+license = {file = "LICENSE.txt"}
+readme = "README.md"
+dynamic = ["dependencies", "version"]
+
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools_scm]
