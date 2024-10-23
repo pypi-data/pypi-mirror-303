@@ -1,0 +1,36 @@
+[build-system]
+requires = [
+  "hatchling",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "chainalysis"
+version = "1.0.0"
+authors = [
+  { name = "Rah Tarar (musa-tarar)", email = "musa.nishat@chainalysis.com" },
+  { name = "Kurt Bugbee (krtbgb)", email = "kurt.bugbee@chainalysis.com" },
+]
+description = "SDK functions for users to query Data Solutions databases."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pandas>=2.2.2",
+    "requests==2.32.3",
+    "tenacity==9.0.0",
+    "autoflake==2.3.1",
+    "tqdm==4.66.5",
+    "SQLAlchemy==2.0.35"
+]
+
+[project.urls]
+Homepage = "https://github.com/TransposeData/chainalysis-data-solutions-python-sdk"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/chainalysis"]
