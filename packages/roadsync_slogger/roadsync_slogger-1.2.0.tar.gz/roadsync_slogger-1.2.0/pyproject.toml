@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "roadsync_slogger"
+version = "1.2.0"
+description = "A python logger similar to Go's slogger"
+authors = ["SRE <sre@roadsync.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+orjson = "^3.10.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+
+[tool.pytest.ini_options]
+pythonpath = [ ".", "roadsync_slogger", "tests", ".venv/lib/*/" ]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "default::DeprecationWarning",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
