@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <meta name="color-scheme" content="dark"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 50px;
+        }
+
+        .button-group a {
+            text-decoration: none;
+            color: white;
+            background-color: var(--primary);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="center-container">
+    <div class="button-group">
+        <button><a href="{{ login_url }}">Login</a></button>
+        <button><a href="{{ logout_url }}">Logout</a></button>
+    </div>
+    <div class="error-message">
+        {{ error_message }}
+    </div>
+
+    <hgroup>
+        <h3>How to receive access</h3>
+        <a href="https://elsevier.atlassian.net/wiki/spaces/HM3D4MED/pages/119483629076583/Admin+panels+access"
+              target="_blank" rel="noopener noreferrer"
+        >Confluence page</a>
+    </hgroup>
+</div>
+</body>
+</html>
