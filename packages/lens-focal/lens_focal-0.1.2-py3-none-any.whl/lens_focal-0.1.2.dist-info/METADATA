@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: lens-focal
+Version: 0.1.2
+Summary: SDK for building and managing dsri lens focals.
+Author-email: Digital Safety Research Institute <contact@dsri.org>
+License: Apache-2.0
+Project-URL: Home, https://gitlab.com/saferatdayzero/lens-focal
+Project-URL: Issues, https://gitlab.com/saferatdayzero/lens-focal/-/issues
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: celery[redis]
+Requires-Dist: psycopg[binary]~=3.0
+Requires-Dist: python-decouple
+
+# lens-focal
+
+<!-- BADGIE TIME -->
+
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![cici-tools enabled](https://img.shields.io/badge/%E2%9A%A1_cici--tools-enabled-c0ff33)](https://gitlab.com/buildgarden/tools/cici-tools)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+<!-- END BADGIE TIME -->
+
+SDK for building dsri lens focals.
+
+> Do not use this software unless you are an active collaborator on the
+> associated research project.
+>
+> This project is an output of an ongoing, active research project. It is
+> published without warranty, is subject to change at any time, and has not been
+> certified, tested, assessed, or otherwise assured of safety by any person or
+> organization. Use at your own risk.
+
+## Setup
+
+Create a `settings.ini` file:
+
+```ini
+[settings]
+LENS_DATABASE_URL = postgres://lens:XXXXXX@localhost:5432/lens  # pragma: allowlist secret
+LENS_BROKER_URL = redis://:XXXXXX@localhost:6379/0
+```
