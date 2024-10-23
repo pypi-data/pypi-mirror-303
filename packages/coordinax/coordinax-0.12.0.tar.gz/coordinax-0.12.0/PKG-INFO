@@ -1,0 +1,196 @@
+Metadata-Version: 2.3
+Name: coordinax
+Version: 0.12.0
+Summary: Coordinates in JAX
+Project-URL: Bug Tracker, https://github.com/GalacticDynamics/coordinax/issues
+Project-URL: Changelog, https://github.com/GalacticDynamics/coordinax/releases
+Project-URL: Discussions, https://github.com/GalacticDynamics/coordinax/discussions
+Project-URL: Homepage, https://github.com/GalacticDynamics/coordinax
+Author-email: Nathaniel Starkman <nstarman@users.noreply.github.com>
+License: Copyright 2024 Galactic Dynamics maintainers
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of
+        this software and associated documentation files (the "Software"), to deal in
+        the Software without restriction, including without limitation the rights to
+        use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+        of the Software, and to permit persons to whom the Software is furnished to do
+        so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Requires-Dist: astropy>=6.1.4
+Requires-Dist: dataclassish>=0.3.1
+Requires-Dist: equinox>=0.11.8
+Requires-Dist: jax>=0.4.33
+Requires-Dist: jaxlib>=0.4.33
+Requires-Dist: jaxtyping>=0.2.34
+Requires-Dist: optional-dependencies>=0.3.2
+Requires-Dist: plum-dispatch>=2.5.2
+Requires-Dist: quax>=0.0.5
+Requires-Dist: quaxed>=0.6.4
+Requires-Dist: unxt>=0.20.0
+Requires-Dist: xmmutablemap>=0.1
+Provides-Extra: all
+Requires-Dist: furo>=2023.08.17; extra == 'all'
+Requires-Dist: hypothesis[numpy]; extra == 'all'
+Requires-Dist: myst-parser>=0.13; extra == 'all'
+Requires-Dist: nox; extra == 'all'
+Requires-Dist: pytest-arraydiff; extra == 'all'
+Requires-Dist: pytest-cov>=3; extra == 'all'
+Requires-Dist: pytest-env; extra == 'all'
+Requires-Dist: pytest>=6; extra == 'all'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'all'
+Requires-Dist: sphinx-copybutton; extra == 'all'
+Requires-Dist: sphinx>=7.0; extra == 'all'
+Requires-Dist: sybil!=7.1.0; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: hypothesis[numpy]; extra == 'dev'
+Requires-Dist: nox; extra == 'dev'
+Requires-Dist: pytest-arraydiff; extra == 'dev'
+Requires-Dist: pytest-cov>=3; extra == 'dev'
+Requires-Dist: pytest-env; extra == 'dev'
+Requires-Dist: pytest>=6; extra == 'dev'
+Requires-Dist: sybil!=7.1.0; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: furo>=2023.08.17; extra == 'docs'
+Requires-Dist: myst-parser>=0.13; extra == 'docs'
+Requires-Dist: sphinx-autodoc-typehints; extra == 'docs'
+Requires-Dist: sphinx-copybutton; extra == 'docs'
+Requires-Dist: sphinx>=7.0; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: hypothesis[numpy]; extra == 'test'
+Requires-Dist: nox; extra == 'test'
+Requires-Dist: pytest-arraydiff; extra == 'test'
+Requires-Dist: pytest-cov>=3; extra == 'test'
+Requires-Dist: pytest-env; extra == 'test'
+Requires-Dist: pytest>=6; extra == 'test'
+Requires-Dist: sybil!=7.1.0; extra == 'test'
+Description-Content-Type: text/markdown
+
+<h1 align='center'> coordinax </h1>
+<h2 align="center">Coordinates in JAX</h2>
+
+Coordinax enables calculations with coordinates in
+[JAX](https://jax.readthedocs.io/en/latest/). Built on
+[Equinox](https://docs.kidger.site/equinox/) and
+[Quax](https://github.com/patrick-kidger/quax).
+
+## Installation
+
+[![PyPI platforms][pypi-platforms]][pypi-link]
+[![PyPI version][pypi-version]][pypi-link]
+
+<!-- [![Conda-Forge][conda-badge]][conda-link] -->
+
+```bash
+pip install coordinax
+```
+
+## Documentation
+
+[![Documentation Status][rtd-badge]][rtd-link]
+
+Coming soon. In the meantime, if you've used `astropy.coordinates`, then
+`coordinax` should be fairly intuitive.
+
+## Quick example
+
+```python
+import coordinax as cx
+import jax.numpy as jnp
+from unxt import Quantity
+
+q = cx.CartesianPos3D(
+    x=Quantity(jnp.arange(0, 10.0), "km"),
+    y=Quantity(jnp.arange(5, 15.0), "km"),
+    z=Quantity(jnp.arange(10, 20.0), "km"),
+)
+print(q)
+# <CartesianPos3D (x[km], y[km], z[km])
+#     [[ 0.  5. 10.]
+#      [ 1.  6. 11.]
+#      ...
+#      [ 8. 13. 18.]
+#      [ 9. 14. 19.]]>
+
+q2 = cx.represent_as(q, cx.SphericalPos)
+print(q2)
+# <SphericalPos (r[km], theta[rad], phi[rad])
+#     [[11.18   0.464  1.571]
+#      [12.57   0.505  1.406]
+#      ...
+#      [23.601  0.703  1.019]
+#      [25.259  0.719  0.999]]>
+
+p = cx.CartesianVel3D(
+    d_x=Quantity(jnp.arange(0, 10.0), "m/s"),
+    d_y=Quantity(jnp.arange(5, 15.0), "m/s"),
+    d_z=Quantity(jnp.arange(10, 20.0), "m/s"),
+)
+print(p)
+# <CartesianVel3D (d_x[m / s], d_y[m / s], d_z[m / s])
+#     [[ 0.  5. 10.]
+#      [ 1.  6. 11.]
+#      ...
+#      [ 8. 13. 18.]
+#      [ 9. 14. 19.]]>
+
+p2 = cx.represent_as(p, cx.SphericalVel, q)
+print(p2)
+# <SphericalVel (d_r[m / s], d_theta[m rad / (km s)], d_phi[m rad / (km s)])
+#     [[ 1.118e+01 -3.886e-16  0.000e+00]
+#      [ 1.257e+01 -1.110e-16  0.000e+00]
+#      ...
+#      [ 2.360e+01  0.000e+00  0.000e+00]
+#      [ 2.526e+01 -2.776e-16  0.000e+00]]>
+```
+
+## Citation
+
+[![DOI][zenodo-badge]][zenodo-link]
+
+If you found this library to be useful in academic work, then please cite.
+
+## Development
+
+[![Actions Status][actions-badge]][actions-link]
+
+We welcome contributions!
+
+<!-- prettier-ignore-start -->
+[actions-badge]:            https://github.com/GalacticDynamics/coordinax/workflows/CI/badge.svg
+[actions-link]:             https://github.com/GalacticDynamics/coordinax/actions
+[conda-badge]:              https://img.shields.io/conda/vn/conda-forge/coordinax
+[conda-link]:               https://github.com/conda-forge/coordinax-feedstock
+[pypi-link]:                https://pypi.org/project/coordinax/
+[pypi-platforms]:           https://img.shields.io/pypi/pyversions/coordinax
+[pypi-version]:             https://img.shields.io/pypi/v/coordinax
+[rtd-badge]:                https://readthedocs.org/projects/coordinax/badge/?version=latest
+[rtd-link]:                 https://coordinax.readthedocs.io/en/latest/?badge=latest
+[zenodo-badge]:             https://zenodo.org/badge/755708966.svg
+[zenodo-link]:              https://zenodo.org/doi/10.5281/zenodo.10850557
+
+<!-- prettier-ignore-end -->
