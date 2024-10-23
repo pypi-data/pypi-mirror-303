@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: trivialai
+Version: 0.0.2
+Summary: A trivial set of API bindings for AI models, because I'd like them to be easy to use.
+Author-email: inaimathi <leo.zovic@gmail.com>
+Project-URL: Homepage, https://github.com/inaimathi/trivialai
+Project-URL: Issues, https://github.com/inaimathi/trivialai/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: vertexai
+
+# TrivialAI
+_(A set of `requests`-based, trivial bindings for AI models)_
+
+## Basic models
+
+### GCP
+
+```
+>>> client = gcp.GCP("gemini-1.5-flash-001", "/path/to/your/gcp_creds.json", "us-central1")
+>>> client.generate("This is a test message. Use the word 'platypus' in your response.", "Hello there! :D").content
+"Hello! :D It's great to hear from you. Did you know platypuses are one of the few mammals that lay eggs? 🥚  They are truly fascinating creatures!  What can I help you with today? 😊"
+>>> 
+```
+
+### Ollama
+
+```
+>>> client = ollama.Ollama("gemma2:2b", "http://localhost:11434/")
+>>> client.generate("This is a test message. Use the word 'platypus' in your response.", "Hello there! :D").content
+'Hey!  Did you know platypuses lay eggs and have webbed feet? Pretty cool, huh? 😁'
+>>> 
+```
+
+
