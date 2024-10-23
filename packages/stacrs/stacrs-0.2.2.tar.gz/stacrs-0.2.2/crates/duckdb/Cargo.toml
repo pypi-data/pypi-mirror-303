@@ -1,0 +1,27 @@
+[package]
+name = "stac-duckdb"
+description = "Experimental client for querying stac-geoparquet using DuckDB"
+version = "0.0.2"
+keywords = ["geospatial", "stac", "metadata", "geo", "raster"]
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+categories.workspace = true
+rust-version.workspace = true
+readme = "README.md"
+
+[dependencies]
+arrow.workspace = true
+duckdb.workspace = true
+libduckdb-sys.workspace = true
+geoarrow.workspace = true
+parquet.workspace = true
+stac = { workspace = true, features = ["geoarrow"] }
+stac-api.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+duckdb-test = { path = "duckdb-test" }
+geo.workspace = true

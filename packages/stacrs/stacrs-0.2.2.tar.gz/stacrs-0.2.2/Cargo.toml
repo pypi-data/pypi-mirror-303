@@ -1,0 +1,79 @@
+[workspace]
+resolver = "2"
+members = ["python"]
+default-members = [
+    "crates/api",
+    "crates/cli",
+    "crates/core",
+    "crates/extensions",
+]
+
+[workspace.package]
+authors = ["Pete Gadomski <pete.gadomski@gmail.com>"]
+edition = "2021"
+homepage = "https://stac-utils.github.io/stac-rs"
+repository = "https://github.com/stac-utils/stac-rs"
+license = "MIT OR Apache-2.0"
+categories = ["science", "data-structures"]
+rust-version = "1.80"
+
+[workspace.dependencies]
+arrow = "52.2"
+arrow-array = "52.2"
+arrow-cast = "52.2"
+arrow-json = "52.2"
+arrow-schema = "52.2"
+assert-json-diff = "2.0"
+assert_cmd = "2.0"
+async-stream = "0.3.6"
+axum = "0.7.7"
+bb8 = "0.8.5"
+bb8-postgres = "0.8.1"
+bytes = "1.7"
+chrono = "0.4.38"
+clap = "4.5"
+duckdb = "=1.0.0"
+fluent-uri = "0.3.1"
+futures = "0.3.31"
+geo = "0.28.0"
+geo-types = "0.7.13"
+geoarrow = "0.3.0"
+geojson = "0.24.1"
+http = "1.1"
+jsonschema = { version = "0.22.3", default-features = false }
+libduckdb-sys = "=1.0.0"
+log = "0.4.22"
+mime = "0.3.17"
+mockito = "1.5"
+object_store = "0.11.0"
+openssl = { version = "0.10.68", features = ["vendored"] }
+openssl-src = "=300.3.1"                                      # joinked from https://github.com/iopsystems/rpc-perf/commit/705b290d2105af6f33150da04b217422c6d68701#diff-2e9d962a08321605940b5a657135052fbcef87b5e360662bb527c96d9a615542R41 to cross-compile Python
+parquet = { version = "52.2", default-features = false }
+pgstac = { version = "0.2.1", path = "crates/pgstac" }
+pyo3 = "0.22.3"
+pythonize = "0.22.0"
+quote = "1.0"
+reqwest = "0.12.8"
+rstest = "0.23.0"
+rustls = { version = "0.23.14", default-features = false }
+serde = "1.0"
+serde_json = "1.0"
+serde_urlencoded = "0.7.1"
+stac = { version = "0.10.2", path = "crates/core" }
+stac-api = { version = "0.6.1", path = "crates/api" }
+stac-duckdb = { version = "0.0.2", path = "crates/duckdb" }
+stac-server = { version = "0.3.1", path = "crates/server" }
+syn = "2.0"
+tempfile = "3.13"
+thiserror = "1.0"
+tokio = "1.37"
+tokio-postgres = "0.7.12"
+tokio-postgres-rustls = "0.12.0"
+tokio-stream = "0.1.16"
+tokio-test = "0.4.4"
+tower = "0.5.1"
+tower-http = "0.6.1"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+url = "2.3"
+webpki-roots = "0.26.6"
