@@ -1,0 +1,61 @@
+Metadata-Version: 2.3
+Name: pytest-max-warnings
+Version: 0.1.0
+Summary: A Pytest plugin to exit non-zero exit code when the configured maximum warnings has been exceeded.
+Project-URL: Repository, https://github.com/miketheman/pytest-max-warnings
+Author-email: Mike Fiedler <miketheman@gmail.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Testing
+Classifier: Typing :: Typed
+Requires-Python: >=3.9
+Requires-Dist: pytest>=8.3.3
+Description-Content-Type: text/markdown
+
+# pytest-max-warnings
+
+A Pytest plugin to exit non-zero exit code
+when the configured maximum warnings has been exceeded.
+
+## Installation
+
+You can install "pytest-max-warnings" via [pip](https://pypi.org/project/pytest-max-warnings/):
+
+```bash
+pip install pytest-max-warnings
+```
+
+or any other package manager you prefer.
+
+## Usage
+
+You can set the maximum number of warnings allowed by using the `--max-warnings` option:
+
+```bash
+pytest --max-warnings 10
+```
+
+If the number of warnings exceeds the maximum, the test run will exit with a non-zero exit code.
+
+## License
+
+Distributed under the terms of the MIT license, "pytest-max-warnings" is free and open source software.
+See [LICENSE](./LICENSE) for more details.
+
+## Authors
+
+- [@miketheman](https://github.com/miketheman)
