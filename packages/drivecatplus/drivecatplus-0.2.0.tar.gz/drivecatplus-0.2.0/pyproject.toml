@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling", "hatch-requirements-txt"]
+build-backend = "hatchling.build"
+
+[project]
+name = "drivecatplus"
+version = "0.2.0"
+dynamic = ["dependencies"]
+description = """
+NREL's Drive Cycle Analysis Tool Plus
+"""
+readme = "README.md"
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Harish Panneer Selvam", email = "Harish.PanneerSelvam@nrel.gov"}
+]
+maintainers = [
+  {name = "Harish Panneer Selvam", email = "harish.panneerselvam@nrel.gov"}
+]
+keywords = ["drivecycle", "speed-profile", "drivecycle-metrics", "time-speed-trace", "drivestats", "drivecat"]
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
+
+[project.urls]
+Documentation = "https://nrel.github.io/drivecatplus/"
+Repository = "https://github.com/NREL/drivecatplus"
+"Bug Tracker" = "https://github.com/NREL/drivecatplus/issues"
+
+[project.scripts]
+dcp-cli = "dcp:run_dcp"
