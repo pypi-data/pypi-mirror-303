@@ -1,0 +1,120 @@
+Metadata-Version: 2.1
+Name: Riskfolio-XL
+Version: 0.1.1
+Summary: Riskfolio-Lib add-in for Microsoft Excel
+Home-page: https://riskfolio-lib.readthedocs.io/en/latest/excel.html
+Download-URL: https://pypi.org/project/Riskfolio-XL/
+Author: Dany Cajas
+Author-email: dany.cajas.n@uni.pe
+Maintainer: Dany Cajas
+Maintainer-email: dany.cajas.n@uni.pe
+License: Other/Proprietary License (Other/Proprietary License)
+Keywords: finance,portfolio,optimization,quant,asset,allocation,investing
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Classifier: Topic :: Office/Business :: Financial
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Operating System :: Microsoft
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+License-File: LICENSE.txt
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: matplotlib>=3.8.0
+Requires-Dist: clarabel>=0.6.0
+Requires-Dist: cvxpy>=1.5.2
+Requires-Dist: scikit-learn>=1.3.0
+Requires-Dist: statsmodels>=0.13.5
+Requires-Dist: arch>=7.0
+Requires-Dist: xlsxwriter>=3.1.2
+Requires-Dist: networkx>=3.0
+Requires-Dist: astropy>=5.1
+Requires-Dist: pybind11>=2.10.1
+Requires-Dist: yfinance>=0.2.43
+Requires-Dist: pyxll>=5.9.1
+Requires-Dist: requests>=2.31.0
+Requires-Dist: cryptography>=43.0.1
+Requires-Dist: pyopenssl>=24.2.1
+Requires-Dist: py-machineid>=0.6.0
+Requires-Dist: riskfolio-lib>=6.3.1
+Requires-Dist: cython>=3.0.11
+
+# Riskfolio-XL
+**Riskfolio-Lib add-in for Microsoft Excel**
+
+
+## Description
+
+Riskfolio-XL is a Microsoft Excel add-in based on [PyXLL](https://www.pyxll.com/index.html) library, that allows users use the same features of Riskfolio-Lib in Excel through Riskfolio-XL spreadsheet functions. Its objective is to help non-programming users to build investment portfolios based on mathematically complex models with low effort and to support the maintenance and further development of Riskfolio-Lib.
+
+## Installation
+
+Riskfolio-XL is only available on Windows and it requires a valid installation of PyXLL package and PyXLL add-in. To install PyXLL and PyXLL add-in, you can find the PyXLL installation instructions in the following [link](https://www.pyxll.com/docs/userguide/installation/firsttime.html).
+
+After installing the PyXLL package and PyXLL add-in, the latest stable release of Riskfolio-XL (and older versions) can be installed from PyPI:
+
+    pip install riskfolio-xl
+
+After installing the Riskfolio-XL package you will have access to the __TRIAL COPY__ of Riskfolio-XL, this version is limited to work only with portfolios of 7 assets and risk factor models of 3 risk factors.
+
+To access the __PURCHASED COPY__ of Riskfolio-XL, you need a valid license. To get a Riskfolio-XL license you have to purchase it paying a monthly or annual subscription:
+
+<table border="1">
+  <tr>
+    <th style="width: 350px; text-align: center;">Monthly License</th>
+    <th style="width: 350px; text-align: center;">Annual License</th>
+  </tr>
+  <tr>
+<th>
+<div class="row">
+<a href="https://www.paypal.com/ncp/payment/DLABCNSPX8LZL">
+<img src="https://raw.githubusercontent.com/dcajasn/Riskfolio-Lib/master/docs/source/images/Images-XL/Monthly_Pay.png"></a>
+</div></th>
+<th>
+<div class="row">
+<a href="https://www.paypal.com/ncp/payment/KKZBWK6JK8ZDA">
+<img src="https://raw.githubusercontent.com/dcajasn/Riskfolio-Lib/master/docs/source/images/Images-XL/Annual_Pay.png"></a>
+</div></th>
+  </tr>
+</table>
+
+**After paying, you need to send us an email to** [orenji.eirl@gmail.com](orenji.eirl@gmail.com) **and you will receive your Riskfolio-XL license (within 24 hours) and a discount code to purchase the PyXLL package.**
+
+Then, you have to add your Riskfolio-XL license to the pyxll.cfg file:
+
+* First, click on About PyXLL button of Riskfolio-XL add-in as shown in the image below:
+
+<div class="row">
+<img src="https://raw.githubusercontent.com/dcajasn/Riskfolio-Lib/master/docs/source/images/Images-XL/Installation_1.png">
+</div>
+
+* Then, click on the config file link as shown in the image below:
+
+<div class="row">
+<img src="https://raw.githubusercontent.com/dcajasn/Riskfolio-Lib/master/docs/source/images/Images-XL/Installation_2.png">
+</div>
+
+* Finally, write your Riskfolio-XL license in the riskfolio_xl_key parameter as shown in the image below:
+
+<div class="row">
+<img src="https://raw.githubusercontent.com/dcajasn/Riskfolio-Lib/master/docs/source/images/Images-XL/Installation_3.png">
+</div>
+
+## Citing
+
+If you use Riskfolio-Lib for published work, please use the following BibTeX entry:
+
+```
+@misc{riskfolioxl,
+      author = {Dany Cajas},
+      title = {Riskfolio-XL (0.1.1)},
+      year  = {2024},
+      url   = {https://riskfolio-lib.readthedocs.io/en/latest/excel.html},
+      }
+```
