@@ -1,0 +1,31 @@
+{% load static %}
+<style>
+  .hero-animated {
+  width: 100%;
+  min-height: 50vh;
+  background: url("{% static 'herobiz/img/hero-bg.png' %}") center center;
+  background-size: cover;
+  position: relative;
+  padding: 120px 0 60px;
+}
+
+</style>
+<section id="hero-animated" class="hero-animated d-flex align-items-center">
+  <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
+    <img src="{% static 'herobiz/img/hero/hero-animated.svg' %}" class="img-fluid animated" alt="">
+    {% autoescape off %}
+    <h2>{{ hero.title }}</h2>
+    <p>{{ hero.slogan }}</p>
+    {% endautoescape %}
+    <div class="d-flex">
+      {% if hero.btn.conversion_name %}
+      <a href="{{ hero.btn.link }}" class="btn-get-started scrollto"
+         onclick="{{ hero.btn.conversion_name }}_gtag_report_conversion('{{ hero.btn.link }}');"
+         target="_blank">{{ hero.btn.title }}</a>
+      {% else %}
+      <a href="{{ hero.btn.link }}" class="btn-get-started scrollto">{{ hero.btn.title }}</a>
+      {% endif %}
+      <a href="{{ hero.video_link }}" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+    </div>
+  </div>
+</section>
