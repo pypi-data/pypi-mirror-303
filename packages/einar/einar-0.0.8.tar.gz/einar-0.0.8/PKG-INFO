@@ -1,0 +1,98 @@
+Metadata-Version: 2.1
+Name: einar
+Version: 0.0.8
+Summary: Python3 password manager library.
+Author-email: Juan Bindez <juanbindez780@gmail.com>
+License: GPLv2 license
+Project-URL: Homepage, https://github.com/juanbindez/einar
+Project-URL: Bug Reports, https://github.com/juanbindez/einar/issues
+Project-URL: Read the Docs, http://einar.readthedocs.io/
+Keywords: password,manager,tools,cli,pass
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v2 (GPLv2)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet
+Classifier: Topic :: Multimedia :: Video
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Terminals
+Classifier: Topic :: Utilities
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: cryptography
+
+# Einar
+
+![PyPI - Downloads](https://img.shields.io/pypi/dm/einar)
+![PyPI - License](https://img.shields.io/pypi/l/einar)
+![GitHub Tag](https://img.shields.io/github/v/tag/JuanBindez/einar?include_prereleases)
+<a href="https://pypi.org/project/pytubefix/"><img src="https://img.shields.io/pypi/v/einar" /></a>
+
+## Python3 Password Manager Library.
+
+### Usage
+
+Importing EinarManager in Your Script
+
+You can create a Python script to use the EinarManager class. Below is an example of how to import and use it.
+
+```python
+
+from einar import EinarManager
+from einar.exceptions import EinarError
+
+def main():
+    master_password = input("Enter the master password: ")
+
+    try:
+        manager = EinarManager(master_password)
+        print("Access granted!")
+
+        service = input("Enter the service name: ")
+        username = input("Enter the username: ")
+        password = input("Enter the password: ")
+        
+        manager.add_password(service, username, password)
+        print("Password added successfully!")
+
+        passwords = manager.view_passwords()
+        print(passwords)
+
+    except EinarError as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()
+
+
+```
+
+### Command-Line Interface (CLI) Usage
+
+You can use the following commands in the terminal to interact with Einar:
+
+```bash
+
+# Set Master Password
+einar -s <your_master_password>
+
+# Add Password
+einar -a <service> <username> <password>
+
+# View Passwords
+einar -v
+
+# Delete Password
+einar -d <service>
+
+```
