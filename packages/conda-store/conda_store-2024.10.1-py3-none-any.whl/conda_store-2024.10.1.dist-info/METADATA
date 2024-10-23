@@ -1,0 +1,50 @@
+Metadata-Version: 2.3
+Name: conda-store
+Version: 2024.10.1
+Summary: conda-store client
+Project-URL: Homepage, https://conda.store/
+Project-URL: Source, https://github.com/conda-incubator/conda-store
+Project-URL: Issues, https://github.com/conda-incubator/conda-store/issues
+Author-email: Christopher Ostrouchov <chris.ostrouchov@gmail.com>
+Maintainer-email: Tania Allard <trallard@bitsandchips.me>, Pavithra Eswaramoorthy <pavithraes@outlook.com>
+License-Expression: BSD-3-Clause
+License-File: LICENSE
+Keywords: conda,dependency management,environment management,reproducibility
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Build Tools
+Requires-Python: >=3.8
+Requires-Dist: aiohttp>=3.8.1
+Requires-Dist: click
+Requires-Dist: jupyter-launcher-shortcuts
+Requires-Dist: jupyterhub<2.0.0
+Requires-Dist: jupyterlab-conda-store
+Requires-Dist: jupyterlab>=4.0.0
+Requires-Dist: rich
+Requires-Dist: ruamel-yaml
+Requires-Dist: yarl
+Provides-Extra: dev
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# conda-store
+
+Check the full documentation at [conda.store](https://conda.store/).
+
+A client library which provides a CLI for interacting with conda-store-server.
+
+```shell
+$ conda-store --help
+```
