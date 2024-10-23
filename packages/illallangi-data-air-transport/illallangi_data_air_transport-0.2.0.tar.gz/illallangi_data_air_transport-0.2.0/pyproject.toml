@@ -1,0 +1,107 @@
+[project]
+name = "illallangi-data-air-transport"
+authors = [
+    { name = "Andrew Cole", email = "andrew.cole@illallangi.com" }
+]
+maintainers = [
+    { name = "Andrew Cole", email = "andrew.cole@illallangi.com" }
+]
+description = "An Illallangi Data plugin for recording air transport data."
+readme = "README.md"
+requires-python = ">=3.10.1"
+dependencies = [
+    "diffsync>=2.0.0",
+    "django-autoslug>=1.9.9",
+    "django-sqids>=0.2.1",
+    "django-timezone-field>=7.0",
+    "django>=5.1.2",
+    "djp",
+    "illallangi-data-aviation>=0.2.0",
+    "illallangi-tripit>=0.6.0",
+]
+keywords = [
+    "django",
+    "data",
+    "data-lake",
+]
+version = "0.2.0"
+classifiers =[
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+]
+license = { text = "MIT License" }
+[project.urls]
+Homepage = "https://github.com/illallangi/data-air-transport"
+Repository = "https://github.com/illallangi/data-air-transport.git"
+Issues = "https://github.com/illallangi/data-air-transport/issues"
+Changelog = "https://github.com/illallangi/data-air-transport/blob/master/CHANGELOG.md"
+[build-system]
+requires = [
+    "ruff>=0.6.9",
+    "hatchling>=1.25.0",
+]
+build-backend = "hatchling.build"
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+]
+[tool.djlint]
+profile="django"
+format_css=true
+format_js=true
+ignore="H006"
+[tool.ruff]
+lint.select = ["ALL"]
+lint.ignore = [
+    "D",
+    "COM812",
+    "E501",
+    "ISC001",
+]
+exclude = [
+    "**/migrations/0*.py",
+]
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "all"
+[tool.uv]
+dev-dependencies = [
+    "commitizen>=3.29.1",
+    "deptry>=0.20.0",
+    "djlint>=1.35.2",
+    "hatchling>=1.25.0",
+    "pre-commit>=3.8.0",
+    "ruff>=0.6.9",
+]
+
+[tool.uv.sources]
+djp = { git = "https://github.com/andrewcole/djp" }
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "Makefile",
+    "uv.lock",
+]
+[tool.hatch.build.targets.wheel]
+packages = ["src/illallangi"]
+exclude = [
+    "Makefile",
+    "uv.lock",
+]
+[tool.commitizen]
+name = "cz_conventional_commits"
+version_provider = "pep621"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "src/illallangi/data/air_transport/__version__.py:__version__",
+]
+pre_bump_hooks = [
+  "uv sync --no-dev",
+]
+update_changelog_on_bump = true
+major_version_zero = true
+[project.entry-points.djp]
+"illallangi.data.air_transport" = "illallangi.data.air_transport"

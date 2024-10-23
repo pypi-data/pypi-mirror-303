@@ -1,0 +1,552 @@
+/* QUESTIONS AND TO DOs 
+
+- What is the ETKT section at the bottom of the ticket? (ELECTRONIC TICKET, PRESENT ON ALL TICKETS)
+
+- What is the longest possible character string for each section (to set font sizing and/or overflow)
+- Can I / Should I, create a column on each end for extra edge decoration detail
+- Remember to create individual cell 'offsets' for extra detail (how to, relative positioning?)
+- Experiment with repeating tile image for left / right edges (in another doc?)
+- Can you have a random cell 'cut out' (including border edge, for the small rectangle notch in the center on each side)
+- Add forced capitals to relevant fields      text-transform: uppercase;
+
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 10px;
+}
+
+.bp-ticket_grid {
+  display: grid;
+  border: 2px #bdbdbd solid;
+  height: 493.16px;
+  width: 1110px;
+  grid-template-columns: 65.52px 152.88px 87.36px 87.36px 98.28px 120.12px 163.8px 87.36px 32.76px 54.6px 141.96px;
+  grid-template-rows: 57.01px 19.63px 25.15px 25.55px 28.9px 22.93px 23.33px 26.29px 23.72px 30.72px 21.99px 27.77px 27.77px 20.52px 23.82px 23.08px 37.04px 27.96px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 8px 8px 9px 1px rgba(0, 0, 0, .2);
+}
+
+.bp-box {
+  /* TEMPORARY HIGHLIGHT CODE
+    background-color: beige;
+    color: black;
+    border: 2px dodgerblue solid;
+    */
+  padding-left: 10px;
+  font-family: 'chivo mono', 'consolas';
+  /* Consolas is websafe font */
+}
+
+
+.bp-edging {
+  /* Colored Left Edging */
+  grid-row-start: 1;
+  grid-row-end: 19;
+  /* Note that span does not appear to work properly to have edging behind sequence number */
+  grid-column-start: 1;
+  grid-column-end: 1;
+  background-color: red;
+  /* overwritten in inline HTML */
+
+}
+
+.bp-b1 {
+  /* Sequence Title */
+  grid-row-start: 2;
+  grid-column-start: 1;
+  font-size: 0.8em;
+}
+
+.bp-c1 {
+  /* Sequence Number */
+  grid-row-start: 3;
+  grid-column-start: 1;
+}
+
+.bp-a2 {
+  /* Quantas Logo */
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 4;
+  padding-top: 10px;
+  color: white;
+  margin: auto;
+}
+
+.bp-a2 img {
+  max-width: 239px;
+  max-height: 75px;
+}
+
+.bp-b4 {
+  /* Business Title */
+  grid-row-start: 2;
+  grid-column-start: 4;
+  grid-column-end: 6;
+  color: black;
+}
+
+.bp-b4 h1 {
+  /* repositions just the text for the business title, not the cell */
+  position: relative;
+  top: -0.55em;
+  left: 0.2em;
+}
+
+.bp-b6 {
+  /* Upper Barcode */
+  grid-row-start: 2;
+  grid-row-end: 5;
+  grid-column-start: 6;
+  grid-column-end: 8;
+  color: white;
+}
+
+.bp-b6 img {
+  max-width: 260px;
+  max-height: 69px;
+}
+
+.bp-d2 {
+  /* Name Title */
+  grid-row-start: 4;
+  grid-column-start: 2;
+}
+
+.bp-e2 {
+  /* Name */
+  grid-row-start: 5;
+  grid-column-start: 2;
+  grid-column-end: span 4;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-f2 {
+  /* Carrier Title */
+  grid-row-start: 6;
+  grid-column-start: 2;
+  grid-column-end: span 4;
+}
+
+.bp-g2 {
+  /* Carrier */
+  grid-row-start: 7;
+  grid-column-start: 2;
+  grid-column-end: span 4;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-h2 {
+  /* From Title */
+  grid-row-start: 8;
+  grid-column-start: 2;
+}
+
+.bp-i2 {
+  /* From */
+  grid-row-start: 9;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+  /* overflow: hidden; */
+}
+
+.bp-j2 {
+  /* Terminal Left */
+  grid-row-start: 10;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+}
+
+.bp-h4 {
+  /* To Title */
+  grid-row-start: 8;
+  grid-column-start: 4;
+}
+
+.bp-i4 {
+  /* To */
+  grid-row-start: 9;
+  grid-column-start: 4;
+  grid-column-end: span 3;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+  /* overflow: hidden; */
+}
+
+.bp-j4 {
+  /* Terminal Right */
+  grid-row-start: 10;
+  grid-column-start: 4;
+  grid-column-end: span 2;
+}
+
+.bp-e6 {
+  /* Flight Title */
+  grid-row-start: 6;
+  grid-column-start: 6;
+}
+
+.bp-g6 {
+  /* Flight */
+  grid-row-start: 7;
+  grid-column-start: 6;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-e7 {
+  /* Date Title */
+  grid-row-start: 6;
+  grid-column-start: 7;
+}
+
+.bp-g7 {
+  /* Date */
+  grid-row-start: 7;
+  grid-column-start: 7;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-h7 {
+  /* Seat Title */
+  grid-row-start: 8;
+  grid-column-start: 7;
+}
+
+.bp-i7 {
+  /* Seat */
+  grid-row-start: 9;
+  grid-row-end: span 2;
+  grid-column-start: 7;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 2.5em;
+}
+
+.bp-k2 {
+  /* Service Info Title */
+  grid-row-start: 11;
+  grid-column-start: 2;
+  grid-column-end: span 2;
+}
+
+.bp-l2 {
+  /* Service Info */
+  grid-row-start: 12;
+  grid-column-start: 2;
+  grid-column-end: span 4;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-o2 {
+  /* Airline Logo */
+  grid-row-start: 15;
+  grid-row-end: span 3;
+  grid-column-start: 2;
+  color: white;
+  margin: auto;
+  /* the only way to center the logo I could find */
+}
+
+.bp-o2 img {
+  max-width: 151px;
+  max-height: 82px;
+}
+
+.bp-r2 {
+  /* Airline Website */
+  grid-row-start: 18;
+  grid-column-start: 2;
+  margin: auto;
+}
+
+.bp-o3 {
+  /* Gate Title */
+  grid-row-start: 15;
+  grid-column-start: 3;
+}
+
+.bp-p3 {
+  /* Gate */
+  grid-row-start: 16;
+  grid-row-end: span 2;
+  grid-column-start: 3;
+}
+
+.bp-n4 {
+  /* Unknown Number */
+  grid-row-start: 14;
+  grid-column-start: 4;
+}
+
+.bp-o5 {
+  /* Boarding Title */
+  grid-row-start: 15;
+  grid-column-start: 5;
+  grid-column-end: span 2;
+}
+
+.bp-p5 {
+  /* Boarding Time */
+  grid-row-start: 16;
+  grid-row-end: span 2;
+  grid-column-start: 5;
+  grid-column-end: span 2;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 2.5em;
+}
+
+.bp-o7 {
+  /* Class Title */
+  grid-row-start: 15;
+  grid-column-start: 7;
+}
+
+.bp-p7 {
+  /* Class */
+  grid-row-start: 16;
+  grid-column-start: 7;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-r3 {
+  /* Bottom Notice */
+  grid-row-start: 18;
+  grid-column-start: 3;
+  grid-column-end: span 5;
+}
+
+
+
+/* RIGHT HAND SECTION OF TICKET */
+
+.bp-b8 {
+  /* Name Title Right */
+  grid-row-start: 2;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-c8 {
+  /* Name Right */
+  grid-row-start: 3;
+  grid-column-start: 8;
+  grid-column-end: span 4;
+  border-left: 3px dashed #bdbdbd;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-d8 {
+  /* Flight Title Right */
+  grid-row-start: 4;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-e8 {
+  /* Flight Number Right */
+  grid-row-start: 5;
+  grid-column-start: 8;
+  grid-column-end: span 2;
+  border-left: 3px dashed #bdbdbd;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-d10 {
+  /* Date Title Right */
+  grid-row-start: 4;
+  grid-column-start: 10;
+}
+
+.bp-e10 {
+  /* Date Right */
+  grid-row-start: 5;
+  grid-column-start: 10;
+  grid-column-end: span 2;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-f8 {
+  /* Seat Title Right */
+  grid-row-start: 6;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-g8 {
+  /* Seat Right */
+  grid-row-start: 7;
+  grid-row-end: span 2;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 2.5em;
+}
+
+.bp-f10 {
+  /* Class Title Right */
+  grid-row-start: 6;
+  grid-column-start: 10;
+}
+
+.bp-g10 {
+  /* Class Right */
+  grid-row-start: 7;
+  grid-column-start: 10;
+  grid-column-end: span 2;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-i8 {
+  /* From Title Right */
+  grid-row-start: 9;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-j8 {
+  /* From Right */
+  grid-row-start: 10;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-i9 {
+  /* To Title Right */
+  grid-row-start: 9;
+  grid-column-start: 9;
+  grid-column-end: span 2;
+}
+
+.bp-j9 {
+  /* To Right */
+  grid-row-start: 10;
+  grid-column-start: 9;
+  grid-column-end: span 2;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-i11 {
+  /* SEQ Title Right */
+  grid-row-start: 9;
+  grid-column-start: 11;
+}
+
+.bp-j11 {
+  /* SEQ Right */
+  grid-row-start: 10;
+  grid-column-start: 11;
+}
+
+.bp-k8 {
+  /* Carrier Title Right */
+  grid-row-start: 11;
+  grid-column-start: 8;
+  grid-column-end: span 4;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-l8 {
+  /* Carrier Right */
+  grid-row-start: 12;
+  grid-column-start: 8;
+  grid-column-end: span 4;
+  border-left: 3px dashed #bdbdbd;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4em;
+}
+
+.bp-n8 {
+  /* Barcode Lower Right */
+  grid-row-start: 14;
+  grid-row-end: span 3;
+  grid-column-start: 8;
+  grid-column-end: span 4;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-n8 img {
+  max-width: 260px;
+  max-height: 69px;
+}
+
+
+/* EXTRA PERFERATION CELLS */
+
+.bp-a8 {
+  /* Empty cells with left perferation border */
+  grid-row-start: 1;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-m8 {
+  /* Empty cells with left perferation border */
+  grid-row-start: 13;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+.bp-q8 {
+  /* Empty cells with left perferation border */
+  grid-row-start: 17;
+  grid-row-end: span 2;
+  grid-column-start: 8;
+  border-left: 3px dashed #bdbdbd;
+}
+
+@media only screen and (max-width: 1110px) {
+
+  .bp-left {
+    display: none;
+    /* hide content of all left cells */
+  }
+
+  .bp-ticket_grid {
+    grid-template-columns: 0 0 0 0 0 0 0 87.36px 32.76px 54.6px 141.96px;
+    /* change size of all left cells to 0, retain right cell sizes */
+    border-radius: 0 30px 30px 0;
+    border-left: none;
+    height: 493.16px;
+    width: 316.68px;
+    /* total width of right section */
+  }
+}
