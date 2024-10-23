@@ -1,0 +1,42 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab id="Riskfolio" label="Riskfolio-XL">
+                <group id="PyXLL_Tools" label="PyXLL Tools">
+                    <button id="Reload_PyXLL"
+                            size="large"
+                            label="Reload PyXLL"
+                            onAction="pyxll.reload"
+                            image="icons/reload.png"/>   <!-- images can be absolute paths or relative to this document -->
+                    <button id="OpenLog_PyXLL"
+                            size="large"
+                            label="Open Log File"
+                            onAction="riskfolioxl.ribbon.open_logfile"
+                            image="icons/log.png"/>
+                    <button id="OpenDocs_PyXLL"
+                            size="large"
+                            label="User Guide"
+                            onAction="riskfolioxl.ribbon.open_userguide"
+                            image="icons/docs.png"/>
+                    <button id="About_PyXLL"
+                            size="large"
+                            label="About PyXLL"
+                            onAction="pyxll.about"
+                            image="icons/about.png"/>
+                </group>
+                <group id="Riskfolio_Tools" label="Riskfolio XL Tools">
+                    <button id="OpenDocs_Riskfolio"
+                            size="large"
+                            label="Riskfolio Docs"
+                            onAction="riskfolioxl.ribbon.open_riskfolio"
+                            image="icons/documents.ico"/>
+                    <button id="OpenExamples_Riskfolio"
+                            size="large"
+                            label="Riskfolio Examples"
+                            onAction="riskfolioxl.ribbon.open_example_folder"
+                            image="icons/files.ico"/>
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
