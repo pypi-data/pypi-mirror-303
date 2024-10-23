@@ -1,0 +1,48 @@
+{% load static %}
+
+<section id="features" class="features section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2 data-aos="fade-in">{{ features_title }}</h2>
+      <p data-aos="fade-in">{{ features_subtitle | safe}}</p>
+    </div>
+
+    {% for item in features %}
+    <div class="row content">
+      <!-- 홀수 짝수 구분 -->
+      {% if forloop.counter|divisibleby:2 %}
+      <div class="col-md-5 order-1 order-md-2" data-aos="fade-left">
+      {% else %}
+      <div class="col-md-5" data-aos="fade-right">
+      {% endif %}
+        <img src="{% static 'bocor/img/features/'|add:item.photo %}" class="img-fluid" alt="">
+      </div>
+      <!-- 홀수 짝수 구분 -->
+      {% if forloop.counter|divisibleby:2 %}
+      <div class="col-md-7 pt-5 order-2 order-md-1" data-aos="fade-right">
+      {% else %}
+      <div class="col-md-7 pt-4" data-aos="fade-left">
+      {% endif %}
+        <h3>{{ item.h3 }}</h3>
+        <p class="fst-italic">
+          {{ item.p | safe }}
+        </p>
+        {% if item.type == 'ul' %}
+        <ul>
+          {% for desc in item.desc %}
+          <li><i class="bi bi-check"></i> {{ desc | safe }}</li>
+          {% endfor %}
+        </ul>
+        {% elif item.type == 'p' %}
+          {% for desc in item.desc %}
+          <p>
+            {{ desc | safe }}
+          </p>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

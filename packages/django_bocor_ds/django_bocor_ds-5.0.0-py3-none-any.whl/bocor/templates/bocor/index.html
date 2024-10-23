@@ -1,0 +1,79 @@
+{% load static %}
+{% load bocor_tags %}
+{% load shared_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'shared_lib/seo.html' with template_name='bocor' %}
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet"
+        href="{% static 'bocor/vendor/bootstrap/css/bootstrap.min.css' %}" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'bocor/vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link href="{% static 'bocor/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'bocor/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'bocor/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'bocor/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'bocor/css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  {% include "bocor/header.html" %}
+
+  {% block content %}
+  {% include "bocor/components/hero.html" %}
+
+  <main id="main">
+    {% show_calendar %}
+    {% show_modal %}
+    {% analytics %}
+
+    {% for component, is_use, _, _ in components %}
+      {% if is_use %}
+        {% if component == 'clients' %}
+          {% include "bocor/components/clients.html" %}
+        {% elif component == 'about' %}
+          {% include "bocor/components/about.html" %}
+        {% elif component == 'services' %}
+          {% include "bocor/components/services.html" %}
+        {% elif component == 'features' %}
+          {% include "bocor/components/features.html" %}
+        {% elif component == 'portfolio' %}
+          {% portfolio portfolio_title portfolio_subtitle %}
+        {% elif component == 'team' %}
+          {% include "bocor/components/team.html" %}
+        {% elif component == 'pricing' %}
+          {% include "bocor/components/pricing.html" %}
+        {% elif component == 'faq' %}
+          {% include "bocor/components/faq.html" %}
+        {% elif component == 'contact' %}
+          {% include "bocor/components/contact.html" %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </main><!-- End #main -->
+  {% endblock content %}
+  
+  <!-- ======= Footer ======= -->{% include 'bocor/footer.html' %}<!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'bocor/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
+          crossorigin="anonymous"></script>
+  <script src="{% static 'bocor/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'bocor/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'bocor/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'bocor/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <!--<script src="{% static 'bocor/vendor/php-email-form/validate.js' %}"></script>-->
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'bocor/js/main.js' %}"></script>
+</body>
+</html>

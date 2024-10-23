@@ -1,0 +1,20 @@
+{% load static %}
+
+<section id="clients" class="clients section-bg">
+  <div class="container">
+    <div class="row no-gutters clients-wrap clearfix wow fadeInUp">
+      {% for filename in clients %}
+      <div class="col-lg-2 col-md-4 col-6">
+        <div class="client-logo">
+        {% if forloop.first %}
+          <img src="{% static 'bocor/img/clients/'|add:filename %}" class="img-fluid" alt="" data-aos="flip-right">
+        {% else %}
+          <img src="{% static 'bocor/img/clients/'|add:filename %}" class="img-fluid" alt="" data-aos="flip-right"
+               data-aos-delay="{% cycle '100' '200' '300' '400' '500' %}">
+        {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

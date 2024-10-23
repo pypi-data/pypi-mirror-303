@@ -1,0 +1,40 @@
+{% load static %}
+
+<style>
+  .about .image {
+    background: url("{% static 'bocor/img'|add:'/about.jpg' %}") center center no-repeat;
+    background-size: cover;
+    min-height: 400px;
+  }
+</style>
+
+<section id="about" class="about section-bg">
+  <div class="container">
+
+    <div class="row gy-4">
+      <div class="image col-xl-5"></div>
+      <div class="col-xl-7">
+        <div class="content d-flex flex-column justify-content-center ps-0 ps-xl-4">
+          <h3 data-aos="fade-in" data-aos-delay="100">{{ about_subtitle | safe }}</h3>
+          <p data-aos="fade-in">
+            {{ about_desc | safe }}
+          </p>
+          <div class="row gy-4 mt-3">
+            {% for item in about %}
+            {% if forloop.first %}
+            <div class="col-md-6 icon-box" data-aos="fade-up">
+            {% else %}
+            <div class="col-md-6 icon-box" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' '400' %}">
+            {% endif %}
+              <i class="bx {{ item.bxicon }}"></i>
+              <h4><a href="#">{{ item.h4 }}</a></h4>
+              <p>{{ item.p | safe }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div><!-- End .content-->
+      </div>
+    </div>
+
+  </div>
+</section>
