@@ -1,0 +1,210 @@
+[project]
+name = "axon-synthesis"
+authors = [
+    { name="Blue Brain Project, EPFL" }
+]
+description = "A package to synthesize artificial axons"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache License 2.0" }
+classifiers = [
+    # TODO: Update to relevant classifiers
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dynamic = ["dependencies", "version"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.optional-dependencies]
+examples = [
+    "morphology-workflows",
+]
+docs = [
+    "docutils<0.21",
+    "kaleido",
+    "myst_parser",
+    "sphinx",
+    "sphinx-bluebrain-theme",
+    "sphinx-click",
+]
+mpi = [
+    "dask_mpi>=2022.4",
+    "mpi4py>=3.1.1",
+]
+test = [
+    "dir-content-diff>=1.9.1",
+    "matplotlib>=3.5",
+    "mock>=3",
+    "pytest>=6.1",
+    "pytest-click>=1.1",
+    "pytest-console-scripts>=1.4",
+    "pytest-cov>=4.1",
+    "pytest-html>=3.2",
+]
+
+mypy = [
+    "pandas-stubs",
+    "pytest-mypy>=0.10",
+    "types-jsonschema",
+    "types-networkx",
+    "types-PyYAML",
+    "types-seaborn",
+]
+
+tecplot_export = [
+    "construct",
+    "tecio",
+]
+
+[project.urls]
+Homepage = "https://axon-synthesis.readthedocs.io"
+Repository = "https://github.com/BlueBrain/axon-synthesis"
+Tracker = "https://github.com/BlueBrain/axon-synthesis/issues"
+
+[project.scripts]
+axon-synthesis = "axon_synthesis.cli:main"
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.setuptools.packages.find]
+include = ["axon_synthesis*"]
+
+[tool.pydocstyle]
+# ignore the following:
+#   - D107: Missing docstring in __init__
+add-ignore = [
+    "D107",
+]
+convention = "google"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+force_single_line = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+filterwarnings = [
+    "ignore:.*is a deprecated alias for.*:DeprecationWarning:nptyping",
+    "ignore::matplotlib.MatplotlibDeprecationWarning:tmd",
+]
+
+[tool.flake8]
+# ignore the following:
+#    E203: whitespace before ':'
+#    W503: line break before binary operator
+ignore = [
+    "E203",
+    "W503",
+]
+max-line-length = 120
+
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# select = ["E4", "E7", "E9", "F"]
+select = ["ALL"]
+ignore = [
+    "ANN001",  # TODO: Fix and remove this one
+    "ANN201",  # TODO: Fix and remove this one
+    "ANN204",  # TODO: Fix and remove this one
+    "ANN002",
+    "ANN003",
+    "ANN101",
+    "ANN102",
+    "BLE001",
+    "B905",
+    "COM812",
+    "ERA001",
+    "EXE002",
+    "FIX002",
+    "ISC001",
+    "PD002",
+    "PD013",
+    "PD015",
+    "PLR2004",
+    "TD002",
+    "TD003",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "PLR2004",
+    "S101",
+]
+"docs/*" = [
+    "INP001",
+]
+
+[tool.ruff.lint.pylint]
+max-args=10
+# max-branches = 12
+# max-statements=50
+
+[tool.ruff.lint.pycodestyle]
+# E501 reports lines that exceed this length (lines may be longer than 100 in some cases,
+# especially because of comments).
+max-line-length = 100
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.mypy]
+
+[[tool.mypy.overrides]]
+module = [
+    "bluepyparallel.*",
+    "configobj.*",
+    "construct.*",
+    "dask_mpi.*",
+    "diff_pdf_visually.*",
+    "dir_content_diff.*",
+    "h5py.*",
+    "morph_tool.*",
+    "morphio.*",
+    "neurom.*",
+    "neurots.*",
+    "pcst_fast.*",
+    "plotly.*",
+    "plotly_helper.*",
+    "scipy.*",
+    "tecio.*",
+    "tmd.*",
+    "voxcell.*",
+    "wurlitzer.*",
+]
+ignore_missing_imports = true
