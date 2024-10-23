@@ -1,0 +1,21 @@
+CoupledJointDriveTrain is Physics3D.System:
+    .doc: """
+Implements a drive train coupling between two actuators,
+including a sensor for position and velocity of the interconnecting shaft.
+"""
+    shaft is DriveTrain.Shaft:
+        inertia.inertia: 1E-6
+
+    position_output is Physics1D.Signals.RotationalBodyAngleOutput:
+        body: shaft
+    velocity_output is Physics1D.Signals.RotationalBodyAngularVelocityOutput:
+        body: shaft
+
+    sensor is Robotics.Signals.Sensor:
+        outputs: [position_output, velocity_output]
+
+    primary_actuator is DriveTrain.Actuator:
+        connector_1d: shaft.output
+
+    mimic_actuator is DriveTrain.Actuator:
+        connector_1d: shaft.output
