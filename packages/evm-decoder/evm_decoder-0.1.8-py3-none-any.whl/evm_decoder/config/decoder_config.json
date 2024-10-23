@@ -1,0 +1,118 @@
+{
+    "transaction_decoders": [
+      {
+        "name": "specific_functions",
+        "type": "transaction",
+        "fixed_types": {
+          "0x0162e2d0": [
+            {"name": "params", "type": "uint256[]"},
+            {"name": "path", "type": "address[]"},
+            {"name": "router", "type": "address"},
+            {"name": "placeholder", "type": "uint256"},
+            {"name": "refundAddress", "type": "address"},
+            {"name": "chainReorgTimestamp", "type": "uint256"},
+            {"name": "slippageBps", "type": "uint256"}
+          ],
+          "0x1a12d67c": [
+            {"name": "path", "type": "address[]"},
+            {"name": "amountIn", "type": "uint256"},
+            {"name": "amountOutMin", "type": "uint256"},
+            {"name": "fee", "type": "uint256"},
+            {"name": "feeRecipient", "type": "uint256"},
+            {"name": "param5", "type": "uint256"},
+            {"name": "isETH", "type": "bool"},
+            {"name": "supportFeeOnTransferTokens", "type": "uint256"},
+            {"name": "optionalParam2", "type": "uint256"},
+            {"name": "deadline", "type": "uint256"},
+            {"name": "slippageBps", "type": "uint256"}
+          ],
+          "0x6e20b107": [
+            {"name": "path", "type": "address[]"},
+            {"name": "amountIn", "type": "uint256"},
+            {"name": "amountOutMin", "type": "uint256"},
+            {"name": "deadline", "type": "uint256"},
+            {"name": "fee", "type": "uint256"},
+            {"name": "isExactInput", "type": "bool"},
+            {"name": "slippageBps", "type": "uint256"},
+            {"name": "feeOnTransfer", "type": "uint256"},
+            {"name": "reserved1", "type": "uint256"},
+            {"name": "reserved2", "type": "uint256"}
+          ],
+          "0x75713a08": [
+            {"name": "inputToken", "type": "address"},
+            {"name": "outputToken", "type": "address"},
+            {"name": "router", "type": "address"},
+            {"name": "spender", "type": "address"},
+            {"name": "amountOutMin", "type": "uint256"},
+            {"name": "amountInMax", "type": "uint256"},
+            {"name": "approvalTarget", "type": "address"},
+            {"name": "params", "type": "uint256[]"},
+            {"name": "feeAmount", "type": "uint256"}
+          ]
+        }
+      },
+      {
+        "name": "custom_functions",
+        "type": "transaction",
+        "fixed_types": {
+          "customFunction(address sender,uint256 amount)": [
+            {"name": "sender", "type": "address"},
+            {"name": "amount", "type": "uint256"}
+          ],
+          "anotherFunction(uint256 id,bytes32 data)": [
+            {"name": "id", "type": "uint256"},
+            {"name": "data", "type": "bytes32"}
+          ]
+        }
+      }
+    ],
+    "event_decoders": [
+      {
+        "name": "custom_events",
+        "type": "event",
+        "fixed_types": {
+          "0x9f849d23f4955d98202378ea318f2b0c7533695d3c9fb2a3931f0f919fa8c420": [
+            {"name": "param0", "type": "uint256", "indexed": false},
+            {"name": "param1", "type": "uint256", "indexed": false},
+            {"name": "param2", "type": "uint256", "indexed": false}
+          ],
+          "Sell(uint256)": [
+            {"name": "tokensSold", "type": "uint256", "indexed": false}
+          ],
+          "Upgraded(address)": [
+            {"name": "implementation", "type": "address", "indexed": true}
+          ],
+          "FeesCollected(uint256,address,uint256)": [
+            {"name": "param0", "type": "uint256", "indexed": false},
+            {"name": "param1", "type": "address", "indexed": false},
+            {"name": "param2", "type": "uint256", "indexed": false}
+          ],
+          "FeesCollected(uint256,address)": [
+            {"name": "param0", "type": "uint256", "indexed": false},
+            {"name": "param1", "type": "address", "indexed": false}
+          ]
+        }
+      },
+      {
+        "type": "event",
+        "name": "ERC20",
+        "fixed_types": {
+          "Transfer(index_topic_1 address from, index_topic_2 address to, uint256 value)": [
+            {"name": "from", "type": "address", "indexed": true},
+            {"name": "to", "type": "address", "indexed": true},
+            {"name": "value", "type": "uint256", "indexed": false}
+          ],
+          "Approval(address,address,uint256)": [
+            {"name": "owner", "type": "address", "indexed": true},
+            {"name": "spender", "type": "address", "indexed": true},
+            {"name": "value", "type": "uint256", "indexed": false}
+          ],
+          "Transfer(address,address,uint256)": [
+            {"name": "from", "type": "address", "indexed": true},
+            {"name": "to", "type": "address", "indexed": true},
+            {"name": "value", "type": "uint256", "indexed": false}
+          ]
+        }
+      }
+    ]
+  }
