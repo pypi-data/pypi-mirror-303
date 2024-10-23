@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package main;
+
+message registerArgs {
+    string ip = 1;
+    string port = 2;
+    string cid = 3;
+    string pub_key = 4;  // เพิ่มฟิลด์ pub_key
+}
+
+message registerOut {
+    bool connectedClient = 1; // ใช้บอกสถานะการเชื่อมต่อของ client
+    int32 round = 2;          // ใช้บอกหมายเลขรอบปัจจุบัน
+}
+
+message sampleSize {
+    int32 size = 1;          // ขนาดของตัวอย่าง
+}
+
+message accuracy {
+    float acc = 1;          // ความแม่นยำของโมเดล
+}
+
+message weightList {
+    repeated float weight = 1; // รายการน้ำหนักของโมเดล
+}
+
+message currentRound {
+    int32 round = 1;         // หมายเลขรอบปัจจุบัน
+}
+
+message void {
+}
+
+// ใช้ข้อมูลแบบ byte เพื่อส่งข้อมูลขนาดใหญ่ใน chunks
+message ChunkData {
+    bytes data = 1;          
+}
+
+// ใช้ข้อมูลที่เข้ารหัส
+message EncryptedData {
+    bytes encrypted_data = 1; // ข้อมูลที่เข้ารหัส
+}
+
+// ส่งกลับข้อความเมื่อได้รับข้อมูลทั้งหมด
+message Response {
+    string message = 1;      
+}
+
+message registerResponse {
+    bool connectedClient = 1;
+    int32 round = 2;
+}
+
+// เพิ่มข้อความสำหรับการลงทะเบียนข้อมูลที่เข้ารหัส
+message EncryptionArgs {
+    EncryptedData encryptedData = 1; // ข้อมูลที่เข้ารหัส
+}
+
+service FederatedService {
+    // Streaming RPC สำหรับการส่งข้อมูลขนาดใหญ่จากไคลเอนต์ไปยังเซิร์ฟเวอร์
+    rpc sendChunk(stream ChunkData) returns (Response);
+
+    // RPC สำหรับการลงทะเบียน client
+    rpc clientRegister(registerArgs) returns (registerOut);
+
+    // RPC เพื่อเริ่มการเรียนรู้ และส่งกลับรายการ weights
+    rpc startLearning(void) returns (weightList);
+
+    // RPC เพื่อรับขนาดตัวอย่างจากเซิร์ฟเวอร์
+    rpc getSampleSize(void) returns (sampleSize);
+
+    // RPC สำหรับการตรวจสอบความถูกต้องของโมเดล (validation)
+    rpc modelValidation(weightList) returns (accuracy);
+
+    // RPC เพื่อหยุด client
+    rpc killClient(void) returns (void);
+
+    // RPC เพื่อส่งรอบปัจจุบัน
+    rpc sendRound(currentRound) returns (void);
+
+    // RPC สำหรับส่งข้อมูลที่เข้ารหัสจาก client ไปยัง server
+    rpc sendEncryptedData(EncryptionArgs) returns (Response);
+
+    // RPC สำหรับรับข้อมูลที่เข้ารหัสจาก server
+    rpc receiveEncryptedData(EncryptionArgs) returns (Response);
+}
