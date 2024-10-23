@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: syftbox
+Version: 0.1.13
+Summary: Add your description here
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: cryptography >=43.0.1
+Requires-Dist: requests >=2.32.3
+Requires-Dist: fastapi >=0.114.0
+Requires-Dist: uvicorn >=0.30.6
+Requires-Dist: apscheduler >=3.10.4
+Requires-Dist: jinja2 >=3.1.4
+Requires-Dist: typing-extensions >=4.12.2
+Requires-Dist: sqlalchemy >=2.0.34
+Requires-Dist: markdown >=3.7
+Requires-Dist: pandas >=2.2.2
+Requires-Dist: setuptools >=75.1.0
+Requires-Dist: postmarker >=1.0
+Requires-Dist: watchdog >=5.0.2
+Requires-Dist: pydantic-settings >=2.5.2
+Requires-Dist: pytest >=8.3.3
+Requires-Dist: httpx >=0.27.2
+Requires-Dist: pyyaml >=6.0.2
+Requires-Dist: psutil >=6.0.0
+Requires-Dist: loguru >=0.7.2
+Requires-Dist: croniter >=3.0.0
+
+```
+ ____         __ _   ____
+/ ___| _   _ / _| |_| __ )  _____  __
+\___ \| | | | |_| __|  _ \ / _ \ \/ /
+ ___) | |_| |  _| |_| |_) | (_) >  <
+|____/ \__, |_|  \__|____/ \___/_/\_\
+       |___/
+```
+
+# Quickstart User Installation
+
+## SyftBox 1 liner
+
+curl -LsSf https://syftbox.openmined.org/install.sh | sh -s -- run
+
+## Manual install
+
+### install uv
+
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+### create a virtualenv somewhere
+
+uv venv .venv
+
+### Install Syftbox
+
+uv pip install -U syftbox
+
+### run the client
+
+uv run syftbox client
+
+# Quickstart Client Developer Installation
+
+### Step 0: Open your terminal to the root of this Github repository
+
+Begin by opening your terminal and navigating to the root directory of this github repository (so when you run 'ls' it should show folders like "syftbox", "server", "tests", etc.). Then run the commands in steps 1-4:
+
+### Step 1: Install Homebrew
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+### Step 2: Install uv (using homebrew — which is better for this than pip)
+
+```
+brew install uv
+```
+
+### Step 3: Install a virtual environment using uv
+
+```
+uv venv
+```
+
+### Step 4: Install a relative version of uv.
+
+```
+uv pip install -e .
+```
+
+### Step 5: Run the client
+
+```
+uv run syftbox/client/client.py
+```
+
+# Alternative Options
+
+### Run Client
+
+```
+syftbox client --config_path=./config.json --sync_folder=~/Desktop/SyftBox --email=your@email.org --port=8082  --server=https://syftbox.openmined.org
+```
+
+### Staging Server
+
+If you have issues or want to use a bleeding edge server try --server=https://syftboxstage.openmined.org
+
+### Deploy
+
+This builds the latest source to a wheel and deploys and restarts the server:
+https://syftbox.openmined.org
+
+```
+./scripts/deploy.sh
+```
+
+### Dev Mode
+
+Run the server and clients locally in editable mode with:
+Server:
+
+```
+./scripts/server.sh
+```
+
+Client1:
+
+```
+./scripts/madhava.sh
+```
+
+Client2:
+
+```
+./scripts/andrew.sh
+```
