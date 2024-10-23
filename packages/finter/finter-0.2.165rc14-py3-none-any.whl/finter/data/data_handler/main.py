@@ -1,0 +1,98 @@
+from functools import wraps
+from typing import Any, Callable, List
+
+from cachetools import TTLCache
+
+import finter.data.data_handler.handler_data_market
+from finter.data import ContentFactory, ModelData
+from finter.data.data_handler.registry import DataHandlerRegistry
+
+
+class Universe:
+    def __init__(self, name: str, data_handler):
+        self.name = name
+        self.data_handler = data_handler
+
+    def __getattr__(self, name: str) -> Callable:
+        if name in self.data_handler.handlers:
+
+            @wraps(self.data_handler.handlers[name].get_data)
+            def wrapper(**kwargs) -> Any:
+                return self.data_handler.get_cached_data(name, self.name, **kwargs)
+
+            return wrapper
+        elif name in self.data_handler.calculated_methods:
+            return lambda **kwargs: self.data_handler.calculated_methods[name](
+                self, **kwargs
+            )
+        raise AttributeError(
+            f"'{self.__class__.__name__}' object has no attribute '{name}'"
+        )
+
+    def __repr__(self) -> str:
+        return (
+            f"Universe(name='{self.name}', available_methods={self.available_methods})"
+        )
+
+    @property
+    def available_methods(self) -> List[str]:
+        methods = []
+        for method_name, method in self.data_handler.handlers.items():
+            if self.name in method.item_mapping:
+                methods.append(method_name)
+
+        for method_name, method in self.data_handler.calculated_methods.items():
+            if all(dep in methods for dep in method.dependencies):
+                methods.append(method_name)
+
+        return methods
+
+
+class DataHandler(DataHandlerRegistry):
+    def __init__(
+        self, start: int, end: int, cache_timeout: int = 0, cache_maxsize: int = 5
+    ):
+        super().__init__()
+        self.cf = ContentFactory("raw", start, end)
+        self.cache_timeout = cache_timeout
+        self.cache = TTLCache(maxsize=cache_maxsize, ttl=cache_timeout)
+
+    def __getattr__(self, name: str) -> Universe:
+        return Universe(name, self)
+
+    def __repr__(self) -> str:
+        universes = self.available_universes
+        return f"DataHandler(available_universes={universes})"
+
+    @property
+    def available_universes(self) -> List[str]:
+        universes = set()
+        for handler in self.handlers.values():
+            universes.update(handler.item_mapping.keys())
+        return list(universes)
+
+    def get_cached_data(self, handler_name: str, universe: str, **kwargs):
+        cache_key = (handler_name, universe, frozenset(kwargs.items()))
+        if cache_key not in self.cache:
+            data = self.handlers[handler_name].get_data(self.cf, universe, **kwargs)
+            self.cache[cache_key] = data
+        return self.cache[cache_key]
+
+    def get_cached_model(self, model_id: str):
+        cache_key = (model_id,)
+        if cache_key not in self.cache:
+            data = ModelData.load(model_id)
+            self.cache[cache_key] = data
+        return self.cache[cache_key]
+
+    def load(self, model_id: str):
+        return self.get_cached_model(model_id)
+
+    def universe(self, name: str) -> Universe:
+        return Universe(name, self)
+
+
+if __name__ == "__main__":
+    dh = DataHandler(20240601, 20240630, cache_timeout=500)
+    print(dh.kr_stock.price())
+    print(dh.kr_stock.price._52week_high())
