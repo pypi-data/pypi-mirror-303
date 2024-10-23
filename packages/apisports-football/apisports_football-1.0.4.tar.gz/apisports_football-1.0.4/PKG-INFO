@@ -1,0 +1,103 @@
+Metadata-Version: 2.1
+Name: apisports_football
+Version: 1.0.4
+Summary: Asynchronous wrapper for football API from API-SPORTS
+Author-email: h3ave <noth3ave@yandex.ru>
+License: MIT License
+        
+        Copyright (c) 2024 h3ave
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Changelog, https://github.com/h3ave/apisports_football/blob/main/CHANGELOG.md
+Project-URL: Repository, https://github.com/h3ave/apisports_football
+Keywords: football,api,wrapper,apisports
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp>=3.8.6
+Requires-Dist: pydantic>=2.5.3
+Requires-Dist: typing-extensions>=4.7.1
+
+# apisports_football
+
+[![PyPI version](https://img.shields.io/pypi/v/apisports-football)](https://pypi.org/project/apisports-football)
+[![python](https://img.shields.io/pypi/pyversions/apisports-football)](https://pypi.org/project/apisports-football)
+
+[Russian version](https://github.com/h3ave/apisports_football/blob/main/README.ru.md)
+
+It's a handy API wrapper that makes it easy to work with <https://www.api-football.com/>.
+
+Official documentation: <https://www.api-football.com/documentation-v3>
+
+## Installing
+
+* With git
+
+```console
+git clone https://github.com/h3ave/apisports_football
+cd apisports_football
+pip install -r requirements.txt
+```
+
+* With pip
+
+```console
+pip install apisports-football
+```
+
+### Dependencies
+
+* Python >= 3.7
+* aiohttp
+* pydantic
+* typing-extensions
+
+### Getting API Key
+
+[Register](https://dashboard.api-football.com/register) on API-Sports.
+
+Go to [profile](https://dashboard.api-football.com/profile?access) and copy key from API-Key field.
+
+### Usage example
+
+```python
+import asyncio
+from apisports_football import Wrapper
+
+api = Wrapper('TOKEN_HERE')
+
+async def main() -> None:
+    data = await api.leagues().get(
+        country = 'Spain',
+        season = 2024
+    )
+    print(data)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
