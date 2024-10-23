@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "desbordante-stubs"
+version = "0.2.0"
+description = "Stubs for desbordante package"
+authors = ["Vadim Yakshigulov <toadharvard@gmail.com>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [
+    {include = "desbordante-stubs"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+desbordante = "^2.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pybind11-stubgen = "^2.4.2"
+ruff = "^0.7.0"
+pre-commit = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+fixable = ["ALL"]
