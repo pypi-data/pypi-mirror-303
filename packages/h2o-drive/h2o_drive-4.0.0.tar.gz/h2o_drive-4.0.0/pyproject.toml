@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "h2o-drive"
+version = "4.0.0"
+description = "H2O Drive Python Client"
+readme = "PUBLIC_README.md"
+authors = ["H2O.ai <support@h2o.ai>"]
+packages = [
+  { include = "h2o_drive" },
+]
+classifiers = [
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Internet",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aioboto3 = ">=9.3.1"
+aiobotocore = ">=2" # constrained by aioboto3
+botocore = ">=1" # constrained by aiobotocore
+h2o-authn = {version = ">=2.1.0", extras = ["discovery"]}
+h2o-cloud-discovery = ">=2.1.0"
+
+[tool.poetry.group.dev.dependencies]
+boto3-stubs = {version = ">=1", extras = ["s3"]}
+mypy = ">=1.9.0"
+pytest = ">=8.0.0"
+pytest-asyncio = ">=0.24.0"
+ruff = ">=0.4.1"
+types-aioboto3 = {version = ">=2", extras = ["s3", "sts"]}
+
+[tool.ruff.lint]
+# Ruff enables Pyflakes (`F`) and a subset of pycodestyle rules by default.
+# Additionally, enable:
+# - pycodestyle errors (`E`) and warnings (`W`).
+# - flake8-builtins rules (`A`).
+# - flake8-bugbear rules (`B`).
+# - flake8-eradicate rules (`ERA`).
+# - isort rules (`I`)
+select = ["F", "E", "W", "A", "B", "ERA", "I"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.pytest.ini_options]
+addopts = ["-rA"]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
