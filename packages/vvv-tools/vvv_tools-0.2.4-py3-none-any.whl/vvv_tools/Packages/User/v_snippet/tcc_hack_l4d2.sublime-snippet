@@ -1,0 +1,942 @@
+<snippet>
+    <content>
+        <![CDATA[
+#include <stdio.h>
+#include <windows.h>
+#include <winternl.h>
+#include <tlhelp32.h>
+#include <string.h>
+#include <stdio.h>
+#pragma comment(lib, "Advapi32")
+NTSTATUS WINAPI NtQueryInformationProcess( HANDLE ProcessHandle, PROCESSINFOCLASS ProcessInformationClass, PVOID ProcessInformation, ULONG ProcessInformationLength, PULONG ReturnLength);
+typedef NTSTATUS (WINAPI *PFUN_NtQueryInformationProcess)( HANDLE ProcessHandle, PROCESSINFOCLASS ProcessInformationClass, PVOID ProcessInformation, ULONG ProcessInformationLength, PULONG ReturnLength);
+LPVOID v_ReadInMemory(char* FileName) { HANDLE f,h; LPVOID m; if ((f = CreateFileA( FileName, GENERIC_READ, FILE_SHARE_READ, 0,  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL) ) == INVALID_HANDLE_VALUE){ return NULL; } if ((h = CreateFileMappingA(f,NULL,PAGE_READONLY,0,0,NULL)) == NULL){ return NULL; } if ((m = MapViewOfFile(h,FILE_MAP_READ,0,0,0)) == NULL){ return NULL; }else { return m; } }
+int v_getProcessCommandLineByHandle(HANDLE process_handle, WCHAR** result){ PROCESS_BASIC_INFORMATION pbi = {0}; HMODULE hModule = LoadLibraryA("Ntdll.dll"); PFUN_NtQueryInformationProcess pfun =  (PFUN_NtQueryInformationProcess)GetProcAddress(hModule, "NtQueryInformationProcess"); NTSTATUS status = pfun(process_handle, ProcessBasicInformation, (PVOID)&pbi, sizeof(pbi), NULL); if (!pbi.PebBaseAddress){ return 1; } PPEB peb = pbi.PebBaseAddress; HANDLE procesHandle; procesHandle = process_handle; PEB stPeb; RTL_USER_PROCESS_PARAMETERS stProParam; DWORD dwDummy; if (!ReadProcessMemory(procesHandle, pbi.PebBaseAddress, &stPeb, sizeof(stPeb), NULL)){ return 2; } if (!ReadProcessMemory(procesHandle, stPeb.ProcessParameters, &stProParam, sizeof(stProParam), NULL)) { return 3; } LPVOID lpAddress; DWORD dwSize; lpAddress = stProParam.CommandLine.Buffer; dwSize = stProParam.CommandLine.Length; WCHAR* pszCmdLineBuffer = malloc((dwSize + 1) * sizeof(WCHAR)); ZeroMemory(pszCmdLineBuffer, (dwSize + 1) * sizeof(WCHAR)); if (!ReadProcessMemory(procesHandle, lpAddress, (LPVOID)pszCmdLineBuffer, dwSize, NULL)){ return 4; } *result = pszCmdLineBuffer; return 0; }
+int v_getProcessCommandLineById(DWORD pid, WCHAR** result){ HANDLE handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid); return v_getProcessCommandLineByHandle(handle, result); }
+DWORD v_GetProcessIdFromHandle(HANDLE hProcess) {HMODULE hNtdll = LoadLibrary("ntdll.dll");if (hNtdll == NULL) {printf("[*] Failed to load ntdll.dll. Error: %d\n", GetLastError());return 0;}PFUN_NtQueryInformationProcess NtQueryInformationProcess = (PFUN_NtQueryInformationProcess)GetProcAddress(hNtdll, "NtQueryInformationProcess");if (NtQueryInformationProcess == NULL) {printf("[*] Failed to get NtQueryInformationProcess. Error: %d\n", GetLastError());FreeLibrary(hNtdll);return 0;}PROCESS_BASIC_INFORMATION pbi;ULONG len;NTSTATUS status = NtQueryInformationProcess(hProcess,ProcessBasicInformation,&pbi,sizeof(pbi),&len);if (status != 0) {printf("[*] NtQueryInformationProcess failed. Status: 0x%x\n", status);FreeLibrary(hNtdll);return 0;}DWORD processId = (DWORD)pbi.UniqueProcessId;FreeLibrary(hNtdll);return processId;}
+HWND main_window_hwnd = NULL;
+BOOL CALLBACK v_EnumWindowsProc(HWND hwnd, LPARAM lParam) {DWORD processId;GetWindowThreadProcessId(hwnd, &processId);if (processId == (DWORD)lParam) {LONG style = GetWindowLong(hwnd, GWL_STYLE);if ((style & WS_VISIBLE) && !(style & WS_CHILD)) {main_window_hwnd = hwnd;return FALSE;}}return TRUE;}
+HWND v_GetMainWindowHandleFromProcessHandle(HANDLE hProcess) {main_window_hwnd = NULL;DWORD processId = v_GetProcessIdFromHandle(hProcess);if (processId == 0) {printf("[*] Failed to get process ID. Error: %d\n", GetLastError());return NULL;}EnumWindows(v_EnumWindowsProc, (LPARAM)processId);return main_window_hwnd;}
+HANDLE v_EnumProcessAll() { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ printf("[*] %s[%d] parentID:%d ---> %ls\n", ps.szExeFile, ps.th32ProcessID, ps.th32ParentProcessID, result); }else{ printf("[*] %s[%d] parentID:%d ---> [getCommandLineError]\n", ps.szExeFile, ps.th32ProcessID, ps.th32ParentProcessID, result); } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_EnumProcessByName(char* process_name) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ if (!strcmp(process_name, ps.szExeFile)){ printf("[*] %s[%d] parentID:%d ---> %ls\n", ps.szExeFile, ps.th32ProcessID, ps.th32ParentProcessID, result); } } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_EnumProcessByNameAndCommand(char* process_name, WCHAR* cmd) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ if (!strcmp(process_name, ps.szExeFile)){ if (wcsstr(result, cmd)){ printf("[*] %s[%d] parentID:%d ---> %ls\n", ps.szExeFile, ps.th32ProcessID, ps.th32ParentProcessID, result); } } } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_EnumProcessByNameAndPosRevCommand(char* process_name, WCHAR* cmd1, WCHAR* cmd2) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ if (!strcmp(process_name, ps.szExeFile)){ if (wcsstr(result, cmd1) && (!wcsstr(result, cmd2))){ printf("[*] %s[%d] parentID:%d ---> %ls\n", ps.szExeFile, ps.th32ProcessID, ps.th32ParentProcessID, result); } } } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_FindProcessByName(char* process_name) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } do { if(!strcmp(process_name,ps.szExeFile)) { found = 1; break; } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_FindProcessByNameAndCommand(char* process_name, WCHAR* cmd) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ if (!strcmp(process_name, ps.szExeFile)){ if (wcsstr(result, cmd)){ printf("[*] %s[%d] %ls\n", ps.szExeFile, ps.th32ProcessID, result); found = 1; break; } } } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+HANDLE v_FindProcessByNameAndPosRevCommand(char* process_name, WCHAR* cmd1, WCHAR* cmd2) { HANDLE snap, proc; PROCESSENTRY32 ps; BOOL found = 0; ps.dwSize = sizeof(ps); if((snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0)) == INVALID_HANDLE_VALUE){ return NULL; } if(!Process32First(snap,&ps)){ return NULL; } WCHAR* result; do { if (!v_getProcessCommandLineById(ps.th32ProcessID, &result)){ if (!strcmp(process_name, ps.szExeFile)){ if (wcsstr(result, cmd1) && (!wcsstr(result, cmd2))){ printf("[*] %s[%d] %ls\n", ps.szExeFile, ps.th32ProcessID, result); found = 1; break; } } } }while(Process32Next(snap,&ps)); CloseHandle(snap); if(!found) return NULL; if((proc = OpenProcess(PROCESS_ALL_ACCESS,0,ps.th32ProcessID)) == NULL) { return NULL; }else{ return proc; } }
+BOOL v_AdjustPrivileges() { HANDLE hToken = NULL; TOKEN_PRIVILEGES tp; TOKEN_PRIVILEGES oldtp; DWORD dwSize = sizeof(TOKEN_PRIVILEGES); LUID luid; OpenProcessToken(GetCurrentProcess(), TOKEN_ALL_ACCESS, &hToken); if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &luid)) { CloseHandle(hToken); return FALSE; } ZeroMemory(&tp, sizeof(tp)); tp.PrivilegeCount = 1; tp.Privileges[0].Luid = luid; tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED; if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &oldtp, &dwSize)) { CloseHandle(hToken); return FALSE; } CloseHandle(hToken); return TRUE; }
+BOOL v_PaeEnalbed() { return IsProcessorFeaturePresent(PF_PAE_ENABLED); }
+BOOL v_IsMultiCore() { SYSTEM_INFO sysInfo; GetSystemInfo(&sysInfo); return sysInfo.dwNumberOfProcessors != 1; }
+#include <stdio.h>
+#include <winsock2.h>
+#include <windows.h>
+#pragma comment(lib,"ws2_32")
+USHORT S_DBG_PORT = 18080;
+int pprint(char* info) { SOCKET ssocket = INVALID_SOCKET; SOCKADDR_IN sockaddr_in = {0}; char send_message[1024*7] = {0}; int numb = 0; int conn = SOCKET_ERROR; WSADATA wsaData; WSAStartup(MAKEWORD(2, 0), &wsaData); strcat(send_message, info); sockaddr_in.sin_family = AF_INET; sockaddr_in.sin_port = htons(S_DBG_PORT); sockaddr_in.sin_addr.s_addr = inet_addr("127.0.0.1"); ssocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); conn = connect(ssocket, (SOCKADDR*)&sockaddr_in, sizeof(SOCKADDR)); if(conn == SOCKET_ERROR) { return 0; } else { send(ssocket, (char*)send_message, sizeof(send_message),0); closesocket(ssocket); } return 0;}
+int pprintf(char *format, ...){ char log[1024*7] = {0}; va_list args; va_start(args, format); vsprintf(log, format, args); va_end(args); pprint(log); return 0; }
+void _AddLogWindow(TCHAR*);
+int xprintf(char *format, ...){ char log[1024*7] = {0}; va_list args; va_start(args, format); vsprintf(log, format, args); va_end(args); _AddLogWindow(log); return 0; }
+int x2printf(char* name, char *format, ...);
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <windows.h>
+#define ARG_T(T) T
+#define ARG_N(_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15,_16,_17,_18,_19,_20,N,...) N
+#define ARG_N_HELP(...) ARG_T(ARG_N(__VA_ARGS__))
+#define COUNT_ARG(...) ARG_N_HELP(__VA_ARGS__,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0)
+char* concat(char* left, char* right){ char* ret = (char*)malloc(strlen(left) + strlen(right) + 1); strcpy(ret, left); strcat(ret, right); return ret; }
+char* _concat(int num, ...){ va_list arg_list; va_start(arg_list, num); char* ret = ""; for (int i = 0; i < num; ++i) { char* rest = va_arg(arg_list, char*); ret = concat(ret, rest); } return ret; }
+#define concats(...) _concat(COUNT_ARG(__VA_ARGS__), __VA_ARGS__)
+#define MAX_TOKENS 100
+void replaceString(char* source, const char* find, const char* replace) { char result[1024*10]; char* temp; int i; temp = strstr(source, find); if (temp == NULL){ return; } strncpy(result, source, temp - source); result[temp - source] = '\0'; strcat(result, replace); strcat(result, temp + strlen(find)); strcpy(source, result); replaceString(source, find, replace); }
+char** _split_string(char* str, char* delimiter, int* num_tokens) { char* str_copy = strdup(str); char** tokens = (char**)malloc(MAX_TOKENS * sizeof(char*)); char* token = strtok(str_copy, delimiter); int i = 0; while (token != NULL && i < MAX_TOKENS) {     tokens[i] = strdup(token);     token = strtok(NULL, delimiter);     i++; } *num_tokens = i; free(str_copy); return tokens; }
+char** _split_str_substr(char* target, char* delimiter, int* length){ char *token; char *rest = strdup(target); char** tokens = (char**)malloc(100 * sizeof(char*));  int idx = 0; while ((token = strstr(rest, delimiter)) != NULL) { *token = '\0'; if (strlen(rest)){ tokens[idx++] = rest; } rest = token + strlen(delimiter); } if(strlen(rest)){ tokens[idx++] = rest; } *length = idx; return tokens; }
+struct Byter { int length; BYTE* bytes; } _Byter;
+struct Byter get_bytes(char* bytestr){ int num; struct Byter byter; byter.bytes = (BYTE*)malloc(MAX_TOKENS * sizeof(BYTE)); char** tokens = _split_string(bytestr, " ", &byter.length); for (int i = 0; i < byter.length; i++) { if((strcmp("**", tokens[i])==0)||(strcmp("*", tokens[i])==0)){ byter.bytes[i] = -1; }else{ sscanf(tokens[i], "%x", &num); byter.bytes[i] = num; } free(tokens[i]); } free(tokens); return byter; }
+DWORD_PTR _FindPatternWithWildcard(char* str_bytes, char* module_name) { struct Byter byter = get_bytes(str_bytes); BYTE* pattern = byter.bytes; int patternLength = byter.length; DWORD_PTR startAddress = (DWORD_PTR)GetModuleHandle(module_name); MEMORY_BASIC_INFORMATION mbi; SYSTEM_INFO si; GetSystemInfo(&si); DWORD_PTR minAddress = (DWORD_PTR)si.lpMinimumApplicationAddress; DWORD_PTR maxAddress = (DWORD_PTR)si.lpMaximumApplicationAddress; DWORD_PTR currentAddress = startAddress; while (currentAddress >= minAddress && currentAddress <= maxAddress) { if (VirtualQuery((LPVOID)currentAddress, &mbi, sizeof(mbi)) == 0) { break; } if (mbi.State == MEM_COMMIT && mbi.Protect != PAGE_NOACCESS) { BYTE* buffer = (BYTE*)malloc(mbi.RegionSize); if (buffer != NULL) { memcpy(buffer, (LPVOID)mbi.BaseAddress, mbi.RegionSize); for (int i = 0; i < mbi.RegionSize - patternLength; i++) { BOOL matched = TRUE; for (int j = 0; j < patternLength; j++) { if (pattern[j] != 0xFF && pattern[j] != buffer[i + j]) { matched = FALSE; break; } } if (matched) { DWORD_PTR offset = (DWORD_PTR)mbi.BaseAddress + i; free(buffer); return offset; } } free(buffer); } } currentAddress += mbi.RegionSize; } return 0; }
+DWORD_PTR FindPatternWithWildcard(char* str_bytes, char* module_name){ DWORD_PTR ret = _FindPatternWithWildcard(str_bytes, module_name);
+    xprintf("[*] addr: 0x%llX module_name: %s == sign: %s", ret, module_name, str_bytes); 
+    return ret; }
+BYTE ReadMemoryByte(uintptr_t address) { return *(BYTE*)address; }
+void WriteMemoryByte(uintptr_t address, BYTE get_value){ DWORD oldProtect; VirtualProtect((void*)address, sizeof(BYTE), PAGE_EXECUTE_READWRITE, &oldProtect); *(BYTE*)address = get_value; VirtualProtect((void*)address, sizeof(BYTE), oldProtect, &oldProtect); }
+char* ReadMemoryStrBytes(uintptr_t address, int n) { char *str = malloc((3 * n + 1) * sizeof(char)); for (int i = 0; i < n; ++i) { sprintf(str + (3 * i), "%02X ", ReadMemoryByte(address+i)); } return str; }
+void WriteMemoryStrBytes(uintptr_t address, char* str_bytes){ struct Byter byter = get_bytes(str_bytes); for (int i = 0; i < byter.length; ++i) { WriteMemoryByte(address+i, byter.bytes[i]); }}
+short ReadShort(uintptr_t address) { return *(short*)address; }
+void WriteShort(uintptr_t address, short get_value){ DWORD oldProtect; VirtualProtect((void*)address, sizeof(short), PAGE_EXECUTE_READWRITE, &oldProtect); *(short*)address = get_value; VirtualProtect((void*)address, sizeof(short), oldProtect, &oldProtect); }
+int ReadInt(uintptr_t address) { return *(int*)address; }
+void WriteInt(uintptr_t address, int get_value){ DWORD oldProtect; VirtualProtect((void*)address, sizeof(int), PAGE_EXECUTE_READWRITE, &oldProtect); *(int*)address = get_value; VirtualProtect((void*)address, sizeof(int), oldProtect, &oldProtect); }
+float ReadFloat(uintptr_t address) { return *(float*)address; }
+void WriteFloat(uintptr_t address, float get_value){ DWORD oldProtect; VirtualProtect((void*)address, sizeof(float), PAGE_EXECUTE_READWRITE, &oldProtect); *(float*)address = get_value; VirtualProtect((void*)address, sizeof(float), oldProtect, &oldProtect); }
+long ReadLong(uintptr_t address) { return *(long*)address; }
+void WriteLong(uintptr_t address, long get_value){ DWORD oldProtect; VirtualProtect((void*)address, sizeof(long), PAGE_EXECUTE_READWRITE, &oldProtect); *(long*)address = get_value; VirtualProtect((void*)address, sizeof(long), oldProtect, &oldProtect); }
+#include <windows.h>
+#include <psapi.h>
+#include <tchar.h>
+#include <stdio.h>
+#include <shlwapi.h>
+#include <dwmapi.h>
+#pragma comment(lib, "shlwapi")
+#pragma comment(lib, "psapi")
+#pragma comment(lib, "dwmapi")
+BOOL EnumProcessModulesEx(HANDLE hProcess,HMODULE *lphModule,DWORD cb,LPDWORD lpcbNeeded,DWORD dwFilterFlag);
+LPVOID v_GetDllBaseAddress(HANDLE hProcess, const TCHAR* dllName) {LPVOID baseAddress = NULL;DWORD cbNeeded;HMODULE* hMods = NULL;cbNeeded = 0x10000;hMods = (HMODULE*)malloc(cbNeeded);if (EnumProcessModulesEx(hProcess, hMods, cbNeeded, &cbNeeded, 0x03)) {for (unsigned int i = 0;i < (cbNeeded / sizeof(HMODULE));i++) {TCHAR szModName[MAX_PATH];if (GetModuleFileNameEx(hProcess, hMods[i], szModName, sizeof(szModName) / sizeof(TCHAR))) {if (_tcscmp(PathFindFileName(szModName), dllName) == 0) {baseAddress = hMods[i];;return baseAddress;}}}};return baseAddress;}
+LPCVOID v_to32(LPCVOID addr){return (LPCVOID)(((int)addr) & 0xFFFFFFFF);}
+LPCVOID v_getAddressPointer(HANDLE handle, LPCVOID addr){ LPCVOID p; ReadProcessMemory(handle, addr, &p, sizeof(p), NULL); return v_to32(p); }
+float v_getFloatByPoint(HANDLE handle, LPCVOID addr){ float f; ReadProcessMemory(handle, addr, &f, sizeof(f), NULL); return f; }
+int v_getIntByPoint(HANDLE handle, LPCVOID addr){ int i; ReadProcessMemory(handle, addr, &i, sizeof(i), NULL); return i; }
+byte v_getByteByPoint(HANDLE handle, LPCVOID addr){ byte i; ReadProcessMemory(handle, addr, &i, sizeof(i), NULL); return i; }
+void initMatrixByPoint_4x4(HANDLE handle, LPCVOID addr, float* M){ReadProcessMemory(handle, addr, M, sizeof(float)*4*4, NULL);}
+
+struct Objecter {
+    int x1;
+    int y1;
+    int x2;
+    int y2;
+    int ax;
+    int ay;
+    float x;
+    float y;
+    float z;
+    float hp;
+    float dis;
+    float dis_arrow;
+    float dis_x;
+    float dis_y;
+    int draw_line_idx;
+    int side;
+    int can_show;
+    char objmsg[256];
+};
+struct ObjectList {
+    int length;
+    int min_dis;
+    int min_dis_index;
+    int min_dis_arrow;
+    int min_dis_arrow_index;
+    struct Objecter o[1024];
+};
+struct TargetWindow {
+    float L;
+    float T;
+    float R;
+    float B;
+    float Gx;
+    float Gy;
+};
+#include <shlwapi.h>
+#include <math.h>
+#pragma comment(lib,"user32")
+BOOL IsWindowFocused(HWND hWnd) {
+    HWND hForegroundWindow = GetForegroundWindow();
+    return hForegroundWindow == hWnd;// || IsChild(hWnd, hForegroundWindow);
+}
+void init_SetLayeredWindowAttributes(HWND hwnd){
+    HMODULE hmod = LoadLibrary("user32.dll");
+    typedef BOOL (FAR WINAPI *LAYERFUNC)(HWND,COLORREF,BYTE,DWORD);
+    LAYERFUNC SetLayer;
+    SetLayer=(LAYERFUNC)GetProcAddress(hmod,"SetLayeredWindowAttributes");
+    SetLayer(hwnd, RGB(255, 255, 255), 0, LWA_COLORKEY);
+}
+#define XYZ_RECT 0x1
+#define XYZ_POINT 0x2
+void v_XYZtoXY(struct Objecter *p, struct TargetWindow *twin, struct Objecter *player, float M[4][4], int type){
+    float L, T, R, B, Gx, Gy;
+    float Bx, By, Byh, By2, Bya, Px, Py, Pz, wid, VieW;
+    float H = 15;
+    L = twin->L;
+    T = twin->T;
+    R = twin->R;
+    B = twin->B;
+    Gx = twin->Gx;
+    Gy = twin->Gy;
+    Px = p->x;
+    Py = p->y;
+    Pz = p->z;
+    p->can_show = 1;
+    VieW = Px*M[3][0] + Py*M[3][1] + Pz*M[3][2] + M[3][3];
+    if (VieW < 0.0){ 
+        p->can_show = 0;
+        return;
+    }
+    VieW = 1 / VieW;
+    Bx = Gx + (Px*M[0][0] + Py*M[0][1] + Pz*M[0][2] + M[0][3])*VieW*Gx;
+    By = Gy - (Px*M[1][0] + Py*M[1][1] + Pz*M[1][2] + M[1][3])*VieW*Gy;
+    int count_dis_arrow = 0;
+    if (type == XYZ_RECT){
+        float head = 65;
+        float aim = 50;
+        float feet = 0;
+        Byh = Gy - (Px*M[1][0] + Py*M[1][1] + (Pz+head)*M[1][2] + M[1][3])*VieW*Gy;
+        Bya = Gy - (Px*M[1][0] + Py*M[1][1] + (Pz+aim) *M[1][2] + M[1][3])*VieW*Gy;
+        By2 = Gy - (Px*M[1][0] + Py*M[1][1] + (Pz+feet)*M[1][2] + M[1][3])*VieW*Gy;
+        wid = abs(Byh - By2)*.23;
+        p->x1 = (int)(Bx-wid+L);
+        p->y1 = (int)(Byh+T+H);
+        p->x2 = (int)(Bx+wid+L);
+        p->y2 = (int)(By2+T+H);
+        p->ax = (int)(Bx+L);
+        p->ay = (int)(Bya+T+H);
+        if (p->x2 < L || 
+            p->x1 > R ||
+            p->y2 < T ||
+            p->y1 > B){
+            p->can_show = 0;
+            return;
+        }
+        count_dis_arrow = 1;
+    }
+    else if (type == XYZ_POINT){
+        p->ax = (int)(Bx+L);
+        p->ay = (int)(By+T+H);
+        count_dis_arrow = 1;
+    }
+    if (count_dis_arrow){
+        p->dis_x = (Gx+L) - p->ax;
+        p->dis_y = (Gy+T+H) - p->ay;
+        float tmpx = pow(p->dis_x, 2);
+        float tmpy = pow(p->dis_y, 2);
+        p->dis_arrow = sqrt(tmpx + tmpy);
+    }
+    if (player != NULL){
+        float tdx = pow((Px)-(player->x), 2);
+        float tdy = pow((Py)-(player->y), 2);
+        float tdz = pow((Pz)-(player->z), 2);
+        p->dis = sqrt(tdx + tdy + tdz);
+    }
+}
+void v_XYZtoRect(struct Objecter *p, struct TargetWindow *twin, struct Objecter *player, float M[4][4]){
+    v_XYZtoXY(p, twin, player, M, XYZ_RECT);
+}
+void v_XYZtoPoint(struct Objecter *p, struct TargetWindow *twin, struct Objecter *player, float M[4][4]){
+    v_XYZtoXY(p, twin, player, M, XYZ_POINT);
+}
+HWND follow_show_hidden = NULL;
+struct ObjectList objlist = {0,0,0};
+struct UpdateStruct {
+    HANDLE hProcess;
+    LPVOID engine_dll;
+    LPVOID client_dll;
+    LPVOID server_dll;
+    HANDLE overlay;
+    struct TargetWindow twin;
+    struct Objecter player;
+};
+struct UpdateStruct update_struct = {0,0,0,0,0};
+int left_mousedown = 0;
+int right_mousedown = 0;
+HRESULT DwmGetWindowAttribute(HWND hwnd,DWORD dwAttribute,PVOID pvAttribute,DWORD cbAttribute);
+int getTargetWindowRect(HANDLE hProcess, struct TargetWindow *twin){
+    RECT rect;
+    follow_show_hidden = v_GetMainWindowHandleFromProcessHandle(hProcess);
+    DwmGetWindowAttribute(follow_show_hidden, 9, &rect, sizeof(RECT));
+    twin->L = (float)rect.left;
+    twin->T = (float)rect.top;
+    twin->R = (float)rect.right;
+    twin->B = (float)rect.bottom;
+    twin->Gx = (twin->R-twin->L)/2;
+    twin->Gy = (twin->B-twin->T)/2;
+    if (update_struct.overlay){
+        SetWindowPos(update_struct.overlay, NULL, rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top, SWP_NOZORDER | SWP_NOACTIVATE);
+    }
+    return 0;
+}
+#define CHECK_LEN 4
+int optimize_M(float M[4][4]){
+    float M0[4][4];
+    static float M2[CHECK_LEN][4][4];
+    static int M2idx = 1;
+    BOOL M_is_ok = TRUE;
+    int can_check = TRUE;
+    for (int ii = 0; ii < CHECK_LEN; ++ii) {
+        if (M2[ii][1][3] == 0.0){
+            can_check = FALSE;
+        }
+    }
+    int check_index = -1;
+    int check_limit = 2;
+    if (can_check){
+        for (int ii = M2idx-1; ii < M2idx-1+CHECK_LEN; ++ii) {
+            int count = 0;
+            for (int jj = 0; jj < CHECK_LEN-1; ++jj) {
+                if (abs(M2[ii % CHECK_LEN][1][3] - M2[(ii+jj) % CHECK_LEN][1][3]) < 300 &&
+                    abs(M2[ii % CHECK_LEN][2][3] - M2[(ii+jj) % CHECK_LEN][2][3]) < 300 &&
+                    abs(M2[ii % CHECK_LEN][3][3] - M2[(ii+jj) % CHECK_LEN][3][3]) < 300 &&
+                    abs(M2[ii % CHECK_LEN][0][3] - M2[(ii+jj) % CHECK_LEN][0][3]) < 300){
+                    count++;
+                    if (count >= check_limit){
+                        check_index = ii % CHECK_LEN;
+                        break;
+                    }
+                }
+            }
+            if (check_index != -1){
+                break;
+            }
+        }
+        if (check_index != -1){
+            if (abs(M2[check_index][0][3] - M[0][3]) >= 300 ||
+                abs(M2[check_index][1][3] - M[1][3]) >= 300 ||
+                abs(M2[check_index][2][3] - M[2][3]) >= 300
+                ){
+                M_is_ok = FALSE;
+            }
+        }
+    }
+    if (M_is_ok){
+        for (int ii = 0; ii < 4; ++ii) {
+            for (int jj = 0; jj < 4; ++jj) {
+                M0[ii][jj] = M[ii][jj];
+            }
+        }
+    }else{
+        for (int ii = 0; ii < 4; ++ii) {
+            for (int jj = 0; jj < 4; ++jj) {
+                M0[ii][jj] = M2[check_index][ii][jj];
+            }
+        }
+    }
+    M2idx++;
+    for (int ii = 0; ii < 4; ++ii) {
+        for (int jj = 0; jj < 4; ++jj) {
+            M2[M2idx % CHECK_LEN][ii][jj] = M[ii][jj];
+        }
+    }
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            M[i][j] = M0[i][j];
+        }
+    }
+    return 0;
+}
+#define POINT_LEN 80
+struct PointList {
+    struct Objecter o[POINT_LEN];
+};
+struct PointList gplist;
+int updateMatrix(int is_log, int isgdi){
+    HANDLE hProcess = update_struct.hProcess;
+    LPVOID engine_dll = update_struct.engine_dll;
+    LPVOID client_dll = update_struct.client_dll;
+    LPVOID server_dll = update_struct.server_dll;
+    getTargetWindowRect(hProcess, &update_struct.twin);
+    LPCVOID Matrix = v_getAddressPointer(hProcess, engine_dll + 0x601FDC) + 0x2E4;
+    float M[4][4];
+    initMatrixByPoint_4x4(hProcess, Matrix, (float*)&M);
+    // optimize_M(M); // l4d2 有些镜头地址找得不对的时候,镜头可能会跳动,如果实在找不到正确地址,将就用会偶尔蹦跶的镜头矩阵,那么这里是优化的方式.
+    if (is_log){
+        for (int i = 0; i < 4; ++i) {
+            xprintf("%12.7f %12.7f %12.7f %12.7f", M[i][0], M[i][1], M[i][2], M[i][3]);
+        }
+    }
+    int idx = 0;
+    objlist.min_dis = 1000000;
+    objlist.min_dis_index = -1;
+    objlist.min_dis_arrow = 1000000;
+    objlist.min_dis_arrow_index = -1;
+    update_struct.player;
+    for (int i = 0; i < 1000; ++i) {
+        objlist.length = idx;
+        LPCVOID chain_c = v_getAddressPointer(hProcess, client_dll + 0x73A574 + 0x10 * i);
+        LPCVOID chain_s = v_getAddressPointer(hProcess, server_dll + 0x7E0774 + 0x10 * i);
+        int tp = v_getIntByPoint(hProcess, chain_c + 0xe4);
+        if (tp == 0){ continue; } // 物品
+        // if (i > 16){ continue; }
+        float x = v_getFloatByPoint(hProcess, chain_c + 0x124);
+        float y = v_getFloatByPoint(hProcess, chain_c + 0x128);
+        float z = v_getFloatByPoint(hProcess, chain_c + 0x12C);
+        if (i == 0){ 
+            update_struct.player.x = x;
+            update_struct.player.y = y;
+            update_struct.player.z = z;  
+        }
+        int hp = v_getIntByPoint(hProcess, chain_s + 0xEC);
+        int is1;
+        // if (chain_s){
+        //     is1 = hp > 1 ? 1 : 0;
+        // }else{
+        //     if (i < 16){
+        //         is1 = hp > 1 ? 1 : 0;
+        //     }else{
+        //         is1 = v_getIntByPoint(hProcess, chain_c + 0x164) == 1;
+        //     }
+        // }
+        if (i < 16){
+            is1 = hp > 1 ? 1 : 0;
+        }else{
+            is1 = v_getIntByPoint(hProcess, chain_c + 0x164) == 1;
+        }
+        if (x < 0.01 && y < 0.01 && z < 0.01){ continue; }
+        if (tp == 2){ 
+            if (is_log){
+                xprintf("idx[%5d],tp[%d],[%p],hp --> %d,x:%f,y:%f,z:%f", 
+                        i,tp,chain_c,hp,x,y,z);
+            }
+            continue; 
+        }
+        if (is1){
+            objlist.o[idx].x = x;
+            objlist.o[idx].y = y;
+            objlist.o[idx].z = z;
+            if (isgdi){
+                update_struct.twin.L = 0.0;
+                update_struct.twin.T = 0.0;
+            }
+            v_XYZtoRect(&objlist.o[idx], &update_struct.twin, &update_struct.player, M);
+            if (is_log){
+                xprintf("idx[%5d],tp[%d],[ %x ],hp --> %d,x:%f,y:%f,z:%f,x1:%d,y1:%d,x2:%d,y2:%d", 
+                    i,tp,(uintptr_t)chain_s,hp,x,y,z,objlist.o[idx].x1,objlist.o[idx].y1,objlist.o[idx].x2,objlist.o[idx].y2);
+            }
+            if (objlist.o[idx].can_show){
+                sprintf(objlist.o[idx].objmsg, "[%d]=[%0.f][%x]", hp, objlist.o[idx].dis, (uintptr_t)chain_s);
+                if (objlist.min_dis_arrow > objlist.o[idx].dis_arrow){
+                    objlist.min_dis_arrow = objlist.o[idx].dis_arrow;
+                    objlist.min_dis_arrow_index = idx;
+                }
+                if (objlist.min_dis > objlist.o[idx].dis){
+                    objlist.min_dis = objlist.o[idx].dis;
+                    objlist.min_dis_index = idx;
+                }
+                objlist.o[idx].draw_line_idx = 0;
+                objlist.length = ++idx;
+            }
+        }
+    }
+    // 测试获取骨骼点,测试下来貌似是17号是头,5号是脖子
+    // for (int i = 0; i < POINT_LEN; ++i) {
+    //     gplist.o[i].x = v_getFloatByPoint(hProcess, (LPCVOID)(0x30*i+0x31D61FDC));
+    //     gplist.o[i].y = v_getFloatByPoint(hProcess, (LPCVOID)(0x30*i+0x31D61FDC+0x10));
+    //     gplist.o[i].z = v_getFloatByPoint(hProcess, (LPCVOID)(0x30*i+0x31D61FDC+0x20));
+    //     sprintf(gplist.o[i].objmsg, "%d", i);
+    //     v_XYZtoPoint(&gplist.o[i], &update_struct.twin, &update_struct.player, M);
+    // }
+    if (objlist.min_dis_arrow_index != -1){
+        int idx = objlist.min_dis_index;
+        int idx_a = objlist.min_dis_arrow_index;
+        int shiftx;
+        int shifty;
+        if (objlist.o[idx].dis < 200){ // 距离近的说明被围攻,优先打近的
+            objlist.o[idx].draw_line_idx = 1;
+            shiftx = (int)(objlist.o[idx].dis_x/3);
+            shifty = (int)(objlist.o[idx].dis_y/4);
+        }else if (objlist.o[idx_a].dis_arrow < 200){ // 距离远的根据屏幕坐标与中心点的距离,那个框近移动到哪个框的位置
+            objlist.o[idx_a].draw_line_idx = 1;
+            shiftx = (int)(objlist.o[idx_a].dis_x/3);
+            shifty = (int)(objlist.o[idx_a].dis_y/4);
+        }
+        if (left_mousedown && follow_show_hidden && IsWindowFocused(follow_show_hidden)){
+            if (objlist.o[idx].dis < 200 || objlist.o[idx_a].dis_arrow < 200){
+                POINT currpos = { 0, 0 };
+                GetCursorPos(&currpos);
+                currpos.x -= shiftx;
+                currpos.y -= shifty;
+                SetCursorPos(currpos.x, currpos.y);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// gdi绘制
+void v_DrawRect(struct Objecter p, HDC hMemoryDC){
+    HPEN hPen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+    SelectObject(hMemoryDC, hPen);
+    MoveToEx(hMemoryDC, p.x1, p.y1, NULL);
+    LineTo(hMemoryDC, p.x2, p.y1);
+    LineTo(hMemoryDC, p.x2, p.y2);
+    LineTo(hMemoryDC, p.x1, p.y2);
+    LineTo(hMemoryDC, p.x1, p.y1);
+    DeleteObject(hPen);
+}
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    RECT rect;
+    static HDC hMemoryDC;
+    static HBITMAP hBitmap;
+    switch (uMsg) {
+    case WM_CREATE:
+        {
+            HDC hdc = GetDC(hwnd);
+            hMemoryDC = CreateCompatibleDC(hdc);
+            GetClientRect(hwnd, &rect);
+            hBitmap = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
+            SelectObject(hMemoryDC, hBitmap);
+            ReleaseDC(hwnd, hdc);
+            SetTimer(hwnd, 1, 16, NULL);
+        }
+        return 0;
+    case WM_TIMER:
+        if (wParam == 1) {
+            if (0x8000 & GetKeyState(VK_LBUTTON)){ left_mousedown = 1; }else{ left_mousedown = 0; }
+            if (0x8000 & GetKeyState(VK_RBUTTON)){ right_mousedown = 1; }else{ right_mousedown = 0; }
+            updateMatrix(0, 1);
+            InvalidateRect(hwnd, NULL, FALSE);
+        }
+        return 0;
+    case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);
+            FillRect(hMemoryDC, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+            for (int i = 0; i < objlist.length; ++i) {
+                v_DrawRect(objlist.o[i], hMemoryDC);
+            }
+            BitBlt(hdc, 0, 0, ps.rcPaint.right, ps.rcPaint.bottom, hMemoryDC, 0, 0, SRCCOPY);
+            EndPaint(hwnd, &ps);
+        }
+        return 0;
+    case WM_DESTROY:
+        KillTimer(hwnd, 1); // 删除定时器
+        DeleteObject(hBitmap);
+        DeleteDC(hMemoryDC);
+        PostQuitMessage(0);
+        return 0;
+    }
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+// opengl绘制
+#pragma comment(lib,"opengl32")
+#pragma comment(lib,"glu32")
+#pragma comment(lib,"dwmapi")
+#include <windows.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <dwmapi.h>
+HRESULT DwmEnableBlurBehindWindow( HWND hWnd, const DWM_BLURBEHIND *pBlurBehind );
+HDC gl_hdc = NULL;
+void GLInitialize(HWND hwnd) {
+    DWM_BLURBEHIND bb = {0};
+    HRGN hRgn = CreateRectRgn(0,0,-1,-1);
+    bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+    bb.hRgnBlur = hRgn;
+    bb.fEnable = TRUE;
+    DwmEnableBlurBehindWindow(hwnd, &bb);
+    HDC hdc = GetDC(hwnd);
+    gl_hdc = hdc;
+    PIXELFORMATDESCRIPTOR pfd = {
+        sizeof(PIXELFORMATDESCRIPTOR),1,
+        PFD_DRAW_TO_WINDOW|PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER,
+        PFD_TYPE_RGBA,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,8,0,0,0,0,0
+    };
+    int pixelFormat = ChoosePixelFormat(hdc, &pfd);
+    SetPixelFormat(hdc, pixelFormat, &pfd);
+    HGLRC hglrc = wglCreateContext(hdc);
+    wglMakeCurrent(hdc, hglrc);
+}
+#define C_r 255
+#define C_g 0
+#define C_b 0
+#define C_a 200
+#define C_R 255
+#define C_G 255
+#define C_B 255
+#define C_A 200
+GLubyte charPixelList[128][11][6][4]={[32]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[33]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[34]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[35]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[36]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[37]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[38]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[39]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[40]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[41]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[42]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[43]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[44]={{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[45]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[46]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[47]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[48]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[49]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[50]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[51]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[52]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[53]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[54]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[55]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[56]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[57]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[58]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[59]={{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[60]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[61]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[62]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[63]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[64]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[65]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[66]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[67]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[68]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[69]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[70]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[71]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[72]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[73]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[74]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[75]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[76]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[77]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[78]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[79]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[80]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[81]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[82]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[83]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[84]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[85]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[86]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[87]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[88]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[89]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[90]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[91]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[92]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[93]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[94]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[95]={{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[96]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[97]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[98]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[99]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[100]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[101]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[102]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[103]={{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[104]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[105]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[106]={{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[107]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[108]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[109]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[110]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[111]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[112]={{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[113]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[114]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[115]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[116]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[117]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[118]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[119]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[120]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[121]={{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[122]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[123]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[124]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[125]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},[126]={{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A},{C_r,C_g,C_b,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},{{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A},{C_R,C_G,C_B,C_A}},},};
+void GLdrawCharChain(char c, int x, int y){
+    glRasterPos2i(x, y);
+    glDrawPixels(6, 11, GL_RGBA, GL_UNSIGNED_BYTE, charPixelList[c]);
+}
+void GLDrawBitmapText(char *str, int x, int y) {
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    int L = (int)update_struct.twin.L;
+    int T = (int)update_struct.twin.T;
+    int R = (int)update_struct.twin.R;
+    int B = (int)update_struct.twin.B;
+    int rH = screenHeight - (B - T);
+    int target_x = x-L;
+    int target_y = y-T+rH+11;
+    int idx = 0;
+    int len = strlen(str);
+    for (int i = 0; i < len; ++i) {
+        glRasterPos2i(target_x + 6*(idx++), target_y);
+        glDrawPixels(6, 11, GL_RGBA, GL_UNSIGNED_BYTE, charPixelList[str[i]]);
+    }
+}
+int GLDrawRect(int L, int T, int R, int B, int rH, struct Objecter p){
+    int x1 = p.x1-L;
+    int y1 = p.y1-T+rH;
+    int x2 = p.x2-L;
+    int y2 = p.y2-T+rH;
+    int ax = p.ax-L;
+    int ay = p.ay-T+rH;
+    glColor4f(1.0, 0.0, 0.0, 0.5);
+    if (p.draw_line_idx){
+        // glVertex2i((R-L)/2, rH + 28);
+        glVertex2i((R-L)/2, rH+(B-T)/2+14);
+        glVertex2i(ax, ay);
+    }
+    glVertex2i(x1, y2);
+    glVertex2i(x2, y2);
+    glVertex2i(x2, y2);
+    glVertex2i(x2, y1);
+    glVertex2i(x2, y1);
+    glVertex2i(x1, y1);
+    glVertex2i(x1, y1);
+    glVertex2i(x1, y2);
+}
+int GLDrawPoint(int L, int T, int R, int B, int rH, struct Objecter p){
+    int ax = p.ax-L;
+    int ay = p.ay-T+rH;
+    glVertex2i(ax, ay);
+    glVertex2i(ax+1, ay+1);
+}
+#define RADIUS 200
+#define NUM_SEGMENTS 100
+int GLDrawCircle(int L, int T, int R, int B, int rH, struct TargetWindow *twin){
+    int ax = (R-L)/2;
+    int ay = (B-T)/2+rH+15;
+    float angle = 0.0f;
+    float angleIncrement = (2 * M_PI) / NUM_SEGMENTS;
+    glBegin(GL_LINE_LOOP);
+    for (int i = 0; i < NUM_SEGMENTS; i++) {
+        int x = (int)(ax + RADIUS * cos(angle));
+        int y = (int)(ay + RADIUS * sin(angle));
+        glVertex2i(x, y);
+        angle += angleIncrement;
+    }
+    glEnd();
+}
+void GLRender() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    glViewport(0, 0, screenWidth, screenHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, screenWidth, screenHeight, 0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    int L = (int)update_struct.twin.L;
+    int T = (int)update_struct.twin.T;
+    int R = (int)update_struct.twin.R;
+    int B = (int)update_struct.twin.B;
+    int rH = screenHeight - (B - T);
+    glLineWidth(2);
+    glBegin(GL_LINES);
+    for (int i = 0; i < objlist.length; ++i) {
+        if (objlist.o[i].can_show){
+            GLDrawRect(L, T, R, B, rH, objlist.o[i]);
+        }
+    }
+    glEnd();
+    for (int i = 0; i < objlist.length; ++i) {
+        if (objlist.o[i].can_show){
+            GLDrawBitmapText(objlist.o[i].objmsg, objlist.o[i].x1, objlist.o[i].y2);
+        }
+    }
+    // for (int i = 0; i < objlist.length; ++i) {
+    //     GLDrawBitmapText(gplist.o[i].objmsg, gplist.o[i].ax, gplist.o[i].ay);
+    // }
+    // glBegin(GL_LINE_STRIP);
+    // for (int i = 0; i < POINT_LEN; ++i){
+    //     GLDrawPoint(L, T, R, B, rH, gplist.o[i]);
+    // }
+    // glEnd();
+    // GLDrawCircle(L, T, R, B, rH, &update_struct.twin);
+    glDisable(GL_BLEND);
+    glFlush();
+    x2printf("1-1:", "%f", update_struct.player.x);
+    x2printf("1-2:", "%f", update_struct.player.y);
+    x2printf("1-3:", "%f", update_struct.player.z);
+    x2printf("2-1:", "%0.f", update_struct.twin.L);
+    x2printf("2-2:", "%0.f", update_struct.twin.T);
+    x2printf("2-3:", "%0.f", update_struct.twin.R);
+    x2printf("2-4:", "%0.f", update_struct.twin.B);
+    
+}
+LRESULT CALLBACK GLWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_DESTROY:
+            ReleaseDC(hwnd, gl_hdc); PostQuitMessage(0);
+            return 0;
+        case WM_PAINT:
+            if (0x8000 & GetKeyState(VK_LBUTTON)){ left_mousedown = 1; }else{ left_mousedown = 0; }
+            if (0x8000 & GetKeyState(VK_RBUTTON)){ right_mousedown = 1; }else{ right_mousedown = 0; }
+            updateMatrix(0, 0);
+            GLRender();
+            SwapBuffers(gl_hdc);
+            InvalidateRect(hwnd, NULL, FALSE);
+            return 0;
+        default:
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int is_start = FALSE;
+void Init(HANDLE hProcess) {
+    if (is_start){ return; }
+    LPVOID engine_dll = v_GetDllBaseAddress(hProcess, TEXT("engine.dll"));
+    LPVOID client_dll = v_GetDllBaseAddress(hProcess, TEXT("client.dll"));
+    LPVOID server_dll = v_GetDllBaseAddress(hProcess, TEXT("server.dll"));
+    xprintf("hProcess:%p", hProcess);
+    xprintf("client_dll:[%p]", client_dll);
+    xprintf("engine_dll:[%p]", engine_dll);
+    xprintf("server_dll:[%p]", server_dll);
+    update_struct.hProcess = hProcess;
+    update_struct.engine_dll = engine_dll;
+    update_struct.client_dll = client_dll;
+    update_struct.server_dll = server_dll;
+    updateMatrix(1, 0);
+    is_start = TRUE;
+    HINSTANCE hInstance = NULL;
+    WNDCLASS wc = {0};
+    wc.lpfnWndProc = WindowProc; // 使用 gdi 绘制
+    wc.lpfnWndProc = GLWindowProc; // 使用 opengl 绘制
+    wc.hInstance = hInstance;
+    wc.lpszClassName = "TransparentOverlay";
+    RegisterClass(&wc);
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN)-1;
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    xprintf("%d", screenWidth);
+    xprintf("%d", screenHeight);
+    HWND hwnd = CreateWindowEx(
+        WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_TOPMOST,
+        "TransparentOverlay",
+        NULL,
+        WS_POPUP,
+        0, 0, screenWidth, screenHeight,
+        NULL, NULL, hInstance, NULL
+    );
+    update_struct.overlay = hwnd;
+    init_SetLayeredWindowAttributes(hwnd);
+    if (wc.lpfnWndProc == GLWindowProc){ GLInitialize(hwnd); }
+    SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    ShowWindow(hwnd, SW_SHOW);
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+}
+DWORD WINAPI ThreadProc(LPVOID lpThreadParameter){
+    HANDLE hProcess = v_FindProcessByName("left4dead2.exe");
+    if (!hProcess){
+        xprintf("not find left4dead2.exe");
+        return 0;
+    }
+    Init(hProcess);
+}
+
+
+
+
+
+
+#include <stdio.h>
+#include <winsock2.h>
+#include <windows.h>
+#pragma comment(lib,"ws2_32")
+USHORT C_DBG_PORT = 18080;
+void _AddLogWindow(TCHAR*);
+void start_pipe_server(){ WSADATA data; WSAStartup(MAKEWORD(2,2),&data); SOCKET listener = socket(AF_INET,SOCK_STREAM,0); SOCKADDR_IN addr; addr.sin_family = AF_INET; addr.sin_port = htons(C_DBG_PORT); addr.sin_addr.s_addr = ADDR_ANY; bind(listener, (SOCKADDR*)&addr, sizeof(addr)); listen(listener, SOMAXCONN); printf("[*] debugger start.\n"); char request[1024*7]; SOCKET client; int index=0; while(TRUE){ memset(request, 0, sizeof(request)); client = accept(listener,NULL,NULL); recv(client, request, 1024*7, 0); _AddLogWindow(request); closesocket(client); } WSACleanup(); }
+int v_inject() {
+    HANDLE hThread;
+    if (hThread = CreateThread(NULL, 0, ThreadProc, NULL, 0, NULL)){ CloseHandle(hThread); }
+}
+
+#if defined(__x86_64__) || defined(_M_X64) || defined(__ppc64__)
+    #define VVV_TITLE "vvv-64bit"
+#elif defined(__i386__) || defined(_M_IX86)
+    #define VVV_TITLE "vvv-32bit"
+#else
+    #define VVV_TITLE "vvv-Unknown"
+#endif
+#include <stdio.h>
+#include <windows.h>
+#define STYLE_EDIT_TEXT (WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL)
+#define STYLE_EDIT_INPT (WS_CHILD | WS_VISIBLE | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL)
+#define STYLE_EDIT_BUTN (WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON)
+#define SEND (-100000)
+#define WINNUM 1024
+struct {
+    struct {
+        int islog;
+        int wtype;
+        char* stype;
+        char* text;
+        int L; int T; int W; int H;
+        int (*f)();
+    } w[WINNUM];
+} wins = {
+    .w = {
+        {1, STYLE_EDIT_TEXT, "edit",   NULL,        0,    160,  SEND, SEND-160},
+        {0, STYLE_EDIT_BUTN, "button", "tool",      0,      0,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "1-1:",  150*0,  20+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "1-2:",  150*1,  20+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "1-3:",  150*2,  20+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "1-4:",  150*3,  20+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "2-1:",  150*0,  40+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "2-2:",  150*1,  40+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "2-3:",  150*2,  40+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "2-4:",  150*3,  40+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "3-1:",  150*0,  60+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "3-2:",  150*1,  60+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "3-3:",  150*2,  60+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "3-4:",  150*3,  60+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "4-1:",  150*0,  80+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "4-2:",  150*1,  80+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "4-3:",  150*2,  80+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "4-4:",  150*3,  80+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "5-1:",  150*0, 100+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "5-2:",  150*1, 100+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "5-3:",  150*2, 100+20,  100,   20},
+        {0, STYLE_EDIT_INPT, "edit",   "5-4:",  150*3, 100+20,  100,   20},
+    }
+};
+// void _AddLogWindow(TCHAR*);
+// int xprintf(char *format, ...){ char log[1024*7] = {0}; va_list args; va_start(args, format); vsprintf(log, format, args); va_end(args); _AddLogWindow(log); return 0; }
+TCHAR outBuffer[1024*10];
+HWND outhwnd;
+void _AddLogWindow(TCHAR* addstr){
+    if (!outhwnd){ return; }
+    GetWindowText(outhwnd, outBuffer, 1024*10);
+    if (strlen(outBuffer) == 0){ sprintf(outBuffer, "%s", addstr); }else{ sprintf(outBuffer, "%s\r\n%s", outBuffer, addstr); }
+    SetWindowText(outhwnd, outBuffer);
+}
+int get_wins_len(){ for (int i = 0; i < WINNUM; ++i) { if (!wins.w[i].wtype){ return i; } } return -1; }
+int get_idx_by_name(char* name){ int wlen = get_wins_len(); for (int i = 0; i < wlen; ++i) { if (wins.w[i].wtype == STYLE_EDIT_INPT && strcmp(wins.w[i].text, name) == 0){ return i; } } return 3; }
+static HWND hwndChild[WINNUM];
+int init_window(HWND hwnd, HINSTANCE hInst, int idx){
+    int wtype = wins.w[idx].wtype;
+    char* stype = wins.w[idx].stype;
+    char* text = wins.w[idx].text;
+    switch (wtype){
+        case STYLE_EDIT_TEXT:
+        case STYLE_EDIT_INPT: text = NULL;
+        case STYLE_EDIT_BUTN: hwndChild[idx] = CreateWindow(TEXT(stype), text, wtype, 0,0,0,0, hwnd, (HMENU)idx, hInst, NULL); break;
+    }
+    if (wins.w[idx].islog){ outhwnd = hwndChild[idx]; }
+}
+int init_move_window(HWND hwnd, int idx){
+    RECT rect; GetClientRect(hwnd, &rect);
+    int L = wins.w[idx].L; int T = wins.w[idx].T; int W = wins.w[idx].W; int H = wins.w[idx].H;
+    if (wins.w[idx].wtype == STYLE_EDIT_INPT){ L += 40; }
+    if (W <= SEND){ W = rect.right; }
+    if (H <= SEND){ H = rect.bottom+(H- SEND); }
+    MoveWindow(hwndChild[idx], L, T, W, H, TRUE);
+}
+struct V_LIST { int length; int o[WINNUM]; };
+int init_paint(HWND hwnd, struct V_LIST v){
+    PAINTSTRUCT ps; HDC hdc = BeginPaint(hwnd, &ps); HBRUSH hBrush = (HBRUSH)GetStockObject(NULL_BRUSH); HPEN hPen = (HPEN)GetStockObject(BLACK_PEN); SelectObject(hdc, hPen); SelectObject(hdc, hBrush);
+    for (int i = 0; i < v.length; ++i) {
+        int idx = v.o[i]; int L = wins.w[idx].L; int T = wins.w[idx].T; int W = wins.w[idx].W; int H = wins.w[idx].H;
+        Rectangle(hdc, L, T, W+L, H+T); char* text = wins.w[idx].text; SetBkMode(hdc, TRANSPARENT); TextOut(hdc, L+5, T+2, text, lstrlen(text));
+    }
+    DeleteObject(hBrush); DeleteObject(hPen); EndPaint(hwnd, &ps);
+}
+#define INPUT_TEXT_SZ 1024
+char* get_window_text(int idx){ static char szInput[INPUT_TEXT_SZ]; GetWindowText(hwndChild[idx], szInput, INPUT_TEXT_SZ); return szInput; }
+char* get_window_text_by_name(char* name){ return get_window_text(get_idx_by_name(name)); }
+void set_window_text(int idx, char* text){ SetWindowText(hwndChild[idx], text); }
+void set_window_text_by_name(char* name, char* text){ set_window_text(get_idx_by_name(name), text); }
+int timer_toggle = 1; // 快捷键 Ctrl+END 控制 x2printf 函数是否输出
+int x2printf(char* name, char *format, ...){ if (!timer_toggle){ return; }char log[1024*7] = {0}; va_list args; va_start(args, format); vsprintf(log, format, args); va_end(args); set_window_text_by_name(name, log); return 0; }
+int _WindowSwitch(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam ){
+    int wlen = get_wins_len();
+    switch(message) {
+        case WM_CREATE: { for (int i = 0; i < wlen; ++i) { init_window(hwnd, ((LPCREATESTRUCT) lParam) -> hInstance, i); }SetTimer(hwnd, 1, 30, NULL); return 0; }
+        case WM_SIZE: { for (int i = 0; i < wlen; ++i) { init_move_window(hwnd, i); } return 0; }
+        case WM_TIMER: {}
+        case WM_PAINT: { struct V_LIST v = {0}; v.length = 0; for (int i = 0; i < wlen; ++i) { if (wins.w[i].text != NULL && wins.w[i].wtype == STYLE_EDIT_INPT) { v.o[v.length] = i; v.length++; }} init_paint(hwnd, v); return 0; }
+        case WM_COMMAND: {
+            int wpram = LOWORD(wParam);
+            for (int i = 0; i < wlen; ++i) { 
+                if (wpram == i && wins.w[i].wtype == STYLE_EDIT_BUTN) {
+                    v_inject();
+                    return 0;
+                } 
+            }
+            return 0;
+        }
+        case WM_DESTROY: { PostQuitMessage(0); return 0; }
+    }
+}
+// Ctrl + Home ::: show/hide window
+// Ctrl + End ::: open/close update input
+// Ctrl + w ::: close window
+DWORD  WINAPI _RegistHotKey(LPARAM lParam ){
+    MSG  msg = { 0 };
+    RegisterHotKey(NULL, 0x23, MOD_CONTROL, VK_HOME);
+    RegisterHotKey(NULL, 0x24, MOD_CONTROL, VK_END);
+    // RegisterHotKey(NULL, 0x25, MOD_CONTROL, 'W');
+    while (GetMessage(&msg, 0, 0, 0)){
+        if (WM_HOTKEY == msg.message){
+            if (VK_HOME == HIWORD(msg.lParam)){ IsWindowVisible((HANDLE)lParam) ? ShowWindow((HANDLE)lParam, SW_HIDE) : ShowWindow((HANDLE)lParam, SW_RESTORE); }
+            if (VK_END == HIWORD(msg.lParam)){ timer_toggle = timer_toggle ? 0 : 1; }
+            if ('W' == HIWORD(msg.lParam)){ PostMessage((HANDLE)lParam, WM_QUIT, 0, 0); }
+        }
+    }
+}
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow ){
+    static TCHAR szAppName[] = TEXT("v"); static HWND hwnd; MSG msg; WNDCLASS wndclass;
+    wndclass.lpfnWndProc = WndProc; wndclass.style = CS_HREDRAW | CS_VREDRAW; wndclass.hInstance = hInstance; wndclass.cbClsExtra = 0; wndclass.cbWndExtra = 0; wndclass.hbrBackground = CreateSolidBrush(RGB(236, 233, 216)); wndclass.hCursor = LoadCursor(NULL, IDC_ARROW); wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION); wndclass.lpszClassName = szAppName; wndclass.lpszMenuName = NULL; 
+    if (!RegisterClass(&wndclass)) { MessageBox(NULL, TEXT("cannot create regist window."), TEXT("error"), MB_OK | MB_ICONERROR); return 0; } hwnd = CreateWindow(szAppName, TEXT(VVV_TITLE), WS_OVERLAPPEDWINDOW,
+        100, 100,
+        607, 600,
+        NULL, NULL, hInstance, NULL);
+    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)_RegistHotKey, hwnd, 0, 0); 
+    ShowWindow(hwnd, iCmdShow); UpdateWindow(hwnd);
+    while (GetMessage(&msg, NULL, 0, 0)){ TranslateMessage(&msg); DispatchMessage(&msg); }
+    return msg.wParam;
+}
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam ) { _WindowSwitch(hwnd, message, wParam, lParam); return DefWindowProc(hwnd, message, wParam, lParam); }
+]]>
+    </content>
+    <tabTrigger>ccc</tabTrigger>
+    <scope>source.c</scope>
+</snippet>
