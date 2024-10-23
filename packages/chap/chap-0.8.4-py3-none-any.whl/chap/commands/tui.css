@@ -1,0 +1,61 @@
+/*
+ * SPDX-FileCopyrightText: 2023 Jeff Epler <jepler@gmail.com>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.role_user.history_exclude, .role_assistant.history_exclude {
+    color: $text-disabled;
+    border-left: dashed $primary;
+}
+.role_assistant.history_exclude:focus-within {
+    color: $text-disabled;
+    border-left: dashed $secondary;
+}
+
+.role_system {
+    text-style: italic;
+    color: $text-muted;
+    margin: 1 1 0 0;
+}
+.role_user {
+    text-style: bold;
+    border-top: heavy $primary;
+    border-left: heavy $primary;
+}
+.role_user:focus-within {
+    text-style: bold;
+    border-top: double $secondary;
+}
+.role_assistant {
+    border-left: heavy $primary;
+}
+Markdown:focus-within {
+    border-left: double $secondary;
+}
+Markdown {
+    border-left: heavy transparent;
+}
+MarkdownFence {
+    max-height: 9999;
+}
+Footer {
+    dock: top;
+}
+
+Input, #wait {
+    dock: bottom;
+}
+
+Input {
+    height: 3;
+}
+
+#wait { display: none; height: 3 }
+#wait CancelButton { dock: right; border: none; margin: 0; height: 3; text-style: none}
+
+Markdown {
+    margin: 0 1 0 0;
+}
+
+SubmittableTextArea { height: 3 }
