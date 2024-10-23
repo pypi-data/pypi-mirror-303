@@ -1,0 +1,153 @@
+Metadata-Version: 2.1
+Name: boadata
+Version: 0.4.1
+Summary: (B)rother (O)f (A)rbitrary Data - Python CLI tools for data.
+Home-page: https://github.com/janpipek/boadata
+Author: Jan Pipek
+Author-email: Jan Pipek <jan.pipek@gmail.com>
+License: The MIT License (MIT)
+        
+        Copyright (c) 2014-22 Jan Pipek
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>1.21
+Requires-Dist: pandas>2.0
+Requires-Dist: scipy>=1.14.1
+Requires-Dist: blinker
+Requires-Dist: sqlalchemy
+Requires-Dist: numexpr
+Requires-Dist: click
+Requires-Dist: xarray
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: tabulate
+Requires-Dist: physt
+Requires-Dist: typer
+Provides-Extra: avro
+Requires-Dist: fastavro; extra == "avro"
+Provides-Extra: matlab
+Requires-Dist: pydons; extra == "matlab"
+Provides-Extra: h5py
+Requires-Dist: h5py; extra == "h5py"
+Provides-Extra: pydataset
+Requires-Dist: pydataset; extra == "pydataset"
+Provides-Extra: feather
+Requires-Dist: feather; extra == "feather"
+Provides-Extra: excel
+Requires-Dist: openpyxl; extra == "excel"
+Requires-Dist: xlrd; extra == "excel"
+Provides-Extra: google-cloud
+Requires-Dist: google-cloud-storage; extra == "google-cloud"
+Provides-Extra: all
+Requires-Dist: google-cloud-storage; extra == "all"
+Requires-Dist: openpyxl; extra == "all"
+Requires-Dist: pydons; extra == "all"
+Requires-Dist: pydataset; extra == "all"
+Requires-Dist: fastavro; extra == "all"
+Requires-Dist: h5py; extra == "all"
+Requires-Dist: xlrd; extra == "all"
+Requires-Dist: feather; extra == "all"
+
+boadata
+=======
+
+(B)rowser (O)f (A)rbitrary Data - a Python browser of data.
+The goal is to create a simple tool for scientists / data miners
+to browse and plot various data sources in one simple environment.
+
+It's a library, as well as a set of tools.
+
+Most focus is placed on table-like pandas-based objects.
+
+Installation
+------------
+
+```bash
+pipx install boadata
+```
+
+
+Concepts
+--------
+* uri - boadata tries to support odo URIs
+* data object - wrapper around basic data types (a.k.a odo.resource but with wrapper)
+* data tree - browseable that can contain nodes (some of the nodes can be data objects)
+* data conversion - between different object types
+* view - visual representation of a data objects
+
+CLI tools
+---------
+Run `<command> --help` to see full list of options
+
+* `boa-describe <uri>` - show basic info about a data object
+* `boa-tree <uri>` - list nodes in a data tree
+* `boa-cat <uri>` - print tabular representation of a dataobject
+* `boa-convert <from+> <to>` - convert one data source into another
+* `boa-table <uri>` - a tabular view of data based on textual
+
+Status
+------
+* in (slow) development
+
+Requirements
+------------
+* pandas
+* numpy
+* numexpr
+* click
+* tabulate
+* blinker (perhaps to be removed)
+* h5py (optional)
+* sqlalchemy (optional)
+* matplotlib (to become optional)
+* bokeh (to become optional instead of matplotlib)
+* seaborn
+* pandas_profiling (optional - dataframe summaries)
+* datadotworld (optional - for their datasets)
+
+* Python 3.8+
+
+Supported formats and sources
+-----------------------------
+* File system tree
+* HDF5
+* CSV (including web links)
+* SQL based on SqlAlchemy (sqlite supported)
+* pydataset datasets
+* seaborn datasets
+* MATLAB .fig files
+* data.world datasets/tables (that can be imported pandas dataframes)
