@@ -1,0 +1,266 @@
+Metadata-Version: 2.1
+Name: fw-gear-rtstruct-to-nifti
+Version: 0.2.5
+Summary: Flywheel Gear for converting RTStruct ROIs to NIfTI
+Home-page: https://gitlab.com/flywheel-io/scientific-solutions/gears/rtstruct-to-nifti
+License: MIT
+Keywords: Flywheel,Gears
+Author: Flywheel
+Author-email: support@flywheel.io
+Requires-Python: >=3.12,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Requires-Dist: flywheel-gear-toolkit (>=0.6,<0.7)
+Requires-Dist: flywheel-sdk (>=16.8.0,<17.0.0)
+Requires-Dist: fw-file (>=3.3.0,<4.0.0)
+Requires-Dist: pandas (>=2.1.3,<3.0.0)
+Requires-Dist: python-gdcm (>=3.0.24.1,<4.0.0.0)
+Requires-Dist: rt-utils (>=1.2.7,<2.0.0)
+Requires-Dist: shapely (>=2.0.3,<3.0.0)
+Requires-Dist: simpleitk (>=2.4.0,<3.0.0)
+Project-URL: Repository, https://gitlab.com/flywheel-io/scientific-solutions/gears/rtstruct-to-nifti
+Description-Content-Type: text/markdown
+
+# rtstruct-to-nifti (RTStruct to NIfTI)
+
+## Overview
+
+RTStructs, or radiotherapy structure sets, are DICOM IODs specific to
+radiotherapy that includes contour data for ROIs. The rtstruct-to-nifti
+gear is provided so that these ROIs can be converted to NIfTI files.
+
+### Summary
+
+This Flywheel Gear converts RTStruct closed contour ROIs to NIfTI masks.
+
+### Cite
+
+No citations noted.
+
+### License 
+
+*License:* *MIT*
+
+### Classification
+
+*Category:* *Converter*
+
+*Gear Level:*
+
+- [ ] Project
+- [ ] Subject
+- [ ] Session
+- [X] Acquisition
+- [ ] Analysis
+
+----
+
+[[_TOC_]]
+
+----
+
+### Inputs
+
+- *rtstruct*
+  - __Name__: *rtstruct*
+  - __Type__: *DICOM file*
+  - __Optional__: *False*
+  - __Description__: *RTStruct file with one or more closed contour ROIs*
+- *source_dicom*
+  - __Name__: *source_dicom*
+  - __Type__: *DICOM file*
+  - __Optional__: *True*
+  - __Description__: *Optional: Source DICOM connected to RTStruct*
+  - __Notes__: *A source DICOM file is required for the gear to run.*
+  *If not provided as input, the gear will search the session container*
+  *for a DICOM that corresponds with the inputted RTStruct. If a source*
+  *DICOM is not identified (or more than one is identified), the gear*
+  *will fail and log instructions to re-run the gear with source_dicom*
+  *explicitly inputted into the gear.*
+
+### Config
+
+- *debug*
+  - __Name__: *debug*
+  - __Type__: *boolean*
+  - __Description__: *Log debug messages*
+  - __Default__: *False*
+- *percent-check*
+  - __Name__: *percent-check*
+  - __Type__: *string*
+  - __Description__: *Whether to include a processing step that calculates*
+  *percent of pixel within contour and drops pixels less than 50% within the*
+  *contour. Intended for aTMTV-created RTStructs, not recommended for*
+  *MIM-created RTStructs. If 'auto', gear will search DICOM tags and attempt*
+  *to identify correct setting. Options are 'auto', 'on', 'off'. (WARNING -*
+  *Large contours may greatly increase processing time)*
+  - __Default__: *"auto"*
+- *save-binary-masks*
+  - __Name__: *save-binary-masks*
+  - __Type__: *boolean*
+  - __Description__: *Whether to save as binary masks (only 0s and 1s)*
+*or bitmasks (sums of powers of two).*
+  - __Default__: *True*
+- *save-combined-output*
+  - __Name__: *save-combined-output*
+  - __Type__: *string enum*
+  - __Description__: *Whether to save the RTStruct ROIs as individual*
+*files by label, combined, or both.*
+  - __Default__: *"individual"*
+
+### Outputs
+
+#### Files
+
+- *Individual ROI Mask(s)*
+  - __Name__: *`ROI_<label>_<filename>.nii.gz`*
+  - __Type__: *Compressed NIfTI*
+  - __Optional__: *True*
+  - __Description__: *Individual ROI masks, with one label per file*
+  - __Notes__: *Outputted if `save-combined-output` is "individual" or*
+*"both". If `save-binary-masks` is True, binary masks are outputted.*
+*If `save-binary-masks` is False, foreground voxel values are bitmasked.*
+- *Combined ROI Mask*
+  - __Name__: *`ROI_ALL_<filename>.nii.gz`*
+  - __Type__: *Compressed NIfTI*
+  - __Optional__: *True*
+  - __Description__: *Combined ROI mask, with all labels represented*
+  - __Notes__: *Outputted if `save-combined-output` is "combined" or*
+*"both". Foreground voxel values are bitmasked so that individual labels*
+*can be identified.*
+- *ROI Info CSV*
+  - __Name__: *`<filename>_ROI_info.csv`*
+  - __Type__: *CSV*
+  - __Optional__: *False*
+  - __Description__: *CSV file with ROI labels, reference numbers,*
+*foreground voxel values, number of voxels, and volume(mm^3).*
+  - __Notes__: *If `save-combined-output` is "both" and `save-binary-masks`*
+*is True, foreground voxel value will correspond with the bitmasked*
+*values as seen in the combined ROI file; all individual binary masks*
+*will have a foreground voxel value of 1.*
+
+#### Metadata
+
+No metadata is created or modified by this gear.
+
+### Pre-requisites
+
+#### Prerequisite Gear Runs
+
+No prerequisite gear runs are required by this gear.
+
+#### Prerequisite Files
+
+An ohif_config.json file may be needed at the project level to 
+correctly overlay the created NIfTI mask on the source DICOM.
+Instructions on how to create an ohif_config.json file can be found
+[here](https://docs.flywheel.io/hc/en-us/articles/4536052551187).
+
+The viewer configuration option to add to the ohif_config.json file is
+`{"useRadiologyOrientationForNiftiOverDicomOverlay": true}`.
+
+#### Prerequisite Metadata
+
+Prerequisite metadata are not required by this gear.
+
+## Usage
+
+### Description
+
+This gear takes as input an RTStruct with one or more closed contour ROIs.
+It provides as output NIfTI file representations of these segmentations.
+These output files can be multiple files representing each individual label
+and/or a file that combines all labels into a single mask. 
+
+#### File Specifications
+
+This gear can be run on an RTStruct with one or more closed contour ROIs,
+where the source DICOM is either found in the same session container as the
+inputted RTStruct or inputted explicitly.
+
+### Workflow
+
+```mermaid
+graph LR;
+    A[RTStruct]:::input --> E;
+    B[Source DICOM]:::input -.->|optional| E((rtstruct-to-nifti));
+
+    E:::gear --> F[ROI info CSV file]:::container;
+    E -.->|if save-combined-output is<br />individual or both| G[NIfTI masks for individual labels]
+    E -.->|if save-combined-output is<br />combined or both| H[NIfTI mask with multiple labels]
+
+
+    classDef container fill:#57d,color:#fff
+    classDef input fill:#7a9,color:#fff
+    classDef gear fill:#659,color:#fff
+
+```
+
+Description of workflow
+
+1. Upload RTStruct to acquisition container
+1. Upload source DICOM to acquisition container within the same
+session as the RTStruct
+1. Select RTStruct as input to gear
+1. Gear places output in acquisition container
+
+### Use Cases
+
+#### Use Case 1: RTStruct with gear-identified source DICOM 
+
+__*Conditions:*__
+
+- RTStruct and source DICOM are uploaded to the same session container
+- Exactly one DICOM within the session container matches the RTStruct
+
+After inputting the RTStruct and beginning the gear run, the gear will
+search for the source DICOM within the session container. The gear
+will then utilize the source DICOM as needed in conjunction with the
+RTStruct to create the NIfTI mask output.
+
+#### Use Case 2: RTStruct with inputted source DICOM 
+
+__*Conditions:*__
+
+- RTStruct and source DICOM are uploaded to Flywheel
+- Source DICOM is not in the same session container, or multiple
+DICOMs in the session container match the RTStruct
+
+The RTStruct and source DICOM must both be provided as inputs. The
+gear will utilize the inputted source DICOM instead of searching
+for the file within the session container.
+
+#### Use Case 3: Configuring the Flywheel Viewer for Overlay
+
+__*Conditions:*__
+
+- rtstruct-to-nifti gear has been run successfully
+- NIfTI mask is displaying in the viewer in neurological orientation
+- Source DICOM is displaying in the viewer in radiological orientation
+
+The Flywheel viewer may display the NIfTI mask overlay as mirrored compared
+to the DICOM due to opposing orientations. To correctly view the NIfTI mask
+overlaid on the DICOM, create (or modify) your ohif_config.json file at
+the project level as described
+[here](https://docs.flywheel.io/hc/en-us/articles/4536052551187) to include
+`{"useRadiologyOrientationForNiftiOverDicomOverlay": true}`.
+
+### Logging
+
+This gear logs information about the gear run, including configuration settings,
+labels found within the RTStruct, and files saved. If the gear run
+encounters a known error, the gear logs what occurred and, if applicable, what
+to do to fix the error in a subsequent run.
+
+## FAQ
+
+[FAQ.md](docs/faq.md)
+
+## Contributing
+
+[For more information about how to get started contributing to that gear,
+checkout [CONTRIBUTING.md](CONTRIBUTING.md).]
+<!-- markdownlint-disable-file -->
+
