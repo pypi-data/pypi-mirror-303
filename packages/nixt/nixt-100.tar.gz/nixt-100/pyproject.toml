@@ -1,0 +1,51 @@
+# This file is placed in the Public Domain.
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nixt"
+version = "100"
+authors = [
+    {name = "Bart Thate", email = "record11719@gmail.com" },
+]
+description = "NIXT"
+readme = "README.rst"
+license = { text="Public Domain"}
+classifiers=[
+    'Development Status :: 4 - Beta',
+    'License :: Public Domain',
+    'Operating System :: Unix',
+    'Programming Language :: Python :: 3',
+    'Topic :: Utilities'
+]
+
+[project.urls]
+"home" = "https://pypi.org/project/nixt"
+"bugs" = "https://github.com/otpcr/nixt/issues"
+"source" = "https://github.com/otpcr/nixt"
+
+[tool.setuptools]
+packages = [
+    'nixt',
+    'nixt.modules'
+]
+
+[tool.setuptools.data-files]
+"share/nixt/mods/" = [
+    'mods/__init__.py',
+    'mods/cmd.py',
+    'mods/err.py',
+    'mods/fnd.py',
+    'mods/irc.py',
+    'mods/log.py',
+    'mods/mod.py',
+    'mods/opm.py',
+    'mods/req.py',
+    'mods/rss.py',
+    'mods/srv.py',
+    'mods/tdo.py',
+    'mods/thr.py',
+    'mods/upt.py'
+]
