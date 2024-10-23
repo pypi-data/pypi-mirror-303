@@ -1,0 +1,49 @@
+dynamic = ["version"]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+
+[tool.poetry]
+name = "lion-core"
+version = "0.5.1"
+description = "A core package for the Lion framework."
+authors = ["HaiyangLi <quantocean.li@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lionfuncs = "^1.2.1"
+lionabc = "^1.0.1"
+lion-service = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+pre-commit = "^3.8.0"
+flake8 = "^7.1.1"
+isort = "^5.13.2"
+poetry-dynamic-versioning = "^1.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.flake8]
+ignore = ["E203", "W503", "E501", "E402"]
+max-line-length = 79
+exclude = [".git", "__pycache__", "build", "dist", ".venv"]
