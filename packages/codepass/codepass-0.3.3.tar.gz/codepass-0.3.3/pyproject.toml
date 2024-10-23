@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "codepass"
+version = "0.3.3"
+description = "A CLI tool to evaluate the quality of your code"
+authors = ["airtucha <airtucha@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+mypy = "1.9.0"
+typer = "^0.12.5"
+colorama = "^0.4.6"
+langchain = "^0.3.2"
+langchain-core = "^0.3.10"
+langchain-community = "^0.3.1"
+langchain-openai = "^0.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+codepass = "codepass.main:run_main"
