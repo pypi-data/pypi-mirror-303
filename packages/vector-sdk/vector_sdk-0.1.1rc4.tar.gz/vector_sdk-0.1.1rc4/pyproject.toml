@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vector-sdk"
+version = "0.1.1rc4"
+description = "Universal SDK for Vector DBs"
+authors = [{name = "Dhruv Anand", email = "dhruv.anand@ainorthstartech.com"}]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = []  # Kept empty as in the main branch
+
+[project.urls]
+Homepage = "https://github.com/dhruv-anand-aintech/vector-sdk"
+"Bug Tracker" = "https://github.com/dhruv-anand-aintech/vector-sdk/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+    "flake8>=3.9",
+    "black>=21.5b1",
+]
+
+[project.scripts]
+vector-sdk = "vector_sdk.main:main"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
