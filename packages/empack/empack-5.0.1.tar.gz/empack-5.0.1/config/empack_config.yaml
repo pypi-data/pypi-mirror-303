@@ -1,0 +1,39 @@
+packages:
+  setuptools:
+    exclude_patterns:
+      - pattern: '**/_distutils_hack/**'
+      - pattern: '**/distutils-precedence.pth'
+      - pattern: '**/setuptools/**'
+      - pattern: '**/pkg_resources/_vendor/**'
+  zlib:
+    exclude_patterns:
+      - pattern: '**/so'
+  widgetsnbextension:
+    exclude_patterns:
+      - pattern: '**'
+default:
+  exclude_patterns:
+    - pattern: 'include/**'
+    - pattern: '**/include/**'
+    - pattern: 'bin/**'
+    - pattern: '**/bin/**'
+    - pattern: 'tests/**'
+    - pattern: '**/tests/**'
+    - pattern: '**/*.ini'
+    - pattern: '**/*.exe'
+    - pattern: '**/*.a'
+    - pattern: '**/*.c'
+    - pattern: '**/*.pxd'
+    - pattern: '**/*.pyi'
+    - pattern: '**/*.pyx'
+    - pattern: '**/*.pyc'
+    - pattern: '**/*.typed'
+    - pattern: '**/*.egg-info'
+    - pattern: '**/site-packages/pip/_vendor/**'
+    - pattern: '**/idlelib/**'
+    - pattern: '**/ensurepip/**'
+    - pattern: 'Scripts/*'
+    # Excluding jupyter front-end and server extensions
+    - pattern: 'share/jupyter/nbextensions/**'
+    - pattern: 'share/jupyter/labextensions/**'
+    - pattern: 'etc/jupyter/nbconfig/**'
