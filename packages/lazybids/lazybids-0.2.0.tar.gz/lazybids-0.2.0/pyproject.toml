@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "lazybids"
+version = "0.2.0"
+description = "lazybids is a python package that helps interact with existing bids datasets and convert existing dicom or nifti datasets to BIDS."
+authors = ["Roelant <roelanteijgelaar@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "<3.13,>=3.8"
+pandas = "^2.0.0"
+tqdm = "^4.66.1"
+rich = "^13.7.0"
+pydantic = "^2.5.2"
+pydicom = "^2.4.3"
+h5py = "^3.10.0"
+simpleitk = "^2.3.1"
+pyyaml = "^6.0.1"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.10.0"
+ipykernel = "^6.27.1"
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.5.42"
+mkdocstrings = {version = "<=0.26.1", extras = ["python"]}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
