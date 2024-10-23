@@ -1,0 +1,88 @@
+Metadata-Version: 2.3
+Name: stacrs
+Version: 0.2.2
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Rust
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Typing :: Typed
+Summary: A no-dependency Python package for STAC, using Rust under the hood.
+Keywords: stac,geospatial
+Home-Page: https://stac-utils.github.io/stac-rs
+Author: Pete Gadomski <pete.gadomski@gmail.com>
+Author-email: Pete Gadomski <pete.gadomski@gmail.com>
+License: MIT OR Apache-2.0
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+Project-URL: Repository, https://github.com/stac-utils/stac-rs
+Project-URL: Documentation, https://stac-utils.github.io/stac-rs
+Project-URL: Issues, https://github.com/stac-utils/stac-rs/issues
+
+# stacrs
+
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/stac-utils/stac-rs/ci.yml?branch=main&style=for-the-badge)](https://github.com/stac-utils/stac-rs/actions/workflows/ci.yml)
+[![PyPI - Version](https://img.shields.io/pypi/v/stacrs?style=for-the-badge)](https://pypi.org/project/stacrs)
+![PyPI - License](https://img.shields.io/pypi/l/stacrs?style=for-the-badge)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=for-the-badge)](./CODE_OF_CONDUCT)
+
+A no-dependency Python package for [STAC](https://stacspec.org/), using Rust under the hood.
+
+## Usage
+
+Install via **pip**:
+
+```shell
+python -m pip install stacrs
+```
+
+Then:
+
+```python
+import stacrs
+
+# Search a STAC API
+items = stacrs.search(
+    "https://landsatlook.usgs.gov/stac-server",
+    collections="landsat-c2l2-sr",
+    intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
+    sortby="-properties.datetime",
+    max_items=100,
+)
+
+# Write items to a stac-geoparquet file
+stacrs.write("items.parquet", items)
+
+# Read items from a stac-geoparquet file as an item collection
+item_collection = stacrs.read("items.parquet")
+
+# Use `search_to` for better performance if you know you'll be writing the items
+# to a file
+stacrs.search_to(
+    "items.parquet",
+    "https://landsatlook.usgs.gov/stac-server",
+    collections="landsat-c2l2-sr",
+    intersects={"type": "Point", "coordinates": [-105.119, 40.173]},
+    sortby="-properties.datetime",
+    max_items=100,
+)
+```
+
+See [the documentation](https://stac-utils.github.io/stac-rs/latest/python/) for details.
+In particular, our [example notebook](https://stac-utils.github.io/stac-rs/latest/python/example/) demonstrates some of the more interesting features.
+
+## Comparisons
+
+This package (intentionally) has limited functionality, as it is _not_ intended to be a replacement for existing Python STAC packages.
+[pystac](https://pystac.readthedocs.io) is a mature Python library with a significantly richer API for working with STAC objects.
+For querying STAC APIs, [pystac-client](https://pystac-client.readthedocs.io) is more feature-rich than our simplistic `stacrs.search`.
+
+That being said, it is hoped that **stacrs** will be a nice complement to the existing Python STAC ecosystem by providing a no-dependency package with unique capabilities, such as searching directly into a stac-geoparquet file.
+
+## Other info
+
+This package is part of the [stac-rs](https://github.com/stac-utils/stac-rs) monorepo, see its README for contributing and license information.
+
