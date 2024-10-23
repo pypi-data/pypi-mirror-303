@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: virtualizarr
+Version: 1.1.0
+Summary: Create virtual Zarr stores from archival data using xarray API
+Author-email: Thomas Nicholas <tom@cworthy.org>
+License: Apache-2
+Project-URL: Home, https://github.com/TomNicholas/VirtualiZarr
+Project-URL: Documentation, https://github.com/TomNicholas/VirtualiZarr/blob/main/README.md
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: xarray>=2024.06.0
+Requires-Dist: numpy>=2.0.0
+Requires-Dist: packaging
+Requires-Dist: universal-pathlib
+Requires-Dist: numcodecs
+Requires-Dist: ujson
+Provides-Extra: test
+Requires-Dist: codecov; extra == "test"
+Requires-Dist: fastparquet; extra == "test"
+Requires-Dist: fsspec; extra == "test"
+Requires-Dist: h5netcdf; extra == "test"
+Requires-Dist: h5py; extra == "test"
+Requires-Dist: kerchunk>=0.2.5; extra == "test"
+Requires-Dist: mypy; extra == "test"
+Requires-Dist: netcdf4; extra == "test"
+Requires-Dist: pandas-stubs; extra == "test"
+Requires-Dist: pooch; extra == "test"
+Requires-Dist: pre-commit; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+Requires-Dist: pytest-mypy; extra == "test"
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: ruff; extra == "test"
+Requires-Dist: s3fs; extra == "test"
+Requires-Dist: scipy; extra == "test"
+
+# VirtualiZarr
+
+**VirtualiZarr creates virtual Zarr stores for cloud-friendly access to archival data, using familiar xarray syntax.**
+
+VirtualiZarr (pronounced like "virtualize" but more piratey) grew out of [discussions](https://github.com/fsspec/kerchunk/issues/377) on the [kerchunk repository](https://github.com/fsspec/kerchunk), and is an attempt to provide the game-changing power of kerchunk in a zarr-native way, and with a familiar array-like API.
+
+You now have a choice between using VirtualiZarr and Kerchunk: VirtualiZarr provides [almost all the same features](https://virtualizarr.readthedocs.io/en/latest/faq.html#how-do-virtualizarr-and-kerchunk-compare) as Kerchunk.
+
+_Please see the [documentation](https://virtualizarr.readthedocs.io/en/latest/)_
+
+### Development Status and Roadmap
+
+VirtualiZarr version 1 (mostly) achieves [feature parity](https://virtualizarr.readthedocs.io/en/latest/faq.html#how-do-virtualizarr-and-kerchunk-compare) with kerchunk's logic for combining datasets, providing an easier way to manipulate kerchunk references in memory and generate kerchunk reference files on disk.
+
+Future VirtualiZarr development will focus on generalizing and upstreaming useful concepts into the Zarr specification, the Zarr-Python library, Xarray, and possibly some new packages.
+
+We have a lot of ideas, including:
+- [Zarr v3 support](https://github.com/zarr-developers/VirtualiZarr/issues/17)
+- [Zarr-native on-disk chunk manifest format](https://github.com/zarr-developers/zarr-specs/issues/287)
+- ["Virtual concatenation"](https://github.com/zarr-developers/zarr-specs/issues/288) of separate Zarr arrays
+- ManifestArrays as an [intermediate layer in-memory](https://github.com/zarr-developers/VirtualiZarr/issues/71) in Zarr-Python
+- [Separating CF-related Codecs from xarray](https://github.com/zarr-developers/VirtualiZarr/issues/68#issuecomment-2197682388)
+- [Generating references without kerchunk](https://github.com/zarr-developers/VirtualiZarr/issues/78)
+
+If you see other opportunities then we would love to hear your ideas!
+
+### Credits
+
+This package was originally developed by [Tom Nicholas](https://github.com/TomNicholas) whilst working at [[C]Worthy](cworthy.org), who deserve credit for allowing him to prioritise a generalizable open-source solution to the dataset virtualization problem. VirtualiZarr is now a community-owned multi-stakeholder project.
+
+### Licence
+
+Apache 2.0
