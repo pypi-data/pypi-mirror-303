@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "grafana-django-saml2-auth"
+version = "3.16.0"
+description = "Django SAML2 Authentication Made Easy."
+authors = ["Mostafa Moradian <mostafa@grafana.com>"]
+license = "Apache 2.0"
+readme = "README.md"
+packages = [{ include = "django_saml2_auth", from = "." }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dictor = "0.1.12"
+PyJWT = "2.9.0"
+pysaml2 = "7.5.0"
+
+[tool.poetry.group.dev.dependencies]
+coverage = "7.5.0"
+cyclonedx-bom = "4.5.0"
+django-stubs = "5.1.0"
+interrogate = "1.7.0"
+mypy = "1.4.1"
+pytest = "8.3.2"
+pytest-django = "4.5.2"
+responses = "0.25.0"
+ruff = "^0.6.9"
+types-setuptools = "75.1.0.20240917"
+types-pysaml2 = "1.0.1"
+
+[tool.ruff]
+exclude = [
+    "dist",
+    "build",
+    "env",
+    "venv",
+    ".env",
+    ".venv",
+    ".tox",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    "__pycache__",
+    ".ruff",
+]
+line-length = 100
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "django_saml2_auth.tests.settings"
+pythonpath = "."
+filterwarnings = "ignore::DeprecationWarning"
+addopts = ["--import-mode=importlib"]
+testpaths = ["django_saml2_auth/tests"]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "django_saml2_auth.tests.settings"
+
+[tool.poetry-dynamic-versioning]
+enable = false
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
