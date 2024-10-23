@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: Multiclass_interface
+Version: 1.10
+Summary: Multiclass interface
+Author-email: "Mads M. Pedersen" <mmpe@dtu.dk>
+Project-URL: Homepage, https://gitlab.windenergy.dtu.dk/DYNAMIKS/multiclass_interface
+Project-URL: Bug Tracker, https://gitlab.windenergy.dtu.dk/DYNAMIKS/multiclass_interface/-/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Requires-Dist: pytest-cov; extra == "test"
+
+# Multiclass interface
+
+`multiclass_interface` is a package that allows you to interact with multiple objects as if it was a single object.
+
+The interfaced objects can be executed:
+
+- in the same thread `MultiClassInterface`
+- in individual threads, `MultiThreadClassInterface`
+- in individual processes
+    - using `multiprocessing`: `MultiProcessClassInterface`
+    - using `mpi4py`: `MPIClassInterface`
+
+Furthermore, the `ProcessClass` can be used to interface an object in a different process as if it was in the current process. This feature is useful when running an object that needs to interface a dll/so in its own memory space.
+
+
+## Installation
+
+`pip install multiclass_interface`
+
+## Usage
+See https://hawc2.pages.windenergy.dtu.dk/HAWC2Lib/MulticlassInterface.html
+
+## Support
+Please use the issue tracker to report problems, ideas for improvments etc.
+
+Merge requests are very welcome
