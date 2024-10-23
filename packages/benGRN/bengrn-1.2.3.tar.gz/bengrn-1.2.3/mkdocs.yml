@@ -1,0 +1,34 @@
+site_name: bengrn
+theme:
+  name: readthedocs
+  # analytics:
+  # gtag: G-ABC123
+site_url: https://www.jkobject.com/benGRN/
+nav:
+  - Home: index.md
+  - example notebook:
+      - Omnipath: notebooks/bench_omni_genie3.ipynb
+      - Genome-wide perturbseq: notebooks/bench_perturbseq_genie3_transp.ipynb
+      - Mc. Calla et al.: notebooks/bench_sroy_genie3_transp.ipynb
+  - documentation:
+      - base: base.md
+      - genie3: genie3.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_root_heading: true
+            show_source: true
+            summary: true
+            merge_init_into_class: true
+            show_signature: false
+            do_heading: true
+      default_handler: python
+  - git-revision-date-localized
+  - git-authors
+  - mkdocs-jupyter:
+      include_source: True
+      include_requirejs: true
