@@ -1,0 +1,82 @@
+Metadata-Version: 2.1
+Name: AltAnalyze3
+Version: 0.1.1
+Summary: AltAnalyze3: Advanced RNA-Seq Analysis Workflow
+Home-page: https://github.com/SalomonisLab/altanalyze3.git
+Author: AltAnalyze Development Team
+Author-email: AltAnalyze <altanalyze@gmail.com>
+License: Apache-2.0
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiofiles==24.1.0
+Requires-Dist: anndata==0.10.9
+Requires-Dist: Bio==1.7.1
+Requires-Dist: biopython==1.85.dev0
+Requires-Dist: future==1.0.0
+Requires-Dist: h5py==3.10.0
+Requires-Dist: joblib==1.3.2
+Requires-Dist: matplotlib==3.6.2
+Requires-Dist: nimfa==1.4.0
+Requires-Dist: numpy==1.23.5
+Requires-Dist: pandas==1.5.2
+Requires-Dist: pysam==0.22.0
+Requires-Dist: pytest==8.3.3
+Requires-Dist: requests==2.32.3
+Requires-Dist: scanpy==1.10.3
+Requires-Dist: scikit-learn==1.3.2
+Requires-Dist: scipy==1.14.1
+Requires-Dist: setuptools==68.2.2
+Requires-Dist: statsmodels==0.14.0
+Requires-Dist: tqdm==4.62.3
+
+[![Documentation Status](https://readthedocs.org/projects/altanalyze3/badge/?version=latest)](https://altanalyze3.readthedocs.io/en/latest/?badge=latest)  [![Pypi](https://img.shields.io/pypi/v/altanalyze3?logo=PyPI)](https://pypi.org/project/altanalyze3/)  [![Downloads](https://pepy.tech/badge/altanalyze3)](https://pypi.org/project/altanalyze3/)  [![Stars](https://img.shields.io/github/stars/SalomonisLab/altanalyze3)](https://github.com/SalomonisLab/altanalyze3/stargazers)
+
+
+# altanalyze3
+AltAnalyze3 is an advanced Python3 workflow for long-read (LR) and short read splicing analysis. The software can integrate results across single-cell and bulk technological platforms, aligning to a common gene model for splice junction- (MultiPath-PSI) and isoform-based analyses (TPM or ratio). Both supervised and unsupervised (splice-ICGS) analyses are supported. Workflows can be run in a fully automated manner with or step-by-step with extensive customization. See tutorials for examples.
+
+## Tutorials and Installation
+
+[Read the full documentation](https://altanalyze3.readthedocs.io/en/latest/). AltAnalyze 3 has been tested in python>=3.11 on MacOS and Linux. To install:
+
+```bash
+pip install AltAnalyze3
+```
+
+The source code is in [src folder](./src)
+
+The documentation is in [doc folder](./doc)
+
+The testing examples and code are in [test folder](./test)
+
+## Contribution rules
+
+If you are a member of the development team, to contribute, please follow the steps below:
+
+```bash
+# if you haven't cloned before
+git clone https://github.com/SalomonisLab/altanalyze3.git
+git checkout -b <your_branch_name>  # please replace "frank" with your token
+# if you already have the local repository
+git checkout main
+git pull origin main
+# do the same things for your branch as well
+git checkout <your_branch_name>
+git pull origina <your_branch_name>
+# then make the changes in your branch locally, after finished, push them to the correpsonding branch on GitHub
+git push origin HEAD:<your_branch_name>
+```
+
+Then, on the GitHub, go to your branch, and click contribute, issue a pull request with clear messages on what you have changed. Then the managers will review your pull requests and deciding whether to merge to the main branch or not (At each standing meeting).
+
+If you are not a member of development team, to contribute, please follow the steps below:
+
+1. fork the repository to your account
+2. make the changes in your forked repository
+3. create a pull request
+4. the managers will review your codes and decide how to merge into the main branch (At each standing meeting)
