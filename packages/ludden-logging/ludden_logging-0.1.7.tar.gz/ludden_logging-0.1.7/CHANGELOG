@@ -1,0 +1,52 @@
+# Ludden-Logging Changelog
+
+## v0.1.7 Increment in submodules
+
+### v0.1.7 Changes
+
+- Removed the auto increment of run from the the ludden-logging library.
+- This means that in every module will need an `atexit.register(log.increment)`
+
+## v0.1.6 Logger Depth Correction
+
+### v0.1.6 Fixed
+
+- Corrected the log's depth from `1` to `2` to log the file of the library using it rather than itself.
+- Minor typo corrections
+
+### v0.1.5 Changes
+
+- Optimized logger depth to accurately display the correct meta data of the library using it.
+
+## v0.1.5 Update Run
+
+### v0.1.5 Fixed
+
+- ensured that Run.project_name was correct.
+- ensured that if no run_file was found that it would create it and set it to zero.
+
+## v0.1.4 Updated Run and Log
+
+### v0.1.4 Fixed
+
+- run.run, to definitely be an int.
+- added error handling to log
+
+## v0.1.3 Fixed pyproject.toml
+
+### v0.1.3 Fixed
+
+- Fixed `pyproject.toml` to include correct dependencies
+- Corrected the version
+
+## v0.1.2 Added Type Hinting
+
+### v0.1.2 Added
+
+- Type hinting to all functions and classes
+- Mypy task
+- `py.typed` file to package
+
+### v0.1.2 Changed
+
+- Incremented package version to `0.1.2`
