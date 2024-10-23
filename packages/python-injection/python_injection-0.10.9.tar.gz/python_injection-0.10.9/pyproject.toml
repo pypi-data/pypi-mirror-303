@@ -1,0 +1,109 @@
+[tool.poetry]
+name = "python-injection"
+version = "0.10.9"
+description = "Fast and easy dependency injection framework."
+license = "MIT"
+authors = ["remimd"]
+readme = "README.md"
+repository = "https://github.com/100nm/python-injection"
+keywords = ["dependencies", "dependency", "inject", "injection"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Typing :: Typed",
+]
+packages = [{ include = "injection" }]
+
+[tool.poetry.dependencies]
+python = ">=3.12, <4"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "*"
+ruff = "*"
+
+[tool.poetry.group.test.dependencies]
+blacksheep = { version = "*", optional = true }
+fastapi = "*"
+httpx = "*"
+pydantic = "*"
+pytest = "*"
+pytest-asyncio = "*"
+pytest-cov = "*"
+
+[tool.poetry.group.example.dependencies]
+argon2-cffi = "*"
+faker = "*"
+pydantic = "*"
+
+[tool.poetry.group.bench.dependencies]
+tabulate = "*"
+typer = "*"
+types-tabulate = "*"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pass",
+    "pragma: no cover",
+    "raise NotImplementedError",
+]
+
+[tool.coverage.run]
+omit = ["bench.py"]
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_defs = true
+exclude = [
+    "documentation/example/",
+    "tests/",
+    "bench.py",
+    "conftest.py",
+    "injection/integrations/blacksheep.py",
+]
+follow_imports = "silent"
+no_implicit_reexport = true
+plugins = ["pydantic.mypy"]
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+addopts = "--tb short --cov ./ --cov-report term-missing:skip-covered --ignore tests/integrations/test_blacksheep.py"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_mode = "auto"
+testpaths = "**/tests/"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+extend-select = ["F", "I", "N"]
+ignore = ["N818"]
+fixable = ["ALL"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
