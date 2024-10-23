@@ -1,0 +1,71 @@
+Metadata-Version: 2.3
+Name: wa-analyzer
+Version: 0.3.1
+Summary: Code for the Master of Applied Data Science course Data Analysis and Visualization
+Author-email: Raoul Grouls <Raoul.Grouls@han.nl>
+License: MIT
+Requires-Python: <3.12,>=3.11
+Requires-Dist: click>=8.1.7
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: numpy>=1.26.3
+Requires-Dist: pandas>=2.2.0
+Requires-Dist: pyarrow>=15.0.0
+Requires-Dist: pydantic>=2.5.3
+Requires-Dist: scikit-learn>=1.4.0
+Requires-Dist: seaborn>=0.13.1
+Requires-Dist: statsmodels>=0.14.1
+Provides-Extra: huggingface
+Requires-Dist: sentence-transformers>=2.5.1; extra == 'huggingface'
+Requires-Dist: torch>=2.2.1; extra == 'huggingface'
+Requires-Dist: transformers>=4.38.2; extra == 'huggingface'
+Provides-Extra: plotting
+Requires-Dist: mads-datasets>=0.3.14; extra == 'plotting'
+Requires-Dist: plotly>=5.18.0; extra == 'plotting'
+Requires-Dist: streamlit>=1.31.1; extra == 'plotting'
+Description-Content-Type: text/markdown
+
+This is the repository for the Master of Applied Data Science course "Data Analysis & Visualisation", previously known as "Data Mining & Exploration".
+All instructions assume a UNIX machine. You should have received an invite link for a VM; if not, contact your teacher.
+On the VM, everything is installed (like rye).
+
+# Setup the virtual environment
+1. First, make sure you have python >= 3.11. You can check the version with `python --version`.
+2. Make sure `rye` is there. Alternatively, use `pip` to install your environment.
+    - check if it is installed by executing `rye --help`
+    - if not, run `curl -sSf https://rye.astral.sh/get | bash` (not necessary on the VM)
+    - watch the intro video for rye at https://rye.astral.sh/guide/
+3. Install the dependecies by navigating to the MADS-DAV folder where the `pyproject.toml` is located and run `rye sync`.
+
+# Run the preprocessor
+
+Download a chat from Whatsapp and put it in the `data/raw` folder. Rename the file to `chat.txt' and run the following command:
+
+```bash
+source .venv/bin/activate
+```
+
+This will activate your virtual environment.
+You can check which python is being used by running:
+```bash
+which python
+```
+
+After this, you can run the preprocessor with the following command:
+
+```bash
+analyzer --device ios
+```
+Change `ios` to `android` if you have an android device.
+This will run the `src/wa_analyzer.py:main` method, which will process the chat and save the results in the `data/processed` folder.
+
+You should see some logs, like this:
+```
+2024-02-11 16:07:19.191 | INFO     | __main__:main:71 - Using iOS regexes
+2024-02-11 16:07:19.201 | INFO     | __main__:process:61 - Found 1779 records
+2024-02-11 16:07:19.201 | INFO     | __main__:process:62 - Appended 152 records
+2024-02-11 16:07:19.202 | INFO     | __main__:save:30 - Writing to data/processed/whatsapp-20240211-160719.csv
+2024-02-11 16:07:19.206 | SUCCESS  | __main__:save:32 - Done!
+```
+
+Inside the `log` folder you will find a logfile, which has some additional information that might be useful for debugging.
+
