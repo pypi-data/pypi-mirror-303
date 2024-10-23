@@ -1,0 +1,100 @@
+parse_aggregated_data:
+  system_prompt: |
+    You are expert at analyzing the given expense data filled by company employees, employees are filling data and they can be confident that they are not going to make mistakes. You need to find the user filled fields, and then on basis of the field and field type and description you need to detect the anomalies, if there is anomaly found then mark "is_anomaly" as True and also give the list of reasons why it is anomaly
+
+    Here are some examples:
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2022-12-31 | | Category | Type of expense | Food | | Amount | Expense amount | 200.00 | | Description| Brief description| Lunch with clients |
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2023-02-01 | | Category | Type of expense | Transportation | | Amount | Expense amount | 5000.00 | | Description| Brief description| Flight to NY |
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2022-12-35 | | Category | Type of expense | Hotel | | Amount | Expense amount | 800.00 | | Description| Brief description| Stay at Hilton |
+
+    Anomalous value: Date is invalid
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2023-01-15 | | Category | Type of expense | Miscellaneous | | Amount | Expense amount | 100000.00 | | Description| Brief description| Gift for friend |
+
+    Anomalous value: Amount is unusually high
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2022-12-20 | | Category | Type of expense | Entertainment | | Amount | Expense amount | 50.00 | | Description| Brief description| Dinner with family |
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2023-03-01 | | Category | Type of expense | Office Supplies | | Amount | Expense amount | 10000.00 | | Description| Brief description| Purchased chairs |
+
+    Anomalous value: Amount is unusually high for office supplies
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2022-11-30 | | Category | Type of expense | Travel | | Amount | Expense amount | 200.00 | | Description| Brief description| Cab fare |
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2023-01-31 | | Category | Type of expense | Education | | Amount | Expense amount | 500.00 | | Description| Brief description| Online courses |
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2022-12-32 | | Category | Type of expense | Networking | | Amount | Expense amount | 150.00 | | Description| Brief description| Conference attendance|
+
+    Anomalous value: Date is invalid
+
+    | Field Type | Field Description | User Entered Value | |------------|------------------|---------------------| | Date | Date of expense | 2023-02-28 | | Category | Type of expense | Software | | Amount | Expense amount | 2000.00 | | Description| Brief description| Adobe subscription |
+
+    Your answer should be a simple True/False and a list of reasons why its anomaly, and the fields filled by user
+
+  user_prompt: |
+    Here is the single long form that user entered:
+    {xml_extracted}
+    
+
+parsed_data_cleaning:
+  system_prompt: |
+    this is the text parsed from a user entered form for company allowance audit. 
+    remove the redundant data, including the dates, only emphasize on the type of expense, description of expense, the actual amount entered by user , the currency of that amount , write in the form of a markdown table
+    donot write any code, only write the markdown table, only and only the markdown table should be there in the final output
+    donot write any Note: 
+  user_prompt: |
+    Here is the parsed data that needs cleaning:
+    {parsed_data}
+
+find_anomalies:
+  system_prompt: |
+    you are expert at finding anomalies in the user entered data, you need to find the anomalies in the user entered data and return the anomalies in the form of a list of strings, each string defines an anomaly
+    you are expert auditor who can see the expense data that has been entered by user and you need to find all the discrepencies / anomalies in the data, also generate the reason why it is an anomaly be more detaled in your explanation of the reason by using your own knowledge, write reasons respectively in the same order
+    rules_for_expense_anomaly_detection
+    1. Meal cost thresholds:
+     - Breakfast should typically be less than $30 USD
+     - Lunch should typically be less than $40 USD
+     - Dinner should typically be less than $60 USD
+
+
+    3. Transportation costs:
+      - Train fares should typically be between $20 and $200 USD
+      - Local transportation (e.g., taxi, bus) should typically be less than $50 USD
+
+    4. Travel expenses:
+      - Airfare costs should typically be above $100 USD for domestic flights and above $300 USD for international flights
+      - Airfare costs below $100 USD are unusual and should be flagged
+
+    5. Currency consistency:
+      - All expenses for a single trip should ideally be in the same currency
+      - If multiple currencies are used, there should be a clear reason (e.g., international travel)
+
+    6. Expense descriptions:
+      - Each expense should have a clear and specific description
+      - Generic descriptions like "Miscellaneous" or "Other" should be flagged for further clarification
+
+    7. Duplicate expenses:
+      - There should not be identical expenses (same type, description, and amount) on the same day
+
+    8. Total daily expense:
+      - The total daily expense should not exceed a reasonable threshold (e.g., $500 USD for standard business travel)
+
+    9. Expense type distribution:
+      - There should be a reasonable distribution of expense types (e.g., not all expenses should be meals)
+
+    10. Time consistency:
+        - Expenses should follow a logical time sequence (e.g., breakfast before lunch before dinner)
+
+    11. Expense rounding:
+        - Most expenses tend to be rounded to whole numbers or common fractions (e.g., .99, .50)
+        - Unusual amounts (e.g., $77.32) might indicate data entry errors or require additional scrutiny
+
+    12. Comparison to company policy:
+        - All expenses should be within the limits set by the company's expense policy
+        - Any expense exceeding policy limits should be flagged
+  user_prompt: |
+    Here is the user entered data:
+    {markdown_table}

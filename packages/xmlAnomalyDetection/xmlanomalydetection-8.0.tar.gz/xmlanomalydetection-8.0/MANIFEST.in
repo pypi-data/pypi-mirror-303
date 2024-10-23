@@ -1,0 +1,19 @@
+include README.md
+include requirements.txt
+include build_package.sh
+include xmlAnomalyDetection/prompts.yaml
+
+recursive-include xmlAnomalyDetection *.py
+recursive-include xmlAnomalyDetection/dataset *
+recursive-include xmlAnomalyDetection/parsers *
+
+exclude debug.ipynb
+exclude *.csv
+exclude *.xml
+exclude *.txt
+exclude markdown_table.md
+exclude load_whisper.py
+
+prune build
+prune dist
+prune xmlAnomalyDetection.egg-info
