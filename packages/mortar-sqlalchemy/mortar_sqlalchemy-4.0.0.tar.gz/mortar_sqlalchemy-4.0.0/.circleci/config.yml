@@ -1,0 +1,56 @@
+version: 2.1
+
+orbs:
+  python: cjw296/python-ci@4
+
+jobs:
+  run-tests:
+    parameters:
+      python:
+        type: string
+      postgres:
+        type: string
+    docker:
+      - image: cimg/python:<< parameters.python >>
+        environment:
+          DB_URL: postgresql://postgres@localhost:5432/circle_test
+      - image: cimg/postgres:<< parameters.postgres >>
+    steps:
+      - run: "sudo apt install postgresql-client"
+      - python/pip-run-tests:
+          command: "pytest -W error -W ignore::ResourceWarning --cov"
+
+common: &common
+  jobs:
+    - run-tests:
+        matrix:
+          parameters:
+            python: ['3.11', '3.12']
+            postgres: ["12.20", "16.1"]
+
+    - python/coverage:
+        name: coverage
+        requires:
+          - run-tests
+
+    - python/release:
+        name: release
+        config: .carthorse.yml
+        requires:
+          - coverage
+        filters:
+          branches:
+            only: master
+
+workflows:
+  push:
+    <<: *common
+  periodic:
+    <<: *common
+    triggers:
+      - schedule:
+          # once a month:
+          cron: "0 15 2 * *"
+          filters:
+            branches:
+              only: master
