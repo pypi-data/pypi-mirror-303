@@ -1,0 +1,51 @@
+# Adapted from https://docs.gitlab.com/ee/ci/caching/#cache-python-dependencies.
+default:
+  image: python:3.12
+  before_script:
+    - apt update
+    - apt install -y build-essential git libhdf5-dev libsuitesparse-dev
+    # We need numpy<2 because of extinction package compiled on numpy-1.*
+    - pip install "numpy<2" git+https://github.com/nregnault/sncosmo
+
+
+test-gcc:
+  image: "python:$VERSION"
+  stage: test
+  script:
+    - VERBOSE=1 CXX=g++ pip install -v .[test,gaia]
+    - pytest -v
+  parallel:
+    matrix:
+      - VERSION: ['3.9', '3.10', '3.11', '3.12']
+
+
+# do not test on several Python versions here, we just want to be sure the bbf
+# C/C++ extension can be compiled with clang
+test-clang:
+  stage: test
+  script:
+    - apt install -y clang libomp-dev
+    - VERBOSE=1 CXX=clang++ pip install -v .[test,gaia]
+    - pytest -v
+
+
+sdist:
+  stage: deploy
+  script:
+    - pip install build
+    - python -m build --sdist --outdir dist
+  artifacts:
+    paths:
+      - dist/*.tar.gz
+
+
+pypi:
+  # publish the source distribution on https://pypi.org/project/bbf/, only when
+  # a new tag
+  stage: deploy
+  needs: ["sdist"]
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - pip install twine
+    - twine upload --non-interactive --repository pypi dist/*
