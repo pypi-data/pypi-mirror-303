@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "cytomat-tests"
+version = "0.1.0"
+description = "just a package to test things out"
+authors = ["Thiago Meyer <tiagmey@gmail.com>"]
+readme = "README.md"
+packages = [{include = "cytomat_tests", from = "src"}]
+include = ["README.md", "src/cytomat_tests/sample_configs.json"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyserial = "^3.5"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
+pytest = "^7.4.0"
+
+[tool.poetry.scripts]
+post_install = "cytomat_tests.setup:post_install"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy.overrides]
+ignore_missing_imports = true
