@@ -1,0 +1,191 @@
+Metadata-Version: 2.1
+Name: pythion
+Version: 1.0.22
+Summary: AI-powered CLI tool for generating Python documentation strings effortlessly
+Author-email: Asaniczka <asaniczka@gmail.com>
+Maintainer-email: Asaniczka <asaniczka@gmail.com>
+License: Apache-2.0
+Project-URL: Homepage, https://github.com/asaniczka/pythion
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: annotated-types>=0.7.0
+Requires-Dist: anyio>=4.6.0
+Requires-Dist: certifi>=2024.8.30
+Requires-Dist: click>=8.1.7
+Requires-Dist: distro>=1.9.0
+Requires-Dist: h11>=0.14.0
+Requires-Dist: httpcore>=1.0.5
+Requires-Dist: httpx>=0.27.2
+Requires-Dist: idna>=3.10
+Requires-Dist: jiter>=0.5.0
+Requires-Dist: markdown-it-py>=3.0.0
+Requires-Dist: mdurl>=0.1.2
+Requires-Dist: openai>=1.47.0
+Requires-Dist: pydantic>=2.9.2
+Requires-Dist: pydantic_core>=2.23.4
+Requires-Dist: Pygments>=2.18.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: pyperclip>=1.9.0
+Requires-Dist: rich>=13.8.1
+Requires-Dist: sniffio>=1.3.1
+Requires-Dist: tqdm>=4.66.5
+Requires-Dist: typing_extensions>=4.12.2
+Requires-Dist: wrapworks>=1.0.6
+
+# Pythion
+
+Pythion is a command-line interface (CLI) tool designed to assist Python developers by generating documentation strings using AI. With an easy-to-use interface built on the [Click](https://click.palletsprojects.com/) library, Pythion provides a seamless way to enhance your Python projects with well-structured docstrings and documentation management.
+
+## Features
+
+- Generate documentation strings for Python functions and classes.
+- Create and manage documentation in batches
+- Flexible options to include or exclude already documented functions.
+- Automatically generate intelligent commit messages based on staged changes.
+- Easily bump version numbers in your projects.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Commands](#commands)
+
+## Installation
+
+You can install Pythion via pip. Open your terminal and enter:
+
+```
+pip install pythion
+```
+
+## Usage
+
+After installing Pythion, you can invoke the command-line tool as follows:
+
+```
+pythion [OPTIONS] COMMAND [ARGS]…
+```
+
+# Commands
+
+## 1. `docs`
+
+Generates and manages docstrings for Python projects.
+
+```
+pythion docs <root_dir> [--custom-instruction <instruction>] [--profile <profile>]
+```
+
+- **Arguments:**
+  - `root_dir`: The path to the root directory containing the Python files to analyze.
+- **Options:**
+  - `--custom-instruction`: Custom instructions for generating docstrings.
+  - `--profile`: Choose a predefined instruction set such as `fastapi` or `cli`.
+
+**Example:**
+
+```
+pythion docs /path/to/project --custom-instruction "Use concise language."
+```
+
+## 2. `module_docs`
+
+Generates documentation for Python modules.
+
+```
+pythion module_docs <root_dir> [--custom-instruction <instruction>]
+```
+
+- **Arguments:**
+  - `root_dir`: The root directory of the Python project.
+- **Options:**
+  - `--custom-instruction`: Custom instructions for module documentation generation.
+
+**Example:**
+
+```
+pythion module_docs /path/to/project --custom-instruction "Include examples in docstrings."
+```
+
+### 3. `build-cache`
+
+Creates a documentation cache for functions and methods in a specified directory.
+
+```
+pythion build-cache <root_dir> [--use_all] [--dry]
+```
+
+- **Arguments:**
+  - `root_dir`: The directory path containing Python files.
+- **Options:**
+  - `--use_all`: Generates docstrings for all functions, or only those without docstrings.
+  - `--dry`: Performs a dry run without generating any documentation.
+
+**Example:**
+
+```
+pythion build-cache /path/to/dir --use_all --dry
+```
+
+### 4. `iter-docs`
+
+Iterates through the docstring cache and apply them to objects
+
+```
+pythion iter-docs <root_dir></root_dir>
+```
+
+- **Arguments:**
+  - `root_dir`: The path to the directory containing documents to be iterated.
+
+**Example:**
+
+```
+pythion iter-docs /path/to/dir
+```
+
+### 5. `make-commit`
+
+Generates a commit message based on staged changes.
+
+```
+pythion make-commit [--custom-instruction <instruction>] [--profile <profile>]
+```
+
+- **Options:**
+  - `--custom-instruction`: Custom instructions for generating the commit message.
+  - `--profile`: (Optional) Select a predefined instruction set.
+
+**Example:**
+
+```
+pythion make-commit --custom-instruction "Don't mention version updates"
+```
+
+## 6. `bump-version`
+
+Bumps version numbers in a specified version file.
+
+```
+pythion bump-version --version-regex <pattern> --file-path <file>
+```
+
+- **Arguments:**
+  - `--version-regex`: Regex pattern to match the version string.
+  - `--file-path`: Full path to the file containing the version string.
+
+**Example:**
+
+```
+pythion bump-version --version-regex 'version="(.\*?)"' --file-path '/path/to/version_file.txt'
+```
+
+## NOTES
+
+- You must have an OpenAI API key saved on your environment for the key `OPENAI_API_KEY`.
