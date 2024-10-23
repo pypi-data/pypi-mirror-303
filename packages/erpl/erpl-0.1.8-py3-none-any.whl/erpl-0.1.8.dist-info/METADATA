@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: erpl
+Version: 0.1.8
+Summary: DSL for escape rooms
+Author: surumkata
+Author-email: a93277@uminho.pt
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: lark (>=1.1.9,<2.0.0)
+Requires-Dist: numpy (>=1.26.4,<2.0.0)
+Requires-Dist: pillow (>=10.3.0,<11.0.0)
+Requires-Dist: pygame (>=2.5.2,<3.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Description-Content-Type: text/markdown
+
+# ERPL
+
+Warning: Still development
+
+ERPL (Escape Room Programming Language) is a programming language to facilitate the creation of virtual escape room games. The program is composed of a parser and an engine (both can be used separately). The parser will receive an .erpl file (described below) that will have the escape room information, it will analyze it and then the engine with this information will generate the escape room game, with the help of the pygame module.
+
+## Parser
+
+        erparse <.erpl file>
+
+### Options
+
+     -h, --help                                      show this help message and exit
+     -o OUTPUT , --output OUTPUT                     output (json) file (default is stdout)
+     -i INPUT , --input  INPUT                       input file (.erpl file)
+     -args ARGS [ARGS ...], --args ARGS [ARGS ...]   arguments to be replaced in the erpl file
+
+## Engine
+
+        erengine <json file>   
+
+### Options
+
+    -h, --help                                      show this help message and exit
+    -i INPUT , --input  INPUT                       input file (json file)
+    -e ENGINE, --engine ENGINE                      Escolha a engine do jogo: pygame ou p5
+
