@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[project]
+name = "prob_dim_red"
+dynamic = ["version"]
+description = "Probabilistic dimensionality reduction methods"
+readme = "README.md"
+license = {text = "MIT License"}
+requires-python = ">=3.9"
+keywords = ["statistics", "machine learning", "dimensionality reduction", "PCA"]
+authors = [
+  {name = "François Victor", email = "francois.victor@inrae.fr"},
+  {name = "Jean-Benoist Leger", email = "jbleger@hds.utc.fr"},
+  {name = "Julien Chiquet", email = "julien.chiquet@inrae.fr"},
+]
+maintainers = [
+  {name = "François Victor", email = "francois.victor@inrae.fr"},
+]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Development Status :: 2 - Pre-Alpha",
+  "Programming Language :: Python",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = ["numpy", "scipy", "matplotlib", "tqdm"]
+
+[project.optional-dependencies]
+dev = ["build","pre-commit"]
+doc = ["sphinx", "sphinx_rtd_theme", "sphinx-argparse",]
+
+[project.scripts]
+prob_dim_red = "prob_dim_red._cli:main"
+
+[project.urls]
+homepage = "https://forgemia.inra.fr/mia-paris/reduction-dimension/prob_dim_red"
+repository = "https://forgemia.inra.fr/mia-paris/reduction-dimension/prob_dim_red"
+
+[tool.pytest.ini_options]
+markers = [
+    "minimal: minimal test set (select with '-m \"minimal\"')",
+]
