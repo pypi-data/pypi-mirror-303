@@ -1,0 +1,217 @@
+#include <Arduino.h>
+
+{{ contents }}
+
+
+/******************************************************************************
+ ***************************** Start of OTA patch ****************************
+ *****************************************************************************/
+
+
+/**
+ * Simulate an in-memory Stream (inspired from Python's BytesIO)
+ */
+class BytesIO : public Stream {
+  public:
+    BytesIO(const uint8_t *c, size_t l) : contents(c), len(l), i(0) {}
+
+    int available() {
+      return len - i;
+    }
+
+    int read() {
+      return contents[i++];
+    }
+
+    size_t readBytes(uint8_t *buf, size_t n) {
+      size_t j = 0;
+
+      while (available() && j < n) {
+#ifdef EI_OTA_SWAP_BYTES
+        buf[j] = read();
+#else
+        buf[n - j - 1] = read();
+#endif
+        j++;
+      }
+
+      return j;
+    }
+
+    // Stream compatibility
+    size_t write(uint8_t x) {
+      return 0;
+    }
+
+    // Stream compatibility
+    int peek() {
+      return 0;
+    }
+
+    void seek(size_t index) {
+        i = index;
+    }
+
+  protected:
+    size_t i;
+    size_t len;
+    const uint8_t *contents;
+};
+
+/**
+ * Patch quantization values from Stream
+ */
+String patchQuantizationFromStream(Stream& stream, uint8_t expectedLayerNumber, uint16_t expectedSize) {
+    String error("");
+
+    if (stream.available() < 3 + expectedSize * 8) {
+        error = "Not enough data available for layer ";
+        error += expectedLayerNumber;
+        error += "'s quantization: expected ";
+        error += 3 + expectedSize * 8;
+        error += ", found ";
+        error += stream.available();
+        return error;
+    }
+
+    uint8_t layerNumber = stream.read();
+    uint16_t size;
+    stream.readBytes((uint8_t*)&size, 2);
+
+    if (layerNumber != expectedLayerNumber) {
+        error = "Quantization index mismatch: expected ";
+        error += expectedLayerNumber;
+        error += ", found ";
+        error += layerNumber;
+        return error;
+    }
+
+    if (size != expectedSize) {
+        error = "Size mismatch at layer ";
+        error += layerNumber;
+        error += "'s quantization: expected ";
+        error += expectedSize;
+        error += ", found ";
+        error += size;
+        return error;
+    }
+
+    TensorInfo_t *info = &(tensorData[layerNumber]);
+    TfLiteQuantization *quant = &(info->quantization);
+    TfLiteAffineQuantization *params = (TfLiteAffineQuantization*) quant->params;
+
+    for (size_t i = 0; i < size; i++) {
+        float s;
+        int z;
+        stream.readBytes((uint8_t*)&s, 4);
+        stream.readBytes((uint8_t*)&z, 4);
+        params->scale->data[i] = s;
+        params->zero_point->data[i] = z;
+    }
+
+    return "";
+}
+
+/**
+ * Patch layer's data from Stream
+ */
+ template<typename DType>
+ String patchTensorDataFromStream(Stream& stream, uint8_t expectedLayerNumber, uint8_t expectedBitDepth, size_t expectedSize) {
+    String error("");
+
+    if (stream.available() < 4 + expectedSize * sizeof(DType)) {
+        error = "Not enough data available for layer ";
+        error += expectedLayerNumber;
+        error += "'s data: expected ";
+        error += 4 + expectedSize * sizeof(DType);
+        error += ", found ";
+        error += stream.available();
+        return error;
+    }
+
+    uint16_t size;
+    uint8_t layerNumber = stream.read();
+    uint8_t bitDepth = stream.read();
+    stream.readBytes((uint8_t*)&size, 2);
+
+    if (layerNumber != expectedLayerNumber) {
+        error = "Data index mismatch: expected ";
+        error += expectedLayerNumber;
+        error += ", found ";
+        error += layerNumber;
+        return error;
+    }
+
+    if (bitDepth != expectedBitDepth) {
+        error = "BitDepth mismatch at layer ";
+        error += layerNumber;
+        error += "'s data: expected ";
+        error += expectedBitDepth;
+        error += ", found ";
+        error += bitDepth;
+        return error;
+    }
+
+    if (size != expectedSize) {
+        error = "Size mismatch at layer ";
+        error += layerNumber;
+        error += "'s data: expected ";
+        error += expectedSize;
+        error += ", found ";
+        error += size;
+        return error;
+    }
+
+    DType *data = (DType*)(tensorData[layerNumber].data);
+
+    for (size_t i = 0; i < size; i++) {
+        DType x;
+        stream.readBytes((uint8_t*)&x, sizeof(DType));
+        data[i] = x;
+    }
+
+    return "";
+}
+
+/**
+ * Update model weights from Stream
+ */
+String ei_ota(Stream& stream) {
+    String error("");
+
+    if (stream.available() < 4) {
+        error = "No data available for update";
+        return error;
+    }
+
+    uint32_t patchSize;
+    stream.readBytes((uint8_t*)&patchSize, 4);
+
+    if (patchSize != {{ patch_size }}) {
+        error = "Size mismatch: expected ";
+        error += {{ patch_size }};
+        error += ", found ";
+        error += patchSize;
+        return error;
+    }
+
+    {% for t in tensor_data.iterator %}
+    if ((error = patchTensorDataFromStream<int{{ t.bits }}_t>(stream, {{ t.index }}, {{ t.bits }}, {{ t.size }})) != "") return error;{% endfor %}
+
+    {% for q in quantization.iterator %}
+    if ((error = patchQuantizationFromStream(stream, {{ q.index }}, {{ q.size }})) != "") return error;{% endfor %}
+
+    return "";
+}
+
+/**
+ * Restore original weights
+ */
+String ei_restore() {
+    // simulate a Stream to re-use existing code
+    static const uint8_t originalWeights[{{ original_weights_size }}] = { {{ as_array(original_weights) }} };
+    static BytesIO originalWeightsStream(originalWeights, sizeof(originalWeights));
+
+    originalWeightsStream.seek(0);
+    return ei_ota(originalWeightsStream);
+}
