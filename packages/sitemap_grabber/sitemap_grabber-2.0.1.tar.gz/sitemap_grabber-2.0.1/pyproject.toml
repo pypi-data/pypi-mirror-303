@@ -1,0 +1,82 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "sitemap_grabber"
+authors = [{name = "SimpleCTO", email = "github+sitemap_grabber@simplecto.com"}]
+license = {file = "LICENSE"}
+version = "2.0.1"
+description = "Grab and recursively parse website sitemaps, robots.txt, and other related files."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+]
+dependencies = [
+    "defusedxml==0.7.1",
+    "curl_cffi==0.7.3"
+]
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+]
+
+dev = [
+    "ruff==0.6.9",
+    "pre-commit==4.0.1",
+    "flit==3.9.0",
+]
+
+[project.urls]
+Home = "https://github.com/simplecto/sitemap_grabber"
+Documentation = "https://github.com/simplecto/sitemap_grabber#readme"
+Source = "https://github.com/simplecto/sitemap_grabber"
+Issues = "https://github.com/simplecto/sitemap_grabber/issues"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+
+[tool.ruff.lint]
+# Add the `line-too-long` rule to the enforced rule set. By default, Ruff omits rules that
+# overlap with the use of a formatter, like Black, but we can override this behavior by
+# explicitly adding the rule.
+ignore = [
+    "ANN101",
+    "E501",
+    "D203",
+    "D213",
+    "D100",
+    "COM812"
+]
+select = ["ALL", "W2", "I", "B"]
+exclude = [
+    "tests/*",
+    ".idea/**",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "2.0.1"
+tag_format = "$version"
+bump_message = "bump: version $current_version → $new_version"
+update_changelog_on_bump = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true
+version_files = [
+    "pyproject.toml:^version",
+]
