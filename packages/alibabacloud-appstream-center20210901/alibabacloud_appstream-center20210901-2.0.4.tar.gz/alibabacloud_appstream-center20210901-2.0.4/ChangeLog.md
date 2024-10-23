@@ -1,0 +1,55 @@
+2024-09-12 Version: 2.0.3
+- Update API CreateAppInstanceGroup: update param NodePool.
+- Update API GetAppInstanceGroup: update response param.
+- Update API ListAppInstanceGroup: update response param.
+- Update API ModifyNodePoolAttribute: update param NodePoolStrategy.
+
+
+2024-08-02 Version: 2.0.2
+- Update API AuthorizeInstanceGroup: update param AuthorizeUserIds.
+- Update API AuthorizeInstanceGroup: update param UnAuthorizeUserIds.
+- Update API ListRegions: add param BizSource.
+
+
+2024-07-23 Version: 2.0.1
+- Generated python 2021-09-01 for appstream-center.
+
+2024-07-22 Version: 2.0.0
+- Support API ModifyAppPolicy.
+- Update API BuySessionPackage: add param AutoPay.
+- Update API CreateAppInstanceGroup: add param UserDefinePolicy.
+- Update API CreateAppInstanceGroup: add param VideoPolicy.
+- Update API ListAppInstanceGroup: add param RegionId.
+- Update API ListRegions: add param ProductType.
+
+
+2024-01-15 Version: 1.1.0
+- Generated python 2021-09-01 for appstream-center.
+
+2023-08-22 Version: 1.0.8
+- Generated python 2021-09-01 for appstream-center.
+
+2023-05-09 Version: 1.0.7
+- Modify ListAppInstance.
+
+2023-04-03 Version: 1.0.6
+- Add ListAppInstances Open API.
+
+2023-03-22 Version: 1.0.5
+- Add ListAppInstances Open API.
+
+2023-03-21 Version: 1.0.4
+- Add Unbind Open API.
+
+2023-03-10 Version: 1.0.3
+- Add Unbind Open API.
+
+2023-03-09 Version: 1.0.2
+- Add GetConnectionTicket Open API.
+
+2023-01-30 Version: 1.0.1
+- For new api version.
+
+2022-11-01 Version: 1.0.0
+- For new api version.
+
