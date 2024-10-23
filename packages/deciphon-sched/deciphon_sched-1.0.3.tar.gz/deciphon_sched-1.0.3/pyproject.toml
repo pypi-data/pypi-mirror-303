@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "deciphon-sched"
+version = "1.0.3"
+description = "Deciphon scheduler"
+authors = ["Danilo Horta <horta@ebi.ac.uk>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = { extras = ["all"], version = "^0.115" }
+uvicorn = { extras = ["standard"], version = "^0.30" }
+testcontainers = { version = "^4.8", optional = true }
+testcontainers-core = { version = "^0", optional = true }
+testcontainers-minio = { version = "^0", optional = true }
+fasta-reader = "^3.0.3"
+pydantic = "^2.9"
+pydantic-settings = "^2.5"
+typer = "^0.12"
+loguru = "^0.7"
+deciphon-core = "1.0.1"
+python-multipart = "^0.0.10"
+aiomqtt = "^2.3"
+deciphon-snap = "^1.0.0"
+sqlalchemy = "^2.0"
+boto3 = "^1.35"
+
+[tool.poetry.extras]
+testing = ["testcontainers", "testcontainers-core", "testcontainers-minio"]
+
+[tool.poetry.group.dev.dependencies]
+testcontainers = "^4.8"
+testcontainers-core = "^0"
+testcontainers-minio = "^0"
+pytest = "^8.2"
+pytest-asyncio = "^0.24"
+requests = "^2.32"
+paho-mqtt = "^2.1"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.poetry.scripts]
+deciphon-sched = 'deciphon_sched.cli:app'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

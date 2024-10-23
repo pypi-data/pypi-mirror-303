@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: deciphon-sched
+Version: 1.0.3
+Summary: Deciphon scheduler
+License: MIT
+Author: Danilo Horta
+Author-email: horta@ebi.ac.uk
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Provides-Extra: testing
+Requires-Dist: aiomqtt (>=2.3,<3.0)
+Requires-Dist: boto3 (>=1.35,<2.0)
+Requires-Dist: deciphon-core (==1.0.1)
+Requires-Dist: deciphon-snap (>=1.0.0,<2.0.0)
+Requires-Dist: fasta-reader (>=3.0.3,<4.0.0)
+Requires-Dist: fastapi[all] (>=0.115,<0.116)
+Requires-Dist: loguru (>=0.7,<0.8)
+Requires-Dist: pydantic (>=2.9,<3.0)
+Requires-Dist: pydantic-settings (>=2.5,<3.0)
+Requires-Dist: python-multipart (>=0.0.10,<0.0.11)
+Requires-Dist: sqlalchemy (>=2.0,<3.0)
+Requires-Dist: testcontainers (>=4.8,<5.0) ; extra == "testing"
+Requires-Dist: testcontainers-core (>=0,<1) ; extra == "testing"
+Requires-Dist: testcontainers-minio (>=0,<1) ; extra == "testing"
+Requires-Dist: typer (>=0.12,<0.13)
+Requires-Dist: uvicorn[standard] (>=0.30,<0.31)
+Description-Content-Type: text/markdown
+
+```
+docker-compose up -d --build --force-recreate --remove-orphans
+docker-compose down -v
+```
+
+```
+docker run -p 9000:9000 -p 9001:9001 quay.io/minio/minio server /data --console-address ":9001"
+docker run -p 1883:1883 -v /Users/horta/tmp/mosquitto/config:/mosquitto/config eclipse-mosquitto
+uvicorn deciphon_sched.main:app
+```
+
