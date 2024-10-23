@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="payroll_import_wizard_form" model="ir.ui.view">
+            <field name="name">Account Move Payroll Import Wizard</field>
+            <field name="model">payroll.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Account Move Payroll Import Wizard">
+                    <div class="oe_title">
+                        <h1>
+                            Select a payroll file to import
+                        </h1>
+                        <p>
+                            Supported file formats:
+                            <ul>
+                                <li>CSV</li>
+                                <li>XLS</li>
+                                <li>XLSX</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <group>
+                        <field name="payroll_import_setup_id" string="Import Setup" required="1"/>
+                        <field name="file_name" invisible="1"/>
+                        <field name="file" filename="file_name" string="File" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_payroll_import_wizard" model="ir.actions.act_window">
+            <field name="name">Action Payroll Import Wizard</field>
+            <field name="res_model">payroll.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="payroll_import_wizard_form"/>
+        </record>
+
+    </data>
+</odoo>
