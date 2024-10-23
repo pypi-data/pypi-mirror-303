@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "et_engine_cli"
+authors = [
+    {name = "Exploration Technologies, Inc.", email = "info@exploretech.ai"},
+]
+description = "Command Line Interface for interacting with the ET Engine"
+readme = "README.md"
+requires-python = ">=3.11.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "click>=8.1",
+    "docker",
+    "et_engine"
+]
+dynamic = ["version"]
+
+[project.scripts]
+et = "et_engine_cli.main:cli"
+
+[project.optional-dependencies]
+
+[tool.setuptools]
+packages = ["et_engine_cli"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+testpaths = "tests"
