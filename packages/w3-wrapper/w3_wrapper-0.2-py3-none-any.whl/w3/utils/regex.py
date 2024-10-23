@@ -1,0 +1,5 @@
+RPC_REGEX = r".*http.*"
+COIN_SYMBOL_REGEX = r"^[A-Z0-9]{2,}$"
+PROXY_REGEX = r"^https?://[^:]+:[^@]+@(?:\d{1,3}\.){3}\d{1,3}:\d{1,5}$"
+PRIVATE_KEY_REGEX = r"^(?:0x)?[w3-fA-F0-9]{64}$"
+ADDRESS_REGEX = r"^0x[w3-fA-F0-9]{40}$"
