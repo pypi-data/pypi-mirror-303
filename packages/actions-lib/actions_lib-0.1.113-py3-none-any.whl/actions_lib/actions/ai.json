@@ -1,0 +1,187 @@
+[
+    {
+        "name": "add_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be added."
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "required": true,
+                "description": "The address of the contact to be added."
+            }
+        ],
+        "description": "Add a new contact with a specified name and address.",
+        "details": "For example, you can send the following command: `add cake to contact, with address '0x133A5b7f583dcd3c1989634345a5a74cc1AFf912'`. This will add a contact named 'cake' with the specified address."
+    },
+    {
+        "name": "show_all_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 2,
+        "parameters": [],
+        "description": "Retrieve all contacts, sorted by the specified order.",
+        "details": ""
+    },
+    {
+        "name": "show_contact_by_name",
+        "group": "contact",
+        "type": "backend",
+        "level": 2,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to retrieve."
+            }
+        ],
+        "description": "Retrieve a contact's details by their name.",
+        "details": ""
+    },
+    {
+        "name": "edit_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be edited."
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "required": true,
+                "description": "The new address of the contact."
+            }
+        ],
+        "description": "Edit the details of an existing contact, including name and address.",
+        "details": "For example, to update the address of a contact, you can send: `edit John Doe, change address to '0x9aF317b7E8cF37B79dD9E945D26bc6C43Dc92191'`. This will update the contact 'John Doe' with the new address provided."
+    },
+    {
+        "name": "delete_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be deleted."
+            }
+        ],
+        "description": "Delete an existing contact by specifying the name."
+    },
+    {
+        "name": "transfer",
+        "group": "transfer",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "receiver",
+                "type": "string",
+                "required": true,
+                "description": "The destination address or contact name to which the crypto will be transferred. Either an address or a contact name is required, not both. If a contact name is provided, do not ask for an address."
+            },
+            {
+                "name": "amount",
+                "type": "float",
+                "required": true,
+                "description": "The amount of crypto to be transferred, must be a positive number, including decimals."
+            },
+            {
+                "name": "token",
+                "type": "enum",
+                "enum": [
+                    "USDC",
+                    "USDT",
+                    "BNB",
+                    "DAI",
+                    "UNI",
+                    "BTC",
+                    "wBTC",
+                    "cbBTC",
+                    "ENS",
+                    "ETH"
+                ],
+                "default": "USDC",
+                "required": false,
+                "description": "The type of token to be transferred. Options include USDC, USDT, BNB, DAI, UNI, BTC, ENS, wBTC, cbBTC (default: USDC)"
+            },
+            {
+                "name": "chain",
+                "type": "enum",
+                "enum": [
+                    "Base",
+                    "ETH"
+                ],
+                "required": false,
+                "description": "The blockchain network on which the transfer will occur. Options include Base, Ethereum."
+            }
+        ],
+        "description": "Performs a cryptocurrency transfer to the specified receiver, which can be either a contact name or a blockchain address. Only one of these is required. If a contact name is provided, the system will not prompt for an address. The transfer amount, token type (default: USDC), and blockchain network (Base, ETH) must also be specified. \n\nAdditionally, this function supports a gifting scenario, where the system can suggest a transfer amount for a specific gift. For example:\n- **Buying or gifting**:\n  - **Q**: Buy Bob a coffee.\n  - **A (empty action)**: Generally, 5 USDC can buy a coffee. Confirm transfer of 5 USDC to Bob for buying coffee?\n  - **Q**: OK",
+        "details": "For example, you can initiate a transfer using a contact name like this: `transfer 50 USDC to John on Base`. This will send 50 USDC to the contact 'John' on the Base network. If you prefer to transfer using a blockchain address, you can send: `transfer 10 USDT to 0x123456789abcdef on ETH`. This will transfer 10 USDT to the address '0x123456789abcdef' on the Ethereum network.\n\nWhen using **automatic mode** for transfers:\n- **ETH chain** supports: USDC.\n- **Base chain** supports: USDC.\n\nIn **manual mode** for transfers:\n- **ETH chain** supports: USDC, USDT, BNB, DAI, UNI, WBTC, ENS.\n- **Base chain** supports: USDC, cbBTC.",
+        "reply": "You\u2019re transferring {amount} {token} to the {receiver} on the chain {chain}."
+    },
+    {
+        "name": "show_account_info",
+        "group": "account",
+        "type": "backend",
+        "level": 1,
+        "parameters": [],
+        "description": "Displays account information, including account details. Use this function to view general account information.",
+        "details": "For example, to view all account info, you can simply call: `show account info`. This will return a list of account-related details."
+    },
+    {
+        "name": "switch_run_mode",
+        "group": "env",
+        "type": "setting",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "mode",
+                "type": "string",
+                "enum": [
+                    "auto",
+                    "manual"
+                ],
+                "required": true,
+                "description": "Specifies the run mode. 'auto' will enable automatic operation, while 'manual' allows for manual control."
+            }
+        ],
+        "description": "Switches the system's run mode between 'auto' for automatic operation and 'manual' for manual control. Use this function to toggle the current mode based on operational requirements.",
+        "details": "For example, to switch to automatic mode, you can call: `switch runmode to auto`. To switch to manual mode, call: `switch runmode to manual`."
+    },
+    {
+        "name": "switch_chain",
+        "group": "env",
+        "type": "setting",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "chain",
+                "type": "string",
+                "enum": [
+                    "Base",
+                    "ETH"
+                ],
+                "required": true,
+                "description": "Specifies the blockchain network. 'Base' refers to the Base chain, 'ETH' to the Ethereum network."
+            }
+        ],
+        "description": "Sets the system's blockchain network to one of the specified chains: 'Base', 'ETH' (Ethereum). Use this function to switch the operational blockchain network based on your requirements.",
+        "details": "For example, to switch to the Ethereum network, you can call: `switch chain to ETH`. To switch to the Base chain, you can call: `switch chain to Base`."
+    }
+]

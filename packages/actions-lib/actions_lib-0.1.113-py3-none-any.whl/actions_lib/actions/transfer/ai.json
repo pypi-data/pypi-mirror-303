@@ -1,0 +1,45 @@
+[
+    {
+        "name": "transfer",
+        "group": "transfer",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "receiver",
+                "type": "string",
+                "required": true,
+                "description": "The destination address or contact name to which the crypto will be transferred. Either an address or a contact name is required, not both. If a contact name is provided, do not ask for an address."
+            },
+            {
+                "name": "amount",
+                "type": "float",
+                "required": true,
+                "description": "The amount of crypto to be transferred, must be a positive number, including decimals."
+            },
+            {
+                "name": "token",
+                "type": "enum",
+                "enum": [
+                    "USDC", "USDT","BNB","DAI","UNI","BTC", "wBTC","cbBTC","ENS", "ETH"
+                ],
+                "default": "USDC",
+                "required": false,
+                "description": "The type of token to be transferred. Options include USDC, USDT, BNB, DAI, UNI, BTC, ENS, wBTC, cbBTC (default: USDC)"
+            },
+            {
+                "name": "chain",
+                "type": "enum",
+                "enum": [
+                    "Base",
+                    "ETH"
+                ],
+                "required": false,
+                "description": "The blockchain network on which the transfer will occur. Options include Base, Ethereum."
+            }
+        ],
+        "description": "Performs a cryptocurrency transfer to the specified receiver, which can be either a contact name or a blockchain address. Only one of these is required. If a contact name is provided, the system will not prompt for an address. The transfer amount, token type (default: USDC), and blockchain network (Base, ETH) must also be specified. \n\nAdditionally, this function supports a gifting scenario, where the system can suggest a transfer amount for a specific gift. For example:\n- **Buying or gifting**:\n  - **Q**: Buy Bob a coffee.\n  - **A (empty action)**: Generally, 5 USDC can buy a coffee. Confirm transfer of 5 USDC to Bob for buying coffee?\n  - **Q**: OK",
+        "details": "For example, you can initiate a transfer using a contact name like this: `transfer 50 USDC to John on Base`. This will send 50 USDC to the contact 'John' on the Base network. If you prefer to transfer using a blockchain address, you can send: `transfer 10 USDT to 0x123456789abcdef on ETH`. This will transfer 10 USDT to the address '0x123456789abcdef' on the Ethereum network.\n\nWhen using **automatic mode** for transfers:\n- **ETH chain** supports: USDC.\n- **Base chain** supports: USDC.\n\nIn **manual mode** for transfers:\n- **ETH chain** supports: USDC, USDT, BNB, DAI, UNI, WBTC, ENS.\n- **Base chain** supports: USDC, cbBTC.",
+        "reply": "You’re transferring {amount} {token} to the {receiver} on the chain {chain}."
+    }
+]
