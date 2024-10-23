@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "et_engine_core"
+authors = [
+    { name = "Exploration Technologies, Inc.", email = "info@exploretech.ai" },
+]
+description = "Low-level interface for interacting with ET Engine"
+requires-python = ">=3.11.9"
+keywords = ["api", "exploretech"]
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["et_engine_core"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = "tests"
