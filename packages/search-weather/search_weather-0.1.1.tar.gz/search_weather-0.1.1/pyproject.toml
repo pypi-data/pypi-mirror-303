@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "search_weather"
+version = "0.1.1"
+description = "날씨 검색 패키지"
+authors = ["minarae <minarae@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "search_weather", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^8.3.3"
+spacy = "^3.8.2"
+geopy = "^2.4.1"
+setuptools = "^75.1.0"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^8.3.3"
+flake8 = "^3.9.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.poetry.scripts]
+post-install = "search_weather.scripts:download_ko_core_news_sm"
