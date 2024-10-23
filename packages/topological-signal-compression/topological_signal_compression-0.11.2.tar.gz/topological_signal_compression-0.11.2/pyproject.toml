@@ -1,0 +1,116 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topological-signal-compression"
+requires-python = ">=3.11"
+version = "0.11.2"
+authors = [{name="Gary Koplik", email="gary.koplik@geomdata.com"}]
+description = "Topological Signal Compression"
+readme = "README.md"
+license = {text = "GNU AGPL"}
+urls = {Documentation="https://geomdata.gitlab.io/topological-signal-compression/index.html", Source="https://gitlab.com/geomdata/topological-signal-compression" }
+
+dependencies = [
+    "gda-public",
+    "numpy",
+]
+
+[project.optional-dependencies]
+extras = [
+    "kymatio",
+    "matplotlib",
+    "pydub",
+    "pyts"
+]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "pytest-html",
+    "pytest-timeout",
+    "pytest-xdist"
+]
+docs = [
+    "nbsphinx",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "toml"
+]
+
+# ruff code hygiene checks
+ruff = [ "ruff" ]
+
+[tool.setuptools]
+packages = ["tsc", "tsc.utils"]
+
+[tool.ruff]
+# ruff performs our linting and formatting.
+# if you receive an error you don't understand, you can run `ruff rule <error code>` to learn more.
+# the full list of ruff rules are here: https://docs.astral.sh/ruff/rules/
+extend-include = ["*.ipynb", "*.pyi"]
+
+# Add files here to be completely skipped by ruff.
+extend-exclude = [
+    "docs",
+    "sandbox"
+]
+
+line-length = 88
+indent-width = 4
+
+output-format = "full"
+target-version = "py311"
+
+[tool.ruff.lint]
+extend-ignore = [
+    "ANN101",  # typing `self` being deprecated (and not particularly useful)
+    "ANN003",  # don't require type hints on kwargs (too many possible types to be useful)
+    "D200",  # 1-line docstrings will be tolerated
+    "D203",  # don't require blank line before class docstring.
+    "D212",  # require docstring text starts on the next line after the triple quotes.
+    "E203",  # https://black.readthedocs.io/en/stable/faq.html#why-are-flake8-s-e203-and-w503-violated
+    "PD901",  # generic `df` name for pandas dataframes will be tolerated
+]
+
+extend-select = [
+    "A",  # use flake8-builtins (check if variable name shadows python builtin names)
+    "ANN",  # use flake8-annotations (checks type annotations)
+    "ARG",  # use flake8-unused-arguments (checks for unused arguments)
+    "B",  # use flake8-bugbear (nice for cleaner code, but appears to only work when min Python constraint is 3.9)
+    "C4",  # use flake8-comprehensions (remove unnecessary literals, generators, lists, etc.) 
+    "D",  # use pydoc style rules
+    "E",  # use pycodestyle warnings
+    "I",  # use isort rules
+    "ICN",  # use flake-import-conventions (checks that imports use standard names)
+    "N",  # use pep8 naming
+    "NPY",  # numpy-specific rules
+    "PERF",  # linter focused on avoiding performance anti-patterns
+    "PIE",  # use flake8-pie (some misc additional linting)
+    "PD",  # write pandas code more in line with pd recommendations
+    "PT",  # use flake8-pytest-style (linting specifically for pytest)
+    "RET",  # use flake8-return (linting on return / raise)
+    "SIM",  # use flake8-simplify (helps simplify logic in code)
+    "TID",  # use flake8-tidy-imports (to prevent relative imports)
+    "W",  # use pycodestyle warnings
+] 
+
+[tool.ruff.lint.pycodestyle]
+# allow docstrings to go longer
+max-line-length = 120
+
+[tool.ruff.format]
+# like Black, use double quotes for strings.
+quote-style = "double"
+
+# like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
