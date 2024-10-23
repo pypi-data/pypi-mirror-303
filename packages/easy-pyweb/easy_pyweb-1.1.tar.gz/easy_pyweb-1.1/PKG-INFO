@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: easy_pyweb
+Version: 1.1
+Summary: web helper
+Home-page: https://github.com/xiaoxigithub
+Author: xiaoxi
+Author-email: xiaoxiggnet@gmail.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: playwright
+
+# 说明
+pyweb助手，封装一些个人常用类函数
+
+win系统控制隐藏web窗口，需安装pywin32
+
+
+## 试一试 浏览器
+```python
+from easy_pyweb.wb_helpers import WebHelper
+
+def open_page():
+    wb = WebHelper(cookie_path='cookies.txt')
+    page = wb.new_page()
+    page.goto('https://tool.lu/timestamp/')
+    print(page.title())
+    assert page.title() == '时间戳(Unix timestamp)转换工具 - 在线工具'
+```
+
+## 试一试 日志，配置类
+```python
+from easy_pyweb.more_tool import SingletonLogger, ConfigParser
+def log_test():
+    logger = SingletonLogger(logdir='logs').get_logger()
+    logger.info('This is a test log')
+    logger.error('This is a error log')
+
+def conf_test():
+    conf = ConfigParser(config_file='config.ini')
+    conf.init_config()
+    print(conf.get_option('TEST', 'user'))
+```
+
