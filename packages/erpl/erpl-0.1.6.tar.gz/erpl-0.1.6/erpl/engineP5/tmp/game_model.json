@@ -1,0 +1,447 @@
+{
+    "title": "Mission Solar System",
+    "scenarios": [
+        {
+            "views": [
+                {
+                    "sources": [
+                        [
+                            "PATH",
+                            "/erpl/engineP5/tmp/room.png"
+                        ]
+                    ],
+                    "type": "VIEW_IMAGE",
+                    "hitbox_type": "DEFAULT",
+                    "id": "background"
+                }
+            ],
+            "objects": [
+                {
+                    "views": [
+                        {
+                            "sources": [
+                                [
+                                    "PATH",
+                                    "/erpl/engineP5/tmp/door_closed.png"
+                                ]
+                            ],
+                            "type": "VIEW_IMAGE",
+                            "hitbox_type": "DEFAULT",
+                            "id": "door_closed",
+                            "size": {
+                                "x": 271,
+                                "y": 284
+                            },
+                            "position": {
+                                "x": 504.5,
+                                "y": 326.0
+                            }
+                        },
+                        {
+                            "sources": [
+                                [
+                                    "PATH",
+                                    "/erpl/engineP5/tmp/door_semi_closed.png"
+                                ],
+                                [
+                                    "PATH",
+                                    "/erpl/engineP5/tmp/door_open.png"
+                                ]
+                            ],
+                            "repetitions": 1,
+                            "time_sprite": 3,
+                            "type": "VIEW_IMAGE",
+                            "hitbox_type": "DEFAULT",
+                            "id": "door_opened",
+                            "size": {
+                                "x": 271,
+                                "y": 284
+                            },
+                            "position": {
+                                "x": 504.5,
+                                "y": 326.0
+                            }
+                        }
+                    ],
+                    "position_reference": "floor",
+                    "sounds": [
+                        {
+                            "src": "/mnt/c/Users/35191/Desktop/MyEscapeRoom/erpl-examples/study_cases/3/door-locked.mp3",
+                            "loop": false,
+                            "id": "locked_sound"
+                        },
+                        {
+                            "src": "/mnt/c/Users/35191/Desktop/MyEscapeRoom/erpl-examples/study_cases/3/door-opening.mp3",
+                            "loop": false,
+                            "id": "opening_sound"
+                        }
+                    ],
+                    "initial_view": "door_closed",
+                    "id": "door"
+                }
+            ],
+            "texts": [
+                {
+                    "format_text": "{_regressive_timer_5min_}",
+                    "color": "#0000ff",
+                    "position": {
+                        "x": 555.0,
+                        "y": 100.0
+                    },
+                    "width": 100.0,
+                    "id": "timer"
+                },
+                {
+                    "format_text": "{lifes} remaining attempts",
+                    "color": "#0000ff",
+                    "position": {
+                        "x": 500.0,
+                        "y": 200.0
+                    },
+                    "width": 40.0,
+                    "id": "attempts"
+                }
+            ],
+            "sounds": [],
+            "floor": 610.0,
+            "initial_view": "background",
+            "ceil": 0,
+            "id": "station"
+        }
+    ],
+    "events": [
+        {
+            "preconditions": {
+                "operator": "AND",
+                "left": {
+                    "operator": "AND",
+                    "left": {
+                        "var": {
+                            "type": "CLICKED_OBJECT",
+                            "object": "door"
+                        }
+                    },
+                    "right": {
+                        "var": {
+                            "type": "WHEN_OBJECT_IS_VIEW",
+                            "object": "door",
+                            "view": "door_closed"
+                        }
+                    }
+                },
+                "right": {
+                    "var": {
+                        "type": "IS_EQUAL_TO",
+                        "variable": "challenges_dones",
+                        "number": 0.0
+                    }
+                }
+            },
+            "posconditions": [
+                {
+                    "question": "Choose from the planet closest to the sun to the furthest",
+                    "sequence": [
+                        "Mercury",
+                        "Earth",
+                        "Jupiter",
+                        "Neptune"
+                    ],
+                    "sucess": [
+                        {
+                            "type": "VAR_INCREASES",
+                            "variable": "challenges_dones",
+                            "number": 1.0
+                        }
+                    ],
+                    "fail": [
+                        {
+                            "type": "VAR_INCREASES",
+                            "variable": "challenges_dones",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "VAR_DECREASES",
+                            "variable": "lifes",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "SHOW_FORMAT_MESSAGE",
+                            "message": "Wrong! You have {lifes} lifes left.",
+                            "position": {
+                                "x": 497.0,
+                                "y": 310.0
+                            }
+                        }
+                    ],
+                    "type": "SEQUENCE",
+                    "id": "question"
+                }
+            ],
+            "id": "first_challenge"
+        },
+        {
+            "preconditions": {
+                "operator": "AND",
+                "left": {
+                    "operator": "AND",
+                    "left": {
+                        "var": {
+                            "type": "CLICKED_OBJECT",
+                            "object": "door"
+                        }
+                    },
+                    "right": {
+                        "var": {
+                            "type": "WHEN_OBJECT_IS_VIEW",
+                            "object": "door",
+                            "view": "door_closed"
+                        }
+                    }
+                },
+                "right": {
+                    "var": {
+                        "type": "IS_EQUAL_TO",
+                        "variable": "challenges_dones",
+                        "number": 1.0
+                    }
+                }
+            },
+            "posconditions": [
+                {
+                    "question": "Which planet has the biggest greenhouse effect?",
+                    "choices": [
+                        "Mercury",
+                        "Earth",
+                        "Jupiter",
+                        "Venus"
+                    ],
+                    "answer": "Venus",
+                    "sucess": [
+                        {
+                            "type": "VAR_INCREASES",
+                            "variable": "challenges_dones",
+                            "number": 1.0
+                        }
+                    ],
+                    "fail": [
+                        {
+                            "type": "VAR_INCREASES",
+                            "variable": "challenges_dones",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "VAR_DECREASES",
+                            "variable": "lifes",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "SHOW_FORMAT_MESSAGE",
+                            "message": "Wrong! You have {lifes} lifes left.",
+                            "position": {
+                                "x": 497.0,
+                                "y": 310.0
+                            }
+                        }
+                    ],
+                    "type": "MULTIPLE_CHOICE",
+                    "id": "question2"
+                }
+            ],
+            "id": "second_challenge"
+        },
+        {
+            "preconditions": {
+                "operator": "AND",
+                "left": {
+                    "operator": "AND",
+                    "left": {
+                        "var": {
+                            "type": "CLICKED_OBJECT",
+                            "object": "door"
+                        }
+                    },
+                    "right": {
+                        "var": {
+                            "type": "WHEN_OBJECT_IS_VIEW",
+                            "object": "door",
+                            "view": "door_closed"
+                        }
+                    }
+                },
+                "right": {
+                    "var": {
+                        "type": "IS_EQUAL_TO",
+                        "variable": "challenges_dones",
+                        "number": 2.0
+                    }
+                }
+            },
+            "posconditions": [
+                {
+                    "question": "How many planets are there in the Solar System?",
+                    "choices": [
+                        "7",
+                        "8",
+                        "9",
+                        "10"
+                    ],
+                    "answer": "7",
+                    "sucess": [
+                        {
+                            "type": "OBJ_CHANGE_VIEW",
+                            "object": "door",
+                            "view": "door_opened"
+                        }
+                    ],
+                    "fail": [
+                        {
+                            "type": "VAR_INCREASES",
+                            "variable": "challenges_dones",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "VAR_DECREASES",
+                            "variable": "lifes",
+                            "number": 1.0
+                        },
+                        {
+                            "type": "SHOW_FORMAT_MESSAGE",
+                            "message": "Wrong! You have {lifes} lifes left.",
+                            "position": {
+                                "x": 497.0,
+                                "y": 310.0
+                            }
+                        }
+                    ],
+                    "type": "MULTIPLE_CHOICE",
+                    "id": "question3"
+                }
+            ],
+            "id": "third_challenge"
+        },
+        {
+            "preconditions": {
+                "operator": "AND",
+                "left": {
+                    "var": {
+                        "type": "IS_EQUAL_TO",
+                        "variable": "challenges_dones",
+                        "number": 2.0
+                    }
+                },
+                "right": {
+                    "var": {
+                        "type": "IS_EQUAL_TO",
+                        "variable": "lifes",
+                        "number": 2.0
+                    }
+                }
+            },
+            "posconditions": [
+                {
+                    "type": "OBJ_CHANGE_VIEW",
+                    "object": "door",
+                    "view": "door_opened"
+                }
+            ],
+            "repetitions": 1,
+            "id": "open_door"
+        },
+        {
+            "preconditions": {
+                "operator": "AND",
+                "left": {
+                    "var": {
+                        "type": "CLICKED_OBJECT",
+                        "object": "door"
+                    }
+                },
+                "right": {
+                    "var": {
+                        "type": "WHEN_OBJECT_IS_VIEW",
+                        "object": "door",
+                        "view": "door_opened"
+                    }
+                }
+            },
+            "posconditions": [
+                {
+                    "type": "END_GAME_FORMAT_MESSAGE",
+                    "message": "Congratulations! You finish in {_timer_} seconds."
+                }
+            ],
+            "id": "endgame"
+        },
+        {
+            "preconditions": {
+                "var": {
+                    "type": "AFTER_TIME",
+                    "time": 300000.0
+                }
+            },
+            "posconditions": [
+                {
+                    "type": "END_GAME",
+                    "message": "Time's up! The Space Station exploded."
+                }
+            ],
+            "id": "explosion"
+        },
+        {
+            "preconditions": {
+                "var": {
+                    "type": "IS_EQUAL_TO",
+                    "variable": "lifes",
+                    "number": 0.0
+                }
+            },
+            "posconditions": [
+                {
+                    "type": "END_GAME",
+                    "message": "You failed twice! The Space Station exploded."
+                }
+            ],
+            "id": "explosion2"
+        }
+    ],
+    "transitions": [
+        {
+            "view": {
+                "id": "space_station",
+                "sources": [
+                    [
+                        "PATH",
+                        "/erpl/engineP5/tmp/space_station.png"
+                    ]
+                ],
+                "type": "VIEW_IMAGE",
+                "hitbox_type": "DEFAULT"
+            },
+            "music": {
+                "src": "/erpl/engineP5/tmp/intro.mp3",
+                "loop": false
+            },
+            "format_story": [
+                "You and your team are astronauts on a special mission to explore the solar system.",
+                "However, during the journey, you get trapped in a space station and need to solve a",
+                "series of puzzles to escape before time runs out and the spaceship leaves without you.",
+                "You have {_regressive_timer_5min_} to escape and you need to pass 2 of 3 challenges, otherwise the space station explodes."
+            ],
+            "next": "station",
+            "next_type": "SCENARIO",
+            "id": "intro"
+        }
+    ],
+    "variables": [
+        {
+            "number": 2.0,
+            "id": "lifes"
+        },
+        {
+            "number": 0.0,
+            "id": "challenges_dones"
+        }
+    ],
+    "start": "intro",
+    "start_type": "TRANSITION"
+}
