@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.mypy]
+exclude = ['migrations/.*']
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "tests"]
+
+[tool.ruff.lint]
+ignore = ["E501"]
+
+[tool.ruff]
+extend-exclude = ["*/migrations/*", ".venv/*", ".eggs/*", ".nox/*", "build/*"]
+line-length = 120
