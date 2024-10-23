@@ -1,0 +1,61 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "cython",
+    "numpy"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspatialstats"
+version = "0.0.2"
+description = ""
+authors = [
+    { name = "Jasper Roebroek", email = "roebroek.jasper@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+
+dependencies = [
+    "numpy",
+    "numpydantic",
+    "joblib",
+    "pandas"
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+documentation = [
+    'sphinx',
+    'sphinx_rtd_theme',
+    'numpydoc',
+    'jupyter',
+    'matplotlib',
+    'rasterio'
+]
+develop = [
+    "cython",
+    "sphinx",
+    "sphinx_rtd_theme",
+    "numpydoc",
+    "scipy",
+    "jupyter",
+    "matplotlib",
+    "pytest",
+    "joblib",
+    "statsmodels",
+    "rasterio"
+]
+test = [
+    "scipy",
+    "pytest",
+    "statsmodels"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.urls]
+repository = "https://github.com/jasperroebroek/focal-stats"
+documentation = "https://focal-stats.readthedocs.io/en/latest/index.html"
