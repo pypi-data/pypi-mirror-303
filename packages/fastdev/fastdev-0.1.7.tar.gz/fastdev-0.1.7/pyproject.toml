@@ -1,0 +1,92 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastdev"
+version = "0.1.7"
+authors = [{ name = "Jianglong Ye", email = "jianglong.yeh@gmail.com" }]
+description = "Type less, code more"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+# not include torch in the dependencies
+dependencies = [
+    "ninja",
+    "typing-extensions",
+    "beartype",
+    "jaxtyping",
+    "numpy",
+    "rich",
+    "msgspec[toml,yaml]",
+    "fsspec",
+    "universal_pathlib",
+    "huggingface_hub[cli,hf_transfer]",
+]
+
+[project.optional-dependencies]
+full = [
+    "trimesh",
+    "viser",
+    "warp-lang",
+    "einops",
+    "transforms3d",
+    "yourdfpy",
+    "dm_control",
+    "fpsample",
+]
+dev = [
+    "build",
+    "twine",
+    "ipython",
+    "ruff",
+    "mypy",
+    "types-PyYAML",
+    "types-requests",
+    "pytest",
+    "xdoctest",
+    "pre-commit",
+]
+doc = ["sphinx", "furo", "docutils", "sphinx-autoapi", "m2r2"]
+
+[project.urls]
+Homepage = "https://fastdev.jianglongye.com/"
+Repository = "https://github.com/jianglongye/fastdev"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fastdev = ["**/*.c", "**/*.cpp", "**/*.h", "**/*.hpp", "**/*.cu", "**/*.cuh"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+ignore = ["F722"]
+
+[tool.mypy]
+exclude = ["tests", "build", "scripts", "src/fastdev/datasets"]
+ignore_missing_imports = true
+
+[tool.pyright]
+reportInvalidTypeForm = "none"
+typeCheckingMode = "off"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::beartype.roar.BeartypeDecorHintPep585DeprecationWarning",
+]
