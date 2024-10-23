@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genkey"
+version = "0.1.0"
+description = "A simple command-line tool to generate secure keys and passwords"
+authors = [
+    {name = "dawid-ai", email = "hello@dawid.ai"}
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Security :: Cryptography"
+]
+
+[project.scripts]
+genkey = "genkey.main:main"
