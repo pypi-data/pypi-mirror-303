@@ -1,0 +1,1 @@
+"""Access to the Foresight Knowledge Graph."""
