@@ -1,0 +1,64 @@
+{% extends 'herobiz/index.html' %}
+{% load static %}
+{% load shared_tags %}
+
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->{% include 'herobiz/breadcrumb.html' %}<!-- End Breadcrumbs -->
+
+  <!-- ======= Blog Section ======= -->
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+      <div class="row g-5">
+        <div class="col-lg-8">
+          <div class="row gy-4 posts-list">
+            {% for item in page_obj %}
+            <div class="col-lg-6">
+              <article class="d-flex flex-column">
+                <div class="post-img">
+                  <div class="ratio ratio-16x9">
+                    <img src="{{ item.thumbnail.url }}" alt="" class="img-fluid">
+                  </div>
+                </div>
+                <h2 class="title">
+                  <a href="{% url 'herobiz:blog_details' item.slug %}">{{ item.title }}</a>
+                </h2>
+                <div class="meta-top">
+                  <ul>
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'herobiz:blog_details' item.slug %}">{{ item.author.last_name }} {{ item.author.first_name }}</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{% url 'herobiz:blog_details' item.slug %}"><time datetime="{{ item.updated_on | date:'Y-m-d' }}">{{ item.updated_on | date:"M d, Y" }}</time></a></li>
+                    <!-- <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{% url 'herobiz:blog_details' item.slug %}">12 Comments</a></li> -->
+                  </ul>
+                </div>
+                <div class="content">
+                  <p>
+                      {{ item.formatted_markdown | add_img_class | truncatechars:100 }}
+                  </p>
+                </div>
+                <div class="read-more mt-auto align-self-end">
+                  <a href="{% url 'herobiz:blog_details' item.slug %}">Read More</a>
+                </div>
+              </article>
+            </div><!-- End post list item -->
+            {% endfor %}
+          </div><!-- End blog posts list -->
+
+          {% if is_paginated %}
+          <!-- Paging -->
+          <div class="blog-pagination">
+            <ul class="justify-content-center">
+              {% for page_num in page_bundle %}
+                <li{% if page_num == page_obj.number %} class="active"{% endif %}><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+              {% endfor %}
+            </ul>
+          </div><!-- End blog pagination -->
+          {% endif %}
+        </div>
+        <div class="col-lg-4">
+          {% sidebar "herobiz/sidebar.html" %}<!-- End Blog Sidebar -->
+        </div>
+      </div>
+    </div>
+  </section><!-- End Blog Section -->
+</main><!-- End #main -->
+{% endblock content %}
