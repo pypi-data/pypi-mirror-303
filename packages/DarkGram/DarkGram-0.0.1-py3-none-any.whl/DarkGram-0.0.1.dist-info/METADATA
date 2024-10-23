@@ -1,0 +1,220 @@
+Metadata-Version: 2.1
+Name: DarkGram
+Version: 0.0.1
+Summary: DarkGram
+Home-page: UNKNOWN
+Author: vsp210
+Author-email: psv449@yandex.ru
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+Requires-Dist: requests>=2.32.3
+
+# DarkGram
+
+## Привет я молодой 14 летний программист который патается создавать невозможное
+
+#### DarkGram - это Python библиотека для работы с Telegram Bot API. Она предоставляет простой и удобный интерфейс для создания и управления Telegram ботами.
+
+#### DarkGram - Основные функции:
++ **Создание моделей** - Создание моделей для базы данных крайне схожая с веб-фреймворком Django но имеет меньший функционал например:
+- **IntegerField**
+- **CharField**
+- **TextField**
+- **BooleanField**
+- **DateTimeField**
+
++ **Основные функции** - функции для удобной работы с api телеграмма
+- **send_message**
+- **send_keyboard_message**
+- **get_updates**
+- **send_inline_keyboard_message**
+- **answer_callback_query**
+- **send_photo**
+- **create_reply_keyboard**
+- **delete_message**
+
+### Быстрый старт
+
+- Для начала можно создать venv (**Необязательно**):
+~~~bash
+py -3.* -m venv venv # У кажите вместо -3.* вашу версию
+source venv/Scripts/activate
+~~~
+- затем установите саму библиотеку:
+~~~bash
+pip install DarkGram
+~~~
+
+
+### Пример использования функционала:
+
+~~~python
+from DarkGram.DarkGram import DarkGram
+
+TOKEN = "XXX-XXX" # Здесь вставьте ваш токен полученый из https://t.me/BotFather
+
+def main():
+    dark = DarkGram(TOKEN)
+    dark.set_save_folder("downloads")
+    last_update_id = 0
+
+    while True:
+        updates, data = dark.get_updates(last_update_id)
+        for update in updates:
+            last_update_id = update.update_id + 1
+
+            if update.message:
+                chat_id = update.message.chat.id
+
+                if update.message.text == "/start":
+                    buttons = [
+                        ["Отправить фото", "Отправить документ"],
+                        ["Отправить медиагруппу"],
+                        ["Отправить аудио", "Отправить видео"]
+                    ]
+                    keyboard = dark.create_reply_keyboard(buttons)
+                    dark.send_keyboard_message(chat_id, "Выберите действие:", keyboard)
+
+                elif update.message.text == "Отправить фото":
+                    dark.send_photo(chat_id, "photo.jpg", "Это фото")
+
+                elif update.message.text == "Отправить документ":
+                    with open("text.txt", "rb") as doc:
+                        dark.send_document(chat_id, doc)
+
+                elif update.message.text == "Отправить медиагруппу":
+                    media = [
+                        {
+                            "type": "photo",
+                            "media": "photo.jpg"
+                        },
+                        {
+                            "type": "photo",
+                            "media": "photo.jpg"
+                        },
+                        {
+                            "type": "video",
+                            "media": "video.mp4"
+                        }
+                    ]
+                    print(dark.send_media_group(chat_id, media))
+
+                elif update.message.text == "Отправить аудио":
+                    dark.send_audio(chat_id, "audio.mp3", "Это аудио")
+
+                elif update.message.text == "Отправить видео":
+                    dark.send_video(chat_id, "video.mp4", "Это видео")
+
+
+                elif update.message.text == "/sticker":
+                    dark.send_sticker(chat_id, "CAACAgIAAxkBAAIC-2cQBjPkWvirL6xrMb44qg3_k_QdAAL9VAACu--4SYJcNOIloQeENgQ")
+
+                elif update.message.text == "/delete":
+                    message_id = update.message.message_id
+                    result = dark.delete_message(chat_id, message_id)
+                    if result.get('ok'):
+                        dark.send_message(chat_id, "Сообщение успешно удалено")
+                    else:
+                        dark.send_message(chat_id, "Не удалось удалить сообщение")
+
+                else:
+                    dark.send_message(chat_id, "Неизвестное действие")
+
+if __name__ == "__main__":
+    main()
+~~~
+### Пояснение:
+Этот код представляет собой пример использования библиотеки `DarkGram` для взаим
+одействия с Telegram. Он включает в себя функцию `main()`, которая обрабатывает
+полученные обновления от Telegram и реагирует на них соответствующим образом.
+### Примечания:
+- В этом примере используется функция `dark.send_message()`, чтобы отправлять сообщения в Telegram.
+- Функция `dark.answer_callback_query()` используется для ответа на callback-опросы
+- В этом примере используется функция `dark.send_photo()`, чтобы отправлять фотографии
+- В этом примере используется функция `dark.send_document()`, чтобы отправлять документы
+- В этом примере используется функция `dark.send_media_group()`, чтобы отправлять медиагруппы
+- В этом примере используется функция `dark.send_audio()`, чтобы отправлять аудио
+- В этом примере используется функция `dark.send_video()`, чтобы отправлять видео
+
+### А также пример с встроенной работой с бд:
+~~~python
+from DarkGram.D_DataBase import *
+
+
+class User(Model):
+    id = IntegerField(primary_key=True)
+    username = CharField(max_length=50, unique=True, null=False)
+    email = CharField(max_length=100, unique=True, null=False)
+    bio = TextField(null=True)
+    is_active = BooleanField(default=True)
+    created_at = DateTimeField(null=False)
+
+    _meta = {
+        'id': id,
+        'username': username,
+        'email': email,
+        'bio': bio,
+        'is_active': is_active,
+        'created_at': created_at
+    }
+
+# # Создание таблицы (выполните это один раз перед использованием)
+# User.create_table()
+
+# # Создание нового пользователя
+# user = User(
+#     username="john_doe",
+#     email="john@example.com",
+#     bio="Hello, I'm John!",
+#     is_active=True,
+#     created_at=datetime.datetime.now()
+# )
+
+# Сохранение пользователя в базе данных
+# user.save()
+
+
+user = User.get(username="john_doe")
+# Вывод информации о пользователе
+print(f"User ID: {user.id}")
+print(f"Username: {user.username}")
+print(f"Email: {user.email}")
+print(f"Bio: {user.bio}")
+print(f"Is Active: {user.is_active}")
+print(f"Created At: {user.created_at}")
+
+# Получение пользователя из базы данных
+retrieved_user = User.get(username="john_doe")
+if retrieved_user:
+    print(f"Retrieved user: {retrieved_user.username}")
+else:
+    print("User not found")
+
+# Обновление пользователя
+retrieved_user.bio = "Updated bio"
+retrieved_user.save()
+
+# Получение всех пользователей
+all_users = User.all()
+for user in all_users:
+    print(f"User: {user.username}, Email: {user.email}")
+
+# Фильтрация пользователей
+active_users = User.filter(is_active=True)
+for user in active_users:
+    print(f"Active user: {user.username}")
+~~~
+
+### Пояснение:
+Этот код демонстрирует основные функции ORM-инструментов для работы с базой данных. Он включает в себя создание таблицы, создание нового пользователя, сохранение пользователя, получение пользователя, обновление пользователя, получение всех пользователей и фильтрацию пользователей. В этом примере используется базовый синтаксис ORM-инструментов, который может быть расширен и модифицирован в зависимости от конкрет ной реализации.
+
+
+### Контакты и связь со мной
+- **ВКонтакте**: https://vk.com/vsp210
+- **Телеграм**: https://t.me/vsp210
+- **Электронная почта**: vsp210@gmail.com
+
+##### Версия 0.0.1
+
+
