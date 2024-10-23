@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="account_move_payroll_import.PayrollImportButton" owl="1">
+        <button
+            class="btn btn-secondary o_button_import_payroll"
+            t-on-click="OnPayrollImportClick"
+        >
+            Payroll Import
+        </button>
+    </t>
+    <t
+        t-name="account_move_payroll_import.ListView.Buttons"
+        t-inherit="web.ListView.Buttons"
+        t-inherit-mode="primary"
+        owl="1"
+    >
+        <xpath
+            expr="//*[@class='btn btn-primary o_list_button_add']"
+            position="after"
+        >
+            <t t-call="account_move_payroll_import.PayrollImportButton"/>
+        </xpath>
+    </t>
+</templates>
