@@ -1,0 +1,52 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: "Unit Tests"
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r dev-requirements.txt
+    - name: Test with pytest
+      run: |
+        python -m pytest
+
+  deploy:
+    name: "Semantic Release"
+    needs: test
+    if: success() && github.ref == 'refs/heads/master' && github.base_ref == '' && github.repository_owner == 'pollination'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+    - name: set up node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.2.0
+    - name: install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r dev-requirements.txt
+    - name: install semantic-release
+      run:
+        npm install @semantic-release/exec
+    - run: npx semantic-release@^23.1.1
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PYPI_USERNAME: ${{ secrets.POLLINATION_PYPI_USERNAME }}
+        PYPI_PASSWORD: ${{ secrets.POLLINATION_PYPI_PASSWORD }}
