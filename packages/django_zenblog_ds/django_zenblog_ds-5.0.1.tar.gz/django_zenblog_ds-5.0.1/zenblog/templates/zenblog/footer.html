@@ -1,0 +1,114 @@
+{% load zenblog_tags %}
+
+<footer id="footer" class="footer">
+
+  <div class="footer-content">
+    <div class="container">
+
+      <div class="row g-5">
+        {% if is_about_used %}
+        <div class="col-lg-4">
+          <h3 class="footer-heading">About {{ blog_name }}</h3>
+          <p>{{ footer.about }}</p>
+          <p><a href="{% url 'zenblog:about' %}" class="footer-link-more">Learn More</a></p>
+        </div>
+        {% endif %}
+
+        {% if is_about_used %}
+        <div class="col-6 col-lg-2">
+        {% else %}
+        <div class="col-6 col-lg-3">
+        {% endif %}
+          <h3 class="footer-heading">Navigation</h3>
+          <ul class="footer-links list-unstyled">
+            <!-- 메뉴 -->
+            {% for component, etc, title, is_show in components %}
+              {% if is_show %}
+                {% if component == 'direct_link' %}
+                  <li><a href="{{ etc }}" target="_blank"><i class="bi bi-chevron-right"></i> {{ title }}</a></li>
+                {% elif component == 'blog' %}
+                  <li><a href="{% url 'zenblog:home' %}"><i class="bi bi-chevron-right"></i> {{ title }}</a></li>
+                    {% if latest1 %}
+                  <li><a href="{% url 'zenblog:blog_details' latest1.slug %}"><i class="bi bi-chevron-right"></i> Latest Post</a></li>
+                    {% endif %}
+                {% else %}
+                  <li><a href="{% url 'zenblog:'|add:component %}"><i class="bi bi-chevron-right"></i> {{ title }}</a></li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% if is_about_used %}
+        <div class="col-6 col-lg-2">
+        {% else %}
+        <div class="col-6 col-lg-3">
+        {% endif %}
+          <h3 class="footer-heading">Categories</h3>
+          <ul class="footer-links list-unstyled">
+            {% for category in category_list %}
+              <li><a href="{% url 'zenblog:blog_category' category.filter %}"><i class="bi bi-chevron-right"></i> {{ category.filter }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        {% if is_about_used %}
+        <div class="col-lg-4">
+        {% else %}
+        <div class="col-lg-6">
+        {% endif %}
+          <h3 class="footer-heading">Recent Posts</h3>
+          <ul class="footer-links footer-blog-entry list-unstyled">
+            {% for item in recents4 %}
+            <li>
+              <a href="{% url 'zenblog:blog_details' item.slug  %}" class="d-flex align-items-center">
+                <img src="{{ item.thumbnail.url }}" alt="" class="img-fluid me-3">
+                <div>
+                  <div class="post-meta d-block"><span class="date">{{ item.category.filter }}</span>
+                    <span class="mx-1">&bullet;</span> <span>{{ item.updated_on | date:"M jS 'y"}}</span></div>
+                  <span>{{ item.title }}</span>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-legal">
+    <div class="container">
+
+      <div class="row justify-content-between">
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          <div class="copyright">
+             &copy; Copyright <a href="https://demiansoft.com" target="_blank"><strong><span>Demiansoft</span></strong></a>
+            <a href="https://map.naver.com/v5/entry/place/13289684?c=15,0,0,0,dh" target="_blank">.</a> All Rights Reserved
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+          <div class="social-links mb-3 mb-lg-0 text-center text-md-end">
+            {% if social.facebook %}
+            <a href="{{ social.facebook }}" class="facebook"><i class="bi bi-facebook"></i></a>
+            {% endif %}
+            {% if social.twitter %}
+            <a href="{{ social.twitter }}" class="twitter"><i class="bi bi-twitter"></i></a>
+            {% endif %}
+            {% if social.instagram %}
+            <a href="{{ social.instagram }}" class="instagram"><i class="bi bi-instagram"></i></a>
+            {% endif %}
+            {% if social.youtube %}
+            <a href="{{ social.youtube }}" class="youtube"><i class="bi bi-youtube"></i></a>
+            {% endif %}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</footer>
