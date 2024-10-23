@@ -1,0 +1,22 @@
+name: Warnings
+on: [push, pull_request]
+jobs:
+  test:
+    name: pytest warnings
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - '3.12'
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install deps
+        run: |
+          pip install .[test,sentiment]
+      - name: pytest -W error
+        run: |
+          pytest -W error --run_sentiment
