@@ -1,0 +1,22 @@
+[build-system]
+requires = ["git-versiointi>=1.6rc5", "setuptools>=62", "wheel"]
+
+[project]
+name = "build-metadata"
+readme = "README.md"
+authors = [
+  {name = "Antti Hautaniemi", email = "antti.hautaniemi@me.com"},
+]
+license = {file = "Oikeudet.txt"}
+requires-python = ">= 3.8"
+dynamic = ["version"]
+dependencies = [
+  "build>=1.2.0",
+  "pyproject-hooks",
+]
+
+[project.urls]
+Repository = "https://github.com/an7oine/build-metadata.git"
+
+[tool.setuptools]
+py-modules = ["metadata"]
