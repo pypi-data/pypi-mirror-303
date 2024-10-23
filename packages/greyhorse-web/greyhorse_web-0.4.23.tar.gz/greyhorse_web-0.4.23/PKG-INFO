@@ -1,0 +1,54 @@
+Metadata-Version: 2.3
+Name: greyhorse-web
+Version: 0.4.23
+Summary: Greyhorse web utilities library
+Project-URL: Homepage, https://gitlab.com/max-plutonium/greyhorse
+Project-URL: Repository, https://gitlab.com/max-plutonium/greyhorse
+Author-email: Max Plutonium <plutonium.max@gmail.com>
+Maintainer-email: Max Plutonium <plutonium.max@gmail.com>
+License: MIT License
+Keywords: fastapi,http,hypercorn,uvicorn
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Python: >=3.12
+Requires-Dist: greyhorse~=0.4.23
+Requires-Dist: python-multipart>=0.0.12
+Provides-Extra: fastapi
+Requires-Dist: fastapi[standard]>=0.115.0; extra == 'fastapi'
+Provides-Extra: hypercorn
+Requires-Dist: hypercorn[uvloop]>=0.17.3; extra == 'hypercorn'
+Provides-Extra: uvicorn
+Requires-Dist: uvicorn[standard]>=0.31.1; extra == 'uvicorn'
+Description-Content-Type: text/markdown
+
+Greyhorse web library
+=====================
+
+Greyhorse framework library for web utilities
+
+
+How to build
+------------
+
+
+- Install the project
+
+    ``uv python pin 3.12.1``
+
+    ``uv venv``
+
+    ``uv sync``
+
+    ``source .venv/bin/activate``
+
+
+
+- Format code commands
+
+    ``ruff check --unsafe-fixes --fix``
+
+    ``ruff format``
