@@ -1,0 +1,15 @@
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: default
+    stream: ext://sys.stdout
+  queue:
+    handlers:
+      - file
+      - console
+
+loggers:
+  root:
+    level: DEBUG
+  asyncio:
+    level: INFO
