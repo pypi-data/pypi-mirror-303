@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "petdb"
+authors = [
+    { name = "Maks Vinnytskyi", email = "ownerofforest@gmail.com" },
+]
+description = "Light weight local document-oriented database"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+service = ["fastapi==0.111.0", "petcmd", "requests"]
+
+[project.urls]
+Homepage = "https://gitlab.com/Tullp/petdb"
+
+[tool.setuptools]
+packages = ["petdb", "petdb.service"]
+
+[tool.setuptools.dynamic]
+version = { attr = "petdb.__version__" }
