@@ -1,0 +1,44 @@
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdutilities"
+version = "0.1.0"
+readme = "README.md"
+description = "A command line tool for megadrive homebrew developers"
+authors = [{ name = "Pablo Porta", email = "paspallasdev@gmail.com" }]
+maintainers = [{ name = "Pablo Porta", email = "paspallasdev@gmail.com" }]
+license = { file = "LICENSE" }
+keywords = ["homebrew", "cli", "megadrive", "tiled", "tool"]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.1.7",
+    "numpy>=2.1.2",
+    "pillow>=11.0.0",
+    "zstandard>=0.23.0",
+]
+
+
+# For PyPI distribution
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Issues = "https://github.com/paspallas/mdutil/issues"
+Homepage = "https://github.com/paspallas/mdutil"
+Documentation = "https://mdutil.readthedocs.io"
+
+[project.scripts]
+mdutil = "mdutil.cli.main:cli"
