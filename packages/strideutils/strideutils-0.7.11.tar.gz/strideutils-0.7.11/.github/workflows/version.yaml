@@ -1,0 +1,50 @@
+name: Bump version
+
+on:
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: "Release type (patch or minor)"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+
+jobs:
+  version:
+    if: ${{ github.event.label.name == 'version-patch' ||  github.event.label.name == 'version-minor' }} || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: setup
+        run: |
+          python -m pip install -U pip
+          pip install bump2version 
+          git config user.name "GitHub Actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: bump up version
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            prefix="version-" 
+            label=${{ github.event.label.name }}
+            version_type=${label#$prefix} 
+          else
+            version_type="${{ github.event.inputs.version_type }}"
+          fi
+          bump2version $version_type
+          git add pyproject.toml
+          git commit -m "bump up $version_type version from workflow"
+          git push
+      - uses: stefanzweifel/git-auto-commit-action@v5
