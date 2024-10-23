@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "table-differ"
+version = "0.1.1"
+description = "cross-platform table-diffing utility"
+license = "MIT"
+authors = ["Benjamin Farmer <benjamin@sanjuandata.com>"]
+readme = "README.md"
+packages = [{include = "Table-Differ"}]
+include = [
+    "Table-Differ/*",
+    "README.md",
+    "configs/example.yaml",
+    "modules/create_diff_table",
+    "modules/db_utils",
+    "modules/get_config",
+    "modules/reporting",
+    "LICENSE"
+]
+exclude = [
+    "dist/*",
+    "tests/*",
+    "databases/*",
+    ".DS_Store",
+    "Table-Differ/modules/.DS_Store",
+    ".gitignore",
+    ".git",
+    ".pytest_cache"
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rich = "13.5.2"
+pyyaml = "6.0.1"
+#psycopg2 = "2.9.9"
+pytest = "^8.3.2"
+duckdb = "^1.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
