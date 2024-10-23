@@ -1,0 +1,196 @@
+Metadata-Version: 2.3
+Name: DiffeRT
+Version: 0.0.23
+Summary: Differentiable Ray Tracing Toolbox for Radio Propagation Simulations
+Project-URL: Changelog, https://github.com/jeertmans/DiffeRT/releases
+Project-URL: Documentation, https://eertmans.be/DiffeRT
+Project-URL: Founding, https://github.com/sponsors/jeertmans
+Project-URL: Homepage, https://github.com/jeertmans/DiffeRT
+Project-URL: Repository, https://github.com/jeertmans/DiffeRT
+Author-email: Jérome Eertmans <jeertmans@icloud.com>
+License-Expression: MIT
+License-File: LICENSE.md
+Keywords: differentiable,jax,propagation,radio,ray tracing
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.10
+Requires-Dist: beartype>=0.17.2
+Requires-Dist: chex>=0.1.86
+Requires-Dist: differt-core==0.0.23
+Requires-Dist: equinox>=0.11.5
+Requires-Dist: filelock>=3.15.4
+Requires-Dist: jax>=0.4.32
+Requires-Dist: jaxtyping>=0.2.24
+Requires-Dist: numpy>=1.26.1
+Requires-Dist: optax>=0.1.7
+Requires-Dist: requests>=2.32.0
+Requires-Dist: tqdm>=4.66.2
+Requires-Dist: typing-extensions>=4.9.0; python_version < '3.11'
+Provides-Extra: all
+Requires-Dist: ipympl>=0.9.4; extra == 'all'
+Requires-Dist: jupyter-rfb>=0.4.2; extra == 'all'
+Requires-Dist: matplotlib>=3.8.1; extra == 'all'
+Requires-Dist: notebook>5; extra == 'all'
+Requires-Dist: plotly>=5.18.0; extra == 'all'
+Requires-Dist: pyopengl>=3.1.0; (platform_system == 'Darwin') and extra == 'all'
+Requires-Dist: pyqt6>=6.6.1; extra == 'all'
+Requires-Dist: vispy>=0.14.1; extra == 'all'
+Provides-Extra: jupyter
+Requires-Dist: ipympl>=0.9.4; extra == 'jupyter'
+Requires-Dist: jupyter-rfb>=0.4.2; extra == 'jupyter'
+Requires-Dist: notebook>5; extra == 'jupyter'
+Provides-Extra: matplotlib
+Requires-Dist: matplotlib>=3.8.1; extra == 'matplotlib'
+Provides-Extra: plotly
+Requires-Dist: plotly>=5.18.0; extra == 'plotly'
+Provides-Extra: vispy
+Requires-Dist: pyopengl>=3.1.0; (platform_system == 'Darwin') and extra == 'vispy'
+Requires-Dist: vispy>=0.14.1; extra == 'vispy'
+Provides-Extra: vispy-backend
+Requires-Dist: pyqt6>=6.6.1; extra == 'vispy-backend'
+Description-Content-Type: text/markdown
+
+<div align="center">
+<img src="https://raw.githubusercontent.com/jeertmans/DiffeRT/main/static/logo_250px.png" alt="DiffeRT logo"></img>
+</div>
+
+<div align="center">
+
+# DiffeRT
+
+[![Latest Release][pypi-version-badge]][pypi-version-url]
+[![Python version][pypi-python-version-badge]][pypi-version-url]
+[![Documentation][documentation-badge]][documentation-url]
+[![DOI][doi-badge]][doi-url]
+[![Codecov][codecov-badge]][codecov-url]
+
+</div>
+
+## Usage
+
+> **WARNING:**
+> Until this package reaches version `0.1.x`, breaking changes
+> should be expected. Checkout the [ROADMAP](https://github.com/jeertmans/DiffeRT/blob/main/ROADMAP.md) for
+> future features.
+>
+> If you have any suggestion regarding the development of this package,
+> please open an [issue](https://github.com/jeertmans/DiffeRT/issues).
+
+The easiest way to install DiffeRT is through pip:
+
+```bash
+pip install differt
+```
+
+We provide pre-built binaries for most platforms. If you want (or need)
+to build the package from the source distribution, check out the
+requirements below.
+
+## Contributing
+
+> **IMPORTANT:**
+> The current documentation is very light and a more complete guide for
+> new contributors will be written in the near future.
+>
+> Until then, do not hesitate to reach me for help with
+> [GitHub issues](https://github.com/jeertmans/DiffeRT/issues)!
+
+This project is built using both Python and Rust code, to provide an easy-to-use
+but performant program. It also heavily uses the capabilities brought by
+[JAX](https://github.com/google/jax) for numerical arrays.
+
+### Requirements
+
+To run build this package locally, you need:
+
+- [Python 3.10](https://www.python.org/) or above;
+- [Rust](https://www.rust-lang.org/) stable toolchain;
+- any modern C compiler;
+- [just](https://github.com/casey/just) to easily run commands listed in `justfile`s;
+- [Maturin](https://www.maturin.rs/) for building Python bindings from Rust code;
+- and [uv](https://docs.astral.sh/uv/) to manage this project.
+
+This project contains `justfile`s with recipes[^1] for most common
+use cases, so feel free to use them instead of the commands listed below/
+
+[^1]: `just` is as alternative tool to Make, that provides more modern
+  user experience. Enter `just` to list all available recipes.
+
+## Local development
+
+The following commands assume that you installed
+the project locally with:
+
+```bash
+uv sync
+```
+
+and that you activated the corresponding Python virtual environment:
+
+```bash
+. .venv/bin/activate  # or .venv\Scripts\activate on Windows
+```
+
+### Documentation
+
+To generate the documentation, please run the following:
+
+```bash
+just docs/build
+```
+
+Finally, you can open `docs/build/html/index.html` to see the generated docs.
+
+Other recipes are available, and you can list them with `just docs/`.
+
+### Testing
+
+Both Rust and Python codebases have their own tests and benchmarks.
+
+#### Testing Rust code
+
+You can test Rust code using Cargo:
+
+```bash
+cargo test
+```
+
+or benchmark it:
+
+```bash
+cargo bench
+```
+
+#### Testing Python code
+
+Similarly, you can test Python code with Pytest:
+
+```bash
+pytest
+```
+
+or benchmark it:
+
+```bash
+pytest --benchmark-enable differt/tests/benchmarks
+```
+
+## Citing
+
+If you use this software, please cite it as
+[detailed here](https://differt.readthedocs.io/latest/citing.html).
+
+[pypi-version-badge]: https://img.shields.io/pypi/v/DiffeRT?label=DiffeRT&color=blueviolet
+[pypi-version-url]: https://pypi.org/project/DiffeRT/
+[pypi-python-version-badge]: https://img.shields.io/pypi/pyversions/DiffeRT?color=orange
+[documentation-badge]: https://readthedocs.org/projects/differt/badge/?version=latest
+[documentation-url]: https://differt.readthedocs.io/latest/?badge=latest
+[doi-badge]: https://zenodo.org/badge/DOI/10.5281/zenodo.13895021.svg
+[doi-url]: https://doi.org/10.5281/zenodo.13895021
+[codecov-badge]: https://codecov.io/gh/jeertmans/DiffeRT/branch/main/graph/badge.svg?token=v63alnTWzu
+[codecov-url]: https://codecov.io/gh/jeertmans/DiffeRT
