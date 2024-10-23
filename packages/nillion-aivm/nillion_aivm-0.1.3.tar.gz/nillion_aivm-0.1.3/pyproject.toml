@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "nillion-aivm"
+version = "0.1.3"
+description = "AIVM: secure infrastructure for running MLaaS."
+authors = [ "José Cabrero-Holgueras <jose.cabrero@nillion.com>",
+            "Dimitris Mouris <dimitris@nillion.com>", 
+            "Memo Ugurbil <memo@nillion.com>"]
+readme = "README.md"
+packages= [
+    { include = "aivm"},
+    { include = "aivm_client"},
+    { include = "aivm_config"},
+    { include = "aivm_proxy"},
+    { include = "curl", from = "packages"},
+    { include = "curl_client", from = "packages"},
+    { include = "aivm_grpc", from = "packages"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+transformers = "^4.45.2"
+torch = "^2.4.1"
+numpy = "^1.26.4"
+pyyaml = "^6.0.2"
+torchvision = "^0.19.1"
+grpcio = "^1.66.1"
+grpcio-tools = "^1.66.1"
+googleapis-common-protos = "^1.65.0"
+omegaconf = ">=2.0.6"
+pandas = ">=1.2.2"
+tensorboard = "^2.17.1"
+future = "^1.0.0"
+scipy = ">=1.6.0"
+scikit-learn = "^1.5.1"
+pywavelets = ">=1.7.0"
+visdom = "^0.2.4"
+onnx = "^1.17.0"
+matplotlib = {version = "^3.9.2", optional = true}
+datasets = {version = "^3.0.1", optional = true}
+onnxruntime = {version = "^1.19.2", optional = true}
+
+[tool.poetry.extras]
+examples =  ["matplotlib", "datasets", "onnxruntime"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+aivm-devnet = "aivm.launcher:devnet"
+aivm_config_gen = "aivm_config:main"
+aivm_node = "aivm.launcher:main"
+aivm_ttp = "aivm.ttp:main"
+aivm_client = "aivm.test_client:main"
+aivm_proxy = "aivm_proxy:main"
+grpc_healthcheck = "aivm_grpc.test.healthcheck:main"

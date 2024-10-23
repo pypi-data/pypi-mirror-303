@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "aivm-client"
+version = "0.1.0"
+description = "AIVM: secure infrastructure for running MLaaS."
+authors = ["José Cabrero-Holgueras <jose.cabrero@nillion.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+# curl-client = {path = "../packages/curl_client", develop = true}
+# aivm-config = {path = "../aivm-config", develop = true}
+transformers = "^4.45.2"
+
+
+[tool.poetry.group.dev.dependencies]
+torch = "^2.4.1"
+pyyaml = "^6.0.2"
+torchvision = "^0.19.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

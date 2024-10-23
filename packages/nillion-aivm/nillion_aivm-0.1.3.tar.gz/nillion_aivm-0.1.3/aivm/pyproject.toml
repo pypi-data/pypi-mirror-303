@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "aivm"
+version = "0.1.0"
+description = "AIVM: secure infrastructure for running MLaaS."
+authors = ["Dimitris Mouris <dimitris@nillion.com>", 
+            "José Cabrero-Holgueras <jose.cabrero@nillion.com>", 
+            "Memo <memo@nillion.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+# curl = {path = "../packages/curl", develop = true}
+# aivm-grpc = {path = "../packages/aivm_grpc", develop = true}
+# aivm-client = {path = "../aivm-client", develop = true}
+transformers = "^4.45.2"
+# aivm-config = {path = "../aivm-config", develop = true}
+# aivm-proxy = {path = "../aivm-proxy"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+aivm_node = "aivm.launcher:main"
+aivm_ttp = "aivm.ttp:main"
+aivm_client = "aivm.test_client:main"
+aivm-devnet = "aivm.launcher:devnet"
