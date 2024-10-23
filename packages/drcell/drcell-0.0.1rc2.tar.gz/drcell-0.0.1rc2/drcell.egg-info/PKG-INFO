@@ -1,0 +1,229 @@
+Metadata-Version: 2.1
+Name: drcell
+Version: 0.0.1rc2
+Summary: GUI to generate, cluster and optimize dimensionality reduction output
+Home-page: https://github.com/lucakoe/DrCELL
+Author: Luca K.
+Author-email: pypi@use.startmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: bleach==6.1.0
+Requires-Dist: blosc2==2.5.1
+Requires-Dist: bokeh==3.3.4
+Requires-Dist: certifi==2024.7.4
+Requires-Dist: charset-normalizer==3.3.2
+Requires-Dist: click==8.1.7
+Requires-Dist: cloudpickle==3.0.0
+Requires-Dist: colorama==0.4.6
+Requires-Dist: colorcet==3.1.0
+Requires-Dist: contourpy==1.2.1
+Requires-Dist: cycler==0.12.1
+Requires-Dist: cython==0.29.37
+Requires-Dist: dask[array,dataframe]==2024.8.0
+Requires-Dist: dask-expr==1.1.10
+Requires-Dist: datashader==0.16.3
+Requires-Dist: decorator==5.1.1
+Requires-Dist: deprecated==1.2.14
+Requires-Dist: filelock==3.15.4
+Requires-Dist: fonttools==4.53.1
+Requires-Dist: fsspec==2024.6.1
+Requires-Dist: future==1.0.0
+Requires-Dist: graphtools==1.5.3
+Requires-Dist: h5py==3.11.0
+Requires-Dist: hdbscan==0.8.33
+Requires-Dist: holoviews==1.19.1
+Requires-Dist: idna==3.7
+Requires-Dist: imageio==2.35.0
+Requires-Dist: importlib-metadata==8.2.0
+Requires-Dist: importlib-resources==6.4.3
+Requires-Dist: jinja2==3.1.4
+Requires-Dist: joblib==1.4.2
+Requires-Dist: kiwisolver==1.4.5
+Requires-Dist: lazy-loader==0.4
+Requires-Dist: linkify-it-py==2.0.3
+Requires-Dist: llvmlite==0.43.0
+Requires-Dist: locket==1.0.0
+Requires-Dist: markdown==3.7
+Requires-Dist: markdown-it-py==3.0.0
+Requires-Dist: markupsafe==2.1.5
+Requires-Dist: matplotlib==3.9.2
+Requires-Dist: mdit-py-plugins==0.4.1
+Requires-Dist: mdurl==0.1.2
+Requires-Dist: mpmath==1.3.0
+Requires-Dist: msgpack==1.0.8
+Requires-Dist: multipledispatch==1.0.0
+Requires-Dist: ndindex==1.8
+Requires-Dist: networkx==3.2.1
+Requires-Dist: numba==0.60.0
+Requires-Dist: numexpr==2.10.1
+Requires-Dist: numpy==1.26.4
+Requires-Dist: packaging==24.1
+Requires-Dist: pandas==2.0.3
+Requires-Dist: panel==1.3.8
+Requires-Dist: param==2.1.1
+Requires-Dist: partd==1.4.2
+Requires-Dist: phate==1.0.11
+Requires-Dist: pillow==10.4.0
+Requires-Dist: py-cpuinfo==9.0.0
+Requires-Dist: pyarrow==17.0.0
+Requires-Dist: pyct==0.5.0
+Requires-Dist: pygsp==0.5.1
+Requires-Dist: pynndescent==0.5.13
+Requires-Dist: pyparsing==3.1.2
+Requires-Dist: pyqt5==5.15.11
+Requires-Dist: pyqt5-qt5==5.15.2
+Requires-Dist: pyqt5-sip==12.15.0
+Requires-Dist: pyqtwebengine==5.15.7
+Requires-Dist: pyqtwebengine-qt5==5.15.2
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2024.1
+Requires-Dist: pyviz-comms==3.0.3
+Requires-Dist: pyyaml==6.0.2
+Requires-Dist: requests==2.32.3
+Requires-Dist: s-gd2==1.8.1
+Requires-Dist: scikit-image==0.24.0
+Requires-Dist: scikit-learn==1.5.1
+Requires-Dist: scipy==1.13.1
+Requires-Dist: scprep==1.2.3
+Requires-Dist: seaborn==0.13.2
+Requires-Dist: six==1.16.0
+Requires-Dist: sympy==1.13.2
+Requires-Dist: tables==3.9.2
+Requires-Dist: tasklogger==1.2.0
+Requires-Dist: threadpoolctl==3.5.0
+Requires-Dist: tifffile==2024.8.10
+Requires-Dist: toolz==0.12.1
+Requires-Dist: torch==2.4.0
+Requires-Dist: tornado==6.4.1
+Requires-Dist: tqdm==4.66.5
+Requires-Dist: typing-extensions==4.12.2
+Requires-Dist: tzdata==2024.1
+Requires-Dist: uc-micro-py==1.0.3
+Requires-Dist: umap-learn[plot]==0.5.6
+Requires-Dist: urllib3==2.2.2
+Requires-Dist: webencodings==0.5.1
+Requires-Dist: wrapt==1.16.0
+Requires-Dist: xarray==2024.7.0
+Requires-Dist: xyzservices==2024.6.0
+Requires-Dist: zipp==3.20.0
+
+# ![DrCELL Banner](https://raw.githubusercontent.com/lucakoe/DrCELL/refs/heads/master/drcell/resources/banner.png)
+
+# DrCELL - Dimensional reduction Cluster Exploration and Labeling Library
+
+## Installation Instructions:
+
+- Download and install conda.
+- Download DrCELL
+- create conda environment based on the environment.yml file
+    - open shell or CMD
+    - `cd /path/to/DrCELL`
+    - `conda env create -f environment.yml --name DrCELL`
+
+## Run DrCELL:
+
+- start DrCELL
+    - `cd /path/to/DrCELL`
+    - `conda activate DrCELL`
+- open CELL in extra window
+    - `python -m drcell.scripts.startApplication "/path/to/data"`
+- alternatively open CELL in browser
+    - `python -m drcell.scripts.startBokehServer "/path/to/data" --port 5000`
+        - open [](http://localhost:5000)http://localhost:5000 in a browser
+
+## Install and run DrCELL with pip (experimental):
+
+- install python on your system
+- install DrCELL via pip:
+    -  `pip install drcell`
+- open CELL in extra window
+    - `drcell-app "/path/to/data"`
+- alternatively open CELL in browser
+    - `drcell-server "/path/to/data" --port 5000`
+
+
+## How to use:
+- Import your data in the DrCELL format (take a look at the [Getting Started Notebook](https://github.com/lucakoe/DrCELL/tree/master/drcell/example/gettingStarted.ipynb))
+- After starting the application (the first launch might take some time), you see the GUI
+
+### General Tab
+
+![DrCELL Interface General Tab Demo](https://raw.githubusercontent.com/lucakoe/DrCELL/refs/heads/master/misc/media/media1.gif)
+
+- You can select the different datasets you added in the "Data" Selection.
+- With the "Color" Selection, you can select the column of your data, you want to be highlighted with color. The
+  selectable Options can be customized with the "data_variables" in main.py
+- "OR" Filter: Filters all the selected Values, by connecting them with a logical "OR". For example all red OR blue
+  Objects. The selectable Options can be customized with the "data_variables" in main.py, and will show up with all
+  unique values of that data column in the selection.
+- "AND" Filter: Filters all the selected Values, by connecting them with a logical "AND". For example all Objects, that
+  are red AND blue. The selectable Options can be customized with the "data_variables" in main.py, and will show up with
+  all unique values of that data column in the selection.
+- "Export Data" Button exports the current view as .npy and .mat file in the output folder. If "Export only selection"
+  is enabled, only the data points currently on display will get exported (so for example all filtered data points won't
+  be included). The export file can be sorted by any sortable column.
+
+### Hyperparameter Optimization
+
+![DrCELL Interface Hyperparameter Optimization Demo](https://raw.githubusercontent.com/lucakoe/DrCELL/refs/heads/master/misc/media/media3.gif)
+
+#### PCA Preprocessing Tab
+
+- The data can be Preprocessed via PCA. The reduction of PCA ("n_components") can be adjusted here.
+- If you select "None" as Dimensionality Reduction, the PCA is restricted to 2-Dimensions.
+
+#### Dimensional Reduction Parameters Tab
+
+- Here you can change the Dimensional Reduction Method, as well as their parameters
+- By default, these dimensional reduction methods are available:
+
+    - None (uses PCA as Dimensional Reduction Method)
+    - UMAP
+    - t-SNE
+    - PHATE
+    - CEBRA (in development)
+
+#### Cluster Parameters
+
+- "Update Cluster" Checkbox: When unchecking the box, the current clustering will be kept and not changed, when changing
+  the parameters (does not include change of dataset). (in development)
+- Selection of other Cluster Algorithms (potential future feature)
+- HDBSCAN used as clustering algorithm
+    - unclustered data points get assigned to -1
+
+### Cluster Selection Tab
+
+- Lets you isolate a single cluster visually. Selected via entry of an integer or the slider (currently not functional)
+
+### Toolbar
+
+![DrCELL Interface Toolbar and Hover Tool Demo](https://raw.githubusercontent.com/lucakoe/DrCELL/refs/heads/master/misc/media/media2.gif)
+
+- located on the right side of the plot
+- General Tools
+    - Pan
+    - Box Zoom
+    - Wheel Zoom
+    - Save Plot
+    - Reset Plot Position
+    - Help
+- Hover Tools
+    - Data point hover tool
+        - displays information of data point, when hovered over
+        - the information shown, can be customized with the "display_hover_variables" variable in main.py
+        - customized plot, based on data of data point (in development)
+    - Grid hover tool
+        - displays information about the quadrant and the data points in it, when hovered over it.
+        - customized plot, based on data of data points in quadrant (in development)
+
+### Grid Settings
+
+- With this option you can enable a grid, separating your data points in quadrants, that can be hovered over with the
+  hover tool and displays you additional information
+
+### Statistics
+
+- Some basic stats about the current selection
