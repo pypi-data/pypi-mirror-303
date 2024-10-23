@@ -1,0 +1,3 @@
+class NotImplmentedInDocketError(Exception):
+    pass
+
