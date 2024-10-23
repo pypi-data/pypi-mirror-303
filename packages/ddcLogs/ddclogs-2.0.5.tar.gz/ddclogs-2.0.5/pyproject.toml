@@ -1,0 +1,34 @@
+[build-system]
+requires = ["poetry-core>=1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "ddcLogs"
+version = "2.0.5"
+description = "Custom log with rotations"
+license = "MIT"
+readme = "README.md"
+authors = ["Daniel Costa <danieldcsta@gmail.com>"]
+maintainers = ["Daniel Costa"]
+repository = "https://github.com/ddc/ddcLogs"
+homepage = "https://github.com/ddc/ddcLogs"
+packages = [{include = "ddcLogs"}]
+package-mode = true
+keywords = ["python3", "log", "log-utils", "ddcLogs"]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: OS Independent",
+    "Environment :: Other Environment",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = ">=8.3.3"
+coverage = ">=7.6.1"
