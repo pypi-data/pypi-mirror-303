@@ -1,0 +1,42 @@
+[build-system]
+requires = [
+    "setuptools>=65.5.0",
+    "wheel>=0.40",
+    "numpy>=2.0"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lttbc"
+version = "0.3.0"
+description = "Largest triangle three buckets module for Python written in C"
+dynamic = ["readme"]
+requires-python = ">=3.10"
+authors = [
+    { name = "European XFEL GmbH", email = "dennis.goeries@xfel.eu" }
+]
+maintainers = [
+    { name = "Dennis Goeries", email = "dennis.goeries@xfel.eu" },
+]
+dependencies = [
+    "numpy>=2.0",
+]
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+[project.urls]
+"git" = "https://github.com/dgoeries/lttbc"
+
+[tool.setuptools.dynamic]
+readme = { file = ["README.md"], content-type = "text/markdown" }
