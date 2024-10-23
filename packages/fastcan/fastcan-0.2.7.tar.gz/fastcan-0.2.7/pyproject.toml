@@ -1,0 +1,186 @@
+[project]
+name = "fastcan"
+version = "0.2.7"
+description = "A fast canonical-correlation-based feature selection method"
+authors = [
+    { name = "Matthew Sikai Zhang", email = "matthew.szhang91@gmail.com" },
+]
+requires-python = ">=3.9"
+readme = "README.rst"
+license = { file = "LICENSE" }
+
+dependencies = ["scikit-learn>=1.5.0"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+
+[project.urls]
+homepage = "https://fastcan.readthedocs.io/en/latest/"
+source = "https://github.com/scikit-learn-contrib/fastcan"
+download = "https://pypi.org/project/fastcan/#files"
+tracker = "https://github.com/scikit-learn-contrib/fastcan/issues"
+
+[project.optional-dependencies]
+docs = ["furo", "matplotlib", "sphinx_gallery", "sphinx-design"]
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+
+[tool.pixi.feature.fmt.dependencies]
+black = "*"
+
+[tool.pixi.feature.lint.dependencies]
+ruff = "*"
+cython-lint = "*"
+
+[tool.pixi.feature.type.dependencies]
+mypy = "*"
+
+[tool.pixi.feature.build.dependencies]
+python-build = "*"
+uv = "*"
+
+[build-system]
+requires = ["meson-python>=0.16.0", "Cython>=3.0.10", "scikit-learn>=1.5.0"]
+build-backend = "mesonpy"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+fastcan = { path = ".", editable = true }
+
+[tool.pixi.build-dependencies]
+cython = ">=3.0.10"
+meson-python = ">=0.16.0"
+ninja = ">=1.12.1"
+
+[tool.pixi.target.osx-64.build-dependencies]
+compilers = "*"
+
+[tool.pixi.target.osx-arm64.build-dependencies]
+compilers = "*"
+
+[tool.pixi.host-dependencies]
+meson-python = ">=0.16.0"
+cython = ">=3.0.10"
+scikit-learn = ">=1.5.0"
+
+[tool.pixi.dependencies]
+python = ">=3.12.0"
+scikit-learn = ">=1.5.0"
+
+[tool.pixi.tasks]
+time-h = "python -m timeit -n 5 -s 'import numpy as np; from fastcan import FastCan; X = np.random.rand(3000, 100); y = np.random.rand(3000, 20)' 's = FastCan(100, verbose=0).fit(X, y)'"
+time-eta = "python -m timeit -n 5 -s 'import numpy as np; from fastcan import FastCan; X = np.random.rand(3000, 100); y = np.random.rand(3000, 20)' 's = FastCan(100, eta=True, verbose=0).fit(X, y)'"
+
+[tool.pixi.feature.test.tasks]
+test = { cmd = "pytest", cwd = "tests" }
+test-coverage = { cmd = "rm -rf .coverage && pytest --cov-report $FMT --cov=$PACKAGE tests/", env = { PACKAGE = "fastcan", FMT = "html" } }
+
+[tool.pixi.feature.build.tasks]
+build-wheel = "rm -rf dist && python -m build -wnx -Cinstall-args=--tags=runtime,python-runtime,devel"
+build-sdist = "rm -rf dist && python -m build --sdist"
+rebuild = "rm -rf build && uv pip install --no-deps --force-reinstall -e ."
+
+[tool.pixi.feature.fmt.tasks]
+fmt = { cmd = "black .", cwd = "fastcan" }
+
+[tool.pixi.feature.lint.tasks]
+lint = "ruff check . --fix"
+cython-lint = { cmd = "cython-lint .", cwd = "fastcan" }
+
+[tool.pixi.feature.type.tasks]
+type = { cmd = "mypy . --ignore-missing-imports", cwd = "fastcan" }
+
+[tool.pixi.feature.docs.tasks]
+doc = { cmd = "$SPHINXBUILD -M $CMD $SOURCEDIR $BUILDDIR $SPHINXOPTS", cwd = "doc", env = { SPHINXBUILD = "sphinx-build", CMD = "html", SOURCEDIR = ".", BUILDDIR = "_build", SPHINXOPTS = "" } }
+doc-clean = { cmd = "rm -rf $BUILDDIR generated auto_examples", cwd = "doc", env = { BUILDDIR = "_build" } }
+
+[tool.pixi.environments]
+default = ["fmt", "lint", "type", "docs", "test", "build"]
+
+[tool.black]
+line-length = 88
+preview = true
+exclude = '''
+/(
+    \.eggs         # exclude a few common directories in the
+  | \.git          # root of the project
+  | \.mypy_cache
+  | \.vscode
+  | \.venv
+  | \.ruff_cache
+  | build
+  | dist
+  | doc/_build
+  | doc/auto_examples
+)/
+'''
+
+[tool.ruff]
+# all rules can be found here: https://beta.ruff.rs/docs/rules/
+lint.select = ["E", "F", "W", "I"]
+
+lint.ignore = [
+    # space before : (needed for how black formats slicing)
+    "E203",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # do not use variables named 'l', 'O', or 'I'
+    "E741",
+]
+
+# max line length for black
+line-length = 88
+
+exclude = [
+    ".git",
+    "__pycache__",
+    "dist",
+    "doc/_build",
+    "doc/auto_examples",
+    "build",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# It's fine not to put the import at the top of the file in the examples
+# folder.
+"examples/*" = ["E402"]
+"doc/conf.py" = ["E402"]
+
+
+[tool.cython-lint]
+# Ignore the same error codes as ruff
+# + E501 (line too long) because keeping it < 88 in cython
+# often makes code less readable.
+lint.ignore = [
+    # multiple spaces/tab after comma
+    'E24',
+    # space before : (needed for how black formats slicing)
+    'E203',
+    # line too long
+    'E501',
+    # do not assign a lambda expression, use a def
+    'E731',
+    # do not use variables named 'l', 'O', or 'I'
+    'E741',
+    # line break before binary operator
+    'W503',
+    # line break after binary operator
+    'W504',
+]
