@@ -1,0 +1,96 @@
+Metadata-Version: 2.1
+Name: nlip
+Version: 0.1.0
+Summary: Natural Language Interaction Protocol
+Author: Dinesh Verma
+Author-email: dverma@us.ibm.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: Jinja2 (==3.1.4)
+Requires-Dist: MarkupSafe (==3.0.1)
+Requires-Dist: PyYAML (==6.0.2)
+Requires-Dist: Pygments (==2.18.0)
+Requires-Dist: annotated-types (==0.7.0)
+Requires-Dist: anyio (==4.6.2.post1)
+Requires-Dist: certifi (==2024.8.30)
+Requires-Dist: click (==8.1.7)
+Requires-Dist: dnspython (==2.7.0)
+Requires-Dist: email-validator (==2.2.0)
+Requires-Dist: exceptiongroup (==1.2.2)
+Requires-Dist: fastapi (==0.115.2)
+Requires-Dist: fastapi-cli (==0.0.5)
+Requires-Dist: h11 (==0.14.0)
+Requires-Dist: httpcore (==1.0.6)
+Requires-Dist: httptools (==0.6.2)
+Requires-Dist: httpx (==0.27.2)
+Requires-Dist: idna (==3.10)
+Requires-Dist: markdown-it-py (==3.0.0)
+Requires-Dist: mdurl (==0.1.2)
+Requires-Dist: pydantic (==2.9.2)
+Requires-Dist: pydantic-core (==2.23.4)
+Requires-Dist: python-dotenv (==1.0.1)
+Requires-Dist: python-multipart (==0.0.12)
+Requires-Dist: rich (==13.9.2)
+Requires-Dist: shellingham (==1.5.4)
+Requires-Dist: sniffio (==1.3.1)
+Requires-Dist: starlette (==0.39.2)
+Requires-Dist: typer (==0.12.5)
+Requires-Dist: typing_extensions (==4.12.2)
+Requires-Dist: uvicorn (==0.31.1)
+Requires-Dist: uvloop (==0.20.0)
+Requires-Dist: watchfiles (==0.24.0)
+Requires-Dist: websockets (==13.1)
+Description-Content-Type: text/markdown
+
+# NLIP Server  
+
+This is a simple implementation of a NLIP Server written using fastapi in python
+
+A sample chatbot solution is provided in soln directory
+
+
+
+## Installation
+
+To set up this python project, create a virtual environment for python using the following commands (You can use your own environment name instead of using the provided name of env_server: 
+
+```
+$ python -m venv env_server
+$ source env_server/bin/activate
+```
+
+Next, install the required packages:
+```
+$ pip install -r requirements.txt
+```
+
+Now the python environment is setup and you can run the server
+
+## Running the chatbot server 
+
+Change to the directory soln/chat and invoke the following commands:
+```
+$ ./run_llama.sh 
+```
+
+or 
+```
+$ ./run_mistral.sh 
+```
+
+This will start the fast api server with chat on one of the two LLM models. 
+
+Note: this solution assumes that you have an Ollama Server running at a server which needs to be configured. See the README.md in soln directory for more details. 
+
+
+## Defining a new Solution 
+
+To define a new solution, you need to provide a subclass of NLIPApplicaiton which needs to define its specialized version of NLIPSession. Both NLIPApplication and NLIPSession are defined in module nlip. 
+
+The main routine of the solution should call the start_server routine in module server to create an instance of the solution server-side application. 
+
+
