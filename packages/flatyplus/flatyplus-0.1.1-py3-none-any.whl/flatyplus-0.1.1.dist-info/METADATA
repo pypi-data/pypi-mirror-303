@@ -1,0 +1,215 @@
+Metadata-Version: 2.1
+Name: flatyplus
+Version: 0.1.1
+Summary: a simple program to become content creator
+Author-email: flatyplus <flaty.plus@gmail.com>
+Project-URL: Homepage, https://flatyplus.my.id/
+Project-URL: Issues, https://flatyplus.my.id/page/report.html
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: yt-dlp
+Requires-Dist: diffusers ==0.26.3
+Requires-Dist: transformers
+Requires-Dist: accelerate
+Requires-Dist: safetensors
+Requires-Dist: pillow
+Requires-Dist: ffmpeg-python
+Requires-Dist: opencv-python
+Requires-Dist: interframe
+Requires-Dist: timm ==0.6.12
+Requires-Dist: rembg
+Requires-Dist: controlnet-aux
+Requires-Dist: mediapipe
+
+
+# Flaty Plus python package
+
+introducing a program to become a content creator
+
+## What content can be created?
+
+* Clipper YouTube
+* Image generator (by AI)
+* Interpolation frame
+* Video maker
+
+## How to Use
+
+### Install flatyplus
+
+Installing first flatyplus
+
+```
+!pip install flatyplus==0.1.0
+```
+
+### Clipper YouTube
+
+Clip only audio
+```
+from flatyplus import YTclip
+YTclip.audio(
+    "https://youtu.be/eIEgeaYJbN0", #youtube url
+    clip=None,                      #trim video by specific time in tupple (start, end)=> ("00:00:00", "00:00:15")
+    output=None                     #rename output
+    )
+```
+
+Clip only video
+```
+from flatyplus import YTclip
+YTclip.video(
+    "https://youtu.be/eIEgeaYJbN0", #youtube url
+    short=False,                    #specific yt video type. res video if short True max-width<=1280 or False max-height<=1280
+    clip=None,                      #trim video by specific time in tupple (start, end)=> ("00:00:00", "00:00:15")
+    output=None                     #rename output
+    )
+```
+
+Clip audio and video
+```
+from flatyplus import YTclip
+YTclip.audiovideo(
+    "https://youtu.be/eIEgeaYJbN0", #youtube url
+    short=False,                    #specific yt video type. res video if short True max-width<=1280 or False max-height<=1280
+    clip=None,                      #trim video by specific time in tupple (start, end)=> ("00:00:00", "00:00:15")
+    output=None                     #rename output
+)
+```
+
+### Image generator by AI
+Dance cover by AI is **only use _sdxl_ model** from diffuser hugging face. you can search model on [here](https://huggingface.co/models?pipeline_tag=text-to-image&sort=trending&search=Xl)
+
+#### Without Controlnet
+
+##### Step 1. Instaling model
+```
+from flatyplus import sdxl_diffuser
+sdxl_diffuser.init(
+    "cagliostrolab/animagine-xl-3.1", #model from hugging face
+    )
+```
+
+##### step 1.5. Add lora (optional)
+```
+sdxl_diffuser.lora(
+    "nerijs/pixel-art-xl",  #lora model from hugging face
+    weight_name=None,       #name of lora (name.safetensors)
+    fuse=False              #if true lora will be fusing in to base model
+    )
+```
+
+##### step 2. Generated image
+```
+img = sdxl_diffuser.image(
+    "a girl width tourch",    #prompt
+    (1024, 1024),             #size tuple (width, height)
+    negative_prompt="",       #negative prompt
+    seed=None,                #seed if None is random
+    guidance_scale=7,         #guidance scale
+    num_inference_steps=28,   #num inference steps
+    output=None               #rename output if None is not saving the image
+    )                               #returning image object
+
+img
+```
+
+#### With controlnet
+
+##### Step 1. Instaling model
+```
+from flatyplus import sdxl_diffuser
+sdxl_diffuser.init(
+    "cagliostrolab/animagine-xl-3.1", #model from hugging face
+    control_mode=[]                 #controlnet mode in list available value are "canny", "openpose", "zoe-depth", "scribble"
+    )
+```
+##### step 1.5. Add lora (optional)
+```
+sdxl_diffuser.lora(
+    "nerijs/pixel-art-xl",  #lora model from hugging face
+    weight_name=None,       #name of lora (name.safetensors)
+    fuse=False              #if true lora will be fusing in to base model
+    )
+```
+
+##### step 2. Generated image
+```
+img = sdxl_diffuser.image(
+    "a girl width tourch",    #prompt
+    (1024, 1024),             #size tuple (width, height)
+    path=[],                  #list control image path length as control_mode above
+    negative_prompt="",       #negative prompt
+    seed=None,                #seed if None is random
+    guidance_scale=7,         #guidance scale
+    num_inference_steps=28,   #num inference steps
+    output=None               #rename output if None is not saving the image
+    )                         #returning image object
+
+img
+```
+
+### Interpolation frame
+
+```
+from flatyplus import interframe
+interframe.interpolate(
+    "",         #path that contain list of image (png) named in number (0.png -> n.png)
+    num=2,      #num more higher more much generate frame
+    loop=False, #true if want last back image to first image
+    output      #rename output
+    )
+```
+
+
+### video maker
+#### video write from image
+
+```
+from flatyplus import video
+video.write(
+    "path",          #path that contain list of image (png) named in number (0.png -> n.png)
+    duration=5,      #duration of length video output
+    resize=None,     #resize video resolution in tupple => (760, 1280)
+    soundpath=None,  #path including sound in video
+    background=None, #background color in hex/rgb or path image
+    output=None      #rename output
+    )
+```
+#### video clip
+```
+from flatyplus import video
+video.clip(
+    "video.mp4",       #video path
+    start="00:00:00",  #start time by hh:mm:ss
+    end="00:00:00",    #end time by hh:mm:ss
+    crop=None,         #crop if is tuple (width, height), if is list [{"start":"hh:mm:ss", "duration": seconds, "crop":(width, height)}]
+    resize=None,       #resize video
+    output=None        #output rename
+    )
+```
+#### video loop
+```
+from flatyplus import video
+video.loop(
+    "video.mp4",      #video path
+    "3",              #how many time will be loop
+    output=None       #output rename
+    )
+```
+
+## About me
+A streamer, clippers, animator, content creator, pro gamer, programmer, story teller and bla bla bla ...
+
+Anyway.
+Hello guys...
+My name is Flatyplus. I create this program just for my hobby. Hope you enjoy what im doing.
+
+Im welcome to you to being my friends. Contact me if you have any help for me.
+
+### support me on SociaBuzz
+https://sociabuzz.com/flatyplus/tribe
