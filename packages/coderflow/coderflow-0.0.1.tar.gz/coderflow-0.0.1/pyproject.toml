@@ -1,0 +1,23 @@
+[project]
+name = "coderflow"
+version = "0.0.1"
+description = "Stay in the flow while coding."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Josh Tanke", email = "josh@launchflow.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic",
+    "keyring",
+    "rich",
+    "typer",
+]
+
+[project.scripts]
+coderflow = "coderflow.cli:app"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
