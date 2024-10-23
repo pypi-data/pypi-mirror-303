@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling", "setuptools_scm"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pntables"
+version = "0.1.0"  # Placeholder; setuptools_scm will manage the version dynamically
+description = "Render Interactive DataFrames with Panel Tabulator."
+readme = "README.md"
+license = {text = "BSD 3-Clause"}
+authors = [
+  {name = "Demetris Roumis", email = "m0hx8y3f6@mozmail.com"},
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "pandas",
+  "panel"
+]
+
+[tool.hatch.version]
+path = "pntables/_version.py"
+
+[tool.hatch.build.targets.sdist]
+[tool.hatch.build.targets.wheel]
+
+[tool.setuptools_scm]
+write_to = "pntables/_version.py"
+relative_to = "pntables/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+
+[project.optional-dependencies]
+testing = [
+  "pytest",
+]
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pandas",
+  "panel",
+  "pytest",
+  "setuptools_scm",
+  "hatch",
+  "IPython",
+]
+
+[tool.hatch.scripts]
+test = "pytest --capture=no --maxfail=1"
