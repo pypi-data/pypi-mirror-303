@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: usso
+Version: 0.26.0
+Summary: A plug-and-play client for integrating universal single sign-on (SSO) with Python frameworks, enabling secure and seamless authentication across microservices.
+Author-email: Mahdi Kiani <mahdikiany@gmail.com>
+Maintainer-email: Mahdi Kiani <mahdikiany@gmail.com>
+License: Copyright (c) 2016 The Python Packaging Authority (PyPA)
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of
+        this software and associated documentation files (the "Software"), to deal in
+        the Software without restriction, including without limitation the rights to
+        use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+        of the Software, and to permit persons to whom the Software is furnished to do
+        so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/ussoio/usso-python
+Project-URL: Bug Reports, https://github.com/ussoio/usso-python/issues
+Project-URL: Funding, https://github.com/ussoio/usso-python
+Project-URL: Say Thanks!, https://saythanks.io/to/mahdikiani
+Project-URL: Source, https://github.com/ussoio/usso-python
+Keywords: usso,sso,authentication,security,fastapi,django
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pydantic >=2
+Requires-Dist: requests >=2.26.0
+Requires-Dist: pyjwt[crypto]
+Requires-Dist: cachetools
+Provides-Extra: all
+Requires-Dist: fastapi ; extra == 'all'
+Requires-Dist: uvicorn ; extra == 'all'
+Requires-Dist: django ; extra == 'all'
+Requires-Dist: httpx ; extra == 'all'
+Requires-Dist: dev ; extra == 'all'
+Requires-Dist: test ; extra == 'all'
+Provides-Extra: dev
+Requires-Dist: check-manifest ; extra == 'dev'
+Provides-Extra: django
+Requires-Dist: Django >=3.2 ; extra == 'django'
+Provides-Extra: fastapi
+Requires-Dist: fastapi >=0.65.0 ; extra == 'fastapi'
+Requires-Dist: uvicorn[standard] >=0.13.0 ; extra == 'fastapi'
+Provides-Extra: httpx
+Requires-Dist: httpx ; extra == 'httpx'
+Provides-Extra: test
+Requires-Dist: coverage ; extra == 'test'
+
+# USSO-Client
+
+The USSO-Client provides a universal single sign-on (SSO) integration for microservices, making it easy to add secure, scalable authentication across different frameworks. This client simplifies the process of connecting any microservice to the USSO service.
+
+## Features
+
+- **Core SSO Integration**: Use the USSO core client for basic SSO functionality across any Python application.
+- **Framework-Specific Modules**:
+  - **FastAPI Integration**: Specialized support for FastAPI applications, enabling async authentication mechanisms tailored to FastAPI's event loop.
+  - *Django Integration* (Coming soon): Customizable Django authentication backend that integrates seamlessly with Django's user management and middleware architecture.
+
+## Installation
+
+Install the USSO client using pip:
+
+```bash
+pip install usso-client
+```
+
+To add framework-specific support, use the following commands:
+
+For FastAPI:
+
+```bash
+pip install "usso-client[fastapi]"
+```
+
+## Quick Start
+Follow the quick start guides in the documentation to integrate USSO in your application.
+
+## Contributing
+Contributions are welcome! See CONTRIBUTING.md for more details on how to get involved.
+
+## License
+Distributed under the MIT License. See LICENSE for more information.
