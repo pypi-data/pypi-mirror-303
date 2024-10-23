@@ -1,0 +1,182 @@
+Metadata-Version: 2.1
+Name: passagemath-polyhedra
+Version: 10.4.25
+Summary: passagemath: Convex polyhedra in arbitrary dimension, mixed integer linear optimization
+Author-email: The Sage Developers <sage-support@googlegroups.com>
+License: GNU General Public License (GPL) v2 or later
+Project-URL: download, https://doc.sagemath.org/html/en/installation/index.html
+Project-URL: release notes, https://github.com/sagemath/sage/releases
+Project-URL: source, https://github.com/sagemath/sage
+Project-URL: documentation, https://doc.sagemath.org
+Project-URL: homepage, https://www.sagemath.org
+Project-URL: tracker, https://github.com/sagemath/sage/issues
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: <3.13,>=3.9
+Description-Content-Type: text/x-rst
+Requires-Dist: passagemath-conf~=10.4.25
+Requires-Dist: gmpy2~=2.1.b999
+Requires-Dist: cysignals>=1.10.2
+Requires-Dist: pplpy>=0.8.6
+Requires-Dist: memory_allocator
+Requires-Dist: passagemath-environment~=10.4.25
+Requires-Dist: passagemath-glpk~=10.4.25
+Requires-Dist: passagemath-modules~=10.4.25
+Provides-Extra: test
+Requires-Dist: passagemath-repl~=10.4.25; extra == "test"
+Provides-Extra: flint
+Requires-Dist: passagemath-flint~=10.4.25; extra == "flint"
+Provides-Extra: fpylll
+Requires-Dist: fpylll>=0.5.9; extra == "fpylll"
+Provides-Extra: linbox
+Requires-Dist: passagemath-linbox~=10.4.25; extra == "linbox"
+Provides-Extra: pari
+Requires-Dist: passagemath-pari~=10.4.25; extra == "pari"
+Provides-Extra: 4ti2
+Provides-Extra: cddlib
+Provides-Extra: latte
+Requires-Dist: passagemath-polyhedra[latte_int]; extra == "latte"
+Provides-Extra: latte-int
+Provides-Extra: normaliz
+Requires-Dist: pynormaliz==2.18; extra == "normaliz"
+Provides-Extra: polymake
+Requires-Dist: jupymake>=0.9; extra == "polymake"
+Provides-Extra: ppl
+Provides-Extra: topcom
+Provides-Extra: cbc
+Requires-Dist: passagemath-polyhedra[cbc_sage]; extra == "cbc"
+Provides-Extra: cbc-sage
+Requires-Dist: sage_numerical_backends_coin>=9.0b12; extra == "cbc-sage"
+Provides-Extra: coin
+Requires-Dist: passagemath-polyhedra[cbc_sage]; extra == "coin"
+Provides-Extra: coin-sage
+Requires-Dist: passagemath-polyhedra[cbc_sage]; extra == "coin-sage"
+Provides-Extra: cplex
+Requires-Dist: passagemath-polyhedra[cplex_sage]; extra == "cplex"
+Provides-Extra: cplex-sage
+Requires-Dist: sage_numerical_backends_cplex>=9.0b12; extra == "cplex-sage"
+Provides-Extra: cvxopt
+Requires-Dist: passagemath-polyhedra[cvxopt_sage]; extra == "cvxopt"
+Provides-Extra: cvxopt-sage
+Requires-Dist: cvxopt>=1.2.5; extra == "cvxopt-sage"
+Provides-Extra: cvxpy
+Requires-Dist: cvxpy; extra == "cvxpy"
+Provides-Extra: glpk
+Requires-Dist: passagemath-polyhedra[glpk_sage]; extra == "glpk"
+Provides-Extra: glpk-sage
+Provides-Extra: gurobi
+Requires-Dist: passagemath-polyhedra[gurobi_sage]; extra == "gurobi"
+Provides-Extra: gurobi-sage
+Requires-Dist: sage_numerical_backends_gurobi>=9.0.0; extra == "gurobi-sage"
+Provides-Extra: scip
+Requires-Dist: PySCIPOpt; extra == "scip"
+Provides-Extra: qq
+Provides-Extra: zz
+Provides-Extra: rdf
+Provides-Extra: numberfield
+Requires-Dist: passagemath-polyhedra[flint]; extra == "numberfield"
+Provides-Extra: plot
+Requires-Dist: passagemath-plot~=10.4.25; extra == "plot"
+Provides-Extra: standard
+Requires-Dist: passagemath-polyhedra[RDF,flint,fpylll,glpk,graphs,groups,linbox,pari,plot]; extra == "standard"
+
+====================================================================================================================
+ passagemath: Convex polyhedra in arbitrary dimension, mixed integer linear optimization
+====================================================================================================================
+
+About SageMath
+--------------
+
+   "Creating a Viable Open Source Alternative to
+    Magma, Maple, Mathematica, and MATLAB"
+
+   Copyright (C) 2005-2024 The Sage Development Team
+
+   https://www.sagemath.org
+
+SageMath fully supports all major Linux distributions, recent versions of
+macOS, and Windows (Windows Subsystem for Linux).
+
+See https://doc.sagemath.org/html/en/installation/index.html
+for general installation instructions.
+
+
+About this pip-installable source distribution
+----------------------------------------------
+
+This pip-installable source distribution `sagemath-polyhedra` is a distribution of a part of the Sage Library.  It provides a small subset of the modules of the Sage library ("sagelib", `sagemath-standard`), sufficient for computations with convex polyhedra in arbitrary dimension (in exact rational arithmetic), and linear and mixed integer linear optimization (in floating point arithmetic).
+
+
+What is included
+----------------
+
+* `Combinatorial and Discrete Geometry <https://doc.sagemath.org/html/en/reference/discrete_geometry/index.html>`_: Polyhedra, lattice polyhedra, lattice points in polyhedra, triangulations, fans, polyhedral complexes, hyperplane arrrangements
+
+* `Parma Polyhedra Library (PPL) backends for rational polyhedra <https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/backend_ppl.html>`_, `lattice polygons <https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/ppl_lattice_polygon.html>`_, `lattice polytopes <https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/ppl_lattice_polytope.html>`_; via `pplpy <https://doc.sagemath.org/html/en/reference/spkg/pplpy.html#spkg-pplpy>`_
+
+* `Python backend for polyhedra over general ordered fields <https://doc.sagemath.org/html/en/reference/discrete_geometry/sage/geometry/polyhedron/backend_field.html>`_
+
+* `Linear, Mixed Integer Linear, and Semidefinite Optimization frontends <https://doc.sagemath.org/html/en/reference/numerical/index.html#numerical-optimization>`_
+
+* `GNU Linear Programming Kit (GLPK) backend for large-scale linear and mixed integer linear optimization (floating point arithmetic) <https://doc.sagemath.org/html/en/reference/numerical/sage/numerical/backends/glpk_backend.html>`_
+
+* `Interactive Simplex Method <https://doc.sagemath.org/html/en/reference/numerical/sage/numerical/interactive_simplex_method.html>`_
+
+
+Available as extras, from other distributions
+---------------------------------------------
+
+Additional features:
+
+`pip install "sagemath-polyhedra[graphs]"`
+ Face lattices, combinatorial polyhedra, graph-theoretic constructions
+
+`pip install "sagemath-polyhedra[groups]"`
+ Constructing symmetric polyhedra, computing automorphisms, lattice point counting modulo group actions
+
+`pip install "sagemath-polyhedra[toric]"`
+ `Toric Varieties <https://doc.sagemath.org/html/en/reference/schemes/index.html#toric-varieties>`_
+
+Other backends for polyhedral computations can be installed:
+
+`pip install "sagemath-polyhedra[normaliz]"`
+ `Normaliz <https://doc.sagemath.org/html/en/reference/spkg/normaliz.html#spkg-normaliz>`_, via `PyNormaliz <https://doc.sagemath.org/html/en/reference/spkg/pynormaliz.html#spkg-pynormaliz>`_
+
+`pip install "sagemath-polyhedra[polymake]"`
+ `Polymake <https://doc.sagemath.org/html/en/reference/spkg/polymake.html#spkg-polymake>`_, via `JuPyMake <https://pypi.org/project/JuPyMake/>`_
+
+`sagemath-polyhedra` also provides integration with other packages for additional functionality:
+
+* `LattE integrale <https://doc.sagemath.org/html/en/reference/spkg/latte_int.html#spkg-latte-int>`_
+* `lrslib <https://doc.sagemath.org/html/en/reference/spkg/lrslib.html#spkg-lrslib>`_
+
+Optional backends for optimization:
+
+`pip install "sagemath-polyhedra[cbc]"`
+ `COIN/OR CBC <https://doc.sagemath.org/html/en/reference/spkg/cbc.html#spkg-cbc>`_ Mixed Integer Linear Optimization solver,
+ via `sage_numerical_backends_coin <https://doc.sagemath.org/html/en/reference/spkg/sage_numerical_backends_coin.html#spkg-sage-numerical-backends-coin>`_
+
+`pip install "sagemath-polyhedra[cplex]"`
+ CPLEX Mixed Integer Optimization solver (proprietary; requires licensed installation),
+ via `sage_numerical_backends_cplex <https://doc.sagemath.org/html/en/reference/spkg/sage_numerical_backends_cplex.html#spkg-sage-numerical-backends-cplex>`_
+
+`pip install "sagemath-polyhedra[cvxpy]"`
+ `CVXPy <https://doc.sagemath.org/html/en/reference/spkg/cvxpy.html#spkg-cvxpy>`_ as middle-end for `various backends <https://www.cvxpy.org/install/>`_
+
+`pip install "sagemath-polyhedra[gurobi]"`
+ Gurobi Mixed Integer Optimization solver (proprietary; requires licensed installation), via `sage_numerical_backends_gurobi <https://doc.sagemath.org/html/en/reference/spkg/sage_numerical_backends_gurobi.html#spkg-sage-numerical-backends-gurobi>`_
+
+`pip install "sagemath-polyhedra[scip]"`
+ `SCIP <https://doc.sagemath.org/html/en/reference/spkg/scip.html#spkg-scip>`_ Mixed Integer Optimization solver,
+ via `PySCIPOpt <https://doc.sagemath.org/html/en/reference/spkg/pyscipopt.html#spkg-pyscipopt>`_
