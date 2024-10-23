@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=64.0", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aggregate_profiles"
+requires-python = ">= 3.10"
+description = "A package for aggregating oceanographic insitu profiles along given dimension."
+authors = [{ name = "Clement Weber", email = "clement.weber@pokapok.org" }]
+license = { text = "MIT" }
+version = "0.1.1"
+keywords = ["oceanography", "data aggregation", "profiles", "Argo", "Glider"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "xarray",
+]
+
+[tool.setuptools]
+packages = ["aggregate_profiles"]
+
+[project.scripts]
+aggregate_profiles-cli = "aggregate_profiles.aggregate_profiles:aggregation"  # Adjust if necessary
