@@ -1,0 +1,95 @@
+Metadata-Version: 2.3
+Name: era5cli
+Version: 2.0.0b2
+Summary: A command line interface to download ERA5 data from the Copernicus Climate Data Store. https://climate.copernicus.eu/..
+Author: Ronald van Haren, Jaro Camphuijsen, Yifat Dzigan, Niels Drost, Fakhereh Alidoost, Bouwe Andela, Jerom Aerts, Berend Weel, Rolf Hut, Klaus Zimmermann, Peter Kalverla, Aytaç Paçal, Stef Smeets, Stefan Verhoeven, Elizaveta Malinina
+Author-email: Barbara Vreede <b.vreede@esciencecenter.nl>, Bart Schilperoort <b.schilperoort@esciencecenter.nl>
+License: Apache Software License
+License-File: LICENSE
+Keywords: ERA-5,cds api,cds download,climate data
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Atmospheric Science
+Requires-Python: <3.12,>=3.8
+Requires-Dist: cads-api-client==1.3.0
+Requires-Dist: cdsapi>=0.7.1
+Requires-Dist: netcdf4
+Requires-Dist: pathos
+Requires-Dist: ptable
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: bump-my-version; extra == 'dev'
+Requires-Dist: flake8; extra == 'dev'
+Requires-Dist: flake8-pyproject; extra == 'dev'
+Requires-Dist: hatch; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-cov; extra == 'dev'
+Requires-Dist: pytest-flake8; extra == 'dev'
+Provides-Extra: docs
+Requires-Dist: mkdocs; extra == 'docs'
+Requires-Dist: mkdocs-gen-files; extra == 'docs'
+Requires-Dist: mkdocs-material; extra == 'docs'
+Description-Content-Type: text/markdown
+
+<img align="right" width="150" alt="Logo" src="docs/assets/era5cli_logo_colors_border.png">
+
+> [!IMPORTANT]
+> The old Climate Data Store (CDS) will be shut down on 3 September 2024.
+> All era5cli versions up to v1.4.2 will no longer work.
+>
+> For more information see: https://forum.ecmwf.int/t/the-new-climate-data-store-beta-cds-beta-is-now-live/3315
+>
+> 
+> To continue using era5cli, you will need to re-register at ECMWF and get a new API key,
+> and transition to the era5cli v2 beta. This can be installed with:
+> `pip install era5cli==2.0.0b2` 
+
+> [!WARNING]
+> netCDF files from the new Climate Data Store Beta are not formatted the same as the
+> old CDS. Some variables might be missing.
+> See the open issue [here](https://github.com/eWaterCycle/era5cli/issues/165), as well as the [ECMWF discussion forum](https://forum.ecmwf.int/).
+
+
+[![github license badge](https://img.shields.io/github/license/eWaterCycle/era5cli)](https://github.com/eWaterCycle/era5cli)
+[![rsd badge](https://img.shields.io/badge/RSD-era5cli-blue)](https://research-software-directory.org/software/era5cli)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3252665.svg)](https://doi.org/10.5281/zenodo.3252665)
+
+[![Documentation Status](https://readthedocs.org/projects/era5cli/badge/?version=stable)](https://era5cli.readthedocs.io/en/stable/?badge=stable)
+[![build](https://github.com/eWaterCycle/era5cli/actions/workflows/test_and_build.yml/badge.svg)](https://github.com/eWaterCycle/era5cli/actions/workflows/test_and_build.yml)
+[![Test Coverage](https://codecov.io/gh/eWaterCycle/era5cli/branch/main/graph/badge.svg?token=qeZXgGASBK)](https://codecov.io/gh/eWaterCycle/era5cli)
+[![PyPI](https://badge.fury.io/py/era5cli.svg)](https://badge.fury.io/py/era5cli)
+
+
+A command line interface to download ERA5 data from the [Copernicus Climate Data Store](<https://climate.copernicus.eu/>).
+
+<hr>
+
+With `era5cli` you can:
+
+ - Download meteorological data in GRIB/NetCDF, including ERA5 data from the preliminary back extension, and ERA5-Land data.
+ - List and retrieve information on available variables and pressure levels
+ - Select multiple variables for several months and years
+ - Split outputs by years (and optionally months), producing a separate files instead of merging them in one file
+ - Download multiple files at once
+ - Extract data for a sub-region of the globe
+
+<hr>
+
+Free software: Apache Software License 2.0
+
+Documentation: https://era5cli.readthedocs.io
+
