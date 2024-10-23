@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=58.0", "Cython", "wheel", "numpy>=1.26.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyMPPost"
+version = "0.0.9.1"
+description = "Post MCNP-Polimi Simulation Processing"
+authors = [
+  {name = "John Cashy", email = "jtcashy@umich.edu"},
+  {name = "Ricardo Lopez", email = "rlopezle@umich.edu"},
+]
+license = {text = "MIT License"}
+readme = "README.md"
+requires-python = ">=3.9.0"
+dependencies = ["Cython>=3.0.10", "numpy>=1.26.2", "pandas==2.1.3", "dask[Complete]==2024.5.0", "msgpack>=1.0.5", "toml"]
+
+[project.scripts]
+pyMPPost = "pyMPPost.pyMPPost:main"
