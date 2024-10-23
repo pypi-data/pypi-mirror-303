@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: pipipi
+Version: 0.1.0
+Summary: A minimal extension of pip install with some additional functionality
+Home-page: https://github.com/AmmoniumX/Pipip
+Author: Diego Garcia
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: argparse
+Requires-Dist: typing
+
+# Pipip - A tiny pip extension to address a tiny inconvenience
+
+Pipip is a minimal extension to `pip install`, which specifically enables the user to install multiple packages from multiple different packages indexes at once. To do this, you can add a `@index={index-url}` suffix to a package name. It also supports reading from `requirements.txt` files with the `-r` flag, much like regular pip.
+
+# Installation:
+Clone the repository and run `pip install .`
+
+Alternatively, just download the `pipip.py` file directly, and run it with `python pipip.py ...`
+
+# Usage:
+
+To install packages directly:
+
+`pipip requests torch@index=https://download.pytorch.org/whl/cu124 torchvision@index=https://download.pytorch.org/whl/cu124 torchaudio@index=https://download.pytorch.org/whl/cu124`
+
+To read from a text file:
+
+`pipip -r ./requirements.txt`
+
+By default it asks you to confirm installation, bypass this with `-y`.
+It also asks pip to do a "dry" installation first to make sure the packages are available, you can bypass this for faster performance with `--no-validation`.
+
+Any other flags will be passed through to pip, such as `--upgrade` or `--quiet`.
+
+# FAQ
+
+## Why?
+This was made to address a specific inconvenience when trying to install a project that requires downloading wheels from other indexes besides PyPI, most often when dealing with pytorch. Default `pip` won't let you do this in one single command: in a way it makes sense, since there is the possibility that someone with bad intentions might create a malicious repository in a long `requirements.txt` file, and the end-user might just unknowingly run `pip install -r` without thoroughly checking. However, this enables users to do so regardless, while being aware of the potential dangers, and assuming for themselves the responsibility of checking what they install on their computers.
+
+## Conda/poetry/etc already does this, though
+Yes, but conda/poetry/other package or environment managers are a pretty large overhead if you are trying to keep your dependencies at a minimum. Nowadays, `pip` by itself is quite powerful and already does 99% of the things you need it to, this is my 1%.
+
+## Wouldn't this count as an unnecessary dependency, too?
+Of course, but the main difference is that `pipip` only promises to add *one* thing, and as such it can achieve it with very few lines of code. 
+
+Moreover, it lets `pip` handle most of the heavy lifting for downloading and installing, so it doesn't leave any opportunities for unique bugs to appear, it really is just a `pip` wrapper. If it can be installed with pip, it can be installed with pipip.
+
+## There are already too many python package managers, and this doesn't seem particularly useful
+You're right that there's already too many python package managers. And this is admittedly not useful for most projects. I don't recommend replacing pip with `pipip` to anyone, just use it if you specifically want to handle multiple index urls within a single `requirements.txt` file. It's useful for me, that's the main reason I made it.
