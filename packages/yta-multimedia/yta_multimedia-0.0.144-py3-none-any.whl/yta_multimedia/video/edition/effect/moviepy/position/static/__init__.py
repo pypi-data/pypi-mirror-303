@@ -1,0 +1,7 @@
+# TODO: Is this working (?)
+
+from yta_multimedia.video.edition.effect.moviepy.position.static.circles_at_position_moviepy_effect import CirclesAtPositionMoviepyEffect
+from yta_multimedia.video.edition.effect.moviepy.position.static.stay_at_position_moviey_effect import StayAtPositionMoviepyEffect
+from yta_multimedia.video.edition.effect.moviepy.position.static.shake.shake_at_position_moviey_effect import ShakeAtPositionMoviepyEffect
+from yta_multimedia.video.edition.effect.moviepy.position.static.shake.shake_increasing_at_position_moviey_effect import ShakeIncreasingAtPositionMoviepyEffect
+from yta_multimedia.video.edition.effect.moviepy.position.static.shake.shake_decreasing_at_position_moviey_effect import ShakeDecreasingAtPositionMoviepyEffect
