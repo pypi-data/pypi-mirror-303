@@ -1,0 +1,1 @@
+Dasturdan ozbek tilidagi matnlarni yozuv shaklini almashtirishda
