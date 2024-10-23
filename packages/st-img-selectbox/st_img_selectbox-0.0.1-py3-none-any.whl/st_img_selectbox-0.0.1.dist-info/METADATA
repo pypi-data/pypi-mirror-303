@@ -1,0 +1,161 @@
+Metadata-Version: 2.1
+Name: st_img_selectbox
+Version: 0.0.1
+Summary: Streamlit component allowing to have a selectbox with images
+Home-page: 
+Author: broccoloff
+Author-email: 
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit >=0.63
+Provides-Extra: devel
+Requires-Dist: wheel ; extra == 'devel'
+Requires-Dist: pytest ==7.4.0 ; extra == 'devel'
+Requires-Dist: playwright ==1.39.0 ; extra == 'devel'
+Requires-Dist: requests ==2.31.0 ; extra == 'devel'
+Requires-Dist: pytest-playwright-snapshot ==1.0 ; extra == 'devel'
+Requires-Dist: pytest-rerunfailures ==12.0 ; extra == 'devel'
+
+
+# Streamlit Image Selectbox Component
+
+Streamlit Image Selectbox is a custom Streamlit component that enhances the standard select box by allowing you to include images alongside each option. Customize the appearance with adjustable height, font size, and highlight colors to create a more engaging and visually appealing user interface.
+
+## Features
+
+- **Image Support:** Display images alongside each selectable option.
+- **Customizable Appearance:** Adjust the height and font size of the select box to fit your application's design.
+- **Highlight Colors:** Customize the background color of the selected option for better visual feedback.
+- **Searchable Options:** Easily search through options with the built-in search functionality.
+- **Seamless Integration:** Easily integrate with your Streamlit applications using simple Python functions.
+
+## Installation
+
+Install the `st-img-selectbox` package using `pip`:
+
+```sh
+pip install st-img-selectbox
+```
+
+## Usage
+
+### Importing the Component
+
+First, import the `st_img_selectbox` function from the `st_img_selectbox` module:
+
+```python
+import streamlit as st
+from st_img_selectbox import st_img_selectbox
+from PIL import Image
+import io
+import base64
+```
+
+### Preparing the Options
+
+Each option should be a dictionary containing an `"image"` (a PIL Image object) and an `"option"` (a string):
+
+```python
+# Sample options with images
+options = [
+    {"image": Image.open("path_to_image1.png"), "option": "Option 1"},
+    {"image": Image.open("path_to_image2.png"), "option": "Option 2"},
+    {"image": Image.open("path_to_image3.png"), "option": "Option 3"},
+]
+```
+
+### Using the Selectbox Component
+
+Call the `st_img_selectbox` function with the desired parameters:
+
+```python
+selected_option = st_img_selectbox(
+    options=options,
+    value="Option 2",            # Default selected option (optional)
+    height=40,                   # Height of the select box in pixels (optional)
+    fontsize=14,                 # Font size of the text (optional)
+    highlight_color="#FFD700",    # Highlight color for selected option (optional)
+    key="st_img_selectbox"           # Unique key for the component (optional)
+)
+
+st.write(f"Selected option: {selected_option}")
+```
+
+### Full Example
+
+Here's a complete example of how to use the `st_img_selectbox` component in a Streamlit app:
+
+```python
+import streamlit as st
+from st_img_selectbox import st_img_selectbox
+from PIL import Image
+import io
+import base64
+
+# Function to convert PIL Image to base64 string
+def pil_to_base64(img):
+    buffered = io.BytesIO()
+    img.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
+# Sample options with images
+options = [
+    {"image": Image.open("path_to_image1.png"), "option": "Option 1"},
+    {"image": Image.open("path_to_image2.png"), "option": "Option 2"},
+    {"image": Image.open("path_to_image3.png"), "option": "Option 3"},
+]
+
+# Convert images to base64
+serialized_options = []
+for item in options:
+    serialized_options.append({
+        "image": pil_to_base64(item["image"]),
+        "option": item["option"]
+    })
+
+# Use the custom selectbox component
+selected_option = st_img_selectbox(
+    options=serialized_options,
+    value="Option 2",
+    height=40,
+    fontsize=14,
+    highlight_color="#FFD700",
+    key="st_img_selectbox"
+)
+
+st.write(f"Selected option: {selected_option}")
+```
+
+## Parameters
+
+- **options** (`list of dicts`): Each dictionary should have the following keys:
+  - `"image"` (`PIL Image`): The image to display alongside the option.
+  - `"option"` (`str`): The label of the option.
+  
+- **value** (`str`, optional): The default selected option. Defaults to `None`.
+
+- **height** (`int`, optional): The height of the select box in pixels. Defaults to automatic sizing.
+
+- **fontsize** (`int`, optional): The font size of the option text. Defaults to the browser's default font size.
+
+- **highlight_color** (`str`, optional): The background color for the selected option (e.g., `"blue"` or `"#FFD700"`). Defaults to `"blue"`.
+
+- **key** (`str`, optional): An optional string to uniquely identify the component. Useful when you have multiple components.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [Streamlit](https://streamlit.io/) for providing an easy-to-use framework for building data apps.
+- [react-select](https://react-select.com/) for the underlying select component used in the frontend.
+
+## Support
+
+This Streamlit component is provided as is without support. Sorry :(
+
+---
+
+*Created with ❤️ by Broccoloff*
