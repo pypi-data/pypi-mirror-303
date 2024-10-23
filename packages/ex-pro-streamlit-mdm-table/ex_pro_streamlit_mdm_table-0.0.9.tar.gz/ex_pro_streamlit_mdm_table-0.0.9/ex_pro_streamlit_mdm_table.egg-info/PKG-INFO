@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: ex-pro-streamlit-mdm-table
+Version: 0.0.9
+Summary: Streamlit component that allows for easy management of task mapping. Specific to a project. Do not use. For demonstration purposes only.
+Home-page: 
+Author: Jack Labbe
+Author-email: jlabbe@eigenx.com
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: streamlit>=0.63
+Requires-Dist: pandas>=1.1.5
+Requires-Dist: numpy>=1.19.5
+Requires-Dist: pyarrow>=5.0.0
+Provides-Extra: devel
+Requires-Dist: wheel; extra == "devel"
+Requires-Dist: pytest==7.4.0; extra == "devel"
+Requires-Dist: playwright==1.39.0; extra == "devel"
+Requires-Dist: requests==2.31.0; extra == "devel"
+Requires-Dist: pytest-playwright-snapshot==1.0; extra == "devel"
+Requires-Dist: pytest-rerunfailures==12.0; extra == "devel"
+
+# streamlit-mdm-table
+
+Streamlit component that allows for easy mapping of tasks and IDs to a table.
+This is specific for a project and may not be useful for other projects.
+Do not use.
+
+## Installation instructions
+
+Import the wheel file in your project.
+
+## Usage instructions
+
+```python
+import streamlit as st
+
+from streamlit_mdm_table import streamlit_mdm_table
+
+value = streamlit_mdm_table(
+    tasks, 
+    linkedin_content, 
+    youtube_content,
+    google_analytics_content,
+    poppulo_harmony_content,
+    poppulo_email_content,
+    sharepoint_content,
+    viva_engage_content
+)
+
+if value is not None:
+    st.dataframe(value)
+```
