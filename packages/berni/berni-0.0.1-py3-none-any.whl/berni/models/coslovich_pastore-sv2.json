@@ -1,0 +1,37 @@
+{
+    "potential": [
+        {
+            "type": "inverse_power", 
+            "parameters": {
+                "1-1": {"sigma": 1.0, "epsilon": 1.0, "exponent": 12}, 
+                "2-2": {"sigma": 0.85, "epsilon": 1.0, "exponent": 12
+                }
+            }, 
+            "cutoff": {
+                "type": "cubic_spline", 
+                "parameters": {
+		    "1-1": {"rcut": 1.8},
+		    "2-2": {"rcut": 1.53}
+                }
+            }
+        }, 
+        {
+            "type": "lennard_jones", 
+            "parameters": {
+                "1-2": {"sigma": 0.49, "epsilon": 6.0}
+            }, 
+            "cutoff": {
+                "type": "cubic_spline", 
+                "parameters": {
+                    "1-2": {"rcut": 1.078}
+                }
+            }
+        }
+    ], 
+    "metadata": {
+        "name": "coslovich_pastore", 
+        "doi": "10.1088/0953-8984/21/28/285107", 
+        "reference": "J. Phys.: Condens. Matter 21, 285107 (2009)", 
+        "notes": ""
+    }
+}
