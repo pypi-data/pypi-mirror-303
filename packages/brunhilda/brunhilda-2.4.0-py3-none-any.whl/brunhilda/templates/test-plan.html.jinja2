@@ -1,0 +1,93 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ name }}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    {% include "themes/base.css" %}
+    </style>
+</head>
+
+{% set ns = namespace(test_case_name='') %}
+
+<body>
+    <h1>{{ name }}</h1>
+    <div class="header">
+        {% include "header.html.jinja2" %}
+    </div>
+    <div class="main">
+{% if preamble %}
+    <section class="preamble">
+        {{ preamble }}
+    </section>
+{% endif %}
+    <section class="toc">
+        <h2>Table of Contents</h2>
+        <ol class="toc__list">
+{% for test in tests %}
+            <li class="toc__item"><a href="#{{ test.test_id }}">{{ test.test_id }}</a></li>
+{% endfor %}
+        </ol>
+    </section>
+{% for test in tests %}
+    {% if ns.test_case_name != test.case %}
+        {% set ns.test_case_name = test.case %}
+        <div id="{{ test.case }}"></div>
+    {% endif %}
+
+    <section id="{{ test.test_id }}" class="testdef">
+        <h2>{{ test.test_id }}</h2>
+        <div class="test__tags">
+        <table class="test__tags__table">
+    {% for tag_name in test.tags %}
+            <tr>
+                <th class="test__tag__name">{{ tag_name }}</th>
+                <td class="test__tag__value">
+        {% if test.tags[tag_name]|length == 1 %}
+            {% for tag in test.tags[tag_name] %}
+                    {{ tag }}
+            {% endfor %}
+        {% else %}
+                    <ul>
+            {% for tag in test.tags[tag_name] %}
+                        <li>{{ tag }}</li>
+            {% endfor %}
+                    </ul>
+        {% endif %}
+                </td>
+            </tr>
+    {% endfor %}
+        </table>
+        </div>
+        <div class="test__description">
+            {{ test.description }}
+        </div>
+        <div class="test__steps">
+        <table class="test__steps__table">
+            <caption>Test Steps</caption>
+            <thead>
+                <tr>
+                    <th class="test__steps__number">Step</th>
+                    <th class="test__steps__description">Description</th>
+                    <th class="test__steps__expectation">Expectation</th>
+                </tr>
+            </thead>
+            <tbody>
+    {% for step in test.steps %}
+                <tr>
+                    <td class="test__steps__number">{{ step.number }}</td>
+                    <td class="test__steps__description">{{ step.description }}</td>
+                    <td class="test__steps__expectation">{{ step.expectation }}</td>
+                </tr>
+    {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </section>
+{% endfor %}
+    </div>
+</body>
+</html>
