@@ -1,0 +1,39 @@
+Metadata-Version: 2.3
+Name: vector-sdk
+Version: 0.1.1rc2
+Summary: Universal SDK for Vector DBs
+Project-URL: Homepage, https://github.com/dhruv-anand-aintech/vector-sdk
+Project-URL: Bug Tracker, https://github.com/dhruv-anand-aintech/vector-sdk/issues
+Author-email: Dhruv Anand <dhruv.anand@ainorthstartech.com>
+License-File: LICENSE
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Provides-Extra: dev
+Requires-Dist: black>=21.5b1; extra == 'dev'
+Requires-Dist: flake8>=3.9; extra == 'dev'
+Requires-Dist: pytest-cov>=2.0; extra == 'dev'
+Requires-Dist: pytest>=6.0; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# vector-sdk
+
+[![Upload Python Package](https://github.com/dhruv-anand-aintech/vector-sdk/actions/workflows/python-publish.yml/badge.svg?branch=main)](https://github.com/dhruv-anand-aintech/vector-sdk/actions/workflows/python-publish.yml)
+
+## Version Management
+
+We use a custom script to manage version bumping. To use it:
+
+1. For release candidates: `python bump_version.py rc`
+   This will update the version to the next release candidate (e.g., 0.1.0rc1 to 0.1.0rc2)
+
+2. For release versions: `python bump_version.py release`
+   This will update the version to the final release version (e.g., 0.1.0rc2 to 0.1.0)
+
+3. For other version bumps: `python bump_version.py major|minor|patch`
+   This will update the version accordingly (e.g., 0.1.0 to 1.0.0 for major)
