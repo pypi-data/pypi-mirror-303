@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: sphinx-visualised
+Version: 0.2.3
+Summary: Visualization generator for Sphinx
+Author-email: Jared Dillard <jared.dillard@gmail.com>
+Maintainer-email: Jared Dillard <jared.dillard@gmail.com>
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Documentation :: Sphinx
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Framework :: Sphinx :: Extension
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: sphinx>=1.2
+Provides-Extra: dev
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+Requires-Dist: sphinx; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+
+# Sphinx visualization extension
+
+A Sphinx extension to generate interactive visualizations.
+
+[![PyPI version](https://img.shields.io/pypi/v/sphinx-visualised.svg)](https://pypi.python.org/pypi/sphinx-visualised)
+![Parallel safe](https://img.shields.io/badge/parallel%20safe-false-red)
+
+## Installing
+
+Directly install via pip by using:
+
+```
+pip install sphinx-visualised
+```
+
+Add `sphinx_visualised` to the [extensions](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions) array in your Sphinx **conf.py**.
+For example:
+
+```python
+extensions = ['sphinx_visualised']
+```
+
+## Usage
+
+After building the docs, open one of the following in the browser:
+
+- `/_static/link-graph.html` 
+- `/_static/toctree-graph.html` 
+
+## Inspiration
+
+- https://github.com/ninjaconcept/d3-force-directed-graph
