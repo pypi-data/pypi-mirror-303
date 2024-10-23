@@ -1,0 +1,26 @@
+import os
+
+base_dir = os.path.abspath(os.path.dirname(__file__))
+
+class Config:
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SECRET_KEY = os.environ.get('SECRET_KEY') or \
+                 'replace me with a secret'
+
+class DevConfig(Config):
+    DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'dev_db.sqlite')
+    
+
+class ProdConfig(Config):
+    DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'prod_db.sqlite')
+    
+
+class TestConfig(Config):
+    DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'test_db.sqlite')
+  
+config = {
+          'development': DevConfig,
+          'production':  ProdConfig,
+          'testing':     TestConfig,
+          'default':     DevConfig,
+         }
