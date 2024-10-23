@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: futhark-server
+Version: 1.0.0
+Summary: Client side implementation of the Futhark server protocol
+Home-page: https://github.com/diku-dk/futhark-server-python
+Author: Troels Henriksen
+Author-email: athas@sigkill.dk
+License: ISC
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: ISC License (ISCL)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: futhark-data
+
+# Python implementation of the Futhark server protocol
+
+This library library provides an implementation of the
+[Futhark](https://futhark-lang.org) [server
+protocol](https://futhark.readthedocs.io/en/latest/server-protocol.html).
+This can be used to interact with Futhark code in a more decoupled
+manner than through an FFI.
+
+## Basic usage
+
+First compile a Futhark program `foo.fut` to a server-mode binary with
+e.g. `futhark c --server`. Then instantiate a `futhark_server.Server`
+object:
+
+```Python
+import futhark_server
+
+with futhark_server.Server('./test') as server:
+  ...
+```
+
+The `Server` class has various methods for interacting with the
+server. In particular, every servr protocol command `foo` has an
+associated method `cmd_foo`.
+
+
