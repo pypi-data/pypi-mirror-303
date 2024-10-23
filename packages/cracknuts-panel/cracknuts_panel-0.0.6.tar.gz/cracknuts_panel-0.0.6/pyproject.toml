@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cracknuts-panel"
+description = "Noteboot(like jupyter) widget for cracknuts."
+dynamic = ["version"]
+requires-python = ">=3.12"
+readme = "README.md"
+
+dependencies = [
+    "anywidget~=0.9.13",
+    "cracknuts>=0.0.6",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "watchfiles",
+    "jupyterlab",
+    "ruff>=0.6.3",
+    "typos~=1.24.4",
+    "build~=1.2.1",
+    "pre-commit~=3.8.0",
+    "pytest~=8.3.2",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = ["demo", "tests"]
+
+[tool.ruff.lint]
+extend-select = [
+    "F",
+    "E",
+    "W",
+    "UP",
+]
+
+[tool.typos.files]
+extend-exclude = [
+    "demo",
+    "tests"
+]
+
+[tool.setuptools.package-data]
+"cracknuts_panel" = ["static/*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "cracknuts_panel.__version__" }
+
+[tool.pdm.scripts]
+pre_build = "npm run clean-build"
