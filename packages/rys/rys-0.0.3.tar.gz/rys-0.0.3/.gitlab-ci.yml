@@ -1,0 +1,37 @@
+image: python:3.11
+
+stages:
+  - build
+  - test
+  - release
+
+build-upload:
+  stage: build
+  before_script:
+    - python -V
+    - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+  script:
+    - pip install build twine flit
+    - FLIT_INDEX_URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi flit build
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  only:
+    - tags
+
+build-upload-pypi:
+  stage: build
+  before_script:
+    - python -V
+    - echo "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+  script:
+    - pip install build twine flit
+    - flit build
+    - python -m twine upload dist/*
+  only:
+    - tags
+
+run-pytest:
+  stage: test
+  before_script:
+    - pip install --no-cache-dir --upgrade -r requirements.txt
+  script:
+    - python3 -m unittest discover tests 'test_*' -v
