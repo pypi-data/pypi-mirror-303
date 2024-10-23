@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: 2021 Jeff Epler
+#
+# SPDX-License-Identifier: MIT
+
+[build-system]
+requires = [
+    "setuptools>=68.2.2",
+    "setuptools_scm[toml]>=6.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name="chap"
+authors = [{name = "Jeff Epler", email = "jepler@gmail.com"}]
+description = "Interact with the OpenAI ChatGPT API (and other text generators)"
+dynamic = ["readme","version","dependencies"]
+requires-python = ">=3.9"
+keywords = ["llm", "tui", "chatgpt"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+[project.urls]
+homepage = "https://github.com/jepler/chap"
+repository = "https://github.com/jepler/chap"
+
+[project.scripts]
+chap = "chap.__main__:main"
+
+[tool.setuptools_scm]
+write_to = "src/chap/__version__.py"
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"], content-type="text/markdown"}
+dependencies = {file = "requirements.txt"}
+[tool.setuptools.package-data]
+"pkgname" = ["py.typed"]
+[tool.mypy]
+mypy_path = ["src"]
+warn_unused_ignores = false
+warn_redundant_casts = true
+strict = true
+packages = ["chap"]
