@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Payroll Import Mappings -->
+        <record 
+            id="payroll_import_mapping_employee"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">hr.employee</field>
+            <field name="res_field">identification_id</field>
+            <field name="column_field">column_employee_id</field>
+        </record>
+        <record 
+            id="payroll_import_mapping_gross"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">debit</field>
+            <field name="column_field">column_gross</field>
+            <field name="account_field">gross_account_id</field>
+            <field name="tax_field">gross_tax_id</field>
+            <field name="aggregate_field">gross_to_single_line</field>
+        </record>
+        <record 
+            id="payroll_import_mapping_gross"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">debit</field>
+            <field name="column_field">column_gross</field>
+            <field name="account_field">gross_account_id</field>
+            <field name="tax_field">gross_tax_id</field>
+            <field name="aggregate_field">gross_to_single_line</field>
+        </record>
+        <record
+            id="payroll_import_mapping_net"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">credit</field>
+            <field name="column_field">column_net</field>
+            <field name="account_field">net_account_id</field>
+        </record>
+        <record
+            id="payroll_import_mapping_total_tc1rlc"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">credit</field>
+            <field name="column_field">column_total_tc1rlc</field>
+            <field name="account_field">total_tc1rlc_account_id</field>
+            <field name="aggregate_field">total_tc1rlc_to_single_line</field>
+        </record>
+        <record
+            id="payroll_import_mapping_irpf_employee"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">credit</field>
+            <field name="column_field">column_irpf_employee</field>
+            <field name="account_field">irpf_employee_account_id</field>
+            <field name="aggregate_field">irpf_employee_to_single_line</field>
+        </record>
+        <record
+            id="payroll_import_mapping_ss_employee"
+            model="payroll.import.mapping"
+        >
+            <field name="column_field">column_ss_employee</field>
+        </record>
+        <record
+            id="payroll_import_mapping_ss_company"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">debit</field>
+            <field name="column_field">column_ss_company</field>
+            <field name="account_field">ss_company_account_id</field>
+            <field name="aggregate_field">ss_company_to_single_line</field>
+        </record>
+        <record
+            id="payroll_import_mapping_discounts"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">credit</field>
+            <field name="column_field">column_discounts</field>
+            <field name="account_field">discounts_account_id</field>
+        </record>
+        <record
+            id="payroll_import_mapping_embargoes"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">credit</field>
+            <field name="column_field">column_embargoes</field>
+            <field name="account_field">embargoes_account_id</field>
+        </record>
+        <record
+            id="payroll_import_mapping_ss_bonus"
+            model="payroll.import.mapping"
+        >
+            <field name="res_model">account.move.line</field>
+            <field name="res_field">debit</field>
+            <field name="column_field">column_ss_bonus</field>
+            <field name="account_field">ss_bonus_account_id</field>
+        </record>
+    </data>
+</odoo>
