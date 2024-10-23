@@ -1,0 +1,113 @@
+Metadata-Version: 2.1
+Name: iRe.py
+Version: 0.4.0
+Summary: Export tables and plots from Jupyter notebooks, along with metadata for embedding interactive tables in downstream apps.
+Home-page: https://gitlab.com/runsascoded/ire/py
+Author: Ryan Williams
+Author-email: ryan@runsascoded.com
+License: MIT
+Description-Content-Type: text/markdown
+Provides-Extra: plotly
+Provides-Extra: test
+License-File: LICENSE
+
+# iRe.py
+"Export" tables and plots from Jupyter notebooks, for interactive viewing on the web.
+
+[iRe/www] is the accompanying web app (demo: [ire.runsascoded.com]), which renders notebooks exported by iRe.py as **i**nteractive "**re**ports."
+
+<!-- toc -->
+- [Installation](#installation)
+- [Usage](#usage)
+- [Testing](#testing)
+    - [Local](#local)
+        - [macOS](#macos)
+        - [Ubuntu](#ubuntu)
+    - [CI](#ci)
+    - [Updating tests](#updating-tests)
+<!-- /toc -->
+
+## Installation <a id="installation"></a>
+```bash
+pip install ire.py
+```
+
+## Usage <a id="usage"></a>
+Wrap the final expression in a notebook cell in `ire.export`:
+```python
+from ire import export
+import pandas as pd
+
+df = pd.DataFrame({'n': list(range(1000)), 'square': [n**2 for n in range(1000)]})
+
+# Previews DataFrame as usual, in Jupyter, but also
+# saves the full DF to a file (Parquet, by default).
+export(df)
+```
+
+Supported types:
+- [`pandas.DataFrame`] (export as Parquet or SQLite)
+- [`plotly.Figure`]
+
+See also: [examples/](examples)
+- [export-test.ipynb](examples/export-test.ipynb)
+- [export-test-no-dvc.ipynb](examples/export-test-no-dvc.ipynb)
+
+## Testing <a id="testing"></a>
+Tests execute the notebooks in [examples/](examples) above, and verify the notebooks and exported files are unchanged (vs. `HEAD`).
+
+### Local <a id="local"></a>
+
+#### macOS <a id="macos"></a>
+
+To run tests locally:
+```bash
+examples/run-tests.sh
+
+# Or, run+validate a specific notebook:
+cd examples
+run-tests.sh export-test.ipynb
+```
+
+#### Ubuntu <a id="ubuntu"></a>
+The `export`ed SQLite tables in [`export-test.ipynb`] and [`export-test-no-dvc.ipynb`] are not byte-for-byte identical across platforms:
+
+```bash
+db_hex() {
+  git show "$1:examples/.ire/state_stats2.db" | hexdump -C
+}
+diff <(db_hex HEAD) <(db_hex ubuntu)
+# 7c7
+# < 00000060  00 2e 6e ba 0d 00 00 00  02 0c e4 00 0d 39 0c e4  |..n�......�..9.�|
+# ---
+# > 00000060  00 2e 63 01 0d 00 00 00  02 0c e4 00 0d 39 0c e4  |..c.......�..9.�|
+```
+
+The [ubuntu] branch points at [a commit][ubuntu commit] that patches them to the expected values. You'll want to cherry-pick it into your branch, to get tests passing on Ubuntu (as CI does, [below](#ci)).
+
+### CI <a id="ci"></a>
+See [.gitlab-ci.yml](.gitlab-ci.yml).
+
+This cherry-picks the [ubuntu] branch, to patch tests' expected SQLite DBs, before running them.
+
+### Updating tests <a id="updating-tests"></a>
+
+```bash
+docker/build.sh
+docker run --rm -it -v $PWD/.git:/root/src/.git -v $PWD/.dvc/cache:/root/src/.dvc/cache ire.py
+```
+
+See [build.sh](docker/build.sh), [Dockerfile](docker/Dockerfile), [entrypoint.sh](docker/entrypoint.sh).
+
+[iRe/www]: https://gitlab.com/runsascoded/ire/www
+[ire.runsascoded.com]: https://ire.runsascoded.com
+[`pandas.DataFrame`]: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html
+[`plotly.Figure`]: https://plotly.com/python-api-reference/generated/plotly.graph_objects.Figure.html
+[`export-test.ipynb`]: examples/export-test.ipynb
+[`export-test-no-dvc.ipynb`]: examples/export-test-no-dvc.ipynb
+[ubuntu]: https://gitlab.com/runsascoded/ire/py/-/tree/ubuntu
+[ubuntu commit]: https://gitlab.com/runsascoded/ire/py/-/commit/8fad9e85e58eb31b0479f27c14c762885353e170
+[test]: https://gitlab.com/runsascoded/ire/py/-/tree/test
+[`juq.py`]: https://github.com/runsascoded/juq
+[Papermill]: https://papermill.readthedocs.io/en/latest/
+[DVC]: https://dvc.org
