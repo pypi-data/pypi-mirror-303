@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "mxl-project"
+version = "0.1.0"
+description = "project"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+# [tool.poetry]
+# Point to the actual package folder, which is `mxl_package`
+packages = [
+    { include = "installer" },
+    { include = "lib" }
+]
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.26.0"
+django = "^4.0"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
