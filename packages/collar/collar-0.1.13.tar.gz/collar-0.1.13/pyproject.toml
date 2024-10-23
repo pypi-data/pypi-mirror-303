@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "collar"  # 项目名称
+version = "0.1.13"  # 项目版本
+description = "A Tool to generate comments and code by AI LLM, support to generate code for java, python.the context is from your design document and the code from import modules "  # 项目描述
+authors = [
+    { name = "Ding Haitao", email = "dinght1975@gmail.com" }
+]
+readme = "README.md"  # 如果有 README 文件
+requires-python = ">=3.8"  # 确保这个字段有有效值
+dependencies = [
+    "openai",
+    "jpype1"
+]
+# 添加 entry points
+[project.scripts]
+collar = "collar:main"  # 假设你的 collar 模块有一个 main() 函数
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["collar", "collar_java", "collar.*", "collar_java.*"]
+exclude = []
