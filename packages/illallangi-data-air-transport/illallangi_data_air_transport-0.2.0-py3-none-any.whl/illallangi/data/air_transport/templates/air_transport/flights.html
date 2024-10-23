@@ -1,0 +1,61 @@
+{% extends "table.html" %}
+{% load static %}
+{% block table %}
+    <h2>Flights</h2>
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Flight Number</th>
+                <th scope="col">Departure</th>
+                <th scope="col">Arrival</th>
+                <th scope="col">Origin</th>
+                <th scope="col">Destination</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in page.object_list %}
+                <tr role="button" data-href="{{ obj.get_absolute_url }}">
+                    <td>
+                        {% if obj.flight_number %}
+                            {{ obj.flight_number }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.departure %}
+                            {{ obj.departure }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if obj.arrival %}
+                            {{ obj.arrival }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td {% if obj.origin %}role="button" data-href="{{ obj.origin.get_absolute_url }}"{% endif %}>
+                        {% if obj.origin %}
+                            {{ obj.origin }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                    <td {% if obj.destination %}role="button" data-href="{{ obj.destination.get_absolute_url }}"{% endif %}>
+                        {% if obj.destination %}
+                            {{ obj.destination }}
+                        {% else %}
+                            <em>Unknown</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No flights found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock table %}
