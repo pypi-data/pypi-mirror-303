@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "logiclayer"
+version = "0.4.1"
+description = "A framework to quickly compose and use multiple functionalities as endpoints."
+authors = ["Francisco Abarzua <francisco@datawheel.us>"]
+license = "MIT"
+readme = "PACKAGE.md"
+repository = "https://github.com/Datawheel/logiclayer"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+asyncio = "^3.4.0"
+fastapi-slim = ">=0.111 <1.0"
+pydantic = "^2.5.0"
+
+[tool.poetry.group.dev.dependencies]
+httpx = ">=0.27.0"
+pytest = "~8.1.0"
+ruff = "^0.4.0"
+uvicorn = "^0.29.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
