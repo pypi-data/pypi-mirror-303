@@ -1,0 +1,504 @@
+"""Miscellaneous accessors for general data manipulation and visualization."""
+
+__all__ = [
+    "InteractiveDataArrayAccessor",
+    "InteractiveDatasetAccessor",
+    "PlotAccessor",
+    "SelectionAccessor",
+]
+
+import importlib
+import warnings
+from collections.abc import Hashable, Mapping
+
+import matplotlib.pyplot as plt
+import numpy as np
+import xarray as xr
+
+from erlab.accessors.utils import (
+    ERLabDataArrayAccessor,
+    ERLabDatasetAccessor,
+    either_dict_or_kwargs,
+)
+
+
+@xr.register_dataarray_accessor("qplot")
+class PlotAccessor(ERLabDataArrayAccessor):
+    """`xarray.DataArray.qplot` accessor for plotting data."""
+
+    def __call__(self, *args, **kwargs):
+        """Plot the data.
+
+        Plots two-dimensional data using :func:`plot_array
+        <erlab.plotting.general.plot_array>`. For non-two-dimensional data, the method
+        falls back to :meth:`xarray.DataArray.plot`.
+
+        Also sets fancy labels using :func:`fancy_labels
+        <erlab.plotting.annotations.fancy_labels>`.
+
+        Parameters
+        ----------
+        *args
+            Positional arguments to be passed to the plotting function.
+        **kwargs
+            Keyword arguments to be passed to the plotting function.
+
+        """
+        from erlab.plotting.erplot import fancy_labels, plot_array
+
+        if len(self._obj.dims) == 2:
+            return plot_array(self._obj, *args, **kwargs)
+
+        ax = kwargs.pop("ax", None)
+        if ax is None:
+            ax = plt.gca()
+        kwargs["ax"] = ax
+
+        out = self._obj.plot(*args, **kwargs)
+        fancy_labels(ax)
+        return out
+
+
+@xr.register_dataarray_accessor("qshow")
+class InteractiveDataArrayAccessor(ERLabDataArrayAccessor):
+    """`xarray.DataArray.qshow` accessor for interactive visualization."""
+
+    def __call__(self, *args, **kwargs):
+        """Visualize the data interactively.
+
+        Chooses the appropriate interactive visualization method based on the number of
+        dimensions in the data.
+
+        Parameters
+        ----------
+        *args
+            Positional arguments passed onto the interactive visualization function.
+        **kwargs
+            Keyword arguments passed onto the interactive visualization function.
+        """
+        if self._obj.ndim >= 2 and self._obj.ndim <= 4:
+            return self.itool(*args, **kwargs)
+        if importlib.util.find_spec("hvplot"):
+            return self.hvplot(*args, **kwargs)
+        raise ValueError("Data must have at least two dimensions.")
+
+    def itool(self, *args, **kwargs):
+        """Shortcut for :func:`erlab.interactive.imagetool.itool`.
+
+        Parameters
+        ----------
+        *args
+            Positional arguments passed onto :func:`itool
+            <erlab.interactive.imagetool.itool>`.
+        **kwargs
+            Keyword arguments passed onto :func:`itool
+            <erlab.interactive.imagetool.itool>`.
+
+        """
+        from erlab.interactive.imagetool import itool
+
+        return itool(self._obj, *args, **kwargs)
+
+    def hvplot(self, *args, **kwargs):
+        """`hvplot <https://hvplot.holoviz.org/>`_-based interactive visualization.
+
+        This method is a convenience wrapper that handles importing ``hvplot``.
+
+        Parameters
+        ----------
+        *args
+            Positional arguments passed onto ``DataArray.hvplot``.
+        **kwargs
+            Keyword arguments passed onto ``DataArray.hvplot``.
+
+        Raises
+        ------
+        ImportError
+            If `hvplot <https://hvplot.holoviz.org/>`_ is not installed.
+        """
+        if not importlib.util.find_spec("hvplot"):
+            raise ImportError("qshow.hvplot requires hvplot to be installed")
+        import hvplot.xarray  # noqa: F401
+
+        return self._obj.hvplot(*args, **kwargs)
+
+
+@xr.register_dataset_accessor("qshow")
+class InteractiveDatasetAccessor(ERLabDatasetAccessor):
+    """`xarray.Dataset.qshow` accessor for interactive visualization."""
+
+    def __call__(self, *args, **kwargs):
+        """Visualize the data interactively.
+
+        Chooses the appropriate interactive visualization method based on the data
+        variables.
+
+        Parameters
+        ----------
+        *args
+            Positional arguments passed onto the interactive visualization function.
+        **kwargs
+            Keyword arguments passed onto the interactive visualization function.
+        """
+        if self._is_fitresult:
+            return self.fit(*args, **kwargs)
+        return self.itool(*args, **kwargs)
+
+    @property
+    def _is_fitresult(self) -> bool:
+        from erlab.accessors.fit import ParallelFitDataArrayAccessor
+
+        for var in set(ParallelFitDataArrayAccessor._VAR_KEYS) - {"modelfit_results"}:
+            if var not in self._obj.data_vars:
+                return False
+        return True
+
+    def itool(self, *args, **kwargs):
+        from erlab.interactive.imagetool import itool
+
+        return itool(self._obj, *args, **kwargs)
+
+    def hvplot(self, *args, **kwargs):
+        if not importlib.util.find_spec("hvplot"):
+            raise ImportError("hvplot is required for qshow.hvplot()")
+        import hvplot.xarray  # noqa: F401
+
+        return self._obj.hvplot(*args, **kwargs)
+
+    itool.__doc__ = InteractiveDataArrayAccessor.itool.__doc__
+    hvplot.__doc__ = str(InteractiveDataArrayAccessor.hvplot.__doc__).replace(
+        "DataArray", "Dataset"
+    )
+
+    def fit(self, plot_components: bool = False):
+        """Interactive visualization of fit results.
+
+        Parameters
+        ----------
+        plot_components
+            If `True`, plot the components of the fit. Default is `False`. Requires the
+            Dataset to have a `modelfit_results` variable.
+
+        Returns
+        -------
+        :class:`panel.layout.Column`
+            A panel containing the interactive visualization.
+        """
+        if not importlib.util.find_spec("hvplot"):
+            raise ImportError("hvplot is required for interactive fit visualization")
+
+        import hvplot.xarray
+        import panel
+        import panel.widgets
+
+        from erlab.accessors.fit import ParallelFitDataArrayAccessor
+
+        for var in set(ParallelFitDataArrayAccessor._VAR_KEYS) - {"modelfit_results"}:
+            if var not in self._obj.data_vars:
+                raise ValueError("Dataset is not a fit result")
+
+        coord_dims = [
+            d
+            for d in self._obj.modelfit_stats.dims
+            if d in self._obj.modelfit_data.dims
+        ]
+        other_dims = [d for d in self._obj.modelfit_data.dims if d not in coord_dims]
+
+        if len(other_dims) != 1:
+            raise ValueError("Only 1D fits are supported")
+
+        sliders = [
+            panel.widgets.DiscreteSlider(name=d, options=list(np.array(self._obj[d])))
+            for d in coord_dims
+        ]
+
+        def get_slice(*s):
+            return self._obj.sel(dict(zip(coord_dims, s, strict=False)))
+
+        def get_slice_params(*s):
+            res_part = get_slice(*s).rename(param="Parameter")
+            return xr.merge(
+                [
+                    res_part.modelfit_coefficients.rename("Value"),
+                    res_part.modelfit_stderr.rename("Stderr"),
+                ]
+            )
+
+        def get_comps(*s):
+            partial_res = get_slice(*s)
+            return xr.merge(
+                [
+                    xr.DataArray(
+                        v, dims=other_dims, coords=[self._obj[other_dims[0]]]
+                    ).rename(k)
+                    for k, v in partial_res.modelfit_results.item()
+                    .eval_components()
+                    .items()
+                ]
+                + [
+                    partial_res.modelfit_data,
+                    partial_res.modelfit_best_fit,
+                ]
+            )
+
+        part = hvplot.bind(get_slice, *sliders).interactive()
+        part_params = hvplot.bind(get_slice_params, *sliders).interactive()
+
+        if "modelfit_results" not in self._obj.data_vars:
+            warnings.warn(
+                "`model_results` not included in Dataset. "
+                "Components will not be plotted",
+                stacklevel=2,
+            )
+            plot_components = False
+
+        plot_kwargs = {
+            "responsive": True,
+            "min_width": 400,
+            "min_height": 500,
+            "title": "",
+        }
+        if plot_components:
+            part_comps = hvplot.bind(get_comps, *sliders).interactive()
+            data = part_comps.modelfit_data.hvplot.scatter(**plot_kwargs)
+            fit = part_comps.modelfit_best_fit.hvplot(c="k", ylabel="", **plot_kwargs)
+            components = part_comps.hvplot(
+                y=list(
+                    self._obj.modelfit_results.values.flatten()[0]
+                    .eval_components()
+                    .keys()
+                ),
+                legend="top_right",
+                group_label="Component",
+                **plot_kwargs,
+            )
+            plots = components * data * fit
+        else:
+            data = part.modelfit_data.hvplot.scatter(**plot_kwargs)
+            fit = part.modelfit_best_fit.hvplot(c="k", ylabel="", **plot_kwargs)
+            plots = data * fit
+
+        return panel.Column(
+            plots,
+            panel.Spacer(height=30),
+            panel.Tabs(
+                (
+                    "Parameters",
+                    part_params.hvplot.table(
+                        columns=["Parameter", "Value", "Stderr"],
+                        title="",
+                        responsive=True,
+                    ),
+                ),
+                (
+                    "Fit statistics",
+                    part.modelfit_stats.hvplot.table(
+                        columns=["fit_stat", "modelfit_stats"],
+                        title="",
+                        responsive=True,
+                    ),
+                ),
+            ),
+        )
+
+
+@xr.register_dataarray_accessor("qsel")
+class SelectionAccessor(ERLabDataArrayAccessor):
+    """`xarray.DataArray.qsel` accessor for convenient selection and averaging."""
+
+    def __call__(
+        self,
+        indexers: Mapping[Hashable, float | slice] | None = None,
+        *,
+        verbose: bool = False,
+        **indexers_kwargs,
+    ):
+        """Select and average data along specified dimensions.
+
+        Parameters
+        ----------
+        indexers
+            Dictionary specifying the dimensions and their values or slices. Position
+            along a dimension can be specified in three ways:
+
+            - As a scalar value: `alpha=-1.2`
+
+              If no width is specified, the data is selected along the nearest value. It
+              is equivalent to :meth:`xarray.DataArray.sel` with `method='nearest'`.
+
+            - As a value and width: `alpha=5, alpha_width=0.5`
+
+              The data is *averaged* over a slice of width `alpha_width`, centered at
+              `alpha`.
+
+            - As a slice: `alpha=slice(-10, 10)`
+
+              The data is selected over the specified slice. No averaging is performed.
+
+            One of `indexers` or `indexers_kwargs` must be provided.
+        verbose
+            If `True`, print information about the selected data and averaging process.
+        **indexers_kwargs
+            The keyword arguments form of `indexers`. One of `indexers` or
+            `indexers_kwargs` must be provided.
+
+        Returns
+        -------
+        DataArray
+            The selected and averaged data.
+
+
+        Note
+        ----
+        Unlike :meth:`xarray.DataArray.sel`, this method treats all dimensions without
+        coordinates as equivalent to having coordinates assigned from 0 to ``n-1``,
+        where ``n`` is the size of the dimension. For example:
+
+        .. code-block:: python
+
+            da = xr.DataArray(np.random.rand(10), dims=("x",))
+
+            da.sel(x=slice(2, 3))  # This works
+
+            da.sel(x=slice(2.0, 3.0))  # This raises a TypeError
+
+            da.qsel(x=slice(2.0, 3.0))  # This works
+
+        """
+        indexers = either_dict_or_kwargs(indexers, indexers_kwargs, "qsel")
+
+        # Bin widths for each dimension, zero if width not specified
+        bin_widths: dict[Hashable, float] = {}
+
+        for dim in indexers:
+            if not str(dim).endswith("_width"):
+                width = indexers.get(f"{dim}_width", 0.0)
+                if isinstance(width, slice):
+                    raise ValueError(
+                        f"Slice not allowed for width of dimension `{dim}`"
+                    )
+
+                bin_widths[dim] = float(width)
+                if dim not in self._obj.dims:
+                    raise ValueError(f"Dimension `{dim}` not found in data")
+            else:
+                target_dim = str(dim).removesuffix("_width")
+                if target_dim not in indexers:
+                    raise ValueError(
+                        f"`{target_dim}_width` was specified without `{target_dim}`"
+                    )
+
+        scalars: dict[Hashable, float] = {}
+        slices: dict[Hashable, slice] = {}
+        avg_dims: list[Hashable] = []
+
+        for dim, width in bin_widths.items():
+            value = indexers[dim]
+
+            if width == 0.0:
+                if isinstance(value, slice):
+                    slices[dim] = value
+                else:
+                    scalars[dim] = float(value)
+            else:
+                if isinstance(value, slice):
+                    raise ValueError(
+                        f"Slice not allowed for value of dimension `{dim}` "
+                        "with width specified"
+                    )
+                slices[dim] = slice(value - width / 2.0, value + width / 2.0)
+                avg_dims.append(dim)
+
+        unindexed_dims: list[Hashable] = [
+            k for k in slices | scalars if k not in self._obj.indexes
+        ]
+
+        if len(unindexed_dims) >= 1:
+            out = self._obj.assign_coords(
+                {k: np.arange(self._obj.sizes[k]) for k in unindexed_dims}
+            )
+        else:
+            out = self._obj
+
+        if len(scalars) >= 1:
+            for k, v in scalars.items():
+                if v < out[k].min() or v > out[k].max():
+                    warnings.warn(
+                        f"Selected value {v} for `{k}` is outside coordinate bounds",
+                        stacklevel=2,
+                    )
+            out = out.sel({str(k): v for k, v in scalars.items()}, method="nearest")
+
+        if len(slices) >= 1:
+            out = out.sel(slices)
+
+            lost_coords = {
+                k: out[k].mean() for k in avg_dims if k not in unindexed_dims
+            }
+            out = out.mean(dim=avg_dims, keep_attrs=True)
+            out = out.assign_coords(lost_coords)
+
+        if verbose:
+            out_str = "Selected data with "
+            if len(scalars) >= 1:
+                out_str = out_str + f"{scalars}"
+            if len(slices) >= 1:
+                if len(scalars) >= 1:
+                    out_str = out_str + " and "
+                out_str = out_str + f"{slices}"
+
+            if len(avg_dims) >= 1:
+                out_str = out_str + f", averaging over {avg_dims}"
+
+            print(out_str)
+
+        return out.drop_vars(unindexed_dims, errors="ignore")
+
+    def around(
+        self, radius: float | dict[Hashable, float], *, average: bool = True, **sel_kw
+    ) -> xr.DataArray:
+        """
+        Average data within a specified radius of a specified point.
+
+        For instance, consider an ARPES map with dimensions ``'kx'``, ``'ky'``, and
+        ``'eV'``. Providing ``'kx'`` and ``'ky'`` points will average the data within a
+        cylindrical region centered at that point. The radius of the cylinder is
+        specified by ``radius``.
+
+        If different radii are given for ``kx`` and ``ky``, the region will be elliptic.
+
+        Parameters
+        ----------
+        radius
+            The radius of the region. If a single number, the same radius is used for
+            all dimensions. If a dictionary, keys must be valid dimension names and the
+            values are the radii for the corresponding dimensions.
+        average
+            If `True`, return the mean value of the data within the region. If `False`,
+            return the masked data.
+        **sel_kw
+            The center of the spherical region. Must be a mapping of valid dimension
+            names to coordinate values.
+
+        Returns
+        -------
+        DataArray
+            The mean value of the data within the region.
+
+        Note
+        ----
+        The region is defined by a spherical mask, which is generated with
+        `erlab.analysis.mask.spherical_mask`. Depending on the radius and dimensions
+        provided, the mask will be hyperellipsoid in the dimensions specified in
+        `sel_kw`.
+
+        """
+        import erlab.analysis
+
+        masked = self._obj.where(
+            erlab.analysis.mask.spherical_mask(self._obj, radius, **sel_kw),
+            drop=average,
+        )
+        if average:
+            return masked.mean(sel_kw.keys())
+        return masked
