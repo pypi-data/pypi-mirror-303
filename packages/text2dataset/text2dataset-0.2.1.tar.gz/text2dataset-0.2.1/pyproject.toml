@@ -1,0 +1,66 @@
+[project]
+name = "text2dataset"
+description = "Easily turn large English text datasets into Japanese text datasets using open LLMs"
+authors = [
+    { name = "speed1313", email = "speedtry13@icloud.com" }
+]
+dependencies = [
+    "click>=8.1.7",
+    "vllm>=0.6.1",
+    "datasets>=3.0.0",
+    "wandb>=0.18.0",
+    "transformers==4.45.2",
+]
+readme = "README.md"
+requires-python = ">= 3.12.1"
+license = {file = "LICENSE"}
+
+dynamic = [
+    "version"
+]
+
+[project.urls]
+Repository = "https://github.com/llm-jp/text2dataset"
+
+[project.scripts]
+text2dataset = "text2dataset.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/text2dataset/_version.py"
+
+
+[tool.hatch.build]
+exclude = [
+  "/.*",
+  "/docs",
+  "/tests",
+  "/results",
+  "/scripts",
+  "/img2dataset",
+  "/wandb",
+  "/*.log",
+  "/*.out",
+  "/*.sh",
+  "/*.jsonl",
+]
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "openpyxl>=3.1.5",
+    "ruff>=0.6.4",
+    "mypy>=1.11.2",
+    "wheel>=0.44.0",
+    "pytest>=8.3.3",
+]
+
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/text2dataset"]
