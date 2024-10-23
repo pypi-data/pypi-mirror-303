@@ -1,0 +1,34 @@
+# flake8: noqa
+
+# import apis into api package
+from openapi_client.api.allocation_api import AllocationApi
+from openapi_client.api.casing_api import CasingApi
+from openapi_client.api.daily_production_api import DailyProductionApi
+from openapi_client.api.deviation_survey_api import DeviationSurveyApi
+from openapi_client.api.down_hole_equipment_api import DownHoleEquipmentApi
+from openapi_client.api.esp_api import ESPApi
+from openapi_client.api.forecast_api import ForecastApi
+from openapi_client.api.formation_api import FormationApi
+from openapi_client.api.gas_lift_valve_api import GasLiftValveApi
+from openapi_client.api.micro_string_api import MicroStringApi
+from openapi_client.api.network_api import NetworkApi
+from openapi_client.api.network_compressor_api import NetworkCompressorApi
+from openapi_client.api.network_compressor_constraint_api import NetworkCompressorConstraintApi
+from openapi_client.api.network_constraint_well_api import NetworkConstraintWellApi
+from openapi_client.api.network_joint_constraint_api import NetworkJointConstraintApi
+from openapi_client.api.network_pipe_api import NetworkPipeApi
+from openapi_client.api.network_pipe_constraint_api import NetworkPipeConstraintApi
+from openapi_client.api.network_screw_compressor_curve_api import NetworkScrewCompressorCurveApi
+from openapi_client.api.network_source_api import NetworkSourceApi
+from openapi_client.api.network_source_forecast_api import NetworkSourceForecastApi
+from openapi_client.api.network_well_api import NetworkWellApi
+from openapi_client.api.pcp_api import PCPApi
+from openapi_client.api.sucker_rod_pump_api import SuckerRodPumpApi
+from openapi_client.api.time_series_configuration_api import TimeSeriesConfigurationApi
+from openapi_client.api.time_series_history_api import TimeSeriesHistoryApi
+from openapi_client.api.tubing_api import TubingApi
+from openapi_client.api.well_api import WellApi
+from openapi_client.api.well_events_api import WellEventsApi
+from openapi_client.api.well_test_api import WellTestApi
+from openapi_client.api.wellbore_api import WellboreApi
+
