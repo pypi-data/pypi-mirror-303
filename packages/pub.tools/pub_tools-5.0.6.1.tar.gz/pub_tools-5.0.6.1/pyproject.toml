@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pub.tools"
+version = "5.0.6.1"
+readme = "README.md"
+requires-python = ">=3.11"
+description = "Get publication metadata from NCBI's eUtils and generate citations."
+classifiers = [
+          "Programming Language :: Python :: 3",
+          "Topic :: Scientific/Engineering",
+          "Topic :: Scientific/Engineering :: Bio-Informatics",
+          "Topic :: Software Development :: Libraries :: Python Modules",
+]
+authors = [
+    { name = "Eric Wohnlich", email = "wohnlice@imsweb.com" }
+]
+license = { text = "GPL" }
+
+dependencies = [
+    "biopython>=1.83",
+    "requests",
+    "lxml",
+    "unidecode",
+    "beautifulsoup4",
+    "deprecation"
+]
+
+[project.urls]
+homepage = "https://github.com/imsweb/pub.tools"
+documentation = "https://imsweb.github.io/pub.tools"
+
+[tool.setuptools.packages.find]
+include = ["pub"]
+
+[tool.flake8]
+max-line-length = 120
