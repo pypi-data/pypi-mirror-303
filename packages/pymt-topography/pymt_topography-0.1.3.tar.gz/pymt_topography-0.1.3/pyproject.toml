@@ -1,0 +1,92 @@
+[build-system]
+build-backend = 'mesonpy'
+requires = ['meson-python', 'numpy']
+
+[project]
+name = "pymt_topography"
+description = "PyMT plugin for Topography data component"
+version = "0.1.3"
+readme = "README.rst"
+authors = [
+  {email = "mark.piper@colorado.edu"},
+  {name = "Mark Piper"}
+]
+keywords = [
+  "bmi",
+  "csdms",
+  "pymt",
+  "topography",
+  "dem",
+]
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.10"
+dependencies = [
+  "bmi-topography",
+  "numpy",
+]
+
+[project.optional-dependencies]
+editable-install = [
+  "meson",
+  "meson-python",
+  "ninja",
+]
+dev = [
+  "black",
+  "ruff",
+  "isort",
+]
+docs = [
+  "sphinx",
+]
+build = [
+  "build",
+  "twine",
+  "zest.releaser"
+]
+testing = [
+  "bmi-tester>=0.5.5",
+]
+
+[project.urls]
+homepage = "https://csdms.colorado.edu"
+documentation = "https://pymt.readthedocs.io"
+repository = "https://github.com/pymt-lab/pymt_topography"
+changelog = "https://github.com/pymt-lab/pymt_topography/blob/main/CHANGES.rst"
+
+[project.entry-points."pymt.plugins"]
+Topography = "pymt_topography.bmi:Topography"
+
+[tool.ruff]
+exclude = ["docs"]
+line-length = 88
+lint.ignore = [
+	"E203",
+	"E501",
+]
+
+[tool.black]
+exclude = "docs"
+
+[tool.zest-releaser]
+tag-format = "v{version}"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+line_length = 88
