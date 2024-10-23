@@ -1,0 +1,102 @@
+{% extends "ausleihe/base.html" %}
+
+{% block content %}
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page"><a href="{% url 'ausleihe:home' %}">Start</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a href="{% url 'ausleihe:medium-list' %}">Medien</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a href="{% url 'ausleihe:skill-list' %}">Skills</a></li>
+      <li class="breadcrumb-item" aria-current="page">{{ skill.name }}</li>
+      {% if perms.ausleihe.change_skill %}
+      <li class="breadcrumb-item" aria-current="page"><a href="{% url 'ausleihe:skill-edit' skill.pk %}">bearbeiten</a></li>
+      {% endif %}
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col">
+      <table class="table" id="skill">
+        <thead>
+          <tr>
+            <th class="col-1">Nr.</th>
+            <th class="col-3">Name</th>
+            <th>Anz. Plätze</th>
+            <th>min. Personen</th>
+            <th>max. Personen</th>
+            <th>Dauer (min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ skill.nummer }}</td>
+            <td>{{ skill.name }}</td>
+            <td>{{ skill.anzahl_plaetze }}</td>
+            <td>{{ skill.min_personen }}</td>
+            <td>{{ skill.max_personen }}</td>
+            <td>{{ skill.dauer }}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% if skill.beschreibung %}
+      <h6>Beschreibung</h6>
+      <p>
+        {{ skill.beschreibung }}
+      </p>
+      {% endif %}
+      {% if skill.raeume.exists %}
+      <h6>Verfügbar in folgenden Räumen</h6>
+      <ul>
+      {% for raum in skill.raeume.all %}
+      <li>{{ raum }}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+      {% if skill.skillsets.exists %}
+      <h5>Vorhandene Skill Sets</h5>
+      <table class="table" id="skillsets">
+        <thead>
+          <tr>
+            <th class="col-1">Mediatheknr.</th>
+            <th class="col-3">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for skillset in skill.skillsets.all %}
+          <tr>
+            <td><a href="{% url 'ausleihe:medium-detail' skillset.medium.id %}">{{ skillset.medium }}</a></td>
+            <td><a href="{% url 'ausleihe:skillset-detail' skillset.id %}">{{ skillset.name }}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if perms.ausleihe.delete_skillset %}
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-danger">
+        <p>
+          Wenn du den Skill löschen willst, dann erledige das
+          <a class="alert-link" target="_blank" href="{% url 'admin:ausleihe_skill_change' skill.id %}">über die Admin-Oberfläche</a>.
+        </p>
+        {% if skill.skillsets.exists %}
+        <p>
+        Beachte, dass der Skill nicht gelöscht werden kann, wenn noch Skill Sets existieren, die diesem Skill zugeordnet sind.
+        Diese Skill Sets müssen erst einem anderen Skill zugeordnet werden.
+        </p>
+        {% endif %}
+
+        {% if not user.is_staff %}
+        <p>
+        Dafür musst du von einem Administrator den <em>Mitarbeiter-Status</em> erhalten.
+        Wende dich an die Admins, damit sie dir das Häkchen setzen.
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}
