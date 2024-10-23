@@ -1,0 +1,394 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  PYTHON_VER: "3.11.9"
+  NAME: "BlackboardSync"
+  PRE_RELEASE: ${{ contains(github.ref_name, '-') }}
+
+jobs:
+  test:
+    uses: ./.github/workflows/pytest.yml
+    with:
+      python-version: "3.11.9"
+
+  version:
+    needs: [ test ]
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.version-check.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VER }}
+      - run: |
+          pip install --upgrade setuptools
+          pip install setuptools-scm
+      - id: version-check
+        run: echo "code=$(python -m setuptools_scm)" >> "$GITHUB_OUTPUT"
+
+  release-notes:
+    needs: [ test ]
+    runs-on: ubuntu-latest
+    outputs:
+      body: ${{ steps.extract-release-notes.outputs.release_notes }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: extract-release-notes
+        uses: ffurrer2/extract-release-notes@v2
+        with:
+          prerelease: ${{ env.PRE_RELEASE }}
+
+  package-prep:
+    needs: [ version ]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.version.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VER }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jinja2 GitPython packaging
+
+      - name: Run jinja2
+        run: python packaging/replace.py $VERSION
+
+      - name: Copy icons and license
+        run: |
+          cp LICENSE replaced
+          cp packaging/windows/*.ico replaced
+          cp packaging/windows/*.png replaced
+          cp packaging/linux/icon.svg replaced
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packaging
+          path: replaced/
+
+  package-metadata:
+    needs: [ package-prep ]
+    runs-on: ubuntu-latest
+    env:
+      METADATA_TOKEN: ${{ github.event_name == 'push' && secrets.METADATA_PAT || secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Clone metadata repository
+        uses: actions/checkout@v4
+        with:
+          repository: "sanjacob/app.bbsync.BlackboardSync.metadata"
+          ref: "master"
+          path: metadata
+          token: ${{ env.METADATA_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: packaging
+          path: metadata
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+        working-directory: metadata
+
+      - run: |
+          git add .
+          git commit -m "Generated from $GITHUB_REF_NAME" && git push origin HEAD || true
+        working-directory: metadata
+
+      - name: Create repository tag
+        if: github.event_name == 'push'
+        run: |
+          git tag $GITHUB_REF_NAME
+          git push --tags
+        working-directory: metadata
+
+  pypi:
+    needs: [ test ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VER }}
+      - uses: sanjacob/pipenv-requirements@v1
+        with:
+          from-pipfile: true
+          dev: true
+      - run: python -m build
+      - name: Deploy to PyPI
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: twine upload dist/*
+
+  flatpak:
+    needs: [ test, package-metadata ]
+    runs-on: ubuntu-latest
+    env:
+      MATURIN_REF: v1.7.1
+      SETUPTOOLS_RUST_REF: v1.10.1
+      FLATHUB_BRANCH: ${{ contains(github.ref_name, '-') && 'beta' || 'master' }}
+      FLATHUB_TOKEN: ${{ github.event_name == 'push' && secrets.FLATHUB_PAT || secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: sanjacob/python-flatpak-generator-action@v1.3
+        with:
+          flatpak-repo: 'sanjacob/app.bbsync.BlackboardSync'
+          flatpak-repo-branch: ${{ env.FLATHUB_BRANCH }}
+          flatpak-repo-secret: ${{ env.FLATHUB_TOKEN }}
+          use-pipfile: true
+          from-pipfile: true
+          python-version: ${{ env.PYTHON_VER }}
+          maturin-version: ${{ env.MATURIN_REF }}
+          setuptools-rust-version: ${{ env.SETUPTOOLS_RUST_REF }}
+
+      - name: Fetch my-tools
+        run: |
+          mkdir my-tools
+          git clone https://gist.github.com/b0ed4ff1be1e4d13ac47e21132b92dbd.git my-tools
+          chmod +x my-tools/*.py
+
+      - name: Update other sources manually
+        env:
+          REPOSITORY_REF: ${{ github.event_name == 'push' && github.ref_name || github.head_ref }}
+          METADATA_REF: ${{ github.event_name == 'push' && github.ref_name || 'master' }}
+        run: |
+          ../my-tools/*.py *.yml --update PyO3/maturin $MATURIN_REF
+          ../my-tools/*.py *.yml --update pydantic/pydantic-core $PYDANTIC_CORE_REF
+          ../my-tools/*.py *.yml --update sanjacob/BlackboardSync $REPOSITORY_REF
+          ../my-tools/*.py *.yml --update sanjacob/app.bbsync.BlackboardSync.metadata $METADATA_REF
+        working-directory: flathub
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-repo
+          path: flathub
+
+      - if: github.event_name == 'push'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+        working-directory: flathub
+
+      - if: github.event_name == 'push'
+        run: |
+          git add .
+          git commit -m "Generated from $GITHUB_REF_NAME"
+          git push origin HEAD
+        working-directory: flathub
+
+  pyinstaller:
+    needs: [ test ]
+    uses: ./.github/workflows/pyinstaller.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-12, macos-14, windows-latest]
+    with:
+      python-version: "3.11.9"
+      runs-on: ${{ matrix.os }}
+
+  package-windows:
+    needs: [ pyinstaller, version, package-prep ]
+    runs-on: windows-latest
+    env:
+      BUILD_SCRIPT: "packaging/pkg_win.nsi"
+      VERSION: ${{ needs.version.outputs.code }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packaging
+          path: ./packaging
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-windows-latest
+
+      - run: tar -xvf build.tar
+
+      - name: Create windows installer
+        uses: joncloud/makensis-action@v4.1
+        with:
+          script-file: ${{ env.BUILD_SCRIPT }}
+          arguments: "/V3 /DVERSION=${{ env.VERSION }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-windows-latest
+          path: dist/*.exe
+
+  package-macos:
+    needs: [ pyinstaller, version, package-prep ]
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-12, macos-14]
+    env:
+      BUILD_SCRIPT: "packaging/pkg_macos.sh"
+      VERSION: ${{ needs.version.outputs.code }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packaging
+          path: ./packaging
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ format('build-{0}', matrix.os) }}
+
+      - run: tar -xvf build.tar
+
+      - name: Import signing certificate
+        if: github.event_name == 'push'
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.BB_P12 }}
+          p12-password: ${{ secrets.BB_P12_PASSWORD }}
+
+      - name: Sign and Package into DMG
+        env:
+          ARCH: ${{ matrix.os == 'macos-12' && 'x86_64' || 'arm64' }}
+        run: |
+          chmod +x $BUILD_SCRIPT
+          $BUILD_SCRIPT "blackboard_sync-$VERSION_$ARCH"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ format('package-{0}', matrix.os) }}
+          path: dist/*.dmg
+
+  package-windows-msix:
+    needs: [ pyinstaller, version, package-prep ]
+    runs-on: windows-latest
+    env:
+      VERSION: ${{ needs.version.outputs.code }}
+      KIT_PATH: 'C:\Program Files (x86)\Windows Kits\10\App Certification Kit'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packaging
+          path: packaging
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-windows-latest
+
+      - run: tar -xvf build.tar
+
+      - name: Add App Certification Kit to path
+        run: echo $env:KIT_PATH >> $env:GITHUB_PATH
+
+      - name: Build .msix package
+        run: MakeAppx.exe build /f PackagingLayout.xml /op ..
+        working-directory: packaging
+
+      - name: Compress .msixbundle
+        run: >
+          Compress-Archive
+          -Path *.msixbundle
+          -DestinationPath msixupload.zip
+
+      - name: Rename .zip file to .msixupload
+        run: >
+          Move-Item
+          -Path msixupload.zip
+          -Destination app.bbsync.BlackboardSync.msixupload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-msixupload
+          path: '*.msixupload'
+
+  deploy-msstore:
+    runs-on: windows-latest
+    needs: [ package-windows-msix ]
+    if: ${{ false }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: package-msixupload
+
+      - name: Setup Microsoft Store Developer CLI
+        uses: microsoft/setup-msstore-cli@v1
+
+      - name: Configure Microsoft Store Developer CLI
+        run: >
+          msstore reconfigure
+          --tenantId ${{ secrets.MS_TENANT_ID }}
+          --sellerId ${{ secrets.MS_SELLER_ID }}
+          --clientId ${{ secrets.MS_CLIENT_ID }}
+          --clientSecret ${{ secrets.MS_CLIENT_KEY }}
+
+      - name: Publish package in Microsoft Store
+        run: >
+          msstore publish app.bbsync.BlackboardSync.msixupload
+          --appId ${{ secrets.MS_APP_ID }}
+          --noCommit -v
+
+  deploy-github:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [ package-windows, package-macos, release-notes ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_NOTES: ${{ needs.release-notes.outputs.body }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: package-*
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2.0.8
+        with:
+          body: ${{ env.RELEASE_NOTES }}
+          prerelease: ${{ env.PRE_RELEASE }}
+          files: |
+            ./*.exe
+            ./*.dmg
+
+  pr-comment:
+    if: ${{ github.event_name == 'pull_request' }}
+    needs: [ package-windows, package-macos ]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    env:
+      ACTION_RUNS: https://github.com/sanjacob/BlackboardSync/actions/runs/
+    steps:
+      - uses: mshick/add-pr-comment@v2
+        continue-on-error: true
+        with:
+          message: >
+            The build process has succeeded.
+
+            Please test either `package-macos-12` (x86_64),
+            `package-macos-14` (arm64), or `package-windows-latest`.
+
+            You can find them
+            [here](${{ format('{0}{1}', env.ACTION_RUNS, github.run_id) }})
+            at the bottom of the page.
+
+            Let me know if everything seems fine.

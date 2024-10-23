@@ -1,0 +1,152 @@
+name: New University
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  autopr:
+    if: ${{ startsWith(github.event.issue.title, '[New University]') }}
+    runs-on: ubuntu-latest
+    env:
+      USER_LOGIN: ${{ github.event.issue.user.login }}
+      USER_NAME: ${{ github.event.issue.user.name }}
+      USER_ID: ${{ github.event.issue.user.id }}
+      ISSUE_ID: ${{ github.event.issue.id }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AUTOPR_PAT }}
+
+      - uses: stefanbuck/github-issue-parser@v3
+        id: issue
+        with:
+          template-path: .github/ISSUE_TEMPLATE/uninew.yml
+
+      - name: Find country information
+        uses: sanjacob/country-iso@v2
+        id: country
+        env:
+          COUNTRY: ${{ steps.issue.outputs.issueparser_country }}
+        with:
+          name: ${{ env.COUNTRY }}
+
+      - name: Set issue environment variables
+        env:
+          NAME: ${{ steps.issue.outputs.issueparser_name }}
+          START_URL: ${{ steps.issue.outputs.issueparser_login-start-url }}
+          TARGET_URL: ${{ steps.issue.outputs.issueparser_login-target-url }}
+        run: |
+          echo "UNI_NAME=$NAME" >> $GITHUB_ENV
+          echo "UNI_START_URL=${START_URL%'/'}" >> $GITHUB_ENV
+          echo "UNI_TARGET_URL=${TARGET_URL%'/'}/" >> $GITHUB_ENV
+
+      - name: Insert university into database
+        uses: sanjacob/json-insert@v1.1
+        env:
+          UNI_SHORT_NAME: ${{ steps.issue.outputs.issueparser_short-name }}
+        with:
+          file: blackboard_sync/universities.json
+          index: -2
+          item: |
+            {
+              "name": "${{ env.UNI_NAME }}",
+              "short_name": "${{ env.UNI_SHORT_NAME }}",
+              "country": "${{ steps.country.outputs.iso-2 }}",
+              "login": {
+                "start_url": "${{ env.UNI_START_URL }}",
+                "target_url": "${{ env.UNI_TARGET_URL }}"
+              },
+              "api_url": "${{ env.UNI_START_URL }}"
+            }
+
+      - name: Map country code to country section
+        uses: kanga333/variable-mapper@c140b458cb69bd8c9c5eccd41e83aadc597c1352
+        id: header
+        with:
+          key: "${{ steps.country.outputs.iso-2 }}"
+          map: |
+            {
+              "MX": { "section": "Mexico" },
+              "NZ": { "section": "New Zealand" },
+              "CA": { "section": "Canada" },
+              "US": { "section": "United States of America" },
+              "GB": { "section": "England" },
+              ".*": { "section": "" }
+            }
+          export_to: output
+
+      - name: Map country code to continent section
+        if: ${{ steps.header.outputs.section == '' }}
+        uses: kanga333/variable-mapper@c140b458cb69bd8c9c5eccd41e83aadc597c1352
+        id: header-b
+        with:
+          key: "${{ steps.country.outputs.continent }}"
+          map: |
+            {
+              "AF": { "section": "Africa" },
+              "AS": { "section": "Asia" },
+              "EU": { "section": "Rest of Europe" },
+              "NA": { "section": "United States of America" },
+              "OC": { "section": "Australia" },
+              "SA": { "section": "South America" },
+              ".*": { "section": "Not Found" }
+            }
+          export_to: output
+
+      - name: Append university to UNIVERSITIES
+        uses: sanjacob/markdown-list@v1
+        env:
+          HEADER_A: ${{ steps.header.outputs.section }}
+          HEADER_B: ${{ steps.header-b.outputs.section }}
+        with:
+          file: "UNIVERSITIES.md"
+          header: ${{ env.HEADER_A || env.HEADER_B }}
+          item: ${{ env.UNI_NAME }}
+
+      - name: Add entry to CHANGELOG
+        uses: sanjacob/markdown-list@v1
+        with:
+          file: "CHANGELOG.md"
+          header: Added
+          item: >
+            Add support for ${{ env.UNI_NAME }} (@${{ env.USER_LOGIN }})
+
+      - name: Create new branch
+        run: |
+          git switch -c "uni-$ISSUE_ID"
+
+      - name: Set GitHub commit author
+        env:
+          COMMIT_AUTHOR: ${{ env.USER_NAME || env.USER_LOGIN }}
+        run: |
+          USER_EMAIL="${USER_ID}+${USER_LOGIN}@users.noreply.github.com"
+          git config user.name $COMMIT_AUTHOR
+          git config user.email $USER_EMAIL
+
+      - name: Create commit
+        run: |
+          git add .
+          git commit -m "Add support for $UNI_NAME"
+
+      - name: Push new branch to origin
+        run: git push origin "uni-$ISSUE_ID" --force
+
+      - name: Set GitHub PR author
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Create pull request
+        run: >
+          gh pr create -B main -H "uni-$ISSUE_ID" --fill
+          --body "Created on behalf of @$USER_LOGIN
+
+          Closes #$ISSUE_NUMBER" || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTOPR_PAT }}

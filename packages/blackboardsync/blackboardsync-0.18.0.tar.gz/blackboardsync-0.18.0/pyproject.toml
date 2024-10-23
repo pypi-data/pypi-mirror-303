@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blackboardsync"
+dynamic = ["version"]
+authors = [
+  { name="Jacob Sánchez", email="jacobszpz@protonmail.com" },
+]
+description = "Sync your blackboard content to your device"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Education"
+]
+dependencies = [
+    "pyqt6>=6.7.1",
+    "pyqt6-webengine>=6.7.0",
+    "beautifulsoup4>=4.12.2",
+    "pydantic>=2.1.1",
+    "pathvalidate>=3.1.0",
+    "python-dateutil==2.9.0.post0",
+    "appdirs==1.4.4",
+    "lxml>=4.7.1",
+    "requests>=2.25.0",
+    "packaging>=23.1",
+    "bblearn>=0.3.0",
+    "whoisit",
+    "bwfilters"
+]
+
+[project.scripts]
+blackboardsync = "blackboard_sync:__main__.main"
+
+[project.optional-dependencies]
+test = ["pytest", "hypothesis", "coverage", "pytest-qt", "pytest-mock"]
+package = ["pyinstaller>=5.13.2", "build", "twine"]
+
+[project.urls]
+"Homepage" = "https://bbsync.app"
+"Repository" = "https://github.com/sanjacob/BlackboardSync"
+"Bug Tracker" = "https://github.com/sanjacob/BlackboardSync/issues"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+packages = [
+    "blackboard_sync",
+    "blackboard_sync.qt",
+    "blackboard_sync.content",
+    "blackboard_sync.assets"
+]
+
+[tool.mypy]
+plugins = ["pydantic.mypy", "tiny_api_client.mypy"]
