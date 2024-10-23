@@ -1,0 +1,2 @@
+class SettingAttributeNotAllowed(Exception):
+    pass
