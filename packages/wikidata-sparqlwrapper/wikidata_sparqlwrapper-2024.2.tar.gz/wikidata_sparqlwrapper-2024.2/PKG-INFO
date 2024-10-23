@@ -1,0 +1,92 @@
+Metadata-Version: 2.3
+Name: wikidata_sparqlwrapper
+Version: 2024.2
+Summary: Wrapper around that Wikidata SPARQL endpoint that respects the Wikidata usage policy.
+Project-URL: Homepage, https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper
+Project-URL: Source, https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper.git
+Project-URL: Documentation, https://jrye.gitlabpages.inria.fr/wikidata-sparqlwrapper
+Project-URL: Issues, https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper/-/issues
+Author-email: Jan-Michael Rye <jan-michael.rye@inria.fr>
+License: MIT License
+        
+        Copyright (c) 2022, Inria
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+License-File: LICENSE.txt
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: sparqlwrapper
+Description-Content-Type: text/markdown
+
+---
+title: README
+author: Jan-Michael Rye
+---
+
+# Synopsis
+
+A light wrapper around [SPARQLWrapper](https://pypi.org/project/SPARQLWrapper/) for [Wikidata's SPARQL query service](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service). The wrapper attempts to follow Wikidata's usage policy regarding user-agent strings and query frequency.
+
+The wrapper also wraps expected exceptions in a custom exception class to facilitate error handling.
+
+
+## Links
+
+[insert: links 2]: #
+
+### GitLab
+
+* [Homepage](https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper)
+* [Source](https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper.git)
+* [Documentation](https://jrye.gitlabpages.inria.fr/wikidata-sparqlwrapper)
+* [Issues](https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper/-/issues)
+* [GitLab package registry](https://gitlab.inria.fr/jrye/wikidata-sparqlwrapper/-/packages)
+
+### Other Repositories
+
+* [Python Package Index](https://pypi.org/project/wikidata-sparqlwrapper/)
+
+[/insert: links 2]: #
+
+# Usage
+
+~~~python
+from wikidata_sparqlwrapper import (
+    WikidataSPARQLWrapper,
+    WikidataSPARQLWrapperError,
+    construct_user_agent_string,
+)
+
+# Construct a user-agent string that uniquely identifies your code and which
+# includes a contact email address.
+agent = construct_user_agent_string(name="MyApp", email="my_email@example.com")
+
+# Instantiate the Wikidata SPARQL wrapper.
+wrapper = WikidataSPARQLWrapper(user_agent=agent)
+
+# Construct a SPARQL query.
+query = """\
+SELECT ?item ?itemLabel
+WHERE
+{
+    ?item wdt:P31 wd:Q146.
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+"""
+
+# Get the SPARQLWrapper query object directly. The format will be set to JSON.
+response = wrapper.query(query)
+
+# Get the bindings directly.
+bindings = wrapper.query_bindings(query)
+
+# Do something with the bindings.
+for binding in bindings:
+    print(binding["itemLabel"]["value"])
+~~~
