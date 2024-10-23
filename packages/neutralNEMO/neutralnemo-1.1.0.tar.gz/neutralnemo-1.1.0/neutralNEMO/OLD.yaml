@@ -1,0 +1,42 @@
+{% set name = "neutralNEMO" %}
+{% set version = "1.1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/neutralnemo-{{ version }}.tar.gz
+  sha256: 0a48e16887d4aaa782c721a276c4e7311ac288122e604582ab79c4528615f9d8
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  host:
+    - python >=3.8
+    - hatchling
+    - pip
+  run:
+    - python >=3.8
+    - neutralocean >=2.1.2
+
+test:
+  imports:
+    - neutralNEMO
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  summary: A package to calculate approximate neutral surfaces with NEMO model output
+  license: MIT
+  license_file: LICENSE
+  home: https://github.com/afstyles/neutralNEMO
+
+extra:
+  recipe-maintainers:
+    - afstyles
