@@ -1,0 +1,55 @@
+
+[build-system]
+requires = ["setuptools"]  
+build-backend = "setuptools.build_meta" 
+
+[project]
+name = "flask-kickstart" 
+version = "0.3"  
+description = "Flask application scaffolding tool"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE.txt"}
+keywords = ["flask", "blueprint", "sqlite", "scaffold", "generate", "webdevelopment"]
+authors = [
+  {name = "Harikumar G", email = "hgokulam@yahoo.com"}
+]
+maintainers = [
+  {name = "Harikumar G", email = "hgokulam@yahoo.com"}
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Code Generators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+
+dependencies = [
+  "jinja2",
+]
+
+[project.urls]
+Homepage = "https://hari-yahoo.github.io/flask-kickstart/"
+Repository = "https://github.com/hari-yahoo/flask-kickstart.git"
+Issues = "https://github.com/hari-yahoo/flask-kickstart/issues"
+
+[project.scripts]
+flask_kickstart = "kickstart:main"
+
+# [tool.setuptools]
+# package-data = {"kickstart" = ["*.dat"]}
+
+[tool.setuptools.packages.find]
+where = ["src"] 
+
+[tool.setuptools.package-data]
+"*" = ["*.*"] 

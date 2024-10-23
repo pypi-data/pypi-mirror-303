@@ -1,0 +1,11 @@
+from flask import Flask, jsonify, render_template
+from . import {{ bp_name }} as bp
+
+@bp.route('/')
+def home():
+    {% if bp_name == 'api' %}
+    info = { 'message' : 'API Home'}
+    return jsonify(info)
+    {% else %}
+    return  render_template('index.html', bp_name='{{bp_name}}')
+    {% endif %}
