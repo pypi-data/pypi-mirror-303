@@ -1,0 +1,27 @@
+name: Formatting check
+
+on:
+  pull_request:
+      branches: ['main']
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install black isort mypy qbraid-cli
+      - name: Check isort, black, mypy, headers
+        run: |
+          black --check qbraid_core tests tools
+          isort --check-only qbraid_core tests tools
+          mypy qbraid_core tests tools --ignore-missing-imports
+          qbraid admin headers qbraid_core tests tools
