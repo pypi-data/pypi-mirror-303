@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/SanauAutomationSDK/"]
+
+[project]
+name = "SanauAutomationSDK"
+version = "1.0.13"
+authors = [
+    { name="victor.ten", email="prostobackoffice@gmail.com" },
+    { name="NotFakeL1eN", email="notfakel1en@gmail.com" },
+    { name="BaturinMaksim188", email="Baturinmaksim188@gmail.com"},
+]
+description = "SDK that simplifies work with outsourcing"
+readme = "README.md"
+dependencies = [
+    'requests',
+    'peewee',
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/sanau-kz/python-automation-sdk"
+Issues = "https://github.com/sanau-kz/python-automation-sdk/issues"
