@@ -1,0 +1,37 @@
+[project]
+name = "berni"
+description = "Database of interaction models for molecular dynamics and Monte Carlo simulations"
+readme = "README.md"
+version = "0.0.1"
+authors = [
+    {name = "Daniele Coslovich", email = "daniele.coslovich@umontpellier.fr"}
+]
+requires-python = ">=3.7"
+license = {text = "GPLv3"}
+dependencies = [
+    "tinydb",
+    "jsonschema",
+]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    'Programming Language :: Python :: 3.7',
+]
+
+# [project.optional-dependencies]
+# backends = ["atooms>=3.17"]
+
+[project.urls]
+repository = "https://framagit.org/coslo/berni"
+homepage = "https://framagit.org/coslo/berni"
+documentation = "https://coslo.frama.io/berni"
+# changelog = ""
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["berni"]
+
