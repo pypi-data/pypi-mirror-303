@@ -1,0 +1,190 @@
+Metadata-Version: 2.1
+Name: filepack
+Version: 0.1.0
+Summary: A user-friendly interface for handling files, archives, and compressed files in Python
+Author-email: Dan Manor <danmanor11@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 Dan Manor
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Repository, https://github.com/danmanor/filepack
+Project-URL: Bug Tracker, https://github.com/danmanor/filepack/issues
+Keywords: file,pack,unpack,archive,compression,compressor
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.12.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: py7zr>=0.20.6
+Requires-Dist: tabulate==0.9.0
+Requires-Dist: types-tabulate==0.9.0.3
+Requires-Dist: rarfile==4.1
+Requires-Dist: pytz==2023.3.post1
+Requires-Dist: types-pytz==2023.3.1.1
+Requires-Dist: lz4==4.3.2
+Requires-Dist: filetype==1.2.0
+Requires-Dist: docopt==0.6.2
+Requires-Dist: toml==0.10.2
+Provides-Extra: test-runner
+Requires-Dist: tox==4.11.3; extra == "test-runner"
+Provides-Extra: test
+Requires-Dist: pytest==7.4.2; extra == "test"
+Provides-Extra: format
+Requires-Dist: black==23.9.1; extra == "format"
+Requires-Dist: isort==5.12.0; extra == "format"
+Provides-Extra: types
+Requires-Dist: mypy==1.5.1; extra == "types"
+Provides-Extra: lint
+Requires-Dist: flake8==6.1.0; extra == "lint"
+
+# filepack
+
+A user-friendly interface for handling files, archives, and compressed files in Python.
+
+## Features
+
+- User-friendly interface for common file operations.
+- Support for various archive types: TAR, ZIP, RAR, SEVEN_ZIP.
+- Support for various compression types: GZIP, BZ2, LZ4, XZ.
+
+## Installation
+```
+pip install filepack
+```
+
+## API Overview
+
+
+### FilePack
+
+| Method/Property       | Description                                     |
+|-----------------------|-------------------------------------------------|
+| `path`                | Returns the path of the file.                   |
+| `suffix`              | Returns the file's suffix.                      |
+| `is_compressed`       | Check if the file is compressed.                |
+| `uncompressed_size`   | Get uncompressed size.                          |
+| `compressed_size`     | Get compressed size.                            |
+| `compression_ratio`   | Get compression ratio.                          |
+| `compress`            | Compress the file.                              |
+| `decompress`          | Decompress the file.                            |
+
+### Archive
+
+| Method/Property       | Description                                     |
+|-----------------------|-------------------------------------------------|
+| `path`                | Returns the path of the archive.                |
+| `suffix`              | Returns the archive's suffix.                   |
+| `extract_member`      | Extract a specific member.                      |
+| `get_member`          | Get member's metadata                           |
+| `get_members`         | Get a list of members metadata.                 |
+| `add_member`          | Add a member to the archive.                    |
+| `remove_member`       | Remove a member from the archive.               |
+| `extract_all`         | Extract all members.                            |
+| `remove_all`          | Remove all members from the archive.            |
+| `print_members`       | Print all members.                              |
+
+### Compression
+
+| Method/Property       | Description                                     |
+|-----------------------|-------------------------------------------------|
+| `path`                | Returns the path of the compressed file.        |
+| `suffix`              | Returns the file's suffix.                      |
+| `uncompressed_size`   | Get uncompressed size.                          |
+| `compressed_size`     | Get compressed size.                            |
+| `compression_ratio`   | Get compression ratio.                          |
+| `compress`            | Compress the file.                              |
+| `decompress`          | Decompress the file.                            |
+| `is_compressed`       | Check if the file is compressed.                |
+
+## Usage
+
+### Working with Archives
+
+```
+from filepack import FilePack
+
+
+# if the given path can exist or not yet, but must refer to an archive.
+file_pack = FilePack("path/to/your/archive/file")
+
+# Extract a specific member
+archive.extract_member(target_path="path/to/target/directory")
+
+# Get a list of members
+members = archive.get_members()
+
+# Add a member to the archive
+archive.add_member("path/to/member")
+
+# Remove a member from the archive
+archive.remove_member("name_of_member")
+
+# Extract all members
+archive.extract_all(target_path="path/to/target")
+
+# Remove all members from the archive
+archive.remove_all()
+
+# Print all members
+archive.print_members()
+```
+### Working with Compressions
+```
+from filepack import FilePack
+
+
+# if the given path must exist, but can refer to a file which is compressed already or not.
+file_pack = FilePack("path/to/your/existed/file")
+
+# Compressed or not
+is_compressed = file_pack.is_compressed(compression_algorithm="gz")
+
+# Get uncompressed size
+size = file_pack.uncompressed_size(compression_algorithm="gz")
+
+# Compress and decompress files in place
+new_path = file_pack.compress(compression_algorithm="gz") # with .gz
+new_path = file_pack.decompress(compression_algorithm="gz") # without .gz
+
+# Compress and decompress files into a different path
+new_path = file_pack.compress(target_path="path/to/compressed/file", compression_algorithm="gz")
+new_path = file_pack.decompress(target_path="path/to/uncompressed/file", compression_algorithm="gz")
+```
+### Working with Both
+```
+from filepack import FilePack
+
+
+file_pack = FilePack("path/to/your/archive/file")
+
+archive.add_member("path/to/member")
+new_path = file_pack.compress(compression_algorithm="gz")
+```
+
+## Error Handling
+
+`filepack` has built-in error handling mechanisms. It raises user-friendly exceptions for common errors, allowing you to handle them gracefully in your application.
+
+## Contributing
+
+Interested in contributing to `filepack`? [See our contribution guide](CONTRIBUTING.md).
+
