@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "prefig"
+version = "0.2.5.dev20241023053415"
+description = "An authoring system for mathematical diagrams"
+readme = "README.md"
+homepage = "https://prefigure.org"
+repository = "https://github.com/davidaustinm/prefigure"
+authors = ["David Austin <david.austin.m@gmail.com>"]
+license = "GPL-3.0-or-later"
+
+include = ["resources"]
+
+[tool.poetry.dependencies]
+python = "^3.8.5"
+shapely = "^2.0.6"
+lxml = "^5.3.0"
+click = "^8.1.7"
+psutil = "^6.0.0"
+networkx = "^2.5"
+scipy = "^1.5"
+numpy = "^1.19"
+pycairo = "^1.20"
+cairosvg = "^2.7.1"
+
+[tool.poetry.scripts]
+prefig = "prefig.cli:main"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
