@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: bdcp
+Version: 1.4.14
+Summary: A big data competition auxiliary package
+Author: yiluohan1234
+Author-email: XX@qq.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: pandas
+Requires-Dist: paramiko ==3.0.0
+Requires-Dist: cryptography ==36.0.2
+Requires-Dist: pymysql
+
+## Introduction
+
+A big data competition auxiliary package
+
+## Usage
+
+1.Importing the Package
+
+```
+import bdcp
+```
+
+2.Obtaining the Data
+
+```
+bc = bdcp.connect(username, password, module_id)
+```
+
+3.Basic Content Setup
+
+```
+bc.setbasic()
+```
+
+4.checkpoint
+
+```
+bc.get_check(hostname)
+```
+
+5.obtain the documentation
+
+```
+bc.get_element_detail(element_id)
+```
+
+6.obtain abcd
+
+```
+bc.get_abcd("")
+```
+
