@@ -1,0 +1,39 @@
+# XONSH WIZARD START
+xontrib load coreutils
+# XONSH WIZARD END
+
+import os
+import sys
+import platform
+from pathlib import Path
+
+$XONSH_SHOW_TRACEBACK = True
+$XONSH_TRACEBACK_LOGFILE = os.path.expanduser('~') + "/xonsh.log"
+$RAISE_SUBPROC_ERROR = True
+
+$PYTHONPATH = "/data/fr/file-renamer/src"
+$OPSYS = platform.system()
+
+def frpath():
+    if $OPSYS == "Linux":
+        try:
+            cd /data/fr/file-renamer
+        except NotADirectoryError as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+        else:
+            print('Linux path')
+    elif $OPSYS == "Windows":
+        try:
+            cd C:\\Users\\Me\\fr\\file-renamer
+        except NotADirectoryError as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+        else:
+            print('Windows path')
+
+
+$VIRTUALENV_HOME = "/data/fr/vox"
+xontrib load vox
+vox activate dev
+frpath()
+
+$BACKUP = "/data"
