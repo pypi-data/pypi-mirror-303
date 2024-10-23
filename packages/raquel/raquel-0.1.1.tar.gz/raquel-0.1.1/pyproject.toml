@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "raquel"
+version = "0.1.1"
+description = "Simple Job Queues using SQL"
+authors = ["vduseev <vagiz@duseev.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+keywords = ["job", "queue", "sql", "postgresql", "sqlite"]
+homepage = "https://github.com/vduseev/raquel"
+repository = "https://github.com/vduseev/raquel"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Distributed Computing",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "^2.0.36"
+greenlet = { version = "^3.1.1", optional = true }
+
+[tool.poetry.extras]
+asyncio = ["greenlet"]
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^8.0.2"
+sphinx-material = "^0.0.36"
+sphinxcontrib-programoutput = "^0.17"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
+psycopg2 = "^2.9.9"
+asyncpg = "^0.29.0"
+sqlalchemy = "^2.0.35"
+mysql-connector-python = "^9.0.0"
+pymssql = "^2.3.1"
+oracledb = "^2.4.1"
+pytest-asyncio = "^0.24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+branch = true
+source = ["raquel"]
+omit = ["raquel/dbapi_types.py"]
+
+[tool.coverage.report]
+exclude_also = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "if self\\.debug",
+    "if settings\\.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "raise RuntimeError",
+    "raise ValueError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
