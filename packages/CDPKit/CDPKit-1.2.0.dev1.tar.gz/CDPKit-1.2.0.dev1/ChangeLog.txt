@@ -1,0 +1,145 @@
+master:
+
+ - Added new and changed existing constants in namespace Biomol::ResidueType which now fully cover the 
+   set of residue types defined in the mmCIF/PDBX specification
+ - Added method to classes Biomol::ResidueDictionary/Biomol::ResidueDictionary::Entry for the lookup of residue parent structure information
+ - Added method to classes Biomol::ResidueDictionary/Biomol::ResidueDictionary::Entry for the lookup of residue one letter codes
+ - Renamed some previously PDB format-specific control-parameters and associated functions in namespace Biomol for their
+   future dual-use by the mmCIF data I/O code
+ - Added new control-parameters, atom properties and associated functions to namespace Biomol
+ - Updated embedded MessagePack library to version 6.1.1
+ - Updated embedded SQLite3 database to version 3.46.1
+ - Updated embedded MMTF library to version 1.1.0
+ - Updated PDB residue dictionary, now covering 43441 chemical components
+ - CDPL Python bindings now support NumPy V>=2.0
+ - Removed function Biomol::convertMOL2ToPDBResidueInfo(): if possible, the conversion of MOL2 substructure to
+   PDB residue/sequence information is now carried out automatically
+ - Fixed a bug in program 'ChOX' that prevented the successful saving of data to PSD files
+ - Program 'ChOX' now uses the same file open/save dialog instance for all opened main windows 
+ - New class Chem::MultiSubstructureSearch for performing substructure matching with multiple query structures that
+   can be combined in the form of boolean expressions
+ - Program 'ChOX' now supports basic cut/copy/paste as well as drag and drop operations
+ - New feature of the program 'ChOX' that allows to perform substructure searching with logical combinations of SMARTS patterns
+ - New feature of the program 'ChOX' that allows to highlight substructures defined by SMARTS patterns
+ - New classes Descr::NPoint2DPharmacophoreFingerprintGenerator and Descr::NPoint3DPharmacophoreFingerprintGeneratorfor
+   for the generation of variably sized hashed 2D and 3D pharmacophore fingerprints
+ - Removed methods setNumBits() and getNumBits() in class Descr::PathFingerprintGenerator (fp-length now
+   implicitly given by the size of the bitset provided as argument to method generate())
+ - New class Descr::PubChemFingerprintGenerator for the generation of 881 bit PubChem fingerprints
+ - New class Chem::ExtendedSSSR fro the perception extended smallest sets of smallest rings
+ - The SDF reader now also accepts input data that do not end with a newline character
+ - Made MOL2 reader implementation more tolerant regarding missing sections
+ - Fixed missing support for certain chemical element symbols in class Chem::SMARTSMoleculeReader
+ - Extended the set of supported chemical elements to atomic number 114
+ - New class Descr::MACCSFingerprintGenerator for the generation of 166 bit MACCS key fingerprints
+ - Fixed a bug in Math::RegularSpatialGrid causing erroneous transformations of world to grid-local coordinates
+ - Fixed a problem in Chem::RECAPFragmentGenerator with H-deplete molecules that lead to the generation of too few fragments
+ - Fixed a problem in Chem::BRICSFragmentGenerator with H-deplete molecules that lead to the generation of too few fragments   
+ - Control-parameter Vis::BACKGROUND_COLOR was replaced by Vis::BACKGROUND_BRUSH which now allows to also
+   specify a background fill pattern (see Vis::Brush) for 2D structure renderings
+ - New unit test case for Vis::TextBlockPrimitive2D and CDPL::Vis test case updates
+ - Vis::CairoRenderer2D now supports the rendering of overlined, underlined and striked-out text
+ - Fixed an issue with the calculation of text bounds by Vis::CairoFontMetrics and Vis::QtFontMetrics
+   that lead to too small bounding boxes in the presence of leading and/or trailing whitespace
+ - Updated the internally used 'rapidxml' XML-parser library to the lastest version and fixed an issue with
+   whitespace-only data elements that were missing in the generated DOM-trees
+ - New 2D graphics primitive Vis::TextBlockPrimitive2D for the rendering of multi-line text blocks supporting
+   several options for the styling of individual text fragments
+ - Support for setting the image output scaling factor in the program 'ChOX'
+ - New control-parameter Vis::OUTPUT_SCLAING_FACTOR that allows to achieve higher resolutions of 2D structure/reaction
+   depictions saved in pixel-based output formats
+ - Fixed an issue in program 'ChOX' where the background color setting of 2D structure/reaction depictions was ignored on
+   file output 
+ - Support for atom and bond highlighting in 2D structure/reaction depictions
+ - Fixed several errors in Python example scripts
+ - Support for fully customizable atom and bond labels in 2D structure/reaction depictions
+
+V1.1.1:
+
+ - Significantly improved the generation of 2D coordinates for macrocyclic structures
+ - Fixed an issue with the generation of conformers under application of a fixed substructure template where the generated
+   conformers sometimes displayed the mirror image of the specified 3D template structure
+ - The command line tools 'structgen' and 'confgen' erroneously used the already reserved letter 'p' as shortcut for
+   the option '--fixed-substr-min-atoms'. The new shortcut is '~'
+ - Support for Python version 3.12 in Manylinux2014-based pip package builds
+ - Rewrote code that uses the boost filesystem library to use C++17 equivalents (conditional, only if a proper std::filesystem
+   implementation is available)
+ - Compiling CDPKit now requires a compiler with C++17 support
+
+V1.1.0:
+ - The tool 'tautgen' provides two new tautomer generation modes BEST_SCORING and BEST_SCORING_UNIQUE
+   (the new default mode) for generating only the chemically most reasonable tautomers
+ - New getter/setter method pair in class Chem::TautomerGenerator that allows to suppress the output of generated tautomers
+   which represent just a different resonance structure of a previously reported tautomeric form
+ - Overhaul of the tautomer generation code for increased efficiency and flexibility
+ - Documentation updates and corrections
+ - Versatile new Python example script for database preparation
+ - New Python example script demonstrating how the torsion driving functionality can be used for conformer sampling
+ - Fixed bugs in classes Chem::MaxCommonAtomSubstructureSearch and Chem::MaxCommonBondSubstructureSearch that led to a
+   loss of expected matches
+ - The visual molecule and reaction data inspection tool 'ChOX' now allows to display atom and bond configuration labels
+ - The 2D molecule structure rendering code (implemented by class Vis::StructureView2D) now
+   allows to display atom and bond configuration labels
+ - Full implementation of the CIP sequence rule stack for the correct labeling of atom and bond stereocenters
+ - New 3D structure generator feature that allows to enforce a particular 3D structure for defined parts of the input molecules
+ - New conformer generator feature that allows to specify substructures of the input molecules that
+   shall adopt a particular conformation which is then kept 'fixed' during conformer generation
+ - Renamed all ForceField::MMFF94XXXInteractionData data structures into ForceField::MMFF94XXXInteractionList
+   (XXX = force field interaction type)
+ - New class ForceField::ElasticPotential plus elastic potential energy and gradient calculation functions
+ - Conformer generator settings now allow to specify rotatable bond count dependent values for RMSD threshold, energy window and
+   max. output ensemble size
+ - The output conformer ensemble compilation process now strives for higher energetic diversity among the picked conformers which, on average,
+   leads to higher accuracy in the reproduction of experimental structures
+ - Update of the torsion library used for systematic conformer generation
+ - The pharmacophore screening application 'psdscreen' provides a new option '--unique-hits'
+   which enforces that a database molecule matched by multiple query pharmacophores is saved only once to the output hit list
+ - Fix for a bug in the SMARTS parser that lead to the storage of wrong bond directions
+ - Bond direction specifications (up/down) in SMILES and SMARTS strings are now correctly interpreted
+ - Support for reading/writing molecular structures in XYZ format 
+ - Systematic conformer sampling speed optimizations
+ - Reduction of the memory footprint of the conformer generation procedure which could become unacceptably large
+   under some circumstances
+ - Fixed a bug that may lead to the generation of conformers with wrong geometries at exocyclic double bonds
+ - Refactoring of stereochemistry related code
+ - New command line application 'isogen' for the enumeration of R/S and E/Z stereoisomers of molecules
+ - New class (Chem::StereoisomerGenerator) for the exhaustive enumeration of R/S and E/Z stereoisomers
+ - New 2D drawing primitives (Vis::Path2D and Vis::PathPrimitive2D) and support for clipping operations
+   (class Vis::ClipPathPrimitive2D)
+ - Fixed a bug in the 'shapescreen' tool that lead to the calculation of erroneous similarity scores
+   when option '--score-only' was specified
+ - Fix for a minor bug that affected the indentation of SD-file property entries
+ - New class (Chem::BemisMurckoAnalyzer) for the extraction of Bemis-Murcko scaffolds
+ - New CDPL::Chem functions for the alignment of conformers
+ - Function overload resolution order fixes in the CDPL.Math Python package
+ - Prevented the throwing of exceptions when the env. variable LC_ALL has not been initialized
+ - Python exports of Util::Map and Util::MultiMap do not provide the properties 'keys', 'values', and 'entries' anymore.
+   They were replaced by the corresponding methods keys(), values() and items()
+ - MolProp::getAtomCount() function has been extended by a 'strict' argument which, if set to 'false', instructs
+   the accounting procedure to regard the meaning of generic atom types (e.g. any halogen)
+ - New utility functions Chem::calcBasicProperties() enabling a more comfortable initialization of Chem::MolecularGraph
+   and Chem::Reaction instances for further processing
+ - CDPL Python bindings code cleanup
+ - CDPL API cleanup
+ - When deep copying Chem::Reaction or Chem::Molecule instances, values of properties referencing atoms and/or bonds (e.g. stereodescriptors, SSSR)
+   now get automatically translated to values referencing the corresponding atoms/bonds of the copying target
+ - The calculation of GRAIL descriptors (classes GRAIL::GRAIL(X)DescriptorCalculator) now only considers heavy atoms which do not represent
+   a complementary feature type in the calculation of environment HBA/HBD occupation scores 
+ - Class GRAIL::GRAILDescriptorCalculator now calculates a shorter descriptor (35 elements) with
+   not further subdivided H-bond donor/acceptor feature types
+ - Class GRAIL::GRAILDescriptorCalculator renamed into GRAILXDescriptorCalculator
+
+V1.0.2:
+
+ - Manylinux2014 wheel files now support Python3.11
+ - Added support for building CDPL Python bindings wheel files under Windows
+ - Build system cleanup
+ 
+V1.0.1:
+
+ - Added support for building manylinux2014 compliant CDPL Python bindings wheel files
+ - Documentation updates
+
+V1.0.0:
+
+ - Initial release
