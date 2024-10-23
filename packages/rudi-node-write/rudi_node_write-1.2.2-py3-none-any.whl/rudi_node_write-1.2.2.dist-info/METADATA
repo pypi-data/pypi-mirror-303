@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: rudi-node-write
+Version: 1.2.2
+Summary: Use the internal API of a RUDI Producer node
+Author-email: Olivier Martineau <olivier.martineau@irisa.fr>
+Maintainer-email: Olivier Martineau <olivier.martineau@irisa.fr>
+License: EUPL-1.2
+Project-URL: Homepage, https://github.com/OlivierMartineau/rudi-node-write
+Project-URL: Documentation, https://app.swaggerhub.com/apis/OlivierMartineau/RudiProducer-InternalAPI
+Project-URL: Repository, https://github.com/OlivierMartineau/rudi-node-write
+Keywords: rudi-node-write,rudi-node-put,RUDI,producer node,RUDI node,open-data,Univ. Rennes
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENCE.md
+Requires-Dist: beautifulsoup4 ==4.12.3
+Requires-Dist: chardet ==5.2.0
+Requires-Dist: deepdiff ==8.0.1
+Requires-Dist: puremagic ==1.28
+Provides-Extra: dev
+Requires-Dist: black ==24.10.0 ; extra == 'dev'
+Requires-Dist: build ==1.2.2.post1 ; extra == 'dev'
+Requires-Dist: commitizen ==3.29.1 ; extra == 'dev'
+Requires-Dist: importlib-resources ==6.4.5 ; extra == 'dev'
+Requires-Dist: inflect ==7.3.1 ; extra == 'dev'
+Requires-Dist: ipykernel ==6.29.5 ; extra == 'dev'
+Requires-Dist: jaraco.collections ==5.1.0 ; extra == 'dev'
+Requires-Dist: nbstripout ==0.7.1 ; extra == 'dev'
+Requires-Dist: ordered-set ==4.1.0 ; extra == 'dev'
+Requires-Dist: pip-autoremove ==0.10.0 ; extra == 'dev'
+Requires-Dist: pip-chill ==1.0.3 ; extra == 'dev'
+Requires-Dist: pip-upgrade-outdated ==1.5 ; extra == 'dev'
+Requires-Dist: pip3-autoremove ==1.2.2 ; extra == 'dev'
+Requires-Dist: pre-commit ==4.0.1 ; extra == 'dev'
+Requires-Dist: pyright ==1.1.386 ; extra == 'dev'
+Requires-Dist: pytest-cov ==5.0.0 ; extra == 'dev'
+Requires-Dist: tomli ==2.0.2 ; extra == 'dev'
+Requires-Dist: twine ==5.1.1 ; extra == 'dev'
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://microsoft.github.io/pyright/)
+
+# RUDI Node tools: _rudi-node-write_ library
+
+This library offers tools to take advantage of
+the [internal API](https://app.swaggerhub.com/apis/OlivierMartineau/RudiProducer-InternalAPI) of a RUDI Producer node (
+also
+referred as RUDI node), through the API of the backend of the user interface, the "Producer node manager" or "Prodmanager" module.
+
+## Installation
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install rudi_node_write
+```
+
+## Usage: RudiNodeWriter
+
+The Jupyter notebook [`README.ipynb`](https://github.com/OlivierMartineau/rudi-node-write/blob/main/README.ipynb) details how to use the library through the [`RudiNodeWriter`](https://github.com/OlivierMartineau/rudi-node-write/blob/main/src/rudi_node_write/rudi_node_writer.py) object.
+
+## Testing
+
+The [tests](https://github.com/OlivierMartineau/rudi-node-write/tree/main/tests) can be analyzed for further
+information about how to call the API
+
+```bash
+$ pytest
+```
