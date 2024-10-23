@@ -1,0 +1,970 @@
+# Format
+
+[filters.repr]
+fn = "repr"
+group = "format"
+
+[filters.repr.examples.basic]
+template = """
+{{ "A" | repr }}
+"""
+
+[filters.slugify]
+fn = "jinjarope.textfilters.slugify"
+group = "format"
+
+[filters.slugify.examples.basic]
+template = """
+{{ "Ä test" | slugify }}
+"""
+
+[filters.pformat]
+fn = "pprint.pformat"
+group = "format"
+
+[filters.pformat.examples.basic]
+template = """
+{{ ([1, 2, 3] * 10) | pformat }}
+"""
+
+[filters.split_url]
+fn = "jinjarope.htmlfilters.split_url"
+group = "format"
+
+[filters.split_url.examples.basic]
+template = """
+{{ "scheme://netloc/path;parameters?query#fragment" | split_url }}
+{{ "scheme://netloc/path;parameters?query#fragment" | split_url("path") }}
+"""
+
+[filters.format_code]
+fn = "jinjarope.textfilters.format_code"
+group = "format"
+
+[filters.format_code.examples.basic]
+template = """
+{{ "AVeryLargeCodeBlock(a_parameter=3, another_parameter=4, abc=False)" | format_code }}
+"""
+
+
+[filters.extract_body]
+fn = "jinjarope.textfilters.extract_body"
+group = "format"
+
+[filters.extract_body.examples.basic]
+template = """
+{{
+"@deprecated
+def test(a):
+    b = a
+" | extract_body }}
+"""
+
+
+[filters.format_signature]
+fn = "jinjarope.textfilters.format_signature"
+group = "format"
+
+[filters.format_signature.examples.basic]
+template = """
+{{ "".removesuffix | format_signature }}
+"""
+
+
+[filters.format_filter_signature]
+fn = "jinjarope.textfilters.format_filter_signature"
+group = "format"
+
+[filters.format_filter_signature.examples.basic]
+template = """
+{{ filters.format_filter_signature | format_filter_signature("ffs") }}
+"""
+
+# Markdown
+
+[filters.md_link]
+fn = "jinjarope.mdfilters.md_link"
+group = "markdown"
+
+[filters.md_link.examples.basic]
+template = """
+{{ "Test" | md_link("https://google.com") }}
+"""
+
+[filters.autoref_link]
+fn = "jinjarope.mdfilters.autoref_link"
+group = "markdown"
+
+[filters.autoref_link.examples.basic]
+template = """
+{{ "Test" | autoref_link(cycler) }}
+"""
+
+[filters.md_escape]
+fn = "jinjarope.mdfilters.md_escape"
+group = "markdown"
+
+[filters.md_escape.examples.basic]
+template = """
+{{ "*Test*" | md_escape }}
+"""
+
+[filters.md_style]
+fn = "jinjarope.mdfilters.md_style"
+group = "markdown"
+
+[filters.md_style.examples.basic]
+template = """
+{{ "Some text" | md_style(bold=True) }}
+"""
+
+[filters.extract_header_section]
+fn = "jinjarope.mdfilters.extract_header_section"
+group = "markdown"
+
+[filters.extract_header_section.examples.basic]
+template = """
+{{ "# Section 1\nABC\n# Section 2\nDEF" | extract_header_section("Section 2") }}
+"""
+
+
+[filters.shift_header_levels]
+fn = "jinjarope.mdfilters.shift_header_levels"
+group = "markdown"
+
+[filters.shift_header_levels.examples.basic]
+template = """
+{{ "# Section 1\nABC\n# Section 2\nDEF" | shift_header_levels(4) }}
+"""
+
+# HTML
+
+[filters.html_link]
+fn = "jinjarope.htmlfilters.html_link"
+group = "html"
+
+[filters.html_link.examples.basic]
+template = """
+{{ "Test" | html_link("https://google.com") }}
+"""
+
+[filters.wrap_in_elem]
+fn = "jinjarope.htmlfilters.wrap_in_elem"
+group = "html"
+
+[filters.wrap_in_elem.examples.basic]
+template = """
+{{ "abc" | wrap_in_elem("test") }}
+"""
+
+[filters.format_js_map]
+fn = "jinjarope.htmlfilters.format_js_map"
+group = "html"
+
+[filters.format_js_map.examples.basic]
+template = """
+{{ {"abc": "def"} | format_js_map }}
+"""
+
+[filters.format_css_rule]
+fn = "jinjarope.htmlfilters.format_css_rule"
+group = "html"
+
+[filters.format_css_rule.examples.basic]
+template = """
+{{ {"a": {"b": "c"} } | format_css_rule }}
+"""
+
+[filters.svg_to_data_uri]
+fn = "jinjarope.htmlfilters.svg_to_data_uri"
+group = "html"
+
+[filters.svg_to_data_uri.examples.basic]
+template = """
+{{ "<svg>...</svg>" | svg_to_data_uri }}
+"""
+
+[filters.clean_svg]
+fn = "jinjarope.htmlfilters.clean_svg"
+group = "html"
+
+[filters.clean_svg.examples.basic]
+template = """
+{{ '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n<body></body>' | clean_svg }}
+"""
+
+[filters.format_xml]
+fn = "jinjarope.htmlfilters.format_xml"
+group = "html"
+
+[filters.format_xml.examples.basic]
+template = """
+{{ '<a><b><c>Hello!</c></b></a>' | format_xml }}
+"""
+
+[filters.format_xml.examples.with_declaration]
+template = """
+{{ '<a><b><c>Hello!</c></b></a>' | format_xml(indent=4) }}
+"""
+
+[filters.format_xml.examples.short_form]
+template = """
+{{ '<br></br>' | format_xml(short_empty_elements=True, method="xml") }}
+"""
+
+[filters.format_xml.examples.declaration]
+template = """
+{{ '<br></br>' | format_xml(short_empty_elements=True, add_declaration=True, method="xml") }}
+"""
+
+[filters.ansi2html]
+fn = "jinjarope.htmlfilters.ansi2html"
+group = "html"
+
+[filters.ansi2html.examples.basic]
+template = """
+{{ "\\033[31;1;4mHello\\033[0m" | ansi2html }}
+"""
+
+[filters.relative_url]
+fn = "jinjarope.htmlfilters.relative_url"
+group = "html"
+
+[filters.relative_url.examples.basic]
+template = """
+{{ "https://phil65.github.io" | relative_url("https://phil65.github.io/mknodes") }}
+"""
+
+
+[filters.normalize_url]
+fn = "jinjarope.htmlfilters.normalize_url"
+group = "html"
+
+[filters.normalize_url.examples.basic]
+template = """
+{{ "test" | normalize_url(base="https://phil65.github.io") }}
+"""
+
+[filters.url_to_b64]
+fn = "jinjarope.htmlfilters.url_to_b64"
+group = "html"
+
+[filters.url_to_b64.examples.basic]
+template = """
+{{ "https://picsum.photos/200/300" | url_to_b64 }}
+"""
+
+
+# Itertools
+
+[filters.batched]
+fn = "jinjarope.iterfilters.batched"
+group = "iter"
+
+[filters.batched.examples.basic]
+template = """
+{% for a, b in range(10) | batched(2) %}
+{{ a }}: {{ b }}
+{% endfor %}
+"""
+
+
+[filters.groupby_plus]
+fn = "jinjarope.iterfilters.groupby"
+group = "iter"
+
+[filters.groupby_plus.examples.basic]
+template = """
+{{ ["20", "20", "100", "0"] | groupby_plus(natural_sort=True) }}
+"""
+
+
+[filters.chain]
+fn = "jinjarope.iterfilters.chain"
+group = "iter"
+
+[filters.chain.examples.basic]
+template = """
+{% for val in range(3) | chain(range(5)) %}
+{{ val }}
+{% endfor %}
+"""
+
+[filters.combinations]
+fn = "itertools.combinations"
+group = "iter"
+
+[filters.combinations.examples.basic]
+template = """
+{% for val in "ABCD" | combinations(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.combinations_with_replacement]
+fn = "itertools.combinations_with_replacement"
+group = "iter"
+
+[filters.combinations_with_replacement.examples.basic]
+template = """
+{% for val in "ABC" | combinations_with_replacement(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.compress]
+fn = "itertools.compress"
+group = "iter"
+
+[filters.compress.examples.basic]
+template = """
+{% for val in "ABCDEF" | compress([1,0,1,0,1,1]) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.islice]
+fn = "jinjarope.iterfilters.islice"
+group = "iter"
+
+[filters.islice.examples.basic]
+template = """
+{% for val in "ABCDEFG" | islice(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.groupby_first_letter]
+fn = "jinjarope.iterfilters.groupby_first_letter"
+group = "iter"
+[filters.groupby_first_letter.examples.basic]
+template = """
+{{ ["apple", "banana", "cherry", "avocado", "carrot", "blueberry"] | groupby_first_letter }}
+"""
+
+[filters.reduce_list]
+fn = "jinjarope.iterfilters.reduce_list"
+group = "iter"
+
+[filters.reduce_list.examples.basic]
+template = """
+{{ ["1", "2", "3", "1"] | reduce_list }}
+"""
+
+[filters.flatten_dict]
+fn = "jinjarope.iterfilters.flatten_dict"
+group = "iter"
+
+[filters.flatten_dict.examples.basic]
+template = """
+{{ {"a": {"b": {"c": "d"} } } | flatten_dict }}
+"""
+
+[filters.pairwise]
+fn = "jinjarope.iterfilters.pairwise"
+group = "iter"
+
+[filters.pairwise.examples.basic]
+template = """
+{% for a, b in [1, 2, 3, 4] | pairwise %}
+{{ a }}: {{ b }}
+{% endfor %}
+"""
+
+
+[filters.permutations]
+fn = "itertools.permutations"
+group = "iter"
+
+[filters.permutations.examples.basic]
+template = """
+{% for val in "ABCD" | permutations(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.product]
+fn = "jinjarope.iterfilters.product"
+group = "iter"
+
+[filters.product.examples.basic]
+template = """
+{% for val in "ABCD" | product("xy") %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.repeat]
+fn = "jinjarope.iterfilters.repeat"
+group = "iter"
+
+[filters.repeat.examples.basic]
+template = """
+{% for val in "ABCD" | repeat(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.zip]
+fn = "jinjarope.iterfilters.do_zip"
+group = "iter"
+
+[filters.zip.examples.basic]
+template = """
+{% for a, b in [1, 2] | zip([3, 4]) %}
+{{ a }}: {{ b }}
+{% endfor %}
+"""
+
+
+[filters.zip_longest]
+fn = "jinjarope.iterfilters.zip_longest"
+group = "iter"
+
+[filters.zip_longest.examples.basic]
+template = """
+{% for val in "ABCD" | zip_longest("xy", fillvalue="-") %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.natsort]
+fn = "jinjarope.iterfilters.natsort"
+group = "iter"
+required_packages = ["natsort"]
+[filters.natsort.examples.basic]
+template = """
+{{ ["A1", "B1", "A2", "A10"] | natsort }}
+"""
+
+[filters.any]
+fn = "jinjarope.iterfilters.do_any"
+group = "iter"
+
+[filters.any.examples.basic]
+template = """
+{{ [True, False] | any }}
+"""
+
+# Text
+
+[filters.rstrip]
+fn = "jinjarope.textfilters.rstrip"
+group = "text"
+
+[filters.rstrip.examples.basic]
+template = """
+{{ "abc " | rstrip }}
+"""
+
+[filters.lstrip]
+fn = "jinjarope.textfilters.lstrip"
+group = "text"
+
+[filters.lstrip.examples.basic]
+template = """
+{{ " abc" | lstrip }}
+"""
+
+
+[filters.lower_camel_case]
+fn = "jinjarope.textfilters.lower_camel_case"
+group = "text"
+
+[filters.lower_camel_case.examples.basic]
+template = """
+{{ "some_text" | lower_camel_case }}
+"""
+
+
+[filters.snake_case]
+fn = "jinjarope.textfilters.snake_case"
+group = "text"
+
+[filters.snake_case.examples.basic]
+template = """
+{{ " someText" | snake_case }}
+"""
+
+[filters.removesuffix]
+fn = "jinjarope.textfilters.removesuffix"
+group = "text"
+
+[filters.removesuffix.examples.basic]
+template = """
+{{ "acccc" | removesuffix("c") }}
+"""
+
+[filters.removeprefix]
+fn = "jinjarope.textfilters.removeprefix"
+group = "text"
+
+[filters.removeprefix.examples.basic]
+template = """
+{{ "ccca" | removeprefix("c") }}
+"""
+
+# Regex
+
+[filters.re_replace]
+fn = "jinjarope.regexfilters.re_replace"
+group = "regex"
+
+[filters.re_replace.examples.basic]
+template = """
+{{ "abc" | re_replace("b", "d") }}
+"""
+
+[filters.re_findall]
+fn = "jinjarope.regexfilters.re_findall"
+group = "regex"
+
+[filters.re_findall.examples.basic]
+template = """
+{{ "strings" | re_findall("s") }}
+"""
+
+[filters.re_search]
+fn = "jinjarope.regexfilters.re_search"
+group = "regex"
+
+[filters.re_search.examples.basic]
+template = """
+{{ "string" | re_search("tri") }}
+"""
+
+[filters.re_escape]
+fn = "jinjarope.regexfilters.re_escape"
+group = "regex"
+
+[filters.re_escape.examples.basic]
+template = """
+{{ "[abc]" | re_escape }}
+"""
+
+# Serialize
+
+[filters.dump_json]
+fn = "json.dumps"
+group = "serialize"
+
+[filters.dump_json.examples.basic]
+template = """
+{{ {'a': 'b'} | dump_json }}
+"""
+
+[filters.load_json]
+fn = "json.loads"
+group = "serialize"
+
+[filters.load_json.examples.basic]
+template = """
+{{ "[1, 2]" | load_json }}
+"""
+
+[filters.load_toml]
+fn = "tomllib.loads"
+group = "serialize"
+
+[filters.load_toml.examples.basic]
+template = """
+{{ "[abc]\nb=1" | load_toml }}
+"""
+
+[filters.serialize]
+fn = "jinjarope.serializefilters.serialize"
+group = "serialize"
+
+[filters.serialize.examples.basic]
+template = """
+{{ {"a": "b"} | serialize("toml") }}
+"""
+
+[filters.deserialize]
+fn = "jinjarope.serializefilters.deserialize"
+group = "serialize"
+
+[filters.deserialize.examples.basic]
+template = """
+{{ "[abc.def]\nvalue = 1" | deserialize("toml") }}
+"""
+
+[filters.dig]
+fn = "jinjarope.serializefilters.dig"
+group = "serialize"
+
+[filters.dig.examples.basic]
+template = """
+{{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2") }}
+"""
+
+[filters.dig.examples.keep_path]
+template = """
+{{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2", keep_path=True) }}
+"""
+
+
+[filters.merge]
+fn = "jinjarope.serializefilters.merge"
+group = "serialize"
+
+[filters.merge.examples.basic]
+template = """
+{{ {"a": {"b": 1} } | merge({"a": {"c": 2} }) }}
+"""
+
+# Misc
+
+[filters.add]
+fn = "jinjarope.envglobals.add"
+group = "misc"
+
+[filters.add.examples.basic]
+template = """
+{{ "a" | add("b", "c") }}
+"""
+
+[filters.ternary]
+fn = "jinjarope.envglobals.ternary"
+group = "misc"
+
+[filters.ternary.examples.basic]
+template = """
+{{ True | ternary("A", "B") }}
+"""
+
+
+[filters.match]
+fn = "jinjarope.envglobals.match"
+group = "misc"
+
+[filters.match.examples.basic]
+template = """
+{{ "a" | match(a="Hit", b="miss") }}
+"""
+
+[filters.match.examples.types]
+template = """
+{{ 5 | match({int: "hit", str: "miss"}) }}
+"""
+
+# [filters.issubclass]
+# fn = "jinjarope.envtests.is_subclass"
+# group = "misc"
+
+# [filters.issubclass.examples.basic]
+# template = """
+# {{ issubclass(JinjaFile, dict) }}
+# """
+
+# [filters.isinstance]
+# fn = "jinjarope.envtests.is_instance"
+# group = "misc"
+
+# [filters.isinstance.examples.basic]
+# template = """
+# {{ 3 | isinstance("int") }}
+# """
+
+[filters.import_module]
+fn = "importlib.import_module"
+group = "misc"
+
+[filters.import_module.examples.basic]
+template = """
+{{ "jinja2" | import_module }}
+"""
+
+[filters.hasattr]
+fn = "hasattr"
+group = "misc"
+
+[filters.hasattr.examples.basic]
+template = """
+{{ "3" | hasattr("removeprefix") }}
+"""
+
+[filters.partial]
+fn = "jinjarope.utils.partial"
+group = "misc"
+
+[filters.partial.examples.basic]
+template = """
+{{ filters.path_join | partial("abc") }}
+"""
+
+[filters.load_file]
+fn = "jinjarope.envglobals.load_file_cached"
+group = "misc"
+
+[filters.load_file.examples.basic]
+template = """
+{{ "github://phil65:mknodes@main/docs/icons.jinja" | load_file }}
+"""
+
+[filters.get_doc]
+fn = "jinjarope.inspectfilters.get_doc"
+group = "inspect"
+
+[filters.get_doc.examples.basic]
+template = """
+{{ filters.get_doc | get_doc }}
+"""
+
+
+[filters.get_argspec]
+fn = "jinjarope.inspectfilters.get_argspec"
+group = "inspect"
+
+[filters.get_argspec.examples.basic]
+template = """
+{{ filters.get_argspec | get_argspec }}
+"""
+
+
+# [filters.unwrap]
+# fn = "inspect.unwrap"
+# group = "inspect"
+
+# [filters.unwrap.examples.basic]
+# template = """
+# {{ filters.unwrap | unwrap }}
+# """
+
+
+[filters.get_annotations]
+fn = "inspect.get_annotations"
+group = "inspect"
+
+[filters.get_annotations.examples.basic]
+template = """
+{{ filters.get_annotations | get_annotations }}
+"""
+
+
+[filters.get_hash]
+fn = "jinjarope.utils.get_hash"
+group = "misc"
+
+[filters.get_hash.examples.basic]
+template = """
+{{ "abc" | get_hash }}
+"""
+
+
+[filters.expanduser]
+fn = "os.path.expanduser"
+group = "path"
+[filters.expanduser.examples.basic]
+template = """
+{{ "~\\a" | expanduser }}
+"""
+
+
+[filters.expandvars]
+fn = "os.path.expandvars"
+group = "path"
+[filters.expandvars.examples.basic]
+template = """
+{{ "%TEMP%" | expandvars }}
+"""
+
+
+[filters.path_join]
+fn = "os.path.join"
+group = "path"
+
+[filters.path_join.examples.basic]
+template = """
+{{ "a" | path_join("b") }}
+"""
+
+[filters.fnmatch]
+fn = "fnmatch.fnmatch"
+group = "path"
+aliases = ["fnmatch_fnmatch"]
+
+[filters.fnmatch.examples.basic]
+template = """
+{{ "test.txt" | fnmatch("*.txt") }}
+"""
+
+[filters.fnmatchcase]
+fn = "fnmatch.fnmatchcase"
+group = "path"
+aliases = ["fnmatch_fnmatchcase"]
+
+[filters.fnmatchcase.examples.basic]
+template = """
+{{ "test.txt" | fnmatchcase("*.txt") }}
+{{ "test.txt" | fnmatchcase("*.TXT") }}
+"""
+
+[filters.fnmatch_filter]
+fn = "fnmatch.filter"
+group = "path"
+
+[filters.fnmatch_filter.examples.basic]
+template = """
+{{ ["test.txt", "test.xyz"] | fnmatch_filter("*.txt") }}
+"""
+
+[filters.glob]
+fn = "glob.glob"
+group = "path"
+
+[filters.glob.examples.basic]
+template = """
+{{ ".*" | glob }}
+"""
+
+[filters.check_output]
+fn = "jinjarope.envglobals.get_output_from_call"
+group = "misc"
+
+[filters.check_output.examples.basic]
+template = """
+{{ "dir" | check_output }}
+"""
+
+[filters.getenv]
+fn = "os.getenv"
+group = "misc"
+
+[filters.getenv.examples.basic]
+template = """
+{{ "CI" | getenv }}
+"""
+
+[filters.render_template]
+fn = "jinjarope.Environment.render_template"
+group = "environment"
+
+[filters.render_template.examples.basic]
+template = """
+{{ "docs/.empty" | render_template }}
+"""
+
+[filters.render_string]
+fn = "jinjarope.Environment.render_string"
+group = "environment"
+
+[filters.render_string.examples.basic]
+template = """
+{{ "{{ a + 2 }} = 3" | render_string(a=1) }}
+"""
+
+[filters.render_file]
+fn = "jinjarope.Environment.render_file"
+group = "environment"
+
+[filters.render_file.examples.basic]
+template = """
+{{ "https://raw.githubusercontent.com/phil65/jinjarope/main/tests/__init__.py" | render_file }}
+"""
+
+[filters.evaluate]
+fn = "jinjarope.Environment.evaluate"
+group = "environment"
+
+[filters.evaluate.examples.basic]
+template = """
+{{ "1 + 2" | evaluate }}
+"""
+
+[filters.choices]
+fn = "random.choices"
+group = "random"
+
+[filters.choices.examples.basic]
+template = """
+{{ [1, 2, 3] | choices(k=2) }}
+"""
+
+
+[filters.sample]
+fn = "random.sample"
+group = "random"
+
+[filters.sample.examples.basic]
+template = """
+{{ [1, 2, 3] | sample(2) }}
+"""
+
+
+[filters.list_subclasses]
+fn = "jinjarope.inspectfilters.list_subclasses"
+group = "inspect"
+
+[filters.list_subclasses.examples.basic]
+template = """
+{{ list | list_subclasses }}
+"""
+
+
+[filters.list_baseclasses]
+fn = "jinjarope.inspectfilters.list_baseclasses"
+group = "inspect"
+
+[filters.list_baseclasses.examples.basic]
+template = """
+{{ zip | list_baseclasses }}
+"""
+
+
+[filters.get_deprecated_message]
+fn = "jinjarope.inspectfilters.get_deprecated_message"
+group = "inspect"
+
+# [filters.get_deprecated_message.examples.basic]
+# template = """
+# {{ zip | get_deprecated_message }}
+# """
+
+
+[filters.get_source]
+fn = "jinjarope.inspectfilters.get_source"
+group = "inspect"
+
+[filters.get_source.examples.basic]
+template = """
+{{ filters.get_source | get_source }}
+"""
+
+
+[filters.get_source_lines]
+fn = "jinjarope.inspectfilters.get_source_lines"
+group = "inspect"
+
+[filters.get_source_lines.examples.basic]
+template = """
+{{ filters.get_source_lines | get_source_lines }}
+"""
+
+
+[filters.get_signature]
+fn = "jinjarope.inspectfilters.get_signature"
+group = "inspect"
+
+[filters.get_signature.examples.basic]
+template = """
+{{ filters.get_signature | get_signature }}
+"""
+
+
+[filters.get_file]
+fn = "jinjarope.inspectfilters.get_file"
+group = "inspect"
+
+[filters.get_file.examples.basic]
+template = """
+{{ filters.get_file | get_file }}
+"""
