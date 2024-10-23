@@ -1,0 +1,119 @@
+#include <Arduino.h>
+
+{{ contents }}
+
+/**
+ * Restore original weights
+ */
+bool ei_restore() {
+    return true;
+}
+
+/**
+ * Patch layer's data from Stream
+ */
+ template<typename DType>
+ bool ei_patch_tensor_data(Stream& stream, uint8_t expectedLayerNumber, uint8_t expectedBitDepth, size_t expectedSize) {
+    log_d("[OTA] Updating layer %d's data", expectedLayerNumber);
+
+    if (stream.available() < 4 + expectedSize * sizeof(DType)) {
+        log_e("[OTA] Not enough data available for layer %d's data: expected %d, found %d", expectedLayerNumber, 4 + expectedSize * sizeof(DType), stream.available());
+        return false;
+    }
+
+    uint16_t size;
+    uint8_t layerNumber = stream.read();
+    uint8_t bitDepth = stream.read();
+    stream.readBytes((uint8_t*)&size, 2);
+
+    if (layerNumber != expectedLayerNumber) {
+        log_e("[OTA] Data index mismatch: expected %d, found %d", expectedLayerNumber, layerNumber);
+        return false;
+    }
+
+    if (bitDepth != expectedBitDepth) {
+        log_e("[OTA] Data bitDepth mismatch at layer %d: expected %d, found %d", layerNumber, expectedLayerNumber, layerNumber);
+        return false;
+    }
+
+    if (size != expectedSize) {
+        log_e("[OTA] Data size mismatch at layer %d: expected %d, found %d", layerNumber, expectedSize, size);
+        return false;
+    }
+
+    DType *data = (DType*)(tensorData[layerNumber].data);
+
+    for (size_t i = 0; i < size; i++) {
+        DType x;
+        stream.readBytes((uint8_t*)&x, sizeof(DType));
+        data[i] = x;
+    }
+
+    return true;
+}
+
+/**
+ * Patch quantization params from Stream.
+ */
+bool ei_patch_tensor_quantization(Stream& stream, uint8_t expectedLayerNumber, uint16_t expectedSize) {
+    log_d("[OTA] Updating layer %d's quantization", expectedLayerNumber);
+
+    if (stream.available() < 3 + expectedSize * 8) {
+        log_e("[OTA] Not enough data available for layer %d's quantization: expected %d, found %d", expectedLayerNumber, 3 + expectedSize * 8, stream.available());
+        return false;
+    }
+
+    uint8_t layerNumber = stream.read();
+    uint16_t size;
+    stream.readBytes((uint8_t*)&size, 2);
+
+    if (layerNumber != expectedLayerNumber) {
+        log_e("[OTA] Quantization index mismatch: expected %d, found %d", expectedLayerNumber, layerNumber);
+        return false;
+    }
+
+    if (size != expectedSize) {
+        log_e("[OTA] Size mismatch at layer %d's quantization: expected %d, found %d", layerNumber, expectedSize, size);
+        return false;
+    }
+
+    TensorInfo_t *info = &(tensorData[layerNumber]);
+    TfLiteQuantization *quant = &(info->quantization);
+    TfLiteAffineQuantization *params = (TfLiteAffineQuantization*) quant->params;
+
+    for (size_t i = 0; i < size; i++) {
+        float s;
+        int z;
+        stream.readBytes((uint8_t*)&s, 4);
+        stream.readBytes((uint8_t*)&z, 4);
+        params->scale->data[i] = s;
+        params->zero_point->data[i] = z;
+    }
+
+    return true;
+}
+
+/**
+ * Update model weights from Stream (e.g. HTTP request)
+ */
+bool ei_ota(Stream& stream) {
+    if (stream.available() < 4) {
+        log_e("[OTA] No data available for update");
+        return false;
+    }
+
+    uint32_t patchSize;
+    stream.readBytes((uint8_t*)&patchSize, 4);
+
+    if (patchSize != {{ patch_size }}) {
+        log_e("[OTA] Size mismatch: expected {{ patch_size }}, found %u", patchSize);
+        return false;
+    }
+
+    {% for patch in tensor_data.patches %}
+    {{ patch }}{% endfor %}
+    {% for patch in quantization.patches %}
+    {{ patch }}{% endfor %}
+
+    return true;
+}
