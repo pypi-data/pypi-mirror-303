@@ -1,0 +1,2 @@
+class MedialoopsterError(Exception):
+    pass
