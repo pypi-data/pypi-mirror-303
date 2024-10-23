@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "master_dac"
+version = "2024.10.22"
+description = "Master DAC dependency & dataset manager"
+authors = [ "Benjamin Piwowarski <benjamin@piwowarski.fr>"]
+
+[tool.poetry.dependencies]
+click = "^8"
+packaging = "^23"
+appdirs = "^1.4"
+requests = "^2"
+importlib_resources = { version="^6", markers="python_version <= '3.8'" }
+cached-property = { version="^1.5", markers="python_version <= '3.7'" }
+easypip = "^1.3.4"
+
+[tool.poetry.scripts]
+master-dac = "master_dac.__main__:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
