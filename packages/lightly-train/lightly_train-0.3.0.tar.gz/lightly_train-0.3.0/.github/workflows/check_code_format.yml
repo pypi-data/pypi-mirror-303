@@ -1,0 +1,65 @@
+name: Check Code Format
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-code-changes:
+    name: Detect Code Changes
+    runs-on: cpu
+    outputs:
+      run-tests: ${{ steps.filter.outputs.run-tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            run-tests:
+              - '!docs/**'
+              - '!docker/**'
+              - '!.github/**'
+              - '.github/workflows/check_code_format.yml'
+  check-code-format:
+    name: Check Code Format
+    runs-on: cpu
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Set Up Environment
+      run: |
+        make install-uv reset-venv
+        source .venv/bin/activate
+        make install-pinned-${{ matrix.python }}
+        make install-ffmpeg-ubuntu
+    - name: Run Format Check
+      run: |
+        source .venv/bin/activate
+        make format-check
+    - name: Run Type Check
+      run: |
+        source .venv/bin/activate
+        make type-check
+    - name: Run Header check
+      run: |
+        source .venv/bin/activate
+        make add-header
+        git diff --name-only .
+        git diff --quiet --name-only . || exit -1
+  

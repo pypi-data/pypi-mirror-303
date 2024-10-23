@@ -1,0 +1,59 @@
+name: Test Unit Minimal Dependencies
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-code-changes:
+    name: Detect Code Changes
+    runs-on: cpu
+    outputs:
+      run-tests: ${{ steps.filter.outputs.run-tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            run-tests:
+              - '!docs/**'
+              - '!docker/**'
+              - '!.github/**'
+              - '.github/workflows/test_unit_minimal_dependencies.yml'
+  test-unit-minimal-dependencies:
+    name: Test Unit Minimal Dependencies
+    needs: detect-code-changes
+    if: needs.detect-code-changes.outputs.run-tests == 'true'
+    runs-on: cpu
+    strategy:
+      matrix:
+        python: ["3.8"]
+        dependencies: ["minimal", "minimal-extras"]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Set Up Environment
+        run: |
+          make install-uv reset-venv
+          source .venv/bin/activate
+          make install-${{ matrix.dependencies }}
+          if [[ ${{ matrix.dependencies }} == "minimal-extras" ]]; then
+            make install-ffmpeg-ubuntu
+          fi
+      - name: Run Pytest
+        run: |
+          source .venv/bin/activate
+          make test-ci

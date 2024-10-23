@@ -1,0 +1,57 @@
+name: Test Unit Latest Dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 22 * * THU' # each Thursday night, at 22:00 UTC
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-code-changes:
+    name: Detect Code Changes
+    runs-on: cpu
+    outputs:
+      run-tests: ${{ steps.filter.outputs.run-tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            run-tests:
+              - '!docs/**'
+              - '!docker/**'
+              - '!.github/**'
+              - '.github/workflows/test_unit_latest_dependencies.yml'
+  test-unit-latest-dependencies:
+    name: Test Unit Latest Dependencies
+    needs: detect-code-changes
+    if: needs.detect-code-changes.outputs.run-tests == 'true'
+    runs-on: cpu
+    strategy:
+      matrix:
+        python: ["3.8", "3.11"]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Setup Environment
+        run: |
+          make install-uv reset-venv
+          source .venv/bin/activate
+          make install-latest
+          make install-ffmpeg-ubuntu
+      - name: Run Pytest
+        # TODO(Philipp, 09/24): Remove CUDA_VISIBLE_DEVICES: "".
+        env:
+          CUDA_VISIBLE_DEVICES: ""
+        run: |
+          source .venv/bin/activate
+          make test-ci
