@@ -1,0 +1,128 @@
+Metadata-Version: 2.1
+Name: tumeryk_guardrails
+Version: 0.1.96
+Summary: API Client for Tumeryk_Guardrails
+Author: Tumeryk
+Author-email: support@tumeryk.com
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# Tumeryk Guardrails Client
+
+The Tumeryk Guardrails Client is a Python package that provides an interface to the Tumeryk Guardrails API. The client allows you to easily use the API from your Python code.
+
+
+## Setup
+
+To install the Tumeryk Guardrails Client, use pip:
+
+```bash
+pip install tumeryk_guardrails
+```
+
+## Example .env File
+
+```
+TUMERYK_USERNAME=sample_username
+TUMERYK_PASSWORD=sample_password
+TUMERYK_POLICY=hr_policy
+```
+
+## Simple Usage
+
+You can use the Tumeryk Guardrails Client with minimal setup. The client will automatically load the configuration from the .env file if it exists. Here's an example of simple usage:
+
+```python
+from dotenv import load_dotenv
+load_dotenv()
+
+import tumeryk_guardrails
+
+
+messages = [{"role": "user", "content": "hi"}]
+
+response = tumeryk_guardrails.tumeryk_completions(messages=messages)
+
+print(response)
+```
+
+## Manual Usage
+
+The Tumeryk Guardrails Client uses [chat.tmryk.com](https://chat.tmryk.com) as the default base URL. However, you can change this URL if required. Here's how you can set a custom base URL:
+
+```python
+import tumeryk_guardrails
+
+# Set a custom base URL
+tumeryk_guardrails.set_base_url("https://your-custom-url.com")
+```
+
+### Configuration
+
+The Tumeryk Guardrails Client uses environment variables to store credentials and policy. Here's an example of how to use environment variables:
+
+```python
+import tumeryk_guardrails
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Retrieve credentials and policy from environment variables
+username = os.getenv("TUMERYK_USERNAME")
+password = os.getenv("TUMERYK_PASSWORD")
+policy = os.getenv("TUMERYK_POLICY")
+
+# Authenticate with Tumeryk Guardrails
+tumeryk_guardrails.login(username, password)
+
+# Retrieve available policies
+policies = tumeryk_guardrails.get_policies()
+print("Available Policies:", policies)
+
+# Set the chosen policy
+tumeryk_guardrails.set_policy(policy)
+
+# Prepare a message for the guard service
+messages = [{"role": "user", "content": "Example input to guard"}]
+
+# Send a request to the guard service
+response = tumeryk_guardrails.tumeryk_completions(messages)
+print("Guard Response:")
+print(response)
+```
+
+## Response Structure
+
+The guard service returns a structured response. Here's an example:
+
+```python
+{
+    'messages': [{
+        'role': 'assistant',
+        'content': 'I apologize, but I am not able to respond to that specific request. My purpose is to assist with tasks and provide information, not to access or modify code. Is there something else I can help you with?',
+        'Stats': '2 total calls, 1.89 total time, 1252 total tokens, 1170 total prompt tokens, 82 total completion tokens, [1.0, 0.89] as latencies',
+        'llm_process_time': 7.152557373046875e-07,
+        'violation': True
+    }]
+}
+```
+
+## Available Methods
+
+The Tumeryk Guardrails Client provides the following methods to interact with the Tumeryk Guardrails API:
+
+* `login(username, password)`: Authenticate and store access token.
+* `get_policies()`: Fetch available policies and return a list.
+* `set_policy(config_id)`: Set the configuration/policy to be used by the user.
+* `tumeryk_completions(messages)`: Send user input to the Guard service.
+* `get_base_url()`: Get the current base URL.
+* `set_base_url(base_url)`: Set a new base URL.
+
+## Dependencies
+
+- **requests**: Used for making HTTP requests to the API.
