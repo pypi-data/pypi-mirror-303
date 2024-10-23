@@ -1,0 +1,65 @@
+[project]
+name = "boule"
+description = "Reference ellipsoids for geodesy and geophysics"
+dynamic = ["version"]
+authors = [
+  {name="The Boule Developers", email="fatiandoaterra@protonmail.com"},
+]
+maintainers = [
+  {name = "Leonardo Uieda", email = "leo@uieda.com"}
+]
+readme = "README.md"
+license = {text = "BSD 3-Clause"}
+keywords = ["geophysics", "geodesy", "gravity", "ellipsoid"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.19",
+    "attrs>=19.3.0",
+    "scipy>=1.8.0",
+]
+
+[project.urls]
+"Documentation" = "https://www.fatiando.org/boule"
+"Changelog" = "https://www.fatiando.org/boule/latest/changes.html"
+"Bug Tracker" = "https://github.com/fatiando/boule/issues"
+"Source Code" = "https://github.com/fatiando/boule"
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme =  "post-release"
+local_scheme =  "no-local-version"
+write_to =  "boule/_version.py"
+
+# Make sure isort and Black are compatible
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.burocrata]
+notice = '''
+# Copyright (c) 2019 The Boule Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#'''
