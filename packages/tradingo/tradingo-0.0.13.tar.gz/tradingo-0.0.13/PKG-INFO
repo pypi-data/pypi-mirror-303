@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: tradingo
+Version: 0.0.13
+Summary: Instrument price store
+Author-email: Rory McStay <rory@rorymcstay.com>
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: numba
+Requires-Dist: pandas
+Requires-Dist: pandera
+Requires-Dist: arcticdb
+Requires-Dist: PyYAML
+Requires-Dist: yfinance
+Requires-Dist: pandas_market_calendars
+Requires-Dist: trading_ig
+Requires-Dist: riskfolio-lib
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-benchmark; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: nb-clean; extra == "dev"
+Provides-Extra: research
+Requires-Dist: dtale; extra == "research"
+Requires-Dist: jupyter; extra == "research"
+
+# Tradingo
+
+A functional backtesting framework for equities
+
+There are three main configuration items
+
+  * universe
+  * signal_config
+  * portfolio
+
+A universe defines a list of symbols referenced from a file, a web link or a list of
+tickers. They are associated with a provider.
+
+A signal will depend on a universe, which is referenced by universe/provider key.
+
+A portfolio references the same universe, and a set of signal configs by name
