@@ -1,0 +1,86 @@
+[tool.poetry]
+name = "Flomo2MD"
+version = "0.1.0"
+description = "convert flomo's HTML to markdown."
+authors = ["largomst <dingrui.zhen@gmail.com>"]
+readme = "README.md"
+packages = [{include = "flomo2md"}]
+repository = "https://github.com/largomst/flomo2md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+markdownify = "^0.13.1"
+rich = "^13.9.3"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[tool.blue]
+line-length = 99
+
+[tool.isort]
+line_length = 99
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    ".vscode",
+]
+
+line-length = 99
+
+[tool.ruff.format]
+# Like Blue, use double quotes for strings.
+quote-style = "single"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+
+[tool.pytest.ini_options]
+addopts = "-s -v"
+
+[tool.poetry.scripts]
+flomo2md = "flomo2md.__main__:main"
