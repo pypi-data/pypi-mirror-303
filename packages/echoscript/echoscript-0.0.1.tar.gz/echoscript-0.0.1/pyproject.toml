@@ -1,0 +1,32 @@
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "echoscript"
+dynamic = ["version"]
+description = "A audio-to-text conversion package"
+authors = [{name = "Your Name", email = "your.email@example.com"}]
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/susuky/echoscript"
+
+[project.scripts]
+echoscript = "echoscript.cli:cli"
+
+[project.optional-dependencies]
+test = ["pytest", "coverage"]
+
+[tool.setuptools]
+packages = ["echoscript"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = {attr = "echoscript.__version__"}
