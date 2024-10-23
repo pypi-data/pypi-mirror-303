@@ -1,0 +1,39 @@
+{% load static %}
+
+<header id="header">
+  <div class="container d-flex align-items-center justify-content-between">
+
+    <!-- 로고 -->
+    <div class="logo">
+      {% if use_logo %}
+      <a href="{% url 'bocor:home' %}"><img src="{% static 'bocor/img/logo.png' %}" alt="" class="img-fluid"></a>
+      {% else %}
+      <h1><a href="{% url 'bocor:home' %}">{{ logo_text }}<span>.</span></a></h1>
+      {% endif %}
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+        <!-- 메뉴 -->
+        {% for component, etc, title, is_show in components %}
+          {% if is_show %}
+            {% if component == 'direct_link' %}
+              <li><a class="nav-link scrollto" href="{{ etc }}" target="_blank">{{ title }}</a></li>
+            {% else %}
+              <li><a class="nav-link scrollto" href="{% url 'bocor:home' %}#{{ component }}">{{ title }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% for component, is_use, _, _ in components %}
+        {% if component == menu_btn.component and is_use %}
+        <li><a class="getstarted scrollto" href="#{{ menu_btn.component }}">{{ menu_btn.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
+
+  </div>
+</header>

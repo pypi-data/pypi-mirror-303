@@ -1,0 +1,20 @@
+{% load static %}
+
+<section id="hero">
+
+  <div class="container">
+    <div class="row d-flex align-items-center">
+    <div class=" col-lg-6 py-5 py-lg-0 order-2 order-lg-1" data-aos="fade-right">
+      {% autoescape off %}
+      <h1>{{ hero.h1 }}</h1>
+      <h2>{{ hero.h2 }}</h2>
+      {% endautoescape %}
+      <a href="{{ hero.btn.link }}" class="btn-get-started scrollto">{{ hero.btn.title }}</a>
+    </div>
+    <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+      <img src="{% static 'bocor/img/'|add:hero.bg %}" class="img-fluid" alt="">
+    </div>
+  </div>
+  </div>
+
+</section>

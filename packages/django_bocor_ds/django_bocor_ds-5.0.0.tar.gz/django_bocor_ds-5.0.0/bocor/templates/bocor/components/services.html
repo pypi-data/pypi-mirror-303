@@ -1,0 +1,36 @@
+{% load static %}
+
+<section id="services" class="services section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2 data-aos="fade-in">{{ services_title }}</h2>
+      <p data-aos="fade-in">{{ services_subtitle | safe }}</p>
+    </div>
+
+    <div class="row">
+      {% for item in services %}
+      <!-- 홀수 짝수 구분 -->
+      {% if forloop.counter|divisibleby:2 %}
+      <div class="col-md-6 d-flex" data-aos="fade-left">
+      {% else %}
+      <div class="col-md-6 d-flex" data-aos="fade-right">
+      {% endif %}
+        <div class="card">
+          <div class="card-img">
+            <img src="{% static 'bocor/img/services/'|add:item.image %}" alt="...">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><a href="">{{ item.title }}</a></h5>
+            <p class="card-text">{{ item.desc | safe }}</p>
+            {% if item.link %}
+            <div class="read-more"><a href="{{ item.link }}" target="_blank"><i class="bi bi-arrow-right"></i> Read More</a></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
