@@ -1,0 +1,121 @@
+# uv Version Tool
+
+uv tool to set package version.
+
+[![PyPI](https://img.shields.io/pypi/v/uv-version)](https://pypi.org/project/uv-version/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/uv-version)](https://pypi.org/project/uv-version/)
+[![Docs](https://img.shields.io/badge/docs-exists-blue)](https://projects.rocshers.com/open-source/uv-version)
+
+[![Downloads](https://static.pepy.tech/badge/uv-version)](https://pepy.tech/project/uv-version)
+[![GitLab stars](https://img.shields.io/gitlab/stars/rocshers/python/uv-version)](https://gitlab.com/rocshers/python/uv-version)
+[![GitLab last commit](https://img.shields.io/gitlab/last-commit/rocshers/python/uv-version)](https://gitlab.com/rocshers/python/uv-version)
+
+## Functionality
+
+- Parsing: `git`, `pyproject.toml`, `env`, `stdin`
+- Output to: `pyproject.toml`, `stdout`
+- `Increment`
+
+## Quick start
+
+```bash
+uvx uv-version increment
+```
+
+## Configs
+
+## Commands
+
+### Arguments
+
+- `--print`: Указывая этот аргумет вы настраиваете инструмент на вывод версии в консоль. Никаких изменений с кодом не будет.
+- `--set`: Указывая этот аргумет вы настраиваете инструмент на изменение файлов, чтобы uv и другие прогаммы видели новую версию пакета
+
+Вы можете использовать оба аргумента одновременно.
+
+Если неуказанье ничего, то по умолчанию будет выполняться логика равная наличию `--set` аргумента.
+
+### uvx uv-version git-tag
+
+```bash
+$ uvx uv-version --print git-tag
+version = "1.3.2a5+5babef6"
+```
+
+## Use cases
+
+### Publishing python package to pypi via uv with version equal to git tag
+
+.gitlab-ci.yml:
+
+```yaml
+pypi:
+  stage: publishing
+  image: ghcr.io/astral-sh/uv:0.4.25-python3.12-bookworm
+  tags:
+    - docker
+  script:
+    - apt install git
+    - uvx uv-version --from-git
+    - uv build --no-sources
+    - uv publish
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+- When creating a git tag: new package with version == {TAG}
+- When pushing to CI_DEFAULT_BRANCH: new package with version == {TAG}a{N}
+
+### Publishing python package to private pypi via uv with version equal to git tag and commit hash
+
+.gitlab-ci.yml:
+
+```yaml
+pypi:
+  stage: publishing
+  image: ghcr.io/astral-sh/uv:0.4.25-python3.12-bookworm
+  tags:
+    - docker
+  script:
+    - apt install git
+    # set alpha version template
+    - PACKAGE_VERSION_ALPHA_VERSION_FORMAT='{version}a{distance}+{commit_hash}'
+    # Update package version
+    - uvx uv-version --from-git
+    # Publishing to gitlab
+    - UV_PUBLISH_URL=https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/packages/pypi
+    - UV_PUBLISH_TOKEN=${PYPI_TOKEN}
+    - uv build --no-sources
+    - uv publish
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+```
+
+- When creating a git tag: new package with version == {TAG}
+- When pushing to CI_DEFAULT_BRANCH: new package with version == {TAG}a{N}+{COMMIT_HASH}
+
+## Roadmap
+
+- logging
+- tests
+- version construct
+- Set to `__init__`, `__version__`,`VERSION` files
+
+## Contribute
+
+Issue Tracker: <https://gitlab.com/rocshers/python/uv-version/-/issues>  
+Source Code: <https://gitlab.com/rocshers/python/uv-version>
+
+Before adding changes:
+
+```bash
+make install-dev
+```
+
+After changes:
+
+```bash
+make format test
+```
