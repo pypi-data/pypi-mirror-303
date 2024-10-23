@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "renumnum"
+version = "0.2.2"
+authors = [
+  { name="Takahashi Satoshi (Handle Name:むずでょ)", email="muzudho1@gmail.com" },
+]
+description = "Numbering notation for easy renumbering."
+readme = "README.md"
+dependencies = [
+]
+maintainers = [
+  { name="Takahashi Satoshi (Handle Name:むずでょ)", email="muzudho1@gmail.com" },
+]
+license = {file = "LICENSE"}
+keywords = ["renumbering", "notation"]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+[project.urls]
+Repository = "https://github.com/muzudho/renumberingist-number.git"
+
+# ビルドツールの設定
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/docs_dev",      # Documents exclude package. It for developer.
+  "/examples",      # README.md で紹介されているスクリプト
+  "/tests",         # 設定しなくても最初から機能するという話しもある
+  "*.log",          # Logging
+  "*.bak",          # WinMerge
+  "*- コピー*",     # Copy file
+]
