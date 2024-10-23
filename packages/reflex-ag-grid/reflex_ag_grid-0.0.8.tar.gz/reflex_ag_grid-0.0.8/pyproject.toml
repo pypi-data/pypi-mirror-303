@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reflex-ag-grid"
+version = "0.0.8"
+description = "AGGrid wrapping for Reflex"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "Reflex Team", email = "team@reflex.dev" }]
+keywords = ["reflex-ag-grid", "ag-grid", "reflex", "reflex-custom-components", "aggrid", "dashboard"]
+
+dependencies = ["reflex>=0.6.3"]
+
+classifiers = ["Development Status :: 4 - Beta"]
+
+[project.urls]
+homepage = "https://ag-grid-demo.reflex.run/"
+source = "https://github.com/reflex-dev/reflex-ag-grid"
+
+[project.optional-dependencies]
+dev = ["build", "twine"]
+
+
+
+[tool.setuptools.packages.find]
+where = ["custom_components"]
