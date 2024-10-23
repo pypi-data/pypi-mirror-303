@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: shorthand_datetime
+Version: 0.3.0
+Summary: Parse shorthand datetime strings in the Elasticsearch date math format. Inspired by Grafana.
+Author-email: Wout Weijtjens <wout.weijtjens@gmail.com>, Pietro D'Antuono <pietro.dantuono@24sea.eu>
+Description-Content-Type: text/x-rst
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: twine ; extra == "build"
+Requires-Dist: build ; extra == "build"
+Requires-Dist: black==24.* ; extra == "dev"
+Requires-Dist: mypy==1.* ; extra == "dev"
+Requires-Dist: pycln==2.4.* ; extra == "dev"
+Requires-Dist: isort==5.* ; extra == "dev"
+Requires-Dist: ruff==0.* ; extra == "dev"
+Requires-Dist: commitizen==3.* ; extra == "dev"
+Requires-Dist: pre-commit==3.* ; extra == "dev"
+Requires-Dist: types-PyYAML ; extra == "dev"
+Requires-Dist: types-pytz ; extra == "dev"
+Requires-Dist: types-requests ; extra == "dev"
+Requires-Dist: sphinx ; extra == "docs"
+Requires-Dist: sphinx-rtd-theme ; extra == "docs"
+Requires-Dist: pytest ; extra == "test"
+Requires-Dist: pytest-mock ; extra == "test"
+Requires-Dist: hypothesis ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Project-URL: Bug-Tracker, https://github.com/wweijtje/shorthand-datetime/issues
+Project-URL: Documentation, https://pypi.org/project/shorthand-datetime/
+Project-URL: Homepage, https://pypi.org/project/shorthand-datetime/
+Project-URL: Repository, https://github.com/wweijtje/shorthand-datetime/
+Provides-Extra: build
+Provides-Extra: dev
+Provides-Extra: docs
+Provides-Extra: test
+
+Shorthand datetime
+-----------------------
+
+Simple package to parse shorthand datetime strings in the `Elasticsearch date
+math format <https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math>`_.
+
+Using the package
+------------------
+
+.. code-block:: python
+
+    # Simplest usage example
+    from shorthand_datetime.shorthand import parse_shorthand_datetime
+
+    string = 'now-7d'
+    dt = parse_shorthand_datetime(string)
+
+.. code-block:: python
+
+    # Example with freeze_time for testings
+    from freezegun import freeze_time
+    from shorthand_datetime import parse_shorthand_datetime
+
+    @freeze_time("2023-10-25 12:21:45")
+    def test_now():
+        strings = ['now-7d', 'now/d', 'now-7d/d', 'now/M', 'now-1M/M',
+                   'now-3W+6h', 'now-1M+1W/d']
+        for string in strings:
+            print(f'{string} -> {parse_shorthand_datetime(string)}')
+
+    # Call the test and print the results
+    test_now()
+
+Output:
+
+.. code-block:: shell
+
+    now-7d -> 2023-10-18 12:21:45
+    now/d -> 2023-10-25 00:00:00
+    now-7d/d -> 2023-10-18 00:00:00
+    now/M -> 2023-10-01 00:00:00
+    now-1M/M -> 2023-09-01 00:00:00
+    now-3W+6h -> 2023-10-04 18:21:45
+    now-1M+1W/d -> 2023-10-02 00:00:00
+
+
+Typical examples
+----------------
+- ``now-7d``: current timestamp minus 7 days
+- ``now/d``: today, rounded to the start of the day
+- ``now-7d/d``: 7 days ago, rounded to the start of the day
+- ``now/M``: first day of this month
+- ``now-1M/M``: first day of previous month
+- ``now-3W+6h``: 3 weeks ago plus 6 hours
+- ``now-1M+1W/d``: 1 month ago plus 1 week, rounded to the start of the day
+
+Acknowledgements
+----------------
+© 2024 24SEA - Monitoring Offshore Structures. All rights reserved.
+
