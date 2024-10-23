@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="hr_attendance_split_overtime_scheduled_action" model="ir.cron">
+    <field name="name">[Attendances] Split Overtime entries in Attendances</field>
+    <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+    <field name="state">code</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">months</field>
+    <field name="priority">2</field>
+    <field name="numbercall">-1</field>
+    <field name="code">
+records = env['hr.attendance'].search([
+  ('date', '&gt;=', (datetime.datetime.now() - dateutil.relativedelta.relativedelta(months=1, day=1)).strftime('%Y-%m-%d')),
+  ('date', '&lt;=', (datetime.datetime.now() - dateutil.relativedelta.relativedelta(day=1, days=1)).strftime('%Y-%m-%d')),
+  ('no_recompute', '=', False)
+])
+records.action_process_attendance_overtime()
+    </field>
+    <field name="nextcall" eval="(DateTime.now() + relativedelta(months=1, day=2, hour=0, minute=0, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+  </record>
+</odoo>
