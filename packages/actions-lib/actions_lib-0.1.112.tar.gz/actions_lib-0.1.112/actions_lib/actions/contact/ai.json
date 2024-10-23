@@ -1,0 +1,86 @@
+[
+    {
+        "name": "add_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be added."
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "required": true,
+                "description": "The address of the contact to be added."
+            }
+        ],
+        "description": "Add a new contact with a specified name and address.",
+        "details": "For example, you can send the following command: `add cake to contact, with address '0x133A5b7f583dcd3c1989634345a5a74cc1AFf912'`. This will add a contact named 'cake' with the specified address."
+    },
+    {
+        "name": "show_all_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 2,
+        "parameters": [],
+        "description": "Retrieve all contacts, sorted by the specified order.",
+        "details":""
+    },
+    {
+        "name": "show_contact_by_name",
+        "group": "contact",
+        "type": "backend",
+        "level": 2,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to retrieve."
+            }
+        ],
+        "description": "Retrieve a contact's details by their name.",
+        "details":""
+    },
+    {
+        "name": "edit_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be edited."
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "required": true,
+                "description": "The new address of the contact."
+            }
+        ],
+        "description": "Edit the details of an existing contact, including name and address.",
+        "details": "For example, to update the address of a contact, you can send: `edit John Doe, change address to '0x9aF317b7E8cF37B79dD9E945D26bc6C43Dc92191'`. This will update the contact 'John Doe' with the new address provided."
+    },
+    {
+        "name": "delete_contact",
+        "group": "contact",
+        "type": "backend",
+        "level": 1,
+        "parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "The name of the contact to be deleted."
+            }
+        ],
+        "description": "Delete an existing contact by specifying the name."
+    }
+]
