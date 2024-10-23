@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "alignai"
+version = "0.3.1"
+description = "Python SDK for Align AI"
+authors = ["Coxwave <tech@coxwave.com>"]
+readme = "README.md"
+packages = [{include = "alignai"}]
+
+
+[tool.poetry.dependencies]
+python = ">=3.9.0,<4.0"
+requests = "^2.31.0"
+protobuf = "^5.28.1"
+googleapis-common-protos = "^1.65.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
+black = "^24.8.0"
+mypy = "^1.11.2"
+isort = "^5.13.2"
+pre-commit = "^3.5.0"
+packaging = "^23.2"
+googleapis-common-protos-stubs = "^2.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+lint.select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade
+]
+exclude = ["alignai/proto"]
+target-version = "py39"
+
+[tool.black]
+line-length = 120
+target-version = ["py39"]
+exclude = '''
+/(
+  alignai\/proto
+  | \.venv
+  | venv
+)/
+'''
+
+[tool.isort]
+profile = "black"
+py_version=39
+skip_glob = ["alignai/proto", "venv", ".venv"]
