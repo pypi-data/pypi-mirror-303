@@ -1,0 +1,148 @@
+Metadata-Version: 2.1
+Name: pymt_geotiff
+Version: 0.2.1
+Summary: PyMT plugin for pymt_geotiff
+Home-page: https://github.com/mdpiper/pymt_geotiff
+Author: Mark Piper
+Author-email: mark.piper@colorado.edu
+Keywords: bmi,pymt
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Physics
+License-File: LICENSE
+Requires-Dist: numpy
+
+============
+pymt_geotiff
+============
+
+
+.. image:: https://img.shields.io/badge/CSDMS-Basic%20Model%20Interface-green.svg
+        :target: https://bmi.readthedocs.io/
+        :alt: Basic Model Interface
+
+.. image:: https://img.shields.io/badge/recipe-pymt_geotiff-green.svg
+        :target: https://anaconda.org/conda-forge/pymt_geotiff
+
+.. image:: https://readthedocs.org/projects/pymt-geotiff/badge/?version=latest
+        :target: https://pymt-geotiff.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+.. image:: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/test.yml/badge.svg
+        :target: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/test.yml
+
+.. image:: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/flake8.yml/badge.svg
+        :target: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/flake8.yml
+
+.. image:: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/black.yml/badge.svg
+        :target: https://github.com/pymt-lab/pymt_geotiff/actions/workflows/black.yml
+
+
+PyMT component for accessing GeoTIFF data and metadata
+
+
+* Free software: MIT License
+* Documentation: https://pymt-geotiff.readthedocs.io.
+
+
+
+
+========= ===================================
+Component PyMT
+========= ===================================
+GeoTiff   `from pymt.models import GeoTiff`
+========= ===================================
+
+---------------
+Installing pymt
+---------------
+
+Installing `pymt` from the `conda-forge` channel can be achieved by adding
+`conda-forge` to your channels with:
+
+.. code::
+
+  conda config --add channels conda-forge
+
+*Note*: Before installing `pymt`, you may want to create a separate environment
+into which to install it. This can be done with,
+
+.. code::
+
+  conda create -n pymt python=3
+  conda activate pymt
+
+Once the `conda-forge` channel has been enabled, `pymt` can be installed with:
+
+.. code::
+
+  conda install pymt
+
+It is possible to list all of the versions of `pymt` available on your platform with:
+
+.. code::
+
+  conda search pymt --channel conda-forge
+
+-----------------------
+Installing pymt_geotiff
+-----------------------
+
+Once `pymt` is installed, the dependencies of `pymt_geotiff` can
+be installed with:
+
+.. code::
+
+  conda install bmi-geotiff
+
+To install `pymt_geotiff`,
+
+.. code::
+
+  conda install pymt_geotiff
+
+
+Credits
+=======
+
+* Mark Piper <mark.piper@colorado.edu>
+
+
+Changelog for pymt_geotiff
+==========================
+
+0.2.1 (2024-10-22)
+------------------
+
+- Update metadata and testing CI (#3)
+
+
+0.2 (2021-05-09)
+----------------
+
+- Add component metadata
+- Create script and Jupyter Notebook examples (#1)
+- Create user and developer documentation (#2)
+
+
+0.1.1 (2021-05-03)
+------------------
+
+- Add babelized content
+- Update GitHub org in README
+- Add sample config file and update `bmi-test` call
+
+
+0.1.0 (2021-05-03)
+------------------
+
+- Initial release
+

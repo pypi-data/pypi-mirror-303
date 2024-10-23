@@ -1,0 +1,30 @@
+[library]
+[library.GeoTiff]
+language = "python"
+library = "bmi_geotiff"
+header = ""
+entry_point = "BmiGeoTiff"
+
+[build]
+undef_macros = []
+define_macros = []
+libraries = []
+library_dirs = []
+include_dirs = []
+extra_compile_args = []
+
+[package]
+name = "pymt_geotiff"
+requirements = ["bmi-geotiff"]
+
+[info]
+github_username = "mdpiper"
+package_author = "Mark Piper"
+package_author_email = "mark.piper@colorado.edu"
+package_license = "MIT"
+summary = "PyMT component for accessing GeoTIFF data and metadata"
+
+[ci]
+python_version = ["3.9"]
+os = ["linux", "mac", "windows"]
+
