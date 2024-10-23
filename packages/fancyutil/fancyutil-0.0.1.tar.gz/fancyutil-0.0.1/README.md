@@ -1,0 +1,55 @@
+# FancyUtil
+
+FancyUtil is a package designed to add a little fancy untility functions and make your life as a developer better.
+
+## Installation
+
+Install via pip:
+
+```bash
+pip install fancyutil
+```
+
+Example code: 
+
+```py
+# FancyUtil
+import fancyutil
+
+# Import altcolor normally
+import altcolor as ac
+
+fancyutil.wait(5) # Delay clearing
+fancyutil.clear() # Clear old altcolor text
+
+# Import altcolor with 'hide_noti'
+fancyutil.NotificationManager.hide()
+import altcolor
+fancyutil.NotificationManager.restore()
+
+# Variables
+CODE: str = "abc123"
+code_wrong: bool = True
+PASSWORD: str = "secure_password"
+
+# Hide input system
+input: str = fancyutil.hide_input(prompt="What's the secret code: ", hide_char="")
+
+while code_wrong:
+    if input == CODE:
+        print(fancyutil.colored_text("GREEN", "Correct code!"))
+        code_wrong = False
+    else:
+        print(fancyutil.colored_text("RED", "Incorrect code!"))
+
+# Password system
+password = fancyutil.get_password()
+if password == PASSWORD:
+    print(fancyutil.leaked_text("BLUE", "Cool text"))
+    print("Wait, why am I still blue???")
+    print("Oh, because 'leaked_text' dosen't auto reset color like 'colored_text'!" + fancyutil.reset())
+else:
+    fancyutil.exit_app(msg="Better luck next time!") # Ain't getting in here without that password
+
+fancyutil.exit_app(msg="Thanks for playing!") # This is called to make sure after we have nothing left to tell the user it auto-exits and displays your message
+```
