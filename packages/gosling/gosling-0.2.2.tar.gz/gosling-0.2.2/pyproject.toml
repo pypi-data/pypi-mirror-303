@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gosling"
+description = "Python bindings to generate Gosling visualizations"
+authors = [{ name = "Trevor Manz", email = "trevor.j.manz@gmail.com" }]
+requires-python = ">=3.9"
+license = { text = "MIT" }
+readme = "README.md"
+dynamic = ["version"]
+urls = { homepage = "https://github.com/gosling-lang/gos" }
+dependencies = ["jsonschema>=3.0", "jinja2", "pandas"]
+
+[project.optional-dependencies]
+all = ["servir>=0.2.1", "gosling-widget>=0.0.2", "clodius>=0.20.1"]
+
+[tool.uv]
+dev-dependencies = [
+  "clodius>=0.20.1",
+  "gosling-widget>=0.0.2",
+  "pytest>=6.0",
+  "requests>=2.0",
+  "servir>=0.2.1",
+  "setuptools>=75.2.0",
+  "sphinx>=6,<7",
+]
+
+[tool.hatch.build]
+include = ["/gosling", "/tests"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "gosling/_version.py"
