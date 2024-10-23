@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "nexa-gguf"
+version = "0.10.0"
+description = "Read and write ML models in GGUF for GGML"
+authors = ["Nexa AI <octopus@nexa4ai.com>"]
+packages = [
+    {include = "nexa_gguf"},
+    {include = "nexa_gguf/py.typed"},
+    {include = "scripts"},
+]
+readme = "README.md"
+homepage = "https://nexa.ai"
+repository = "https://github.com/NexaAI/nexa-gguf-convertor"
+keywords = ["nexa", "nexaai", "ggml", "gguf", "llama.cpp"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+numpy = ">=1.17,<2.0"
+tqdm = ">=4.27"
+pyyaml = ">=5.1"
+sentencepiece = ">=0.1.98,<=0.2.0"
+transformers = ">=4.45.1,<5.0.0"
+protobuf = ">=4.21.0,<5.0.0"
+torch = "~=2.2.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+gguf-convert-endian = "scripts:gguf_convert_endian_entrypoint"
+gguf-dump = "scripts:gguf_dump_entrypoint"
+gguf-set-metadata = "scripts:gguf_set_metadata_entrypoint"
+gguf-new-metadata = "scripts:gguf_new_metadata_entrypoint"
