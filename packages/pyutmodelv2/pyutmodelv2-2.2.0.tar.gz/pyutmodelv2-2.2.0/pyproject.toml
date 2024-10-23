@@ -1,0 +1,28 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = "setuptools.build_meta"
+
+[project]
+name='pyutmodelv2'
+dynamic = ["version"]
+description = 'Version 2 of the External Pyut Data Model'
+readme = "README.md"
+license = {text = 'GNU AFFERO GENERAL PUBLIC LICENSE'}
+authors = [{name = 'Humberto A. Sanchez II', email = 'Humberto.A.Sanchez.II@gmail.com'}]
+maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@gmail.com'}]
+keywords = ['pyut', 'external model', 'python',]
+
+dependencies = []
+
+[project.urls]
+Repository = 'https://github.com/hasii2011/pyutmodelv2'
+
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+pyutmodel = ['py.typed']
+
+[tool.setuptools.dynamic]
+version = {attr = 'pyutmodelv2.__version__'}
