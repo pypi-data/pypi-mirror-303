@@ -1,0 +1,62 @@
+Metadata-Version: 2.3
+Name: greyhorse-sqla
+Version: 0.4.23
+Summary: Greyhorse SqlAlchemy library
+Project-URL: Homepage, https://gitlab.com/max-plutonium/greyhorse
+Project-URL: Repository, https://gitlab.com/max-plutonium/greyhorse
+Author-email: Max Plutonium <plutonium.max@gmail.com>
+Maintainer-email: Max Plutonium <plutonium.max@gmail.com>
+License: MIT License
+Keywords: sqlalchemy
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Python: >=3.12
+Requires-Dist: greyhorse~=0.4.23
+Requires-Dist: pydantic-settings>=2.5.2
+Requires-Dist: sqlalchemy-utils>=0.41.2
+Requires-Dist: sqlalchemy[asyncio,mypy]>=2.0.35
+Provides-Extra: migration
+Requires-Dist: alembic>=1.13.3; extra == 'migration'
+Requires-Dist: typer>=0.12.5; extra == 'migration'
+Provides-Extra: mysql
+Requires-Dist: aiomysql>=0.2.0; extra == 'mysql'
+Requires-Dist: pymysql[rsa]>=1.1.1; extra == 'mysql'
+Provides-Extra: pg
+Requires-Dist: alembic-postgresql-enum>=1.3.0; extra == 'pg'
+Requires-Dist: asyncpg>=0.29.0; extra == 'pg'
+Requires-Dist: psycopg2>=2.9.9; extra == 'pg'
+Provides-Extra: sqlite
+Requires-Dist: aiosqlite>=0.20.0; extra == 'sqlite'
+Description-Content-Type: text/markdown
+
+Greyhorse SqlAlchemy library
+============================
+
+Greyhorse framework library for SqlAlchemy support
+
+
+How to build
+------------
+
+
+- Install the project
+
+    ``uv python pin 3.12.1``
+
+    ``uv venv``
+
+    ``uv sync``
+
+    ``source .venv/bin/activate``
+
+
+
+- Format code commands
+
+    ``ruff check --unsafe-fixes --fix``
+
+    ``ruff format``
