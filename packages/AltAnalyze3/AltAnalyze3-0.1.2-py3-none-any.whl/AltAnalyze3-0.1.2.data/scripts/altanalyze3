@@ -1,0 +1,14 @@
+#!python
+import sys
+from altanalyze3.utilities.parser import ArgsParser
+from altanalyze3.utilities.helpers import TimeIt
+
+
+def main(args=None):
+    with TimeIt():
+        args = ArgsParser(sys.argv[1:] if args is None else args)
+        args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
