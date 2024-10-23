@@ -1,0 +1,356 @@
+---
+metadata:
+  title: |
+    Civil Case Information Statement (Domestic Relations)
+  short title: |
+    Case Statement
+  description: |
+    A test interview for creating a Civil Case Information Statement from LegalServer data
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2024-03-14
+---
+include:
+  - docassemble.LegalServerLink:data/questions/LSLink.yml
+---
+objects:
+  - children: DAList.using(object=IndividualName, there_are_any=True, auto_gather=False, complete_attribute='complete')
+---
+mandatory: True
+code: |
+
+  # --------------------------------------------
+  ## Family Law  Case:
+  ## UUID: 99807b68-5d67-5948-9a58-0dd478114f2e
+  ## LAWV
+  ## DEMO
+  # --------------------------------------------
+  checked_for_stashed_data
+  set_legalserver_site
+
+  # If you need everything, you can call `parse_all_legalserver_data`
+  # This is a little faster since it doesn't get extra records:
+  raise_errors_getting_legalserver_data
+  parse_client_data
+  parse_legalserver_adverse_party_data
+  parse_legalserver_non_adverse_party_data
+  parse_legalserver_case_data
+
+  #parse_legalserver_assignment_data
+  #parse_legalserver_primary_assignment
+  #parse_legalserver_pro_bono_assignments
+  #parse_legalserver_current_user
+
+  ### Once parsed, the data ends up in the following variables:
+  # client: Individual
+  # legalserver_case: DAObject
+  # legalserver_assignments: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_services: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_documents: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_litigations: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_charges: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_contacts: DAList.using(object=Individual, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_incomes: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_notes: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_events: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_tasks: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # client.additional_names: DAList.using(object=IndividualName, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_adverse_parties: DAList.using(object=Person, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_non_adverse_parties: DAList.using(object=Person, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_primary_assignment: Individual
+  # legalserver_first_pro_bono_assignment: Individual
+  # legalserver_latest_pro_bono_assignment: Individual
+  # legalserver_pro_bono_assignments: DAList.using(object=Individual, there_are_any=False, auto_gather=False, complete_attribute='complete')
+  # legalserver_current_user: Individual
+
+  ### Setting export variables for Civil Case Information Statement (Domestic Relations)
+  ## Petitioner
+  # Race
+  if client.race == "White - Not Hispanic" or client.race == "White (Not Hispanic)":
+    p_race = "white"
+  elif client.race == "Black (Not Hispanic)":
+    p_race = "black"
+  elif client.race == "Native American":
+    p_race = "american_indian"
+  elif client.race == "Hispanic":
+    p_race = "hispanic"
+  elif client.race == "Asian or Pacific Islander":
+    p_race = "asian"
+  else:
+    p_race = "unknown"
+  # Disability
+  if client.is_disabled == True or client.interpreter == True:
+    accommodations = "yes"
+  else:
+    accommodations = "no"
+  
+  ## Respondent
+  # Race
+  if legalserver_adverse_parties[0].race == "White - Not Hispanic" or legalserver_adverse_parties[0].race == "White (Not Hispanic)":
+    r_race = "white"
+  elif legalserver_adverse_parties[0].race == "Black (Not Hispanic)":
+    r_race = "black"
+  elif legalserver_adverse_parties[0].race == "Native American":
+    r_race = "american_indian"
+  elif legalserver_adverse_parties[0].race == "Hispanic":
+    r_race = "hispanic"
+  elif legalserver_adverse_parties[0].race == "Asian or Pacific Islander":
+    r_race = "asian"
+  else:
+    r_race = "unknown"
+
+  ## Children
+  for item in legalserver_non_adverse_parties:
+    if item.relationship_type == "Child":
+      children.append(item)
+
+  ## Case Info
+  # Problem Code
+  divorce_without_children = False
+  divorce_with_children = False
+  grandparent_visitation = False
+  annulment = False
+  separate_maintenance = False
+  child_support_only = False
+  child_custody_without_divorce = False
+  paternity = False
+  modification = False
+  contempt = False
+  infant_guardianship = False
+  for code in legalserver_case.special_legal_problem_code:
+    match code:
+      case "311 Custody/Visitation Establishment":
+        child_custody_without_divorce = "Yes"
+      case "312 Custody/Visitation Contempt":
+        contempt = "Yes"
+      case "315 Grandparent Visitation":
+        grandparent_visitation = "Yes"
+      case "316 Custody/Visitation Modification":
+        modification = "Yes"
+      case "321 Divorce with no Custody":
+        divorce_without_children = "Yes"
+      case "322 Divorce with Custody":
+        divorce_with_children = "Yes"
+      case "325 Separate Maintenance (Legal Separation)":
+        separate_maintenance = "Yes"
+      case "326 Annulment":
+        annulment = "Yes"
+      case "328 Divorce Contempt":
+        contempt = "Yes"
+      case "361 Paternity":
+        paternity = "Yes"
+      case "373 Violation of Protective Order (Contempt)":
+        contempt = "Yes"
+      case "382 Child Support Enforcement (Contempt)":
+        contempt = "Yes"
+      case "384 Child Support Modification":
+        modification = "Yes"
+      case "Child Support Establishment":
+        child_support_only = "Yes"
+      case "Guardianship Children Establishment":
+        infant_guardianship = "Yes"
+      case "Guardianship Children Modification":
+        infant_guardianship = "Yes"
+      case "Guardianship Children Revocation":
+        infant_guardianship = "Yes"
+      case "311 Custody":
+        child_custody_without_divorce = "Yes"
+  generate_divorce_petition
+---
+ga id: divorceQuickEndpoint
+question: |
+  Final Information
+subquestion: |
+  You can download the PDFs for your **Divorce Petition** below.
+
+  ${ action_button_html(divorce_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_divorce_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+field: generate_divorce_petition
+manual attachment list: True
+allow emailing: False
+buttons:
+  - All done
+---
+code: |
+  divorce_documents = [sca_fc_103, sca_fc_101]
+  divorce_bundle = pdf_concatenate(divorce_documents, filename=client.name.full() + " Divorce Petition.pdf")
+---
+question: |
+  Adverse Parties
+subquestion: |
+  Here are the adverse parties:
+
+  % for op in legalserver_adverse_parties:
+  ${ op.name.full() }  
+  % endfor
+continue button field: op_list
+---
+attachment:
+  - name: sca_fc_103
+    filename: sca_fc_103
+    pdf template file: sca_fc_103.pdf
+    variable name: sca_fc_103
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "confidential": No
+      - "p_address_line_one": ${ client.address.line_one() }
+      - "p_address_line_two": ${ client.address.line_two() }
+      - "p_phone": ${ client.phone_number }
+      - "p_gender": ${ client.gender.lower() }
+      - "p_dob": ${ client.birthdate }
+      - "p_ssn": ${ client.ssn }
+      - "p_race": ${ p_race }
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_1_ssn": ${ children[0].ssn if (defined("children[0]") and defined("children[0].ssn")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_2_ssn": ${ children[1].ssn if (defined("children[1]") and defined("children[1].ssn")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_3_ssn": ${ children[2].ssn if (defined("children[2]") and defined("children[2].ssn")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_4_ssn": ${ children[3].ssn if (defined("children[3]") and defined("children[3].ssn")) else ""}
+      - "accommodations": ${ accommodations }
+      - "wheelchair": ${ "Yes" if client.is_disabled else "No" }
+      - "interpreter": ${ "Yes" if client.interpreter else "No" }
+      - "r_address_line_one": ${ legalserver_adverse_parties[0].address.line_one() }
+      - "r_address_line_two": ${ legalserver_adverse_parties[0].address.line_two() }
+      - "r_phone": ${ legalserver_adverse_parties[0].phone_home }
+      - "r_gender": ${ legalserver_adverse_parties[0].gender.lower() }
+      - "r_ssn": ${ legalserver_adverse_parties[0].ssn }
+      - "r_dob": ${ legalserver_adverse_parties[0].date_of_birth }
+      - "r_race": ${ r_race }
+      - "divorce_without_children": ${ divorce_without_children }
+      - "divorce_with_children": ${ divorce_with_children }
+      - "grandparent_visitation": ${ grandparent_visitation }
+      - "annulment": ${ annulment }
+      - "separate_maintenance": ${ separate_maintenance }
+      - "child_support_only": ${ child_support_only }
+      - "child_custody_without_divorce": ${ child_custody_without_divorce }
+      - "paternity": ${ paternity }
+      - "modification": ${ modification }
+      - "contempt": ${ contempt }
+      - "infant_guardianship": ${ infant_guardianship }
+---
+attachment:
+  - name: sca_fc_101
+    filename: sca_fc_101
+    pdf template file: sca_fc_101.pdf
+    variable name: sca_fc_101
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "dv_proceeding": No
+      - "Petitioner has been a resident of West Virginia for more than one year prior to filing this divorce case": No
+      - "Check Box2": No
+      - "Petitioner and Respondent were married in West Virginia and at least one of them resides in West": No
+      - "county": ${ client.address.county }
+      - "This is the county where the Petitioner and Respondent last lived together as spouses": No
+      - "Check Box3": No
+      - "This is the county where the Petitioner now resides and the Respondent is not a resident of West": No
+      - "Check Box4": No
+      - "p_county": ${ client.address.county }
+      - "respondent_resides": No
+      - "r_address": ${ legalserver_adverse_parties[0].address.on_one_line() }
+      - "under_18": No
+      - "military": No
+      - "incompetent": No
+      - "incarcerated": No
+      - "children_of_marriage": No
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}      
+      - "minor_5_name": ${ children[4].name.full() if defined("children[4]") else ""}
+      - "minor_5_dob": ${ children[4].date_of_birth if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_6_name": ${ children[5].name.full() if defined("children[5]") else ""}
+      - "minor_6_dob": ${ children[5].date_of_birth if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}
+      - "minor_7_name": ${ children[6].name.full() if defined("children[6]") else ""}
+      - "minor_7_dob": ${ children[6].date_of_birth if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+      - "minor_8_name": ${ children[7].name.full() if defined("children[7]") else ""}
+      - "minor_8_dob": ${ children[7].date_of_birth if (defined("children[7]") and defined("children[7].date_of_birth")) else ""}
+      - "child_expected": No
+---
+question: Here is your document.
+event: generate_sca_fc_103_full
+attachment:
+  - name: sca_fc_103
+    filename: sca_fc_103
+    pdf template file: sca_fc_103.pdf
+    fields:
+      - "upper_county": something
+      - "case_num": something
+      - "judge_name": something
+      - "respondent_name": something
+      - "full_name": something
+      - "confidential": No
+      - "address": something
+      - "second_address_line": something
+      - "p_phone": something
+      - "p_gender": No
+      - "p_dob": something
+      - "ssn": something
+      - "p_race": No
+      - "minor_1_dob": something
+      - "minor_1_name": something
+      - "minor_1_ssn": something
+      - "minor_2_dob": something
+      - "minor_2_name": something
+      - "minor_2_ssn": something
+      - "minor_3_dob": something
+      - "minor_3_name": something
+      - "minor_3_ssn": something
+      - "minor_4_dob": something
+      - "minor_4_name": something
+      - "minor_4_ssn": something
+      - "wheelchair": No
+      - "interpreter": No
+      - "reader": No
+      - "spokesperson": No
+      - "other_detail": something
+      - "other": No
+      - "copies": something
+      - "days_to_answer": something
+      - "type_of_service": something
+      - "divorce_without_children": No
+      - "respondent_address": something
+      - "divorce_with_children": No
+      - "grandparent_visitation": No
+      - "respondent_second_address_line": something
+      - "annulment": No
+      - "separate_maintenance": No
+      - "r_gender": No
+      - "respondent_phone": something
+      - "child_support_only": No
+      - "child_custody_without_divorce": No
+      - "paternity": No
+      - "respondent_dob": something
+      - "respondent_ssn": something
+      - "modification": No
+      - "contempt": No
+      - "r_race": No
+      - "infant_guardianship": No
+      - "other_relief": No
+      - "other_relief_detail": something
+      - "alimony": No
+      - "dvpo": No
+      - "cps": No
+      - "attorney": No
+      - "attorney_name": something
+      - "attorney_firm": something
+      - "attorney_address": something
+      - "attorney_phone": something
+      - "Signature": |
+          ${ client.signature }
+      - "date": something
+---

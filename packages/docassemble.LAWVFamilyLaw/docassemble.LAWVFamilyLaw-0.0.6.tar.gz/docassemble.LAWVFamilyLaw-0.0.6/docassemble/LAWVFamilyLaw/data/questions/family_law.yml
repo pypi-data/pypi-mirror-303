@@ -1,0 +1,2032 @@
+---
+metadata:
+  title: |
+    LAWV Family Law Packet Creator
+  short title: |
+    Family Law Packets
+  description: |
+    A Docassemble interview for creating various WV Supreme Court Family Law packets from LegalServer data
+  authors:
+    - name: Dane W. Henry, Esq.
+      organization: Legal Aid of West Virginia, Inc.
+  revision_date: 2024-10-10
+---
+include:
+  - docassemble.LegalServerLink:data/questions/LSLink.yml
+  - docassemble.LAWVCommon:common_info.yml
+---
+features:
+  javascript: docassemble.LAWVCommon:data/static/force_lightmode.js
+  css: docassemble.LAWVCommon:data/static/lawv.css
+---
+objects:
+  - children: DAList.using(object=IndividualName, there_are_any=True, auto_gather=False, complete_attribute='complete')
+---
+imports:
+  - datetime
+---
+question: |
+  Which path?
+subquestion: |
+  Do you want to print the bundle with whatever information 
+  we currently have in LegalServer or do you want to complete 
+  the entire packet, such as when you are sitting down with the client?
+field: path
+choices:
+  - Print as-is: print
+  - Complete the Packet: guided
+---
+question: |
+  Select the packet
+field: packet
+default: ${ problem_code }
+choices:
+  - Divorce Petition Without Children: divorce_without
+  - Divorce Petition with Children: divorce_with
+under: |
+  Coming Soon:
+
+    * Divorce Answer without Children
+    * Divorce Answer with Children
+    * Custody Petition
+    * Custody Answer
+    * Custody Modification
+    * Child Support
+---
+mandatory: True
+code: |
+  # --------------------------------------------
+  ## Family Law  Case:
+  ## UUID: 99807b68-5d67-5948-9a58-0dd478114f2e
+  ## LAWV
+  ## DEMO
+  # --------------------------------------------
+  # --------------------------------------------
+  ## LegalServer/Docassemble Connector
+  # --------------------------------------------
+  checked_for_stashed_data
+
+  # --------------------------------------------
+  ## Setting UUID and site for testing purposes
+  # --------------------------------------------
+  #legalserver_matter_uuid = "99807b68-5d67-5948-9a58-0dd478114f2e"
+  #legalserver_site_abbreviation = "LAWV"
+  #legalserver_site_type = "Demo"
+  # --------------------------------------------
+  ## End setting
+  # --------------------------------------------
+
+  set_legalserver_site
+
+  # If you need everything, you can call `parse_all_legalserver_data`
+  # This is a little faster since it doesn't get extra records:
+  raise_errors_getting_legalserver_data
+  
+  parse_client_data
+  parse_legalserver_income_data
+  parse_legalserver_adverse_party_data
+  parse_legalserver_non_adverse_party_data
+  parse_legalserver_case_data
+  parse_legalserver_assignment_data
+  parse_legalserver_primary_assignment
+  parse_legalserver_pro_bono_assignments
+  #parse_legalserver_current_user
+
+  ### Once parsed, the data ends up in the following variables:
+  # client: Individual
+  # legalserver_case: DAObject
+  # legalserver_assignments: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_services: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_documents: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_litigations: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_charges: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_contacts: DAList.using(object=Individual, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_incomes: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_notes: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_events: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_tasks: DAList.using(object=DAObject, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # client.additional_names: DAList.using(object=IndividualName, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_adverse_parties: DAList.using(object=Person, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_non_adverse_parties: DAList.using(object=Person, there_are_any=True, auto_gather=False, complete_attribute='complete')
+  # legalserver_primary_assignment: Individual
+  # legalserver_first_pro_bono_assignment: Individual
+  # legalserver_latest_pro_bono_assignment: Individual
+  # legalserver_pro_bono_assignments: DAList.using(object=Individual, there_are_any=False, auto_gather=False, complete_attribute='complete')
+  # legalserver_current_user: Individual
+
+  # --------------------------------------------
+  ## Setting variables from connector data
+  # --------------------------------------------
+  ### Setting export variables for Civil Case Information Statement (Domestic Relations)
+  ## Petitioner
+  # Race
+  if client.race == "White - Not Hispanic" or client.race == "White (Not Hispanic)":
+    p_race = "white"
+  elif client.race == "Black (Not Hispanic)":
+    p_race = "black"
+  elif client.race == "Native American":
+    p_race = "american_indian"
+  elif client.race == "Hispanic":
+    p_race = "hispanic"
+  elif client.race == "Asian or Pacific Islander":
+    p_race = "asian"
+  else:
+    p_race = "unknown"
+  # Disability
+  if client.is_disabled == True or client.interpreter == True:
+    accommodations = "yes"
+  else:
+    accommodations = "no"
+  # Age
+  p_age = (today().date() - datetime.datetime.strptime(client.birthdate, '%Y-%m-%d').date()) // datetime.timedelta(days=365.2425)
+  
+  ## Respondent
+  for respondent in legalserver_adverse_parties:
+    respondent.address.geocode()
+  # Race
+  if legalserver_adverse_parties[0].race == "White - Not Hispanic" or legalserver_adverse_parties[0].race == "White (Not Hispanic)":
+    r_race = "white"
+  elif legalserver_adverse_parties[0].race == "Black (Not Hispanic)":
+    r_race = "black"
+  elif legalserver_adverse_parties[0].race == "Native American":
+    r_race = "american_indian"
+  elif legalserver_adverse_parties[0].race == "Hispanic":
+    r_race = "hispanic"
+  elif legalserver_adverse_parties[0].race == "Asian or Pacific Islander":
+    r_race = "asian"
+  else:
+    r_race = "unknown"
+  # Age
+  r_age = (today().date() - datetime.datetime.strptime(legalserver_adverse_parties[0].date_of_birth, '%Y-%m-%d').date()) // datetime.timedelta(days=365.2425)
+
+  ## Children
+  children.clear()
+  for item in legalserver_non_adverse_parties:
+    if item.relationship_type == "Child":
+      if defined("item.date_of_birth"):
+        item.age = (today().date() - datetime.datetime.strptime(item.date_of_birth, '%Y-%m-%d').date()) // datetime.timedelta(days=365.2425)
+      children.append(item)
+
+  ## Case Info
+  # Problem Code
+  divorce_without_children = False
+  divorce_with_children = False
+  grandparent_visitation = False
+  annulment = False
+  separate_maintenance = False
+  child_support_only = False
+  child_custody_without_divorce = False
+  paternity = False
+  modification = False
+  contempt = False
+  infant_guardianship = False
+  for code in legalserver_case.special_legal_problem_code:
+    match code:
+      case "311 Custody/Visitation Establishment":
+        child_custody_without_divorce = "Yes"
+        #problem_code = custody_only
+      case "312 Custody/Visitation Contempt":
+        contempt = "Yes"
+        #problem_code = contempt
+      case "315 Grandparent Visitation":
+        grandparent_visitation = "Yes"
+      case "316 Custody/Visitation Modification":
+        modification = "Yes"
+      case "321 Divorce with no Custody":
+        divorce_without_children = "Yes"
+        problem_code = "divorce_without"
+      case "322 Divorce with Custody":
+        divorce_with_children = "Yes"
+        problem_code = "divorce_with"
+      case "325 Separate Maintenance (Legal Separation)":
+        separate_maintenance = "Yes"
+      case "326 Annulment":
+        annulment = "Yes"
+      case "328 Divorce Contempt":
+        contempt = "Yes"
+      case "361 Paternity":
+        paternity = "Yes"
+      case "373 Violation of Protective Order (Contempt)":
+        contempt = "Yes"
+      case "382 Child Support Enforcement (Contempt)":
+        contempt = "Yes"
+      case "384 Child Support Modification":
+        modification = "Yes"
+      case "Child Support Establishment":
+        child_support_only = "Yes"
+      case "Guardianship Children Establishment":
+        infant_guardianship = "Yes"
+      case "Guardianship Children Modification":
+        infant_guardianship = "Yes"
+      case "Guardianship Children Revocation":
+        infant_guardianship = "Yes"
+      case "311 Custody":
+        child_custody_without_divorce = "Yes"
+
+  # --------------------------------------------
+  ## Now we start asking the questions
+  # --------------------------------------------
+  path
+  packet
+
+  # --------------------------------------------
+  ## Packets: https://lawv.sharepoint.com/sites/StrategicSupportStaffTaskForce/SitePages/Divorce,-Custody,-Support-Packet-Links.aspx
+  match packet:
+    case "divorce_with":
+      generate_divorce_with_packet
+    case "divorce_without":
+      generate_divorce_without_packet
+---
+ga id: divorceWithQuickEndpoint
+question: |
+  Final Information
+subquestion: |
+  You can download the PDFs for your **Divorce with Children Petition** below.
+
+  % if divorce_with_submitted_to_LS:
+  File saved to the LegalServer case as both a PDF file. 
+  % else:
+  There was an error uploading file to Legalserver.
+  % endif
+
+  ${ action_button_html(divorce_with_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_divorce_with_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+field: generate_divorce_with_packet
+manual attachment list: True
+allow emailing: False
+buttons:
+  - All done
+---
+code: |
+  divorce_with_documents = [sca_fc_103, sca_fc_101, sca_fc_104, sca_fc_106, sca_fc_112, sca_fc_121, sca_fc_128, sca_fc_129, fdvscap]
+  divorce_with_bundle = pdf_concatenate(divorce_with_documents, filename=client.name.full() + " Divorce Petition.pdf")
+  add_file_to_LS = post_file_to_legalserver_documents_webhook(legalserver_site=legalserver_site, file_path=zip_file(divorce_with_bundle, filename='files.zip').path(), legalserver_matter_uuid=legalserver_matter_uuid, save_to_sharepoint=True)
+  divorce_with_submitted_to_LS = True
+---
+event: send_divorce_with_files
+code: |
+  send_email(to=client, attachments=divorce_with_bundle,template=email_all_files)
+---
+ga id: divorceWithoutQuickEndpoint
+question: |
+  Final Information
+subquestion: |
+  You can download the PDFs for your **Divorce Petition** below.
+
+  % if divorce_without_submitted_to_LS:
+  File saved to the LegalServer case as both a PDF file. 
+  % else:
+  There was an error uploading file to Legalserver.
+  % endif
+
+  ${ action_button_html(divorce_without_bundle.url_for(), classname='btn btn-da btn-primary', label='Download All', icon='file-pdf') }
+  ${ action_button_html(url_action('send_divorce_without_files'), classname='btn btn-da btn-primary', label='Email these to me', icon='envelope') }
+field: generate_divorce_without_packet
+manual attachment list: True
+allow emailing: False
+buttons:
+  - All done
+---
+code: |
+  divorce_without_documents = [sca_fc_103, sca_fc_101, sca_fc_104, sca_fc_106, sca_fc_112, fdvscap]
+  divorce_without_bundle = pdf_concatenate(divorce_without_documents, filename=client.name.full() + " Divorce Petition.pdf")
+  add_file_to_LS = post_file_to_legalserver_documents_webhook(legalserver_site=legalserver_site, file_path=zip_file(divorce_without_bundle, filename='files.zip').path(), legalserver_matter_uuid=legalserver_matter_uuid, save_to_sharepoint=True)
+  divorce_without_submitted_to_LS = True
+---
+event: send_divorce_without_files
+code: |
+  send_email(to=client, attachments=divorce_without_bundle,template=email_all_files)
+---
+template: email_all_files
+subject: |
+  LAWV Family Law Packets
+content: |
+  Your document(s) is/are attached.
+
+  Additional information can always be found at [Legal Aid of West Virginia](https://legalaidwv.org/).
+
+  *NOTE: This email address is not monitored.  Please do not reply to this message.*
+---
+# Petition for Divorce - 101
+attachment:
+  - name: sca_fc_101
+    filename: sca_fc_101
+    pdf template file: sca_fc_101.pdf
+    variable name: sca_fc_101
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": "something"
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      #- "dv_proceeding": No
+      #- "p_resident": Yes
+      #- "r_resident": No
+      #- "wv_married": No
+      - "county": ${ client.address.county }
+      #- "cohabitation": No
+      #- "r_resides": No
+      #- "p_resides": No
+      #- "other_jurisdiction": No
+      #- "other_jurisdiction_detail": "something"
+      - "p_county": ${ client.address.county }
+      - "r_county": ${ legalserver_adverse_parties[0].address.county }
+      - "respondent_resides": |
+          ${ "address_unknown" if not defined("legalserver_adverse_parties[0].address") else "in_wv" if legalserver_adverse_parties[0].address.state == "WV" else "out_of_state" }
+      - "r_address": ${ legalserver_adverse_parties[0].address.on_one_line() if not legalserver_adverse_parties[0].address.state == "WV" else "" }
+      #- "marriage_county": "something"
+      #- "marriage_state": "something"
+      #- "marriage_day": "something"
+      #- "marriage_month": "something"
+      #- "marriage_year": "something"
+      #- "cohabit_county": "something"
+      #- "cohabit_address": "something"
+      #- "cohabit_state": "something"
+      #- "cohabit_month": "something"
+      #- "cohabit_day": "something"
+      #- "cohabit_year": "something"
+      - "under_18": ${ "yes" if p_age > 18 and r_age > 18 else "no" }
+      #- "military": "no"
+      #- "incompetent": "no"
+      #- "incarcerated": "no"
+      - "children_of_marriage": ${ "yes" if children.there_are_any == True else "no" }
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}      
+      - "minor_5_name": ${ children[4].name.full() if defined("children[4]") else ""}
+      - "minor_5_dob": ${ children[4].date_of_birth if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_6_name": ${ children[5].name.full() if defined("children[5]") else ""}
+      - "minor_6_dob": ${ children[5].date_of_birth if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}
+      - "minor_7_name": ${ children[6].name.full() if defined("children[6]") else ""}
+      - "minor_7_dob": ${ children[6].date_of_birth if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+      - "minor_8_name": ${ children[7].name.full() if defined("children[7]") else ""}
+      - "minor_8_dob": ${ children[7].date_of_birth if (defined("children[7]") and defined("children[7].date_of_birth")) else ""}
+      #- "child_expected": No
+      #- "expected_dob": "something"
+      #- "reside_with": No
+      #- "other_address_1": "something"
+      #- "other_name_1": "something"
+      #- "other_address_2": "something"
+      #- "other_name_2": "something"
+      #- "other_name_3": "something"
+      #- "other_address_3": "something"
+      #- "additional_sheets": "something"
+      #- "prior_address_child_1": "something"
+      #- "prior_address_1": "something"
+      #- "prior_address_dates_1": "something"
+      #- "prior_address_child_2": "something"
+      #- "prior_address_2": "something"
+      #- "prior_address_dates_2": "something"
+      #- "prior_address_child_3": "something"
+      #- "prior_address_3": "something"
+      #- "prior_address_dates_3": "something"
+      #- "prior_address_child_4": "something"
+      #- "prior_address_4": "something"
+      #- "prior_address_dates_4": "something"
+      #- "prior_address_child_5": "something"
+      #- "prior_address_5": "something"
+      #- "prior_address_dates_5": "something"
+      #- "health_insurance": No
+      #- "health_insurance_other_name": "something"
+      #- "health_insurance_other_address": "something"
+      #- "other_proceeding_party": No
+      #- "other_proceeding_aware": No
+      #- "other_party_rights": No
+      #- "resided_6_months": No
+      #- "significant_connection": No
+      #- "abandoned": No
+      #- "emergency": No
+      #- "no_other_state": No
+      #- "other_state_declined": No
+      #- "parenting_allocation": No
+      #- "abuse": No
+      #- "sexual_assault": No
+      - "domestic_violence": ${ "yes" if client.victim_of_domestic_violence == True else "no" }
+      #- "access_interference": No
+      #- "false_reports": No
+      #- "sole_decision_making": No
+      #- "limit_respondent": No
+      #- "no_contact": No
+      #- "spousal_support": No
+      #- "child_support": No
+      #- "marital_property": No
+      #- "prior_name": "something"
+      #- "resume_name": No
+      - "irreconcilable_differences": "yes"
+      #- "separate": No
+      - "cruelty": ${ "yes" if client.victim_of_domestic_violence == True else "no" }
+      #- "other": No
+      #- "other_detail": "something"
+      - "approve_parenting_plan": ${ "yes" if divorce_with_children == "yes" else "no"}
+      #- "pay_child_spport": No
+      #- "maintain_insurance": No
+      #- "pay_spousal_support": No
+      #- "divide_property": No
+      #- "marital_home": No
+      #- "marital_home_possession": No
+      #- "marital_home_address": "something"
+      #- "award_vehicle": No
+      #- "vehicle_possession": No
+      #- "vehicle_detail": "something"
+      #- "award_furniture": No
+      #- "furniture_possession": No
+      #- "award_property": No
+      #- "property_detail_1": "something"
+      #- "property_value_1": "something"
+      #- "property_detail_2": "something"
+      #- "property_value_2": "something"
+      #- "property_detail_3": "something"
+      #- "property_value_3": "something"
+      #- "property_detail_4": "something"
+      #- "property_value_4": "something"
+      #- "property_detail_5": "something"
+      #- "property_value_5": "something"
+      #- "petitioner_debts": No
+      #- "p_debt_1": "something"
+      #- "p_debt_value_1": "something"
+      #- "p_debt_2": "something"
+      #- "p_debt_value_2": "something"
+      #- "p_debt_3": "something"
+      #- "p_debt_value_3": "something"
+      #- "p_debt_4": "something"
+      #- "p_debt_value_4": "something"
+      #- "p_debt_5": "something"
+      #- "p_debt_value_5": "something"
+      #- "respondent_debts": No
+      #- "r_debt_1": "something"
+      #- "r_debt_value_1": "something"
+      #- "r_debt_2": "something"
+      #- "r_debt_value_2": "something"
+      #- "r_debt_3": "something"
+      #- "r_debt_value_3": "something"
+      #- "r_debt_4": "something"
+      #- "r_debt_value_4": "something"
+      #- "r_debt_5": "something"
+      #- "r_debt_value_5": "something"
+      - "prohibit_conveyance": "yes"
+      #- "grant_resume_name": No
+      - "prohibit_abuse": "yes"
+      #- "other_relief": No
+      #- "other_relief_detail": "something"
+---
+# Domestic Civil Case Information Statement -103
+attachment:
+  - name: sca_fc_103
+    filename: sca_fc_103
+    pdf template file: sca_fc_103.pdf
+    variable name: sca_fc_103
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      #- "confidential": No
+      - "p_address_line_one": ${ client.address.line_one() }
+      - "p_address_line_two": ${ client.address.line_two() }
+      - "p_phone": ${ client.phone_number }
+      - "p_gender": ${ client.gender.lower() }
+      - "p_dob": ${ client.birthdate }
+      - "p_ssn": ${ client.ssn }
+      - "p_race": ${ p_race }
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_1_ssn": ${ children[0].ssn if (defined("children[0]") and defined("children[0].ssn")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_2_ssn": ${ children[1].ssn if (defined("children[1]") and defined("children[1].ssn")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_3_ssn": ${ children[2].ssn if (defined("children[2]") and defined("children[2].ssn")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_4_ssn": ${ children[3].ssn if (defined("children[3]") and defined("children[3].ssn")) else ""}
+      - "accommodations": ${ accommodations }
+      - "wheelchair": ${ "Yes" if client.is_disabled else "No" }
+      - "interpreter": ${ "Yes" if client.interpreter else "No" }
+      - "r_address_line_one": ${ legalserver_adverse_parties[0].address.line_one() }                            
+      - "r_address_line_two": ${ legalserver_adverse_parties[0].address.line_two() }
+      - "r_phone": ${ legalserver_adverse_parties[0].phone_home }
+      - "r_gender": ${ legalserver_adverse_parties[0].gender.lower() }
+      - "r_ssn": ${ legalserver_adverse_parties[0].ssn }
+      - "r_dob": ${ legalserver_adverse_parties[0].date_of_birth }
+      - "r_race": ${ r_race }
+      - "divorce_without_children": ${ divorce_without_children }
+      - "divorce_with_children": ${ divorce_with_children }
+      - "grandparent_visitation": ${ grandparent_visitation }
+      - "annulment": ${ annulment }
+      - "separate_maintenance": ${ separate_maintenance }
+      - "child_support_only": ${ child_support_only }
+      - "child_custody_without_divorce": ${ child_custody_without_divorce }
+      - "paternity": ${ paternity }
+      - "modification": ${ modification }
+      - "contempt": ${ contempt }
+      - "infant_guardianship": ${ infant_guardianship }
+      #- "other_relief": No
+      #- "other_relief_detail": something
+      #- "alimony": No
+      #- "dvpo": No
+      #- "cps": No
+      #- "attorney": No
+      #- "attorney_name": something
+      #- "attorney_firm": something
+      #- "attorney_address": something
+      #- "attorney_phone": something
+      #- "Signature": |
+      #    ${ client.signature }
+      #- "date": something
+---
+# Vital Statistics - 104
+attachment:
+  - name: sca_fc_104
+    filename: sca_fc_104
+    pdf template file: sca_fc_104.pdf
+    variable name: sca_fc_104
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      #- "prior_name": something
+      - "p_dob": ${ client.birthdate }
+      - "r_dob": ${ legalserver_adverse_parties[0].date_of_birth }
+      #- "marriage_county": something
+      #- "marriage_state": something
+      #- "marriage_date": something
+      - "divorce": "yes"
+      #- "annulment": No
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}      
+      - "minor_5_name": ${ children[4].name.full() if defined("children[4]") else ""}
+      - "minor_5_dob": ${ children[4].date_of_birth if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_6_name": ${ children[5].name.full() if defined("children[5]") else ""}
+      - "minor_6_dob": ${ children[5].date_of_birth if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}
+      - "minor_7_name": ${ children[6].name.full() if defined("children[6]") else ""}
+      - "minor_7_dob": ${ children[6].date_of_birth if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+---
+# Financial Statement - 106
+attachment:
+  - name: sca_fc_106
+    filename: sca_fc_106
+    pdf template file: sca_fc_106.pdf
+    variable name: sca_fc_106
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "p_name": ${ client.name.full(middle="full") }
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      #- "protect_information": something
+      - "name": ${ client.name.full(middle="full") }
+      - "dob": ${ client.birthdate }
+      - "address": ${ client.address.on_one_line() }
+      - "age": ${ p_age }
+      - "phone_num": ${ client.phone_number }
+      - "disability": ${ accommodations }
+      #- "education": No
+      #- "employer": something
+      #- "employment_type": something
+      #- "employer_address": something
+      #- "employer_phone": something
+      #- "date_employed": something
+      - "gross_pay": ${ legalserver_incomes[0].amount }
+      - "pay_period": ${ legalserver_incomes[0].period }
+      #- "tanf_amount": something
+      #- "tanf": No
+      - "salary": ${ legalserver_incomes[0].amount }
+      #- "pension": something
+      #- "ssi": something
+      #- "wages": something
+      #- "severance": something
+      #- "commissions": something
+      #- "workers_comp": something
+      #- "bonuses": something
+      #- "other_income": something
+      #- "tips": something
+      #- "other_income_detail": something
+      #- "marital_home_m": No
+      #- "marital_home_p": No
+      #- "marital_home_r": No
+      #- "marital_home_value": something
+      #- "marital_home_owed": something
+      #- "other_real_estate_m": No
+      #- "other_real_estate_p": No
+      #- "other_real_estate_r": No
+      #- "other_real_estate_value": something
+      #- "other_real_estate_owed": something
+      #- "mobile_home_m": No
+      #- "mobile_home_p": No
+      #- "mobile_home_r": No
+      #- "mobile_home_value": something
+      #- "mobile_home_owed": something
+      #- "motor_vehicle_1_m": No
+      #- "motor_vehicle_1_p": No
+      #- "motor_vehicle_1_r": No
+      #- "motor_vehicle_1_description": something
+      #- "motor_vehicle_1_value": something
+      #- "motor_vehicle_1_owed": something
+      #- "motor_vehicle_2_m": No
+      #- "motor_vehicle_2_p": No
+      #- "motor_vehicle_2_r": No
+      #- "motor_vehicle_2_description": something
+      #- "motor_vehicle_2_value": something
+      #- "motor_vehicle_2_owed": something
+      #- "household_goods_m": No
+      #- "household_goods_p": No
+      #- "household_goods_r": No
+      #- "household_goods_value": something
+      #- "household_goods_owed": something
+      #- "checking_m": No
+      #- "checking_p": No
+      #- "checking_r": No
+      #- "checking_value": something
+      #- "checking_owed": something
+      #- "savings_m": No
+      #- "savings_p": No
+      #- "savings_r": No
+      #- "savings_value": something
+      #- "savings_owed": something
+      #- "money_market_m": No
+      #- "money_market_p": No
+      #- "money_market_r": No
+      #- "money_market_value": something
+      #- "money_market_owed": something
+      #- "stocks_m": No
+      #- "stocks_p": No
+      #- "stocks_r": No
+      #- "stocks_value": something
+      #- "stocks_owed": something
+      #- "credit_union_m": No
+      #- "credit_union_p": No
+      #- "credit_union_r": No
+      #- "credit_union_value": something
+      #- "credit_union_owed": something
+      #- "profit_sharing_m": No
+      #- "profit_sharing_p": No
+      #- "profit_sharing_r": No
+      #- "profit_sharing_value": something
+      #- "profit_sharing_owed": something
+      #- "trusts_m": No
+      #- "trusts_p": No
+      #- "trusts_r": No
+      #- "trusts_value": something
+      #- "trusts_owed": something
+      #- "mutual_fund_m": No
+      #- "mutual_fund_p": No
+      #- "mutual_fund_r": No
+      #- "mutual_fund_value": something
+      #- "mutual_fund_owed": something
+      #- "bonds_m": No
+      #- "bonds_p": No
+      #- "bonds_r": No
+      #- "bonds_value": something
+      #- "bonds_owed": something
+      #- "pension_m": No
+      #- "pension_p": No
+      #- "pension_r": No
+      #- "pension_value": something
+      #- "pension_owed": something
+      #- "ira_m": No
+      #- "ira_p": No
+      #- "ira_r": No
+      #- "ira_value": something
+      #- "ira_owed": something
+      #- "whole_life_m": No
+      #- "whole_life_p": No
+      #- "whole_life_r": No
+      #- "whole_life_value": something
+      #- "whole_life_owed": something
+      #- "annuities_m": No
+      #- "annuities_p": No
+      #- "annuities_r": No
+      #- "annuities_value": something
+      #- "annuities_owed": something
+      #- "guns_m": No
+      #- "guns_p": No
+      #- "guns_r": No
+      #- "guns_value": something
+      #- "guns_owed": something
+      #- "tools_m": No
+      #- "tools_p": No
+      #- "tools_r": No
+      #- "tools_value": something
+      #- "tools_owed": something
+      #- "jewelry_m": No
+      #- "jewelry_p": No
+      #- "jewelry_r": No
+      #- "jewelry_value": something
+      #- "jewelry_owed": something
+      #- "personal_prop_m": No
+      #- "personal_prop_p": No
+      #- "personal_prop_r": No
+      #- "personal_prop_value": something
+      #- "personal_prop_owed": something
+      #- "other_property_m": No
+      #- "other_property_p": No
+      #- "other_property_r": No
+      #- "other_property_description": something
+      #- "other_property_value": something
+      #- "other_property_owed": something
+      #- "conveyed_property_1_description": something
+      #- "conveyed_property_1_amount": something
+      #- "conveyed_property_1_recipient": something
+      #- "conveyed_property_2_description": something
+      #- "conveyed_property_2_amount": something
+      #- "conveyed_property_2_recipient": something
+      #- "conveyed_property_3_description": something
+      #- "conveyed_property_3_amount": something
+      #- "conveyed_property_3_recipient": something
+      #- "conveyed_property_4_description": something
+      #- "conveyed_property_4_amount": something
+      #- "conveyed_property_4_recipient": something
+      #- "conveyed_property_5_description": something
+      #- "conveyed_property_5_amount": something
+      #- "conveyed_property_5_recipient": something
+      #- "conveyed_property_6_description": something
+      #- "conveyed_property_6_amount": something
+      #- "conveyed_property_6_recipient": something
+      #- "conveyed_property_7_description": something
+      #- "conveyed_property_7_amount": something
+      #- "conveyed_property_7_recipient": something
+      #- "conveyed_property_8_description": something
+      #- "conveyed_property_8_amount": something
+      #- "conveyed_property_8_recipient": something
+      #- "debt_1_m": No
+      #- "debt_1_p": No
+      #- "debt_1_r": No
+      #- "debt_owed_to_1": something
+      #- "debt_amount_1": something
+      #- "debt_purpose_1": something
+      #- "debt_secured_1": something
+      #- "debt_2_m": No
+      #- "debt_2_p": No
+      #- "debt_2_r": No
+      #- "debt_owed_to_2": something
+      #- "debt_amount_2": something
+      #- "debt_purpose_2": something
+      #- "debt_secured_2": something
+      #- "debt_3_m": No
+      #- "debt_3_p": No
+      #- "debt_3_r": No
+      #- "debt_owed_to_3": something
+      #- "debt_amount_3": something
+      #- "debt_purpose_3": something
+      #- "debt_secured_3": something
+      #- "debt_4_m": No
+      #- "debt_4_p": No
+      #- "debt_4_r": No
+      #- "debt_owed_to_4": something
+      #- "debt_amount_4": something
+      #- "debt_purpose_4": something
+      #- "debt_secured_4": something
+      #- "debt_5_m": No
+      #- "debt_5_p": No
+      #- "debt_5_r": No
+      #- "debt_owed_to_5": something
+      #- "debt_amount_5": something
+      #- "debt_purpose_5": something
+      #- "debt_secured_5": something
+      #- "debt_6_m": No
+      #- "debt_6_p": No
+      #- "debt_6_r": No
+      #- "debt_owed_to_6": something
+      #- "debt_amount_6": something
+      #- "debt_purpose_6": something
+      #- "debt_secured_6": something
+      #- "debt_7_m": No
+      #- "debt_7_p": No
+      #- "debt_7_r": No
+      #- "debt_owed_to_7": something
+      #- "debt_amount_7": something
+      #- "debt_purpose_7": something
+      #- "debt_secured_7": something
+      #- "debt_8_m": No
+      #- "debt_8_p": No
+      #- "debt_8_r": No
+      #- "debt_owed_to_8": something
+      #- "debt_amount_8": something
+      #- "debt_purpose_8": something
+      #- "debt_secured_8": something
+      #- "debt_9_m": No
+      #- "debt_9_p": No
+      #- "debt_9_r": No
+      #- "debt_owed_to_9": something
+      #- "debt_amount_9": something
+      #- "debt_purpose_9": something
+      #- "debt_secured_9": something
+      #- "debt_total_monthly_payments": something
+      #- "debt_total_owed": something
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_1_age": ${ children[0].age if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_1_ssn": ${ children[0].ssn if (defined("children[0]") and defined("children[0].ssn")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_2_age": ${ children[1].age if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_2_ssn": ${ children[1].ssn if (defined("children[1]") and defined("children[1].ssn")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_3_age": ${ children[2].age if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_3_ssn": ${ children[2].ssn if (defined("children[2]") and defined("children[2].ssn")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_4_age": ${ children[3].age if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_4_ssn": ${ children[3].ssn if (defined("children[3]") and defined("children[3].ssn")) else ""}
+      - "minor_5_name": ${ children[4].name.full() if defined("children[4]") else ""}
+      - "minor_5_dob": ${ children[4].date_of_birth if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_5_age": ${ children[4].age if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_5_ssn": ${ children[4].ssn if (defined("children[4]") and defined("children[4].ssn")) else ""}
+      - "minor_6_name": ${ children[5].name.full() if defined("children[5]") else ""}
+      - "minor_6_dob": ${ children[5].date_of_birth if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}
+      - "minor_6_age": ${ children[5].age if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}
+      - "minor_6_ssn": ${ children[5].ssn if (defined("children[5]") and defined("children[5].ssn")) else ""}
+      - "minor_7_name": ${ children[6].name.full() if defined("children[6]") else ""}
+      - "minor_7_dob": ${ children[6].date_of_birth if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+      - "minor_7_age": ${ children[6].age if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+      - "minor_7_ssn": ${ children[6].ssn if (defined("children[6]") and defined("children[6].ssn")) else ""}      
+      #- "ss_benefits": No
+      #- "ss_amount": something
+      #- "income": No
+      #- "income_amount": something
+      #- "special_needs_children": No
+      #- "special_needs": something
+      #- "childcare_paid": No
+      #- "child_care_received": something
+      #- "other_minor_children": No
+      #- "support_disabled_adults": No
+      #- "da_1_name": something
+      #- "da_1_age": something
+      #- "da_1_disability": something
+      #- "da_1_support": something
+      #- "da_2_name": something
+      #- "da_2_age": something
+      #- "da_2_disability": something
+      #- "da_2_support": something
+      #- "da_3_name": something
+      #- "da_3_age": something
+      #- "da_3_disability": something
+      #- "da_3_support": something
+      #- "da_4_name": something
+      #- "da_4_age": something
+      #- "da_4_disability": something
+      #- "da_4_support": something
+      #- "da_5_name": something
+      #- "da_5_age": something
+      #- "da_5_disability": something
+      #- "da_5_support": something
+      #- "da_6_name": something
+      #- "da_6_age": something
+      #- "da_6_disability": something
+      #- "da_6_support": something
+      #- "da_7_name": something
+      #- "da_7_age": something
+      #- "da_7_disability": something
+      #- "da_7_support": something
+      #- "insurance_available": No
+      #- "insurance_name": something
+      #- "insurance_address": something
+      #- "insurance_policy": something
+      #- "insurance_group": something
+      #- "insurance_id": something
+      #- "insurance_restrictions": something
+      #- "insurance_coverage": something
+      #- "insurance_deductible": something
+      #- "insurance_premium": something
+      #- "out_of_pocket": No
+      #- "child_support_payments": No
+      #- "child_support_1_name": something
+      #- "child_support_1_dob": something
+      #- "child_support_1_ssn": something
+      #- "child_support_1_amount": something
+      #- "child_support_2_name": something
+      #- "child_support_2_dob": something
+      #- "child_support_2_ssn": something
+      #- "child_support_2_amount": something
+      #- "child_support_3_name": something
+      #- "child_support_3_dob": something
+      #- "child_support_3_ssn": something
+      #- "child_support_3_amount": something
+      #- "child_support_4_name": something
+      #- "child_support_4_dob": something
+      #- "child_support_4_ssn": something
+      #- "child_support_4_amount": something
+      #- "child_support_5_name": something
+      #- "child_support_5_dob": something
+      #- "child_support_5_ssn": something
+      #- "child_support_5_amount": something
+      #- "child_support_6_name": something
+      #- "child_support_6_dob": something
+      #- "child_support_6_ssn": something
+      #- "child_support_6_amount": something
+      #- "child_support_7_name": something
+      #- "child_support_7_dob": something
+      #- "child_support_7_ssn": something
+      #- "child_support_7_amount": something
+      #- "cc_payment": something
+      #- "rent_or_mortgage": something
+      #- "car_payment": something
+      #- "home_repair": something
+      #- "car_repair": something
+      #- "electric_bill": something
+      #- "car_insurance": something
+      #- "water_bill": something
+      #- "gas": something
+      #- "gas_bill": something
+      #- "food": something
+      #- "trash_bill": something
+      #- "clothing": something
+      #- "cable_bill": something
+      #- "child_care": something
+      #- "phone_bill": something
+      #- "health_insurance": something
+      #- "entertainment_bill": something
+      #- "other_insurance": something
+      #- "other_insurance_detail": something
+      #- "medical_bills": something
+      #- "medical_bills_detail": something
+      #- "other_expenses": something
+      #- "other_expenses_detail": something
+      #- "total_monthly_expenses": something
+      #- "p_high_school": No
+      #- "p_high_school_year": something
+      #- "p_ged": No
+      #- "p_ged_year": something
+      #- "p_tech_school": No
+      #- "p_tech_training": something
+      #- "p_college": No
+      #- "p_degree": something
+      #- "p_post_grad": No
+      #- "p_post_grad_degree": something
+      #- "p_employer_1_name": something
+      #- "p_employer_1_position": something
+      #- "p_employer_1_begin": something
+      #- "p_employer_1_end": something
+      #- "p_employer_1_income": something
+      #- "p_employer_2_name": something
+      #- "p_employer_2_position": something
+      #- "p_employer_2_begin": something
+      #- "p_employer_2_end": something
+      #- "p_employer_2_income": something
+      #- "p_employer_3_name": something
+      #- "p_employer_3_position": something
+      #- "p_employer_3_begin": something
+      #- "p_employer_3_end": something
+      #- "p_employer_3_income": something
+      #- "p_employer_4_name": something
+      #- "p_employer_4_position": something
+      #- "p_employer_4_begin": something
+      #- "p_employer_4_end": something
+      #- "p_employer_4_income": something
+      - "p_age": ${ p_age }
+      #- "p_physical_health_state": No
+      #- "p_physical_health": something
+      #- "p_mental_health_state": No
+      #- "p_mental_health": something
+      #- "r_high_school": No
+      #- "r_high_school_year": something
+      #- "r_ged": No
+      #- "r_ged_year": something
+      #- "r_tech_school": No
+      #- "r_tech_training": something
+      #- "r_college": No
+      #- "r_degree": something
+      #- "r_post_grad": No
+      #- "r_post_grad_degree": something
+      #- "r_employer_1_name": something
+      #- "r_employer_1_position": something
+      #- "r_employer_1_begin": something
+      #- "r_employer_1_end": something
+      #- "r_employer_1_income": something
+      #- "r_employer_2_name": something
+      #- "r_employer_2_position": something
+      #- "r_employer_2_begin": something
+      #- "r_employer_2_end": something
+      #- "r_employer_2_income": something
+      #- "r_employer_3_name": something
+      #- "r_employer_3_position": something
+      #- "r_employer_3_begin": something
+      #- "r_employer_3_end": something
+      #- "r_employer_3_income": something
+      #- "r_employer_4_name": something
+      #- "r_employer_4_position": something
+      #- "r_employer_4_begin": something
+      #- "r_employer_4_end": something
+      #- "r_employer_4_income": something
+      - "r_age": ${ r_age }
+      #- "r_physical_health_state": No
+      #- "r_physical_health": something
+      #- "r_mental_health_state": No
+      #- "r_mental_health": something
+      #- "additional_training": No
+      #- "additional_training_detail": something
+      #- "spousal_support_detail": something
+      - "county": ${ client.address.county }
+---
+# Motion for Temporary Relief - 112
+attachment:
+  - name: sca_fc_112
+    filename: sca_fc_112
+    pdf template file: sca_fc_112.pdf
+    variable name: sca_fc_112
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "name": ${ client.name.full(middle="full") }
+      - "prior_relief": "no"
+      - "op_prior_relief": "no"
+      - "custody": |
+          ${ 'yes' if divorce_with_children == True or child_custody_without_divorce == True else 'no' }
+      - "parenting_plan": |
+          ${ 'yes' if divorce_with_children == True or child_custody_without_divorce == True else 'no' }
+      - "child_support": |
+          ${ 'yes' if divorce_with_children == True or child_custody_without_divorce == True else 'no' }
+      #- "spousal_support": No
+      #- "insurance": No
+      #- "residence": No
+      #- "automobiles": No
+      #- "debts": No
+      #- "gal": No
+      #- "protective_order": No
+      #- "other": No
+      #- "other_detail": something
+      - "county": ${ client.address.county }
+      - "op_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "op_address": ${ legalserver_adverse_parties[0].address.on_one_line() }
+---
+# Parenting Plan - 121
+attachment:
+  - name: sca_fc_121
+    filename: sca_fc_121
+    pdf template file: sca_fc_121.pdf
+    variable name: sca_fc_121
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "completed_by": "individually"
+      - "role": "petitioner"
+      - "individual": ${ client.name.full(middle="full") }
+      #- "p_name_joint": something
+      #- "r_name_joint": something
+      - "use": "both"
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_5_name": ${ children[4].name.full() if defined("children[4]") else ""}
+      - "minor_5_dob": ${ children[4].date_of_birth if (defined("children[4]") and defined("children[4].date_of_birth")) else ""}
+      - "minor_6_name": ${ children[5].name.full() if defined("children[5]") else ""}
+      - "minor_6_dob": ${ children[5].date_of_birth if (defined("children[5]") and defined("children[5].date_of_birth")) else ""}      
+      - "minor_7_name": ${ children[6].name.full() if defined("children[6]") else ""}
+      - "minor_7_dob": ${ children[6].date_of_birth if (defined("children[6]") and defined("children[6].date_of_birth")) else ""}
+      - "minor_8_name": ${ children[7].name.full() if defined("children[7]") else ""}
+      - "minor_8_dob": ${ children[7].date_of_birth if (defined("children[7]") and defined("children[7].date_of_birth")) else ""}
+      #- "limit_parenting_time": No
+      #- "limit_time_detail": something
+      #- "restrictions": No
+      #- "restrictions_on": No
+      #- "restrictions_reasons": something
+      #- "no_visitation": No
+      #- "no_visistation_for": No
+      #- "no_visitation_other": No
+      #- "no_visitation_other_name": something
+      #- "supervised_visistation": No
+      #- "supervisor": something
+      #- "supervised_location": something
+      #- "supervised_transfer": No
+      #- "transfer_supervisor": something
+      #- "transfer_location": something
+      #- "other_restrictions": something
+      #- "education": No
+      #- "medical": No
+      #- "religious": No
+      #- "child_care": No
+      #- "child_employment": No
+      #- "car_use": No
+      #- "school_activities": No
+      #- "sports": No
+      #- "other_decision_making": No
+      #- "decision_making_other_detail": something
+      #- "minor_names_not_in_school": something
+      #- "p_monday_from_period": No
+      #- "p_monday_from_hour": something
+      #- "p_monday_from_minute": something
+      #- "p_monday_to_hour": something
+      #- "p_monday_to_minute": something
+      #- "p_monday_to_period": No
+      #- "p_monday": No
+      #- "p_monday_all_day": No
+      #- "p_tuesday_from_period": No
+      #- "p_tuesday_from_hour": something
+      #- "p_tuesday_from_minute": something
+      #- "p_tuesday_to_hour": something
+      #- "p_tuesday_to_minute": something
+      #- "p_tuesday_to_period": No
+      #- "p_tuesday": No
+      #- "p_tuesday_all_day": No
+      #- "p_wednesday_from_period": No
+      #- "p_wednesday_from_hour": something
+      #- "p_wednesday_from_minute": something
+      #- "p_wednesday_to_hour": something
+      #- "p_wednesday_to_minute": something
+      #- "p_wednesday_to_period": No
+      #- "p_wednesday": No
+      #- "p_wednesday_all_day": No
+      #- "p_thursday_from_period": No
+      #- "p_thursday_from_hour": something
+      #- "p_thursday_from_minute": something
+      #- "p_thursday_to_hour": something
+      #- "p_thursday_to_minute": something
+      #- "p_thursday_to_period": No
+      #- "p_thursday": No
+      #- "p_thursday_all_day": No
+      #- "p_friday_from_period": No
+      #- "p_friday_from_hour": something
+      #- "p_friday_from_minute": something
+      #- "p_friday_to_hour": something
+      #- "p_friday_to_minute": something
+      #- "p_friday_to_period": No
+      #- "p_friday": No
+      #- "p_friday_all_day": No
+      #- "p_alternating_from_period": No
+      #- "p_alternating_from_hour": something
+      #- "p_alternating_from_minute": something
+      #- "p_alternating_from_day": something
+      #- "p_alternating_to_hour": something
+      #- "p_alternating_to_minute": something
+      #- "p_alternating_to_day": something
+      #- "p_alternating_to_period": No
+      #- "p_alternating": No
+      #- "p_first_from_period": No
+      #- "p_first_from_hour": something
+      #- "p_first_from_minute": something
+      #- "p_first_from_day": something
+      #- "p_first_to_hour": something
+      #- "p_first_to_minute": something
+      #- "p_first_to_day": something
+      #- "p_first_to_period": No
+      #- "p_first": No
+      #- "p_second_from_period": No
+      #- "p_second_from_hour": something
+      #- "p_second_from_minute": something
+      #- "p_second_from_day": something
+      #- "p_second_to_hour": something
+      #- "p_second_to_minute": something
+      #- "p_second_to_day": something
+      #- "p_second_to_period": No
+      #- "p_second": No
+      #- "p_third_from_period": No
+      #- "p_third_from_hour": something
+      #- "p_third_from_minute": something
+      #- "p_third_from_day": something
+      #- "p_third_to_hour": something
+      #- "p_third_to_minute": something
+      #- "p_third_to_day": something
+      #- "p_third_to_period": No
+      #- "p_third": No
+      #- "p_fourth_from_period": No
+      #- "p_fourth_from_hour": something
+      #- "p_fourth_from_minute": something
+      #- "p_fourth_from_day": something
+      #- "p_fourth_to_hour": something
+      #- "p_fourth_to_minute": something
+      #- "p_fourth_to_day": something
+      #- "p_fourth_to_period": No
+      #- "p_fourth": No
+      #- "p_fifth_from_period": No
+      #- "p_fifth_from_hour": something
+      #- "p_fifth_from_minute": something
+      #- "p_fifth_from_day": something
+      #- "p_fifth_to_hour": something
+      #- "p_fifth_to_minute": something
+      #- "p_fifth_to_day": something
+      #- "p_fifth_to_period": No
+      #- "p_fifth": No
+      #- "r_monday_from_period": No
+      #- "r_monday_from_hour": something
+      #- "r_monday_from_minute": something
+      #- "r_monday_to_hour": something
+      #- "r_monday_to_minute": something
+      #- "r_monday_to_period": No
+      #- "r_monday": No
+      #- "r_monday_all_day": No
+      #- "r_tuesday_from_period": No
+      #- "r_tuesday_from_hour": something
+      #- "r_tuesday_from_minute": something
+      #- "r_tuesday_to_hour": something
+      #- "r_tuesday_to_minute": something
+      #- "r_tuesday_to_period": No
+      #- "r_tuesday": No
+      #- "r_tuesday_all_day": No
+      #- "r_wednesday_from_period": No
+      #- "r_wednesday_from_hour": something
+      #- "r_wednesday_from_minute": something
+      #- "r_wednesday_to_hour": something
+      #- "r_wednesday_to_minute": something
+      #- "r_wednesday_to_period": No
+      #- "r_wednesday": No
+      #- "r_wednesday_all_day": No
+      #- "r_thursday_from_period": No
+      #- "r_thursday_from_hour": something
+      #- "r_thursday_from_minute": something
+      #- "r_thursday_to_hour": something
+      #- "r_thursday_to_minute": something
+      #- "r_thursday_to_period": No
+      #- "r_thursday_all_day": No
+      #- "r_friday_from_period": No
+      #- "r_friday_from_hour": something
+      #- "r_friday_from_minute": something
+      #- "r_friday_to_hour": something
+      #- "r_friday_to_minute": something
+      #- "r_friday_to_period": No
+      #- "r_friday": No
+      #- "r_friday_all_day": No
+      #- "r_alternating_from_period": No
+      #- "r_alternating_from_hour": something
+      #- "r_alternating_from_minute": something
+      #- "r_alternating_from_day": something
+      #- "r_alternating_to_hour": something
+      #- "r_alternating_to_minute": something
+      #- "r_alternating_to_day": something
+      #- "r_alternating_to_period": No
+      #- "r_alternating": No
+      #- "r_first_from_period": No
+      #- "r_first_from_hour": something
+      #- "r_first_from_minute": something
+      #- "r_first_from_day": something
+      #- "r_first_to_hour": something
+      #- "r_first_to_minute": something
+      #- "r_first_to_day": something
+      #- "r_first_to_period": No
+      #- "r_first": No
+      #- "r_second_from_period": No
+      #- "r_second_from_hour": something
+      #- "r_second_from_minute": something
+      #- "r_second_from_day": something
+      #- "r_second_to_hour": something
+      #- "r_second_to_minute": something
+      #- "r_second_to_day": something
+      #- "r_second_to_period": No
+      #- "r_second": No
+      #- "r_third_from_period": No
+      #- "r_third_from_hour": something
+      #- "r_third_from_minute": something
+      #- "r_third_from_day": something
+      #- "r_third_to_hour": something
+      #- "r_third_to_minute": something
+      #- "r_third_to_day": something
+      #- "r_third_to_period": No
+      #- "r_third": No
+      #- "r_fourth_from_period": No
+      #- "r_fourth_from_hour": something
+      #- "r_fourth_from_minute": something
+      #- "r_fourth_from_day": something
+      #- "r_fourth_to_hour": something
+      #- "r_fourth_to_minute": something
+      #- "r_fourth_to_day": something
+      #- "r_fourth_to_period": No
+      #- "r_fourth": No
+      #- "r_fifth_from_period": No
+      #- "r_fifth_from_hour": something
+      #- "r_fifth_from_minute": something
+      #- "r_fifth_from_day": something
+      #- "r_fifth_to_hour": something
+      #- "r_fifth_to_minute": something
+      #- "r_fifth_to_day": something
+      #- "r_fifth_to_period": No
+      #- "r_fifth": No
+      #- "minor_names_in_school": something
+      #- "p_school_monday_from_period": No
+      #- "p_school_monday_from_hour": something
+      #- "p_school_monday_from_minute": something
+      #- "p_school_monday_to_hour": something
+      #- "p_school_monday_to_minute": something
+      #- "p_school_monday_to_period": No
+      #- "p_school_monday": No
+      #- "p_school_monday_all_day": No
+      #- "p_school_tuesday_from_period": No
+      #- "p_school_tuesday_from_hour": something
+      #- "p_school_tuesday_from_minute": something
+      #- "p_school_tuesday_to_hour": something
+      #- "p_school_tuesday_to_minute": something
+      #- "p_school_tuesday_to_period": No
+      #- "p_school_tuesday": No
+      #- "p_school_tuesday_all_day": No
+      #- "p_school_wednesday_from_period": No
+      #- "p_school_wednesday_from_hour": something
+      #- "p_school_wednesday_from_minute": something
+      #- "p_school_wednesday_to_hour": something
+      #- "p_school_wednesday_to_minute": something
+      #- "p_school_wednesday_to_period": No
+      #- "p_school_wednesday": No
+      #- "p_school_wednesday_all_day": No
+      #- "p_school_thursday_from_period": No
+      #- "p_school_thursday_from_hour": something
+      #- "p_school_thursday_from_minute": something
+      #- "p_school_thursday_to_hour": something
+      #- "p_school_thursday_to_minute": something
+      #- "p_school_thursday_to_period": No
+      #- "p_school_thursday": No
+      #- "p_school_thursday_all_day": No
+      #- "p_school_friday_from_period": No
+      #- "p_school_friday_from_hour": something
+      #- "p_school_friday_from_minute": something
+      #- "p_school_friday_to_hour": something
+      #- "p_school_friday_to_minute": something
+      #- "p_school_friday_to_period": No
+      #- "p_school_friday": No
+      #- "p_school_friday_all_day": No
+      #- "p_school_alternating_from_period": No
+      #- "p_school_alternating_from_hour": something
+      #- "p_school_alternating_from_minute": something
+      #- "p_school_alternating_from_day": something
+      #- "p_school_alternating_to_hour": something
+      #- "p_school_alternating_to_minute": something
+      #- "p_school_alternating_to_day": something
+      #- "p_school_alternating_to_period": No
+      #- "p_school_alternating": No
+      #- "p_school_first_from_period": No
+      #- "p_school_first_from_hour": something
+      #- "p_school_first_from_minute": something
+      #- "p_school_first_from_day": something
+      #- "p_school_first_to_hour": something
+      #- "p_school_first_to_minute": something
+      #- "p_school_first_to_day": something
+      #- "p_school_first_to_period": No
+      #- "p_school_first": No
+      #- "p_school_second_from_period": No
+      #- "p_school_second_from_hour": something
+      #- "p_school_second_from_minute": something
+      #- "p_school_second_from_day": something
+      #- "p_school_second_to_hour": something
+      #- "p_school_second_to_minute": something
+      #- "p_school_second_to_day": something
+      #- "p_school_second_to_period": No
+      #- "p_school_second": No
+      #- "p_school_third_from_period": No
+      #- "p_school_third_from_hour": something
+      #- "p_school_third_from_minute": something
+      #- "p_school_third_from_day": something
+      #- "p_school_third_to_hour": something
+      #- "p_school_third_to_minute": something
+      #- "p_school_third_to_day": something
+      #- "p_school_third_to_period": No
+      #- "p_school_third": No
+      #- "p_school_fourth_from_period": No
+      #- "p_school_fourth_from_hour": something
+      #- "p_school_fourth_from_minute": something
+      #- "p_school_fourth_to_hour": something
+      #- "p_school_fourth_to_minute": something
+      #- "p_school_fourth_to_day": something
+      #- "p_school_fourth_to_period": No
+      #- "p_school_fourth_from_day": something
+      #- "p_school_fourth": No
+      #- "p_school_fifth_from_period": No
+      #- "p_school_fifth_from_hour": something
+      #- "p_school_fifth_from_minute": something
+      #- "p_school_fifth_from_day": something
+      #- "p_school_fifth_to_hour": something
+      #- "p_school_fifth_to_minute": something
+      #- "p_school_fifth_to_day": something
+      #- "p_school_fifth_to_period": No
+      #- "p_school_fifth": No
+      #- "r_school_monday_from_period": No
+      #- "r_school_monday_from_hour": something
+      #- "r_school_monday_from_minute": something
+      #- "r_school_monday_to_hour": something
+      #- "r_school_monday_to_minute": something
+      #- "r_school_monday_to_period": No
+      #- "r_school_monday": No
+      #- "r_school_monday_all_day": No
+      #- "r_school_tuesday_from_period": No
+      #- "r_school_tuesday_from_hour": something
+      #- "r_school_tuesday_from_minute": something
+      #- "r_school_tuesday_to_hour": something
+      #- "r_school_tuesday_to_minute": something
+      #- "r_school_tuesday_to_period": No
+      #- "r_school_tuesday": No
+      #- "r_school_tuesday_all_day": No
+      #- "r_school_wednesday_from_period": No
+      #- "r_school_wednesday_from_hour": something
+      #- "r_school_wednesday_from_minute": something
+      #- "r_school_wednesday_to_hour": something
+      #- "r_school_wednesday_to_minute": something
+      #- "r_school_wednesday_to_period": No
+      #- "r_school_wednesday": No
+      #- "r_school_wednesday_all_day": No
+      #- "r_school_thursday_from_period": No
+      #- "r_school_thursday_from_hour": something
+      #- "r_school_thursday_from_minute": something
+      #- "r_school_thursday_to_hour": something
+      #- "r_school_thursday_to_minute": something
+      #- "r_school_thursday_to_period": No
+      #- "r_school_thursday_all_day": No
+      #- "r_school_friday_from_period": No
+      #- "r_school_friday_from_hour": something
+      #- "r_school_friday_from_minute": something
+      #- "r_school_friday_to_hour": something
+      #- "r_school_friday_to_minute": something
+      #- "r_school_friday_to_period": No
+      #- "r_school_friday": No
+      #- "r_school_friday_all_day": No
+      #- "r_school_alternating_from_period": No
+      #- "r_school_alternating_from_hour": something
+      #- "r_school_alternating_from_minute": something
+      #- "r_school_alternating_from_day": something
+      #- "r_school_alternating_to_hour": something
+      #- "r_school_alternating_to_minute": something
+      #- "r_school_alternating_to_day": something
+      #- "r_school_alternating_to_period": No
+      #- "r_school_alternating": No
+      #- "r_school_first_from_period": No
+      #- "r_school_first_from_hour": something
+      #- "r_school_first_from_minute": something
+      #- "r_school_first_from_day": something
+      #- "r_school_first_to_hour": something
+      #- "r_school_first_to_minute": something
+      #- "r_school_first_to_day": something
+      #- "r_school_first_to_period": No
+      #- "r_school_first": No
+      #- "r_school_second_from_period": No
+      #- "r_school_second_from_hour": something
+      #- "r_school_second_from_minute": something
+      #- "r_school_second_from_day": something
+      #- "r_school_second_to_hour": something
+      #- "r_school_second_to_minute": something
+      #- "r_school_second_to_day": something
+      #- "r_school_second_to_period": No
+      #- "r_school_second": No
+      #- "r_school_third_from_period": No
+      #- "r_school_third_from_hour": something
+      #- "r_school_third_from_minute": something
+      #- "r_school_third_from_day": something
+      #- "r_school_third_to_hour": something
+      #- "r_school_third_to_minute": something
+      #- "r_school_third_to_day": something
+      #- "r_school_third_to_period": No
+      #- "r_school_third": No
+      #- "r_school_fourth_from_period": No
+      #- "r_school_fourth_from_hour": something
+      #- "r_school_fourth_from_minute": something
+      #- "r_school_fourth_from_day": something
+      #- "r_school_fourth_to_hour": something
+      #- "r_school_fourth_to_minute": something
+      #- "r_school_fourth_to_day": something
+      #- "r_school_fourth_to_period": No
+      #- "r_school_fourth": No
+      #- "r_school_fifth_from_period": No
+      #- "r_school_fifth_from_hour": something
+      #- "r_school_fifth_from_minute": something
+      #- "r_school_fifth_from_day": something
+      #- "r_school_fifth_to_hour": something
+      #- "r_school_fifth_to_minute": something
+      #- "r_school_fifth_to_day": something
+      #- "r_school_fifth_to_period": No
+      #- "r_school_fifth": No
+      #- "nye_even_odd": No
+      #- "nye_to_period": No
+      #- "nye_split_period": No
+      #- "nye_from_period": No
+      #- "nye_to_hour": something
+      #- "nye_to_minute": something
+      #- "nye_split_hour": something
+      #- "nye_split_minute": something
+      #- "nye_from_hour": something
+      #- "nye_from_minute": something
+      #- "nye_split": No
+      #- "nyd_to_period": No
+      #- "nyd_split_period": No
+      #- "nyd_from_period": No
+      #- "nyd_to_hour": something
+      #- "nyd_to_minute": something
+      #- "nyd_split_hour": something
+      #- "nyd_split_minute": something
+      #- "nyd_from_hour": something
+      #- "nyd_from_minute": something
+      #- "nyd_even_odd": No
+      #- "nyd_split": No
+      #- "mlk_to_period": No
+      #- "mlk_split_period": No
+      #- "mlk_from_period": No
+      #- "mlk_to_hour": something
+      #- "mlk_to_minute": something
+      #- "mlk_split_hour": something
+      #- "mlk_split_minute": something
+      #- "mlk_from_hour": something
+      #- "mlk_from_minute": something
+      #- "mlk_even_odd": No
+      #- "mlk_split": No
+      #- "pd_to_period": No
+      #- "pd_split_period": No
+      #- "pd_from_period": No
+      #- "pd_to_hour": something
+      #- "pd_to_minute": something
+      #- "pd_split_hour": something
+      #- "pd_split_minute": something
+      #- "pd_from_hour": something
+      #- "pd_from_minute": something
+      #- "pd_even_odd": No
+      #- "pd_split": No
+      #- "easter_to_period": No
+      #- "easter_split_period": No
+      #- "easter_from_period": No
+      #- "easter_to_hour": something
+      #- "easter_to_minute": something
+      #- "easter_split_hour": something
+      #- "easter_split_minute": something
+      #- "easter_from_hour": something
+      #- "easter_from_minute": something
+      #- "easter_even_odd": No
+      #- "easter_split": No
+      #- "spring_to_period": No
+      #- "spring_split_period": No
+      #- "spring_from_period": No
+      #- "spring_to_hour": something
+      #- "spring_to_minute": something
+      #- "spring_split_hour": something
+      #- "spring_split_minute": something
+      #- "spring_from_hour": something
+      #- "spring_from_minute": something
+      #- "spring_even_odd": No
+      #- "spring_split": No
+      #- "memorial_to_period": No
+      #- "memorial_split_period": No
+      #- "memorial_from_period": No
+      #- "memorial_to_hour": something
+      #- "memorial_to_minute": something
+      #- "memorial_split_hour": something
+      #- "memorial_split_minute": something
+      #- "memorial_from_hour": something
+      #- "memorial_from_minute": something
+      #- "memorial_even_odd": No
+      #- "memorial_split": No
+      #- "fourth_to_period": No
+      #- "fourth_split_period": No
+      #- "fourth_from_period": No
+      #- "fourth_to_hour": something
+      #- "fourth_to_minute": something
+      #- "fourth_split_hour": something
+      #- "fourth_split_minute": something
+      #- "fourth_from_hour": something
+      #- "fourth_from_minute": something
+      #- "fourth_even_odd": No
+      #- "fourth_split": No
+      #- "labor_to_period": No
+      #- "labor_split_period": No
+      #- "labor_from_period": No
+      #- "labor_to_hour": something
+      #- "labor_to_minute": something
+      #- "labor_split_hour": something
+      #- "labor_split_minute": something
+      #- "labor_from_hour": something
+      #- "labor_from_minute": something
+      #- "labor_even_odd": No
+      #- "labor_split": No
+      #- "thanksgiving_day_to_period": No
+      #- "thanksgiving_day_split_period": No
+      #- "thanksgiving_day_from_period": No
+      #- "thanksgiving_day_to_hour": something
+      #- "thanksgiving_day_to_minute": something
+      #- "thanksgiving_day_split_hour": something
+      #- "thanksgiving_day_split_minute": something
+      #- "thanksgiving_day_from_hour": something
+      #- "thanksgiving_day_from_minute": something
+      #- "thanksgiving_day_even_odd": No
+      #- "thanksgiving_day_split": No
+      #- "thanksgiving_break_to_period": No
+      #- "thanksgiving_break_split_period": No
+      #- "thanksgiving_break_from_period": No
+      #- "thanksgiving_break_to_hour": something
+      #- "thanksgiving_break_to_minute": something
+      #- "thanksgiving_break_split_hour": something
+      #- "thanksgiving_break_split_minute": something
+      #- "thanksgiving_break_from_hour": something
+      #- "thanksgiving_break_from_minute": something
+      #- "thanksgiving_break_even_odd": No
+      #- "thanksgiving_break_split": No
+      #- "christmas_eve_to_period": No
+      #- "christmas_eve_split_period": No
+      #- "christmas_eve_from_period": No
+      #- "christmas_eve_to_hour": something
+      #- "christmas_eve_to_minute": something
+      #- "christmas_eve_split_hour": something
+      #- "christmas_eve_split_minute": something
+      #- "christmas_eve_from_hour": something
+      #- "christmas_eve_from_minute": something
+      #- "christmas_eve_even_odd": No
+      #- "christmas_eve_split": No
+      #- "christmas_day_to_period": No
+      #- "christmas_day_split_period": No
+      #- "christmas_day_from_period": No
+      #- "christmas_day_to_hour": something
+      #- "christmas_day_to_minute": something
+      #- "christmas_day_split_hour": something
+      #- "christmas_day_split_minute": something
+      #- "christmas_day_from_hour": something
+      #- "christmas_day_from_minute": something
+      #- "christmas_day_even_odd": No
+      #- "christmas_day_split": No
+      #- "christmas_break_to_period": No
+      #- "christmas_break_split_period": No
+      #- "christmas_break_from_period": No
+      #- "christmas_break_to_hour": something
+      #- "christmas_break_to_minute": something
+      #- "christmas_break_split_hour": something
+      #- "christmas_break_split_minute": something
+      #- "christmas_break_from_hour": something
+      #- "christmas_break_from_minute": something
+      #- "christmas_break_even_odd": No
+      #- "christmas_break_split": No
+      #- "hanukkah_to_period": No
+      #- "hanukkah_split_period": No
+      #- "hanukkah_from_period": No
+      #- "hanukkah_to_hour": something
+      #- "hanukkah_to_minute": something
+      #- "hanukkah_split_hour": something
+      #- "hanukkah_split_minute": something
+      #- "hanukkah_from_hour": something
+      #- "hanukkah_from_minute": something
+      #- "hanukkah_even_odd": No
+      #- "hanukkah_split": No
+      #- "kwanza_to_period": No
+      #- "kwanza_split_period": No
+      #- "kwanza_from_period": No
+      #- "kwanza_to_hour": something
+      #- "kwanza_to_minute": something
+      #- "kwanza_split_hour": something
+      #- "kwanza_split_minute": something
+      #- "kwanza_from_hour": something
+      #- "kwanza_from_minute": something
+      #- "kwanza_even_odd": No
+      #- "kwanza_split": No
+      #- "other_holiday_to_period": No
+      #- "other_holiday_split_period": No
+      #- "other_holiday_from_period": No
+      #- "other_holiday_to_hour": something
+      #- "other_holiday_to_minute": something
+      #- "other_holiday_split_hour": something
+      #- "other_holiday_split_minute": something
+      #- "other_holiday_from_hour": something
+      #- "other_holiday_from_minute": something
+      #- "other_holiday": something
+      #- "other_holiday_even_odd": No
+      #- "other_holiday_split": No
+      #- "petitioners_to_period": No
+      #- "petitioners_split_period": No
+      #- "petitioners_from_period": No
+      #- "petitioners_to_hour": something
+      #- "petitioners_to_minute": something
+      #- "petitioners_split_hour": something
+      #- "petitioners_split_minute": something
+      #- "petitioners_from_hour": something
+      #- "petitioners_from_minute": something
+      #- "petitioners_even_odd": No
+      #- "petitioners_split": No
+      #- "respondents_to_period": No
+      #- "respondents_split_period": No
+      #- "respondents_from_period": No
+      #- "respondents_to_hour": something
+      #- "respondents_to_minute": something
+      #- "respondents_split_hour": something
+      #- "respondents_split_minute": something
+      #- "respondents_from_hour": something
+      #- "respondents_from_minute": something
+      #- "respondents_even_odd": No
+      #- "respondents_split": No
+      #- "p_birthday_to_period": No
+      #- "p_birthday_split_period": No
+      #- "p_birthday_from_period": No
+      #- "p_birthday_to_hour": something
+      #- "p_birthday_to_minute": something
+      #- "p_birthday_split_hour": something
+      #- "p_birthday_split_minute": something
+      #- "p_birthday_from_hour": something
+      #- "p_birthday_from_minute": something
+      #- "p_birthday_even_odd": No
+      #- "p_birthday_split": No
+      #- "r_birthday_to_period": No
+      #- "r_birthday_split_period": No
+      #- "r_birthday_from_period": No
+      #- "r_birthday_to_hour": something
+      #- "r_birthday_to_minute": something
+      #- "r_birthday_split_hour": something
+      #- "r_birthday_split_minute": something
+      #- "r_birthday_from_hour": something
+      #- "r_birthday_from_minute": something
+      #- "r_birthday_even_odd": No
+      #- "r_birthday_split": No
+      #- "child_birthday_to_period": No
+      #- "child_birthday_split_period": No
+      #- "child_birthday_from_period": No
+      #- "child_birthday_to_hour": something
+      #- "child_birthday_to_minute": something
+      #- "child_birthday_split_hour": something
+      #- "child_birthday_split_minute": something
+      #- "child_birthday_from_hour": something
+      #- "child_birthday_from_minute": something
+      #- "child_birthday_even_odd": No
+      #- "child_birthday_split": No
+      #- "halloween_to_period": No
+      #- "halloween_split_period": No
+      #- "halloween_from_period": No
+      #- "halloween_to_hour": something
+      #- "halloween_to_minute": something
+      #- "halloween_split_hour": something
+      #- "halloween_split_minute": something
+      #- "halloween_from_hour": something
+      #- "halloween_from_minute": something
+      #- "halloween_even_odd": No
+      #- "halloween_split": No
+      #- "other_occasion1_to_period": No
+      #- "other_occasion1_split_period": No
+      #- "other_occasion1_from_period": No
+      #- "other_occasion1_to_hour": something
+      #- "other_occasion1_to_minute": something
+      #- "other_occasion1_split_hour": something
+      #- "other_occasion1_split_minute": something
+      #- "other_occasion1_from_hour": something
+      #- "other_occasion1_from_minute": something
+      #- "other_occasion_1": something
+      #- "other_occasion1_even_odd": No
+      #- "other_occasion1_split": No
+      #- "other_occasion2_to_period": No
+      #- "other_occasion2_split_period": No
+      #- "other_occasion2_from_period": No
+      #- "other_occasion2_to_hour": something
+      #- "other_occasion2_to_minute": something
+      #- "other_occasion2_split_hour": something
+      #- "other_occasion2_split_minute": something
+      #- "other_occasion2_from_hour": something
+      #- "other_occasion2_from_minute": something
+      #- "other_occasion_2": something
+      #- "other_occasion2_even_odd": No
+      #- "other_occasion2_split": No
+      #- "detailed_parenting_plan": something
+      #- "p_duration_type": No
+      #- "p_duration": something
+      #- "r_duration_type": No
+      #- "r_duration": something
+      #- "summer_detail": something
+      #- "legal_custodian": No
+      #- "even_year_custodian": No
+      #- "odd_year_custodian": No
+      #- "minor_1_legal_custodian": No
+      #- "minor_2_legal_custodian": No
+      #- "minor_3_legal_custodian": No
+      #- "minor_4_legal_custodian": No
+      #- "minor_5_legal_custodian": No
+      #- "weekday_transfer_location": No
+      #- "weekday_other_transfer_location": something
+      #- "weekday_transfer_period": No
+      #- "weekday_transfer_hour": something
+      #- "weekday_transfer_minute": something
+      #- "weekday_transfer_detail": something
+      #- "weekend_transfer_location": No
+      #- "weekend_other_transfer_location": something
+      #- "weekend_transfer_period": No
+      #- "weekend_transfer_hour": something
+      #- "weekend_transfer_minute": something
+      #- "weekend_transfer_detail": something
+      #- "transportation_arrangements": No
+      #- "transportation_details": something
+      #- "special_travel": No
+      #- "special_travel_parent": No
+      #- "special_travel_details": something
+      #- "child_call_anytime": No
+      #- "child_call_weekday_from_period": No
+      #- "child_call_weekday_to_period": No
+      #- "child_call_weekdays": No
+      #- "child_call_weekday_from_hour": something
+      #- "child_call_weekday_from_minute": something
+      #- "child_call_weekday_to_hour": something
+      #- "child_call_weekday_to_minute": something
+      #- "child_call_weekend_to_period": No
+      #- "child_call_weekend_from_period": No
+      #- "child_call_weekends": No
+      #- "child_call_weekend_from_hour": something
+      #- "child_call_weekend_from_minute": something
+      #- "child_call_weekend_to_hour": something
+      #- "child_call_weekend_to_minute": something
+      #- "child_call_other": No
+      #- "child_call_other_detail": something
+      #- "child_call_call_cost_paid_by": something
+      #- "parent_call_anytime": No
+      #- "parent_call_weekday_from_period": No
+      #- "parent_call_weekday_to_period": No
+      #- "parent_call_weekdays": No
+      #- "parent_call_weekday_from_hour": something
+      #- "parent_call_weekday_from_minute": something
+      #- "parent_call_weekday_to_hour": something
+      #- "parent_call_weekday_to_minute": something
+      #- "parent_call_weekend_to_period": No
+      #- "parent_call_weekend_from_period": No
+      #- "parent_call_weekends": No
+      #- "parent_call_weekend_from_hour": something
+      #- "parent_call_weekend_from_minute": something
+      #- "parent_call_weekend_to_hour": something
+      #- "parent_call_weekend_to_minute": something
+      #- "parent_call_other": No
+      #- "parent_call_other_detail": something
+      #- "parent_call_call_cost_paid_by": something
+      - "activites": True
+      - "address_change": True
+      - "no_disparaging_remarks": True
+      - "prevent_others_disparaging": True
+      - "no_fighting": True
+      #- "not_schedule_during_time": No
+      #- "except": something
+      #- "other_communication_details": something
+      #- "no_punishment": No
+      #- "request_by": No
+      #- "in_writing": No
+      #- "email": No
+      #- "in_person": No
+      #- "phone": No
+      #- "making_request": No
+      #- "make_request_no_more_than": something
+      #- "receiving_request": No
+      #- "reply_no_more_than": something
+      #- "respond_by": No
+      #- "requesting_responsible_for_costs": No
+      #- "other_arrangements": No
+      #- "other_arrangements_details": something
+      #- "reside_while_deployed": No
+      #- "other_individual_detail": something
+      #- "after_deployment": No
+      #- "other_schedule_details": something
+      #- "additional_terms": No
+      #- "additional_terms_detail": something
+      #- "disagreement_resolution": No
+      #- "counselor": something
+      #- "mediator": something
+      #- "other_means_details": something
+      #- "r_percent_disagreement": something
+      #- "p_percent_disagreement": something
+      #- "person_deciding": No
+      #- "notify_mail": No
+      #- "notify_writing": No
+      #- "notify_phone": No
+      #- "notify_person": No
+      #- "notify_other": No
+      #- "notify_other_detail": something
+---
+# Parenting Plan Worksheet - 128
+attachment:
+  - name: sca_fc_128
+    filename: sca_fc_128
+    pdf template file: sca_fc_128.pdf
+    variable name: sca_fc_128
+    fields:
+      - "upper_court": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "individual": ${ client.name.full(middle="full") }
+      - "date_af_date": ${ today() }
+      #- "minor_list": something
+      #- "p_daily": something
+      #- "r_daily": something
+      #- "p_development": something
+      #- "r_development": something
+      #- "p_behavior": something
+      #- "r_behavior": something
+      #- "p_education": something
+      #- "r_educaiton": something
+      #- "p_social": something
+      #- "r_social": something
+      #- "p_health": something
+      #- "r_health": something
+      #- "p_moral": something
+      #- "r_moral": something
+      #- "p_child_care": something
+      #- "r_child_care": something
+      #- "all_decisions": No
+      #- "education_shared": something
+      #- "education_p": something
+      #- "education_r": something
+      #- "health_shared": something
+      #- "health_p": something
+      #- "health_r": something
+      #- "religion_shared": something
+      #- "religion_p": something
+      #- "religion_r": something
+      #- "child_care_shared": something
+      #- "child_care_p": something
+      #- "child_care_r": something
+      #- "school_shared": something
+      #- "school_p": something
+      #- "school_r": something
+      #- "other_category1": something
+      #- "other_category1_shared": something
+      #- "other_category1_p": something
+      #- "other_category1_r": something
+      #- "other_category2": something
+      #- "other_category2_shared": something
+      #- "other_category2_p": something
+      #- "other_category2_r": something
+      #- "p_work_schedule": something
+      #- "r_work_schedule": something
+      #- "no_school": No
+      #- "school_minors": something
+      #- "school_detail": something
+      #- "no_child_care": No
+      #- "child_care_minors": something
+      #- "child_care_detail": something
+      #- "other_detail": something
+---
+# Motion to Adopt Individual Proposed Parenting Plan - 129
+attachment:
+  - name: sca_fc_129
+    filename: sca_fc_129
+    pdf template file: sca_fc_129.pdf
+    variable name: sca_fc_129
+    fields:
+      - "upper_county": ${ client.address.county.upper() }
+      #- "case_num": something
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "p_name": ${ client.name.full(middle="full") }
+      - "opposing_party": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "individual": ${ client.name.full(middle="full") }
+      - "county": ${ client.address.county }
+      #- "hearing_period": No
+      #- "hearing_day": something
+      #- "hearing_hour": something
+      #- "hearing_minute": something
+      #- "hearing_month": something
+      #- "hearing_year": something
+      #- "Signature": ${ user.signature }
+      #- "Date": something
+      #- "opposing_address": something
+      #- "service_year": something
+      #- "service_day": something
+      #- "service_month": something
+      #- "Signature_2": ${ user.signature }
+      #- "Date_2": something
+---
+# BCSE Application - fdvcsap
+attachment:
+  - name: fdvcsap
+    filename: fdvcsap
+    pdf template file: fdvcsap.pdf
+    variable name: fdvscap
+    fields:
+      - "existing_support_order": False
+      - "p_name": ${ client.name.full(middle="full") }
+      - "p_dob": ${ client.birthdate }
+      - "p_ssn": ${ client.ssn }
+      #- "p_relationship": something
+      - "p_gender": ${ client.gender.lower() }
+      - "p_address": ${ client.address.on_one_line() }
+      #- "p_mailing_address": something
+      - "p_phone": ${ client.phone_number }
+      #- "p_license": something
+      - "r_name": ${ legalserver_adverse_parties[0].name.full(middle="full") }
+      - "r_dob": ${ legalserver_adverse_parties[0].date_of_birth }
+      - "r_ssn": ${ legalserver_adverse_parties[0].ssn }
+      - "r_gender": ${ legalserver_adverse_parties[0].gender.lower() }
+      #- "r_relationship": something
+      - "r_address": ${ legalserver_adverse_parties[0].address.on_one_line() }
+      #- "r_mailing_address": something
+      - "r_phone": ${ legalserver_adverse_parties[0].phone_home }
+      #- "r_license": something
+      - "minor_1_name": ${ children[0].name.full() if defined("children[0]") else ""}
+      - "minor_1_dob": ${ children[0].date_of_birth if (defined("children[0]") and defined("children[0].date_of_birth")) else ""}
+      - "minor_1_ssn": ${ children[0].ssn if (defined("children[0]") and defined("children[0].ssn")) else ""}
+      #- "minor_1_gender": something
+      #- "minor_1_custodian": something
+      - "minor_2_name": ${ children[1].name.full() if defined("children[1]") else ""}
+      - "minor_2_dob": ${ children[1].date_of_birth if (defined("children[1]") and defined("children[1].date_of_birth")) else ""}
+      - "minor_2_ssn": ${ children[1].ssn if (defined("children[1]") and defined("children[1].ssn")) else ""}
+      #- "minor_2_gender": something
+      #- "minor_2_custodian": something
+      - "minor_3_name": ${ children[2].name.full() if defined("children[2]") else ""}
+      - "minor_3_dob": ${ children[2].date_of_birth if (defined("children[2]") and defined("children[2].date_of_birth")) else ""}
+      - "minor_3_ssn": ${ children[2].ssn if (defined("children[2]") and defined("children[2].ssn")) else ""}
+      #- "minor_3_gender": something
+      #- "minor_3_custodian": something
+      - "minor_4_name": ${ children[3].name.full() if defined("children[3]") else ""}
+      - "minor_4_dob": ${ children[3].date_of_birth if (defined("children[3]") and defined("children[3].date_of_birth")) else ""}
+      - "minor_4_ssn": ${ children[3].ssn if (defined("children[3]") and defined("children[3].ssn")) else ""}
+      #- "minor_4_gender": something
+      #- "minor_4_custodian": something
+      #- "employer_address": something
+      #- "tanf": No
+      #- "dhhr_child_support": No
+      #- "agreement": No
+      #- "bcse_services": No
+      #- "confidential": No
+---
