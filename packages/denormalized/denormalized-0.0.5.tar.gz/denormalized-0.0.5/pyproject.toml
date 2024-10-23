@@ -1,0 +1,43 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "denormalized"
+requires-python = ">=3.12"
+classifiers = [ ]
+dynamic = ["version"] # Version specified in py-denormalized/Cargo.toml
+description = ""
+dependencies = [
+    "pyarrow>=17.0.0",
+    "datafusion>=40.1.0",
+]
+
+[project.optional-dependencies]
+tests = ["pytest"]
+feast = ["feast"]
+
+[tool.maturin]
+python-source = "python"
+features = ["pyo3/extension-module"]
+module-name = "denormalized._internal"
+manifest-path = "py-denormalized/Cargo.toml"
+
+[tool.rye]
+dev-dependencies = ["pip>=24.2", "ipython>=8.26.0", "pytest>=8.3.2"]
+
+# Enable docstring linting using the google style guide
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "D", "W"]
+ignore = ["D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+
+[tool.basedpyright]
+include = ["python"]
+exclude = ["src"]
+typeCheckingMode = "standard"
