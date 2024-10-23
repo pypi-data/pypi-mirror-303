@@ -1,0 +1,100 @@
+Metadata-Version: 2.1
+Name: mcore
+Version: 0.0.2
+Summary: MiniFw Base
+Author: KateTsengK
+Author-email: cu2171505467@gmail.com
+License: MIT
+Keywords: Auto Script Testing
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic
+
+# Documentation for Geometry and Color Models
+
+This document provides an overview of the `Point`, `Rect`, `RGB`, and `Size` classes implemented using Pydantic for validation and type enforcement.
+
+## Point Class
+
+The `Point` class represents a point in a 2D space with non-negative coordinates.
+
+### Attributes
+- `x`: The x-coordinate (non-negative integer).
+- `y`: The y-coordinate (non-negative integer).
+
+### Methods
+- `is_in_rect(rect: 'Rect') -> bool`: Checks if the point is inside the given rectangle.
+- `offset(dx: int = 0, dy: int = 0) -> 'Point'`: Returns a new `Point` offset by specified amounts.
+
+---
+
+## Rect Class
+
+The `Rect` class represents a rectangle defined by its position and dimensions.
+
+### Attributes
+- `x`: The x-coordinate of the rectangle's top-left corner (non-negative integer).
+- `y`: The y-coordinate of the rectangle's top-left corner (non-negative integer).
+- `w`: The width of the rectangle (greater than zero).
+- `h`: The height of the rectangle (greater than zero).
+
+### Methods
+- `__contains__(item: 'Rect')`: Checks if another rectangle is contained within this rectangle.
+- `size() -> 'Size'`: Returns the size of the rectangle.
+- `center() -> 'Point'`: Returns the center point of the rectangle.
+- `left_top() -> 'Point'`: Returns the top-left corner point.
+- `right_top() -> 'Point'`: Returns the top-right corner point.
+- `right_bottom() -> 'Point'`: Returns the bottom-right corner point.
+- `left_bottom() -> 'Point'`: Returns the bottom-left corner point.
+
+---
+
+## RGB Class
+
+The `RGB` class represents a color in the RGB color model.
+
+### Attributes
+- `r`: Red component (integer between 0 and 255).
+- `g`: Green component (integer between 0 and 255).
+- `b`: Blue component (integer between 0 and 255).
+
+### Methods
+- `is_similar(other: 'RGB', threshold: int = 4) -> bool`: Checks if two RGB colors are similar within a threshold.
+- `__hex__() -> str`: Converts the RGB color to a hexadecimal string.
+- `from_hex(hex_str: str) -> 'RGB'`: Creates an RGB object from a hexadecimal string.
+- `hex() -> str`: Returns the hexadecimal representation of the color.
+- `__int__() -> int`: Converts the RGB object to an integer representation.
+- `from_int(color: int) -> 'RGB'`: Creates an RGB object from an integer value.
+- `int() -> int`: Returns the integer representation of the color.
+
+---
+
+## Size Class
+
+The `Size` class represents the dimensions of an object.
+
+### Attributes
+- `width`: The width of the object (greater than zero).
+- `height`: The height of the object (greater than zero).
+
+### Methods
+- `area() -> int`: Calculates the area of the size.
+
+---
+
+### Usage Example
+
+```python
+point = Point(x=5, y=10)
+rectangle = Rect(x=0, y=0, w=10, h=20)
+color = RGB(r=255, g=0, b=0)
+size = Size(width=10, height=20)
+
+# Check if point is in rectangle
+is_inside = point.is_in_rect(rectangle)
+
+# Calculate area of size
+area = size.area()
+```
+
+This documentation should serve as a comprehensive guide to understanding and using the defined classes.
