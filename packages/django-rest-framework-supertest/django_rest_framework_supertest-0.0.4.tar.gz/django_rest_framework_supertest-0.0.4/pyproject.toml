@@ -1,0 +1,57 @@
+[project]
+requires-python = ">= 3.8"
+name = 'django-rest-framework-supertest'
+version = '0.0.4'
+description = "A set of utilities to test django-rest-framework API's"
+dependencies = [
+  'Django>=4.2',
+  'djangorestframework',
+  'Faker',
+]
+authors = [{name = "Eduardo Oliveira", email = "eduardo_y05@outlook.com"}]
+maintainers = [{name = "Eduardo Oliveira", email = "eduardo_y05@outlook.com"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["django", "rest", "rest_framework", "drf", "test"]
+classifiers = [
+  'Development Status :: 5 - Production/Stable',
+  'Environment :: Web Environment',
+  'Framework :: Django',
+  'Intended Audience :: Developers',
+  'License :: OSI Approved :: MIT License',
+  'Operating System :: OS Independent',
+  'Programming Language :: Python',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.8',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11',
+  'Programming Language :: Python :: 3.12',
+]
+
+[project.optional-dependencies]
+dev = ["black", "isort", "pre-commit"]
+image = ["Pillow"]
+jwt = ["djangorestframework-simplejwt"]
+test = ["coverage", "coveralls"]
+docs = ["mkdocs", "mkdocs-material", "mkdocs-glightbox", "mkdocs-awesome-pages-plugin"]
+
+[project.urls]
+homepage = "https://github.com/inventare/django-rest-framework-supertest/"
+documentation = "https://inventare.github.io/django-rest-framework-supertest/"
+
+[build-system]
+requires = ["setuptools", "build"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = 'black'
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+packages = ["rest_framework_supertest"]
