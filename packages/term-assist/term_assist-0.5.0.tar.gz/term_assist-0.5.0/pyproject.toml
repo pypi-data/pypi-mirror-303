@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "term-assist"
+version = "0.5.0"
+authors = [
+    { name = "Logan Kirkland", email = "logan@logankirk.land" }
+]
+maintainers = [
+    { name = "Logan Kirkland", email = "logan@logankirk.land" }
+]
+description = """An AI assistant for your terminal."""
+readme = "README.md"
+license = { file = "COPYING" }
+dependencies = [
+    "anthropic~=0.25.8",
+    "keyboard~=0.13.5",
+    "openai~=1.52.0",
+    "pyperclip~=1.9.0",
+    "PyYAML~=6.0.1"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://sr.ht/~logankirkland/term-assist/"
+Repository = "https://git.sr.ht/~logankirkland/term-assist"
+"Bug Tracker" = "https://todo.sr.ht/~logankirkland/term-assist"
+"Mailing List" = "https://lists.sr.ht/~logankirkland/term-assist"
+
+[project.optional-dependencies]
+develop = [
+    "build",
+    "twine",
+    "black",
+    "pytest"
+]
+
+[project.scripts]
+ta = "term_assist.main:main"
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
