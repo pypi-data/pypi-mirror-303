@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package share_service;
+
+import "google/protobuf/empty.proto";  // Import Google's well-known Empty type
+
+// Enum to represent the type of shares used in secret sharing.
+// ARITHMETIC: Represents shares in an arithmetic scheme (e.g., additive secret sharing).
+// BINARY: Represents shares in a binary scheme (e.g., bitwise secret sharing).
+enum ShareType {
+  ARITHMETIC = 0;  // Arithmetic secret sharing type
+  BINARY = 1;      // Binary secret sharing type
+}
+
+// Enum to represent the type of model used for predictions.
+// LE_NET_5: Represents the LeNet-5 model for image classification.
+// BERT_TINY: Represents a small version of the BERT model for natural language processing.
+enum ModelType {
+  MeshKeepAlive = 0; // MeshKeepAlive model to keep cluster connected
+  LeNet5 = 1;        // LeNet-5 model
+  BertTiny = 2;     // BERT Tiny model
+}
+
+// Service for secret sharing-related operations, such as configuration and predictions.
+service Proxy {
+
+  // Retrieves the server configuration, including world size, precision, and available models.
+  // The request is empty and uses the well-known Empty type.
+  rpc GetServerConfiguration(google.protobuf.Empty) returns (ServerConfiguration) {}
+
+  // Sends a batch of shares to the server for prediction, and returns the server's prediction.
+  // The request and response are both of type `Shares`.
+  rpc GetPrediction(ClientShares) returns (ClientShares) {}
+
+  // Requests preprocessing of data for a specific model. 
+  // The server processes the request and returns an empty response upon completion.
+  rpc GetPreprocessing(PreprocessingRequest) returns (google.protobuf.Empty) {}
+
+  // Streams model data to the server in chunks. The client sends chunks of the model sequentially.
+  // The server responds with a `ModelResponse` once the entire model is received.
+  rpc SendModel(stream ModelChunk) returns (ModelResponse);
+}
+
+// Service for secret sharing-related operations, such as configuration and predictions.
+service Share {
+
+  // Retrieves the server configuration, including world size, precision, and available models.
+  // The request is empty and uses the well-known Empty type.
+  rpc GetServerConfiguration(google.protobuf.Empty) returns (ServerConfiguration) {}
+
+  // Sends a batch of shares to the server for prediction, and returns the server's prediction.
+  // The request and response are both of type `Shares`.
+  rpc GetPrediction(Shares) returns (Shares) {}
+
+  // Requests preprocessing of data for a specific model. 
+  // The server processes the request and returns an empty response upon completion.
+  rpc GetPreprocessing(PreprocessingRequest) returns (google.protobuf.Empty) {}
+}
+
+// Service for model-related operations, specifically for transferring models to the server.
+service Model {
+
+  // Streams model data to the server in chunks. The client sends chunks of the model sequentially.
+  // The server responds with a `ModelResponse` once the entire model is received.
+  rpc SendModel(stream ModelChunk) returns (ModelResponse);
+}
+
+// Represents a chunk of model data for streaming from the client to the server.
+// The model is divided into multiple chunks, each containing a part of the model file.
+message ModelChunk {
+  bytes data = 1;             // A portion of the model file (binary data).
+  int64 chunk_number = 2;     // The sequential number of the chunk.
+  string model = 3;           // The name of the model to which the chunk belongs.
+  ModelType model_type = 4;   // The model family to which the model belongs (e.g., LeNet-5, BERT).
+}
+
+// Represents the server's response after successfully receiving a model.
+message ModelResponse {
+  string message = 1;  // Response message indicating success or failure.
+}
+
+// Contains the configuration of the server, including its world size, precision, and available models.
+message ServerConfiguration {
+  int32 world_size = 1;                // The number of participating clients in the system (e.g., parties in MPC).
+  int32 precision = 2;                 // The precision used for floating-point numbers or fixed-point arithmetic.
+  repeated string models = 3;          // A list of model names available on the server.
+  repeated ModelType model_types = 4;  // A list of model types associated to each model on the server.
+}
+
+// Represents a set of secret shares and metadata for a specific model.
+// This is used both as a request and a response in the `GetPrediction` RPC.
+message Shares {
+  repeated int64 shares = 1;     // The list of secret shares.
+  repeated int32 shape = 2;      // The shape of the tensor represented by the shares (e.g., [batch_size, num_features]).
+  int32 precision = 3;           // The precision of the shares (similar to the one in `ServerConfiguration`).
+  ShareType type = 4;            // The type of shares (ARITHMETIC or BINARY).
+  string model = 5;              // The name of the model to which the shares pertain.
+  ModelType model_type = 6;      // The model family to which the model belongs (e.g., LeNet-5, BERT).
+}
+
+message ClientShares{
+  repeated Shares shares = 1;
+}
+// Represents a request to trigger preprocessing on a specific model.
+// The server will process this request and prepare the model for future predictions.
+message PreprocessingRequest {
+  ModelType model_type = 1;  // The name of the model for which preprocessing is requested.
+}

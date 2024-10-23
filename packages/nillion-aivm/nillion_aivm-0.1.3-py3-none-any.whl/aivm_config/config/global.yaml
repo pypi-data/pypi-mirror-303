@@ -1,0 +1,17 @@
+disable_preprocessing: False
+models:
+  BertTinySMS:
+    type: BertTiny
+  LeNet5MNIST:
+    type: LeNet5
+    weights: "cnn_models/lenet5.pth"
+model_types:
+  # Ordering of models in this file needs to match: nillion-aivm/packages/aivm_grpc/aivm_grpc/aivm_grpc.proto
+  LeNet5:
+    input_shape: [1, 1, 28, 28]
+    preprocessing_elements: 2
+    preprocessing_model: LeNet5MNIST
+  BertTiny:
+    input_shape: [2, 128]
+    preprocessing_elements: 2
+    preprocessing_model: BertTinySMS

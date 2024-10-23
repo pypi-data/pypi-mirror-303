@@ -1,0 +1,1 @@
+   poetry run aivm_config_gen aivm-config/aivm_config/launch_config/localhost.yaml --prefix localhost --output_dir /tmp/

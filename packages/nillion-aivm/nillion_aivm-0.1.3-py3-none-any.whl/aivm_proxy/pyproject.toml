@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "aivm-proxy"
+version = "0.1.0"
+description = ""
+authors = ["José Cabrero-Holgueras <jose.cabrero@nillion.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+#aivm-grpc = {path = "../packages/aivm_grpc", develop = true}
+#aivm-config = {path = "../aivm-config", develop = true}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+aivm_proxy = "aivm_proxy:main"
