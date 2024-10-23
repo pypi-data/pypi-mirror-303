@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: KSockets
+Version: 1.0.1
+Summary: A very simple python sockets
+Author-email: Milbert Jr Macarambon <support@kinuseka.us>
+Project-URL: homepage, https://gitlab.com/mcaffeine/SimpleSocket
+Keywords: python,sockets,networking,communication
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS
+Classifier: Intended Audience :: Developers
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: loguru>=0.7.2
+Requires-Dist: semver<4,>=3
+
+# KSockets
+Make sockets super simple!
+
+## KSockets
+KSockets is a super simple socket integration on python. It ensures reliable TCP communication without having to do many specific setups.
+
+## Installation
+As it had not been published yet to PYPi installation is not possible
+
+## Usage
+Client:
+```py
+from KSockets import SimpleClient
+client = SimpleClient(("127.0.0.1",3001))
+client.connect()
+```
+Server: 
+```py
+from KSockets import SimpleServer
+server = SimpleServer(chunks=8196)
+server.create_server()
+server.listen()
+```
+
+## Support
+Contact support@kinuseka.us for any queries
+
+## License
+/* Copyright (C) Kinuseka, - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Milbert Jr. Macarambon <mmacarambon@kinuseka.us>, January 2024
+ */
+
