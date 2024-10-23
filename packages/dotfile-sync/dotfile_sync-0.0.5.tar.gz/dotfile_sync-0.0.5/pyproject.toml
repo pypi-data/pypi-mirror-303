@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dotfile_sync"
+version = "0.0.5"
+authors = [{ name = 'aquanjsw', email = 'zhdlcc@gmail.com' }]
+description = 'dotfile sycn auxiliary tool for scp'
+readme = 'README.md'
+requires-python = ">=3.8"
+dependencies = ['pyyaml']
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+dotfile-sync = 'dotfile_sync.main:main'
+
+[project.urls]
+Homepage = "https://github.com/aquanjsw/dotfile-sync"

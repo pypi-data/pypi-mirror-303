@@ -1,0 +1,56 @@
+Metadata-Version: 2.3
+Name: dotfile_sync
+Version: 0.0.5
+Summary: dotfile sycn auxiliary tool for scp
+Project-URL: Homepage, https://github.com/aquanjsw/dotfile-sync
+Author-email: aquanjsw <zhdlcc@gmail.com>
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Requires-Dist: pyyaml
+Description-Content-Type: text/markdown
+
+# dotfile-sync
+
+An auxiliary tool for syncing dotfiles using `scp`.
+
+The only usage is:
+
+```bash
+dotfile-sync <remote-host> <remote-path> <local-path>
+```
+
+Example:
+
+![example](assets/example.gif)
+
+which is roughly equivalent to:
+
+```bash
+# Make tmpdirs
+tmp=$(mktemp -d)
+mkdir -p $tmp/local
+mkdir -p $tmp/remote
+
+# We work on tmps
+cp ~/.zshrc $tmp/local/.zshrc
+scp <remote-host>:~/.zshrc $tmp/remote/.zshrc
+
+# Show diff
+git diff --no-index $tmp/local/.zshrc $tmp/remote/.zshrc
+
+# If you choose to edit interactively
+git difftool --no-index $tmp/local/.zshrc $tmp/remote/.zshrc
+
+# If you choose to sync with local tmp
+#   local backup
+cp ~/.zshrc ~/.zshrc.dsbak
+#   sync
+cp $tmp/local/.zshrc ~/.zshrc
+```
+
+## Install
+
+```bash
+pipx install dotfile-sync
+```

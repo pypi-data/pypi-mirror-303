@@ -1,0 +1,28 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "rm -rf dist && python -m build"
+    }
+    {
+      "label": "Publish to TestPyPi",
+      "type": "shell",
+      "dependsOn": [
+        "Build"
+      ],
+      "command": "twine upload --repository testpypi dist/*"
+    },
+    {
+      "label": "Publish to PyPi",
+      "type": "shell",
+      "dependsOn": [
+        "Build"
+      ],
+      "command": "twine upload --repository pypi dist/*"
+    }
+  ]
+}
