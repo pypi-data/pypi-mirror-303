@@ -1,0 +1,6 @@
+## 📓 References
+
+{% if references|length == 0 %}No references.{% endif %}
+{% for reference in references %}
+[{{ loop.index }}] "{{ reference.description }}," *{{ reference.title }}*, {{ reference.year }}. [Online] Available: {{ reference.url }} (accessed {{ reference.date_accessed }}).
+{% endfor %}
