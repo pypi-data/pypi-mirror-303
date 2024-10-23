@@ -1,0 +1,17 @@
+##Libreria Franco De Angelis##
+import LibFranco as fd
+data = fd.TDMS(r\"stall load sn0001.tdms\") 
+forza=data.col(\"/'Forza [N]'/'D1.BW01 [N]'\") 
+timef=data.colonna(\"Forza*Time\") 
+spos=data.col(\"*Spostamento [mm]*D1.BG01*\") 
+velox=data.colonna(\"/'Velocità [mm/s]'/'D1.BV01 [mm/s]'\") 
+correGS1=data.colonna(\"/'Corrente [mA]'/'T1.GS1.FBK.I [A]'\") 
+correGS2=data.colonna(\"/'Corrente [mA]'/'T1.GS2.FBK.I [A]'\") 
+a=fd.GRAFICO('bello') 
+a.xylabels('assexx','asseyY') 
+a.curvecolor('blue') 
+a.label('bello') 
+a.plot([timef,forza],'label','red') 
+b=fd.GRAFICO('titolo',(20,10)) 
+b.xlabel('assexxAAA') 
+b.plot2assi(([timef,forza],'Forza (N)','red'),([timef,spos],'disp (mm)','magenta')) 
