@@ -1,0 +1,96 @@
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".coverage",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pycache__",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "*.egg-info",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Minimum supported Python version 3.10
+target-version = "py310"
+
+[lint]
+# E: pycodestyle (Error: https://docs.astral.sh/ruff/rules/#pycodestyle-e-w)
+# F: Pyflakes (https://docs.astral.sh/ruff/rules/#pyflakes-f)
+# W: pycodestyle (Warning: https://docs.astral.sh/ruff/rules/#warning-w)
+# I: isort (https://docs.astral.sh/ruff/rules/#isort-i)
+# N: pep8-naming (https://docs.astral.sh/ruff/rules/#pep8-naming-n)
+# D: pydocstyle (https://docs.astral.sh/ruff/rules/#pydocstyle-d)
+# C: flake8-comprehensions (https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4)
+# PT: flake8-pytest-style (https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt)
+# INP001: flake8-no-pep420 (https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp)
+# T20: flake8-print (https://docs.astral.sh/ruff/rules/#flake8-print-t20)
+# ARG: flake8-unused-arguments (https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg)
+# ERA001: eradicate (https://docs.astral.sh/ruff/rules/#eradicate-era)
+# NPY: NumPy-specific rules (https://docs.astral.sh/ruff/rules/#numpy-specific-rules-npy)
+preview = true
+select = ["E", "F", "W", "I", "N", "D", "C", "PT", "INP001", "T20", "ARG", "ERA001", "NPY"]
+ignore = ["C419", ]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Ignore rules per file, e.g,
+[lint.per-file-ignores]
+"**/donothing/*.py" = ["T201", "D", "ARG002"]
+"**/docs/source/conf.py" = ["INP001", "ERA001", "D100"]
+"**/gordias/__init__.py" = ["D205", "D400"]
+
+# import aliases
+[lint.flake8-import-conventions.aliases]
+numpy = "np"
+pandas = "pa"
+
+# do not use empty parentheses on fixtures
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+
+# pydocstyle
+[lint.pydocstyle]
+convention = "numpy"
+
+[format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"

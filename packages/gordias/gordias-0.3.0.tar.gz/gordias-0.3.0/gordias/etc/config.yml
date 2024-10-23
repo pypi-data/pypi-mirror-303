@@ -1,0 +1,75 @@
+---
+config:
+   global_attributes:
+      input:
+         default: equalize
+         drop:
+            # CORDEX and CMIP attributes that are transferred (see below)
+            - driving_experiment_name
+            - model_id
+            - rcm_version_id
+            - driving_model_id
+            - tracking_id
+            - creation_date
+            - driving_model_ensemble_member
+            - history
+            - history_of_appended_files
+            - institution
+            - institute_id
+            - references
+            - product
+            - contact
+            - software
+            - project_id
+            - experiment
+            - experiment_id
+            - driving_experiment
+            - initialization_method
+            - physics_version
+            - realization
+            - source
+            - table_id
+            - title
+         transfer:
+            scenario:
+               - driving_experiment_name
+            rcm:
+               - model_id
+               - rcm_version_id
+            gcm:
+               - driving_model_id
+            gcm_ensemble_member:
+               - driving_model_ensemble_member
+            tracking-id_creation-date:
+               - tracking_id
+               - creation_date
+            history-attribute:
+               - history
+               - history_of_appended_files
+            input_frequency:
+               - frequency
+            input_institution:
+               - institution
+            input_institute_id:
+               - institute_id
+            input_references:
+               - references
+            input_product:
+               - product
+            input_contact:
+               - contact
+            input_software:
+               - software
+            input_project_id:
+               - project_id
+            CORDEX_domain:
+               - CORDEX_domain
+
+      output:
+         create:
+            institution: "Swedish Meteorological and Hydrological Institute, Rossby Centre"
+            institute_id: SMHI
+            references: "https://www.smhi.se/en/research/research-departments/climate-research-at-the-rossby-centre"
+            creation_date: "{NOW}"
+            software: "{GORDIAS_VERSION}"
+            Conventions: "{CF_CONVENTIONS_VERSION}"
