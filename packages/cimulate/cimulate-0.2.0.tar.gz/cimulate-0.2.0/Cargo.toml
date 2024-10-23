@@ -1,0 +1,21 @@
+[package]
+name = "cimulate"
+version = "0.1.3"
+edition = "2021"
+
+[dependencies]
+num-complex = "0.4.6"
+rustfft = "6.2.0"
+pyo3 = { version = "0.22.5", features = [
+    "abi3",
+    "extension-module",
+    "num-complex",
+], optional = true }
+
+[lib]
+name = "cimulate"
+crate-type = ["lib", "cdylib"]
+
+[features]
+default = ["python"]
+python = ["pyo3"]
