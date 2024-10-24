@@ -1,0 +1,197 @@
+Metadata-Version: 2.1
+Name: akenoai
+Version: 1.2.3
+Summary: AkenoAi Python Wrapper For Plus+
+Home-page: https://api.randydev.my.id
+Author: TeamKillerX
+Author-email: killerx@randydev.my.id
+License: MIT
+Project-URL: Docs, https://docs.randydev.my.id/
+Project-URL: Source, https://github.com/TeamKillerX/RyuzakiLib/
+Project-URL: Issues, https://github.com/TeamKillerX/RyuzakiLib/issues
+Keywords: API,akeno-lib
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Requires-Python: ~=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Provides-Extra: all
+Requires-Dist: aiohttp ; extra == 'all'
+Requires-Dist: aiofiles ; extra == 'all'
+Requires-Dist: pyrogram ; extra == 'all'
+Requires-Dist: bs4 ; extra == 'all'
+Requires-Dist: google-search-results ; extra == 'all'
+Requires-Dist: httpx[http2] ; extra == 'all'
+Requires-Dist: Python-IO ; extra == 'all'
+Requires-Dist: Pillow ; extra == 'all'
+Requires-Dist: openai ; extra == 'all'
+Requires-Dist: tqdm ; extra == 'all'
+Requires-Dist: pre-commit ; extra == 'all'
+Requires-Dist: gpytranslate ; extra == 'all'
+Requires-Dist: Flask ; extra == 'all'
+Requires-Dist: pymongo ; extra == 'all'
+Requires-Dist: pytz ; extra == 'all'
+Requires-Dist: urllib3 ; extra == 'all'
+Requires-Dist: pydantic ; extra == 'all'
+Requires-Dist: typing-extensions ; extra == 'all'
+Requires-Dist: typing ; extra == 'all'
+Requires-Dist: deprecation ; extra == 'all'
+Requires-Dist: psutil ; extra == 'all'
+Requires-Dist: screeninfo ; extra == 'all'
+Requires-Dist: g4f ; extra == 'all'
+Requires-Dist: curl-cffi ; extra == 'all'
+Requires-Dist: google-generativeai ; extra == 'all'
+Requires-Dist: gradio-client ; extra == 'all'
+Requires-Dist: gradio ; extra == 'all'
+Requires-Dist: huggingface-hub >=0.23.2 ; extra == 'all'
+Requires-Dist: motor ; extra == 'all'
+Requires-Dist: wget ; extra == 'all'
+Requires-Dist: uvicorn[standard] ; extra == 'all'
+Requires-Dist: fastapi[all] ; extra == 'all'
+Requires-Dist: authlib ; extra == 'all'
+Requires-Dist: numpy ; extra == 'all'
+Requires-Dist: python-dateutil ; extra == 'all'
+Provides-Extra: porno
+Requires-Dist: aiohttp ; extra == 'porno'
+Requires-Dist: wget ; extra == 'porno'
+Requires-Dist: requests ; extra == 'porno'
+Requires-Dist: httpx[http2] ; extra == 'porno'
+Provides-Extra: standard
+Requires-Dist: g4f ; extra == 'standard'
+Requires-Dist: httpx[http2] ; extra == 'standard'
+Requires-Dist: typing ; extra == 'standard'
+Requires-Dist: aiohttp ; extra == 'standard'
+Requires-Dist: bs4 ; extra == 'standard'
+Requires-Dist: openai ; extra == 'standard'
+Requires-Dist: google-generativeai ; extra == 'standard'
+Requires-Dist: curl-cffi ; extra == 'standard'
+Requires-Dist: motor ; extra == 'standard'
+Requires-Dist: typing-extensions ; extra == 'standard'
+Requires-Dist: huggingface-hub >=0.23.2 ; extra == 'standard'
+Requires-Dist: authlib ; extra == 'standard'
+Requires-Dist: gpytranslate ; extra == 'standard'
+Requires-Dist: fastapi[all] ; extra == 'standard'
+Requires-Dist: uvicorn[standard] ; extra == 'standard'
+Requires-Dist: pyrogram ; extra == 'standard'
+
+# akenoai-lib
+- install : `pip3 install akenoai[porno]`
+
+### Google-Dev
+> performance high speed API
+> `google_video_to_text`
+> `google_audio_to_text`
+
+> params string optional: `prompt`, `mime_type`
+
+### Example this
+```python
+import akenoai as dev
+
+file_path = "example.jpg"
+
+api = dev.AkenoPlus(key=...)
+
+response = await api.google_image_to_text(files_open=file_path)
+
+print(response)
+```
+
+### Paal AI Dev
+> method `paal_see`
+
+> params string optional: `lang="en"` and `is_trans="True"`
+
+### Example this
+```python
+import akenoai as dev
+
+file_path = "example.jpg"
+api = dev.AkenoPlus(key=...)
+response = await api.paal_see(files_open=file_path)
+print(response)
+
+response_2 = await api.paal_text_to_image(prompt="cat beautiful")
+print(response_2)
+```
+
+# Attribute
+```python
+# Use await
+import akenoai as ak
+_ = ak.AkenoPlus(key=...)
+_.download_now(data)
+_.clean(file_path)
+_.terabox(link)
+_.terabox_v2(link)
+_.chatgpt_old(query)
+_.chatgpt_mode_web(query)
+_.sites_torrens_all()
+_.search_for_torrents(params)
+_.get_torrent_from_url(params)
+_.get_recent(params)
+_.get_category(params)
+_.paal_see(files_open, params)
+_.google_video_to_text(files_open, params)
+_.google_image_to_text(files_open, params)
+_.google_audio_to_text(files_open, params)
+_.blackbox(query)
+_.fbdown(link)
+_.fdownloader(link)
+_.capcut(link)
+
+# Pornohub
+# Use await
+import akenoai as ak
+_ = ak.Pornohub(key=...)
+_.x_search(query)
+_.x_download(query)
+_.x_download(url, is_stream=True)
+```
+
+# License
+[![License](https://www.gnu.org/graphics/agplv3-155x51.png)](LICENSE)
+TeamKillerX is licensed under [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) v3 or later.
+
+<h4 align="center">Copyright (C) 2019 - 2024 The AkenoAI <a href="https://github.com/TeamKillerX">TeamKillerX</a>
+<a href="https://t.me/xtdevs">@xtdevs</a>
+</h4>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Project [RyuzakiLib](https://github.com/TeamKillerX/) is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
