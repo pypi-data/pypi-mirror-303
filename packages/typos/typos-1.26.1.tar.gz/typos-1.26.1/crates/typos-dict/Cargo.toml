@@ -1,0 +1,34 @@
+[package]
+name = "typos-dict"
+version = "0.11.29"
+description = "Source Code Spelling Correction"
+readme = "README.md"
+categories = ["development-tools", "text-processing"]
+keywords = ["development", "spelling"]
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+include.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+unicase = "2.7"
+dictgen = { version = "^0.2", path = "../dictgen" }
+
+[dev-dependencies]
+csv = "1.3"
+itertools = "0.13"
+edit-distance = "2.1"
+unicase = "2.7"
+codegenrs = "3.0"
+dictgen = { version = "^0.2", path = "../dictgen", features = ["codegen"] }
+varcon = { version = "^1.0", path = "../varcon" }
+snapbox = "0.6.5"
+indexmap = "2.2.6"
+
+[lints]
+workspace = true
