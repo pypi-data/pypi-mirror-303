@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "riverit-vesikanta-manager"
+version = "0.2.0"
+authors = [
+    { name="Jukka-Pekka Haapaniemi", email="jp.haapaniemi@riverit.fi" }
+]
+dependencies = [
+    "robocorp>=2.1.0",
+    "robocorp-windows>=1.0.4",
+    "pydantic>=2.9.2",
+    "email-validator>=2.2.0",
+    "pyautogui>=0.9.54",
+    "pandas>=2.2.3"
+]
+description = "Manager for Vesikanta operations"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+    "Operating System :: Microsoft :: Windows",
+    "Intended Audience :: Developers"
+]
+
+[tool.hatch.build]
+exclude = ["devtask", ".env", ".vscode"]
