@@ -1,0 +1,155 @@
+Metadata-Version: 2.1
+Name: passagemath-schemes
+Version: 10.4.24
+Summary: passagemath: Schemes, varieties, elliptic curves, algebraic Riemann surfaces, modular forms, arithmetic dynamics
+Author-email: The Sage Developers <sage-support@googlegroups.com>
+License: GNU General Public License (GPL) v2 or later
+Project-URL: download, https://doc.sagemath.org/html/en/installation/index.html
+Project-URL: release notes, https://github.com/sagemath/sage/releases
+Project-URL: source, https://github.com/sagemath/sage
+Project-URL: documentation, https://doc.sagemath.org
+Project-URL: homepage, https://www.sagemath.org
+Project-URL: tracker, https://github.com/sagemath/sage/issues
+Classifier: Development Status :: 6 - Mature
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: <3.13,>=3.9
+Description-Content-Type: text/x-rst
+Requires-Dist: gmpy2 ~=2.1.b999
+Requires-Dist: cysignals >=1.10.2
+Requires-Dist: memory-allocator
+Requires-Dist: scipy >=1.5
+Requires-Dist: passagemath-modules ~=10.4.24
+Requires-Dist: passagemath-flint ~=10.4.24
+Requires-Dist: passagemath-singular ~=10.4.24
+Provides-Extra: aa
+Requires-Dist: passagemath-schemes[numberfield] ; extra == 'aa'
+Provides-Extra: cbf
+Requires-Dist: passagemath-schemes[flint] ; extra == 'cbf'
+Provides-Extra: cc
+Provides-Extra: cdf
+Requires-Dist: passagemath-schemes[numpy] ; extra == 'cdf'
+Provides-Extra: cif
+Provides-Extra: cyclotomicfield
+Requires-Dist: passagemath-schemes[numberfield] ; extra == 'cyclotomicfield'
+Provides-Extra: finitefield
+Requires-Dist: passagemath-schemes[gf] ; extra == 'finitefield'
+Provides-Extra: gf
+Requires-Dist: passagemath-schemes[pari] ; extra == 'gf'
+Provides-Extra: gf2
+Requires-Dist: passagemath-schemes[m4ri] ; extra == 'gf2'
+Provides-Extra: gf2e
+Requires-Dist: passagemath-schemes[m4rie] ; extra == 'gf2e'
+Provides-Extra: gf2n
+Requires-Dist: passagemath-schemes[m4rie] ; extra == 'gf2n'
+Provides-Extra: gfpn
+Requires-Dist: passagemath-schemes[meataxe] ; extra == 'gfpn'
+Provides-Extra: numberfield
+Provides-Extra: qqbar
+Requires-Dist: passagemath-schemes[numberfield] ; extra == 'qqbar'
+Provides-Extra: qp
+Requires-Dist: passagemath-schemes[zp] ; extra == 'qp'
+Provides-Extra: qq
+Requires-Dist: passagemath-schemes[zp] ; extra == 'qq'
+Provides-Extra: quadraticfield
+Requires-Dist: passagemath-schemes[numberfield] ; extra == 'quadraticfield'
+Provides-Extra: rbf
+Requires-Dist: passagemath-schemes[flint] ; extra == 'rbf'
+Provides-Extra: rdf
+Requires-Dist: passagemath-schemes[numpy] ; extra == 'rdf'
+Provides-Extra: rif
+Provides-Extra: rr
+Provides-Extra: ucf
+Requires-Dist: passagemath-schemes[numberfield] ; extra == 'ucf'
+Provides-Extra: zp
+Provides-Extra: zq
+Requires-Dist: passagemath-schemes[zp] ; extra == 'zq'
+Provides-Extra: flint
+Requires-Dist: passagemath-flint ~=10.4.24 ; extra == 'flint'
+Provides-Extra: linbox
+Provides-Extra: m4ri
+Provides-Extra: m4rie
+Provides-Extra: meataxe
+Requires-Dist: passagemath-meataxe ~=10.4.24 ; extra == 'meataxe'
+Provides-Extra: mpfi
+Provides-Extra: ntl
+Requires-Dist: passagemath-ntl ~=10.4.24 ; extra == 'ntl'
+Provides-Extra: numpy
+Requires-Dist: numpy >=1.19 ; extra == 'numpy'
+Requires-Dist: numpy >=1.22.4 ; extra == 'numpy'
+Provides-Extra: padics
+Requires-Dist: passagemath-schemes[zp] ; extra == 'padics'
+Provides-Extra: pari
+Requires-Dist: passagemath-pari ~=10.4.24 ; extra == 'pari'
+Provides-Extra: singular
+Provides-Extra: standard
+Requires-Dist: passagemath-schemes[finitefield,flint,linbox,mpfi,ntl,numberfield,numpy,padics,pari,singular,toric] ; extra == 'standard'
+Provides-Extra: test
+Requires-Dist: passagemath-repl ~=10.4.24 ; extra == 'test'
+Provides-Extra: toric
+Requires-Dist: passagemath-polyhedra ~=10.4.24 ; extra == 'toric'
+Requires-Dist: passagemath-graphs ~=10.4.24 ; extra == 'toric'
+
+=============================================================================================================================================
+ passagemath: Schemes, varieties, elliptic curves, algebraic Riemann surfaces, modular forms, arithmetic dynamics
+=============================================================================================================================================
+
+About SageMath
+--------------
+
+   "Creating a Viable Open Source Alternative to
+    Magma, Maple, Mathematica, and MATLAB"
+
+   Copyright (C) 2005-2023 The Sage Development Team
+
+   https://www.sagemath.org
+
+SageMath fully supports all major Linux distributions, recent versions of macOS, and Windows (using Cygwin or Windows Subsystem for Linux).
+
+The traditional and recommended way to install SageMath is from source via Sage-the-distribution (https://www.sagemath.org/download-source.html).  Sage-the-distribution first builds a large number of open source packages from source (unless it finds suitable versions installed in the system) and then installs the Sage Library (sagelib, implemented in Python and Cython).
+
+
+About this experimental pip-installable source distribution
+-----------------------------------------------------------
+
+This pip-installable source distribution `sagemath-schemes` is an experimental distribution of a part of the Sage Library.  Use at your own risk.  It provides a small subset of the modules of the Sage library ("sagelib", `sagemath-standard`).
+
+
+What is included
+----------------
+
+* `Ideals and Varieties <https://doc.sagemath.org/html/en/reference/polynomial_rings/sage/rings/polynomial/multi_polynomial_ideal.html>`_
+
+* `Schemes <https://doc.sagemath.org/html/en/reference/schemes/index.html>`_
+
+* `Plane and Space Curves <https://doc.sagemath.org/html/en/reference/curves/index.html>`_
+
+* `Elliptic and Hyperelliptic Curves <https://doc.sagemath.org/html/en/reference/arithmetic_curves/index.html>`_
+
+* `Modular Forms <https://doc.sagemath.org/html/en/reference/modfrm/index.html>`_
+
+* `Modular Symbols <https://doc.sagemath.org/html/en/reference/modsym/index.html>`_
+
+* `Modular Abelian Varieties <https://doc.sagemath.org/html/en/reference/modabvar/index.html>`_
+
+* `Arithmetic Dynamical Systems <https://doc.sagemath.org/html/en/reference/dynamics/index.html#arithmetic-dynamical-systems>`_
+
+
+Status
+------
+
+The wheel builds. Some Cython modules that depend on FLINT or NTL are excluded.
+
+`sage.all__sagemath_schemes` can be imported.
+
+Many tests fail; see ``known-test-failures.json``.
