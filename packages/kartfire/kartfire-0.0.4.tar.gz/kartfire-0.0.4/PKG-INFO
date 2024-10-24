@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: kartfire
+Version: 0.0.4
+Summary: Toolkit to perform known-answer testing in Docker-isolated environments
+Home-page: https://github.com/johndoe31415/kartfire
+Download-URL: https://github.com/johndoe31415/kartfire/archive/v0.0.4.tar.gz
+Author: Johannes Bauer
+Author-email: joe@johannes-bauer.com
+License: gpl-3.0
+Keywords: testcase,runner,docker
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# KArTFire
+kartfire is the "Known-Answer-Testing Framework". It is intended to run a
+number of student's solutions inside a well-defined, network-isolated runtime
+environment defined by a Docker container. The solutions can be
+programming-language agnostic (i.e., compiled and interpreted languages are
+supported, depending on the target container) and it is intended to deal with a
+wide array of faulty solutions:
+
+  * Solutions that do not produce any output or that produce unparsable output
+  * Solutions that terminate with error codes
+  * Solutions that consume unlimited memory
+  * Solutions that do not terminate at all
+
+## Boundary conditions
+Any testcase is defined by a JSON file that has the following form:
+
+```json
+{
+	"action": "xyz",
+	...
+}
+```
+
+I.e., it needs to always be a dictionary that at least has an "action" key in
+the top-level. The answer can be any valid JSON object. For example, these
+would be valid testcases with their appropriate solutions:
+
+```json
+{
+	"action": "add",
+	"a": 4,
+	"b": 5
+}
+```
+
+Expected answer:
+
+```json
+{
+	"sum": 9
+}
+```
+
+## Execution
+TODO
+
+## License
+GNU-GPL 3.
