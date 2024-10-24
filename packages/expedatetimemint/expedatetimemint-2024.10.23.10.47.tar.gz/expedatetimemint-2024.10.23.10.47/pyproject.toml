@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "expedatetimemint"
+version = "2024.10.23.10.47"
+description = "🥭 A simple CLI tool to display the current date and time with a random fruit or vegetable emoji."
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = ["datetime", "emoji", "CLI"]
+license = {text = "MIT"}
+authors = [
+    {name = "com.andrewalevin 🍋", email = "your_email@example.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+expedatetimemint = "expedatetimemint.main:main"
+
+[project.optional-dependencies]
+dev = ["pytest", "flake8"]
+
+[tool.setuptools.package-data]
+expedatetimemint = ["py.typed"]
