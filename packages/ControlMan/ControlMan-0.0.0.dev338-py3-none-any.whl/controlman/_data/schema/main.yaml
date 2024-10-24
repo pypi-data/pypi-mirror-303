@@ -1,0 +1,3938 @@
+$id: https://controlman.repodynamics.com/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Options
+description: |
+  This section contains a full reference and detailed explanation of all
+  available options in your repository's control center.
+  These are divided into two categories: **non-extendable** and **extendable** options.
+  Non-extendable options are those that are required by {{ ccc.name }}
+  during workflow initialization, and thus cannot be extended from other repositories.
+  These are all stored in YAML files at the root of your repository's control center directory.
+  Extendable options, on the other hand, are those that can be freely extended from other repositories,
+  and are organized into subdirectories within your repository's control center.
+  
+  Changing these settings and pushing them to the remote repository's default branch will automatically
+  apply the corresponding changes to the entire repository, i.e., branch protection rules will be updated,
+  and all corresponding branches will be renamed.
+  
+  Project: Main project metadata and settings, including
+      name, descriptors, copyright, license, citation,
+      funding, team, theme, documentation, and contact information.
+  Package: Python package and test-suite configurations,
+      including build system, dependencies, requirements,
+      entry points, classifiers, and other metadata.
+  Documentation: Project documentation and UX configurations, including
+      website, README files, community health files, and theme settings.
+  Issue Tracking: Issue tracking and development configurations,
+      including templates and settings for issues, labels, 
+      design documents, commits, pull requests, and changelogs.
+  Version Control: Version control system (VCS) configurations, such as
+      GitHub/Git repository settings, branch/tag names,
+      protection rules, and directory structure.
+  Workflow: Development workflow configurations for 
+      Continuous integration, deployment, configuration automation,
+      maintenance, testing, and refactoring tasks.
+
+type: object
+required: [ repo, branch, control ]
+properties:
+  name:
+    title: Name
+    description: |
+      Name of the project.
+      If not provided (recommended), it is automatically derived from the repository name
+      by replacing all hyphens with spaces.
+
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      The name is used to dynamically reference the project in various places,
+      such as documentation website, citation data, README files, and community health files.
+      It is also used to derive the [package name](#ccc-pkg-name) when not explicitly specified.
+      :::
+
+      :::{admonition} Best Practices
+      :class: dropdown tip
+      
+      The project name on itself has no restrictions and can be any valid unicode string.
+      However, by default, it is also used to derive the 
+      [distribution name](#ccc-pkg-name)
+      and [import name](#ccc-pkg-import_name) of the package,
+      which have stricter naming specifications.
+      While you can separately set these to different values,
+      for consistency, it is recommended to **choose a project name
+      that is as similar as possible to the distribution and import name of the package**.
+      This helps to avoid confusion and makes it easier for others to find, install, and use your package.
+      :::
+    default_auto: |
+      repository name (hyphens replaced with spaces)
+    templating: load
+    examples:
+      - MyProject
+      - My Project
+      - My-New-Project
+    $ref: https://jsonschemata.repodynamics.com/string/oneline
+  title:
+    title: Title
+    description: |
+      A single-line description or slogan of the project.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+
+      By default, the title is added to the project's [citation](#ccc-citation-title),
+      [package](#ccc-pkg-description), and [repository](#ccc-repo-description) metadata.
+      It is also used in various other places,
+      such as `title` HTML attributes of project logos and links. 
+      :::
+    examples:
+      - Effortless Scientific Computation and Data Analysis in Python
+      - Streamlined Sequence Analysis and Genomic Data Processing in Python
+      - Powerful Tools for Simulating Complex Engineering Systems
+      - Your Python Solution for Secure and Scalable Network Management
+      - Python Tools for Quantum Mechanics Simulations and Research
+    $ref: https://jsonschemata.repodynamics.com/string/oneline
+  abstract:
+    title: Abstract
+    description: |
+      A short description of the project.
+      It can contain GitHub Flavored Markdown and HTML syntax,
+      for example, to make text bold, italic, or to add hyperlinks.
+
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      The abstract is automatically added to the project's [`citation`](#ccc-citation-abstract) data,
+      and displayed on the repository's [`README`](#ccc-readme-main) file,
+      on the homepage of the project's website,
+      on the project's PyPI and TestPyPI pages
+      (cf. [`pkg.readme`](#ccc-pkg-readme)),
+      and on the package's main docstring
+      (cf. [`pkg.file.*.docstring`](#ccc-pkg-file--wildcard--docstring)).
+      :::
+    examples:
+      - |
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aliquam sit amet quam varius, pulvinar erat a, porta urna.
+        Integer eu mollis nisl. Pellentesque habitant morbi tristique senectus
+        et netus et malesuada fames ac turpis egestas.
+        Sed feugiat sem nec felis luctus vehicula.
+        Nam sit amet commodo lacus, sed varius sem. Vivamus at urna auctor,
+        tristique erat a, iaculis nulla. Integer eget tincidunt justo. 
+        Phasellus sit amet massa et leo porta mollis. 
+        Ut venenatis magna orci, in pellentesque dui convallis non. 
+        Etiam aliquam ante eu iaculis fermentum. 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Nullam tristique efficitur lorem, semper sollicitudin mauris aliquet vel. 
+        Interdum et malesuada fames ac ante ipsum primis in faucibus. 
+        Cras eros risus, viverra ut lectus nec, lobortis rhoncus felis.
+    $ref: https://jsonschemata.repodynamics.com/string/nonempty
+  keywords:
+    title: Keywords
+    description: |
+      Keywords categorizing the project.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      Keywords are automatically added to project [citation data](#ccc-citation-keywords),
+      [GitHub repository](#ccc-repo-topics), and [package metadata](#ccc-pkg-keywords),
+      helping to make the project easier to discover.      
+      :::
+    examples:
+      - Python
+      - Data Analysis
+      - Machine Learning
+      - Computer-Aided Design
+      - Scientific Computing
+    $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+  highlights:
+    title: Highlights
+    description: |
+      Key features of the project.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      By default, project highlights are included
+      in the [repository](#ccc-readme-main) and [package](#ccc-pkg-readme) README files,
+      as well as on the project's website.
+      :::
+    examples:
+      - - title: Easy Installation
+          description: |
+            Install the package with a single command.
+        - title: Powerful Tools
+          description: |
+            A set of powerful tools for data analysis.
+        - title: Scalable
+          description: |
+            Scalable to large datasets and high-performance computing.
+    type: array
+    uniqueItems: true
+    items:
+      title: Highlight
+      description: |
+        A key feature of the project.
+        Each highlight must contain a `title` and a `description`.
+      type: object
+      additionalProperties: false
+      required: [ title, description ]
+      properties:
+        title:
+          title: Title
+          description: Title of the project feature.
+          $ref: https://jsonschemata.repodynamics.com/string/oneline
+        description:
+          title: Description
+          description: Description of the project feature.
+          $ref: https://jsonschemata.repodynamics.com/string/nonempty
+  license:
+    title: License
+    description: |
+      License of the project.
+      You can either select one of the supported [SPDX](https://spdx.org/licenses/) licenses
+      by providing its `id`, or any other SPDX license by providing its `id`, `name`, `text`, and `notice`.
+      When a supported `id` is set, all other keys are filled automatically.
+      Nevertheless, you can still override any key by providing the corresponding custom value.
+      The license is then automatically incorporated into the project.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      After customizing the license with the project's [copyright notice](#ccc-copyright-notice):
+      
+      - A license file is [added to the repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository),
+        where GitHub can recognize and display it.
+      - The license file is incorporated in all package releases.
+      - License identifiers are added to the package metadata.
+      - Full license and copyright information are featured on the documentation website.
+      - A license and copyright notice is included in library source files.
+      :::
+      
+      :::{admonition} Open Source Licenses
+      :class: dropdown seealso
+      
+      For more information about open-source licenses, see:
+      - [SPDX License List](https://spdx.org/licenses/)
+      - [Open Source Initiative](https://opensource.org/license)
+      - [Choose a License](https://choosealicense.com/)
+      - [SPDX License List Data (JSON)](https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json)
+      :::
+    examples:
+      - id: Unlicense
+      - id: MIT
+        notice: |
+          This is a custom license notice that overwrites
+          the default MIT license's notice.
+    type: object
+    required: [ expression ]
+    properties:
+      expression:
+        title: SPDX License Expression
+        description: |
+          [SPDX](https://spdx.org/licenses/) identifier of the license.
+          If one of the supported IDs are selected,
+          the rest of the keys are automatically filled in.
+          Otherwise, `name`, `text`, and `notice` must be provided.
+          Supported IDs are:
+          
+          - `AGPL-3.0-or-later`: [GNU Affero General Public License v3 or later](https://choosealicense.com/licenses/agpl-3.0/)
+          - `AGPL-3.0`: [GNU Affero General Public License v3](https://choosealicense.com/licenses/agpl-3.0/)
+          - `GPL-3.0-or-later`: [GNU General Public License v3 or later](https://choosealicense.com/licenses/gpl-3.0/)
+          - `GPL-3.0`: [GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
+          - `BSD-3-Clause`: [BSD 3-Clause "New" or "Revised" License](https://choosealicense.com/licenses/bsd-3-clause/)
+          - `BSD-2-Clause`: [BSD 2-Clause "Simplified" License](https://choosealicense.com/licenses/bsd-2-clause/)
+          - `MIT`: [MIT License](https://choosealicense.com/licenses/mit/)
+          - `BSL-1.0`: [Boost Software License 1.0](https://choosealicense.com/licenses/bsl-1.0/)
+          - `Apache-2.0`: [Apache License 2.0](https://choosealicense.com/licenses/apache-2.0/)
+          - `MPL-2.0`: [Mozilla Public License 2.0](https://choosealicense.com/licenses/mpl-2.0/)
+          - `Unlicense`: [The Unlicense](https://choosealicense.com/licenses/unlicense/)
+        $ref: https://jsonschemata.repodynamics.com/id/spdx-license
+      component:
+        type: object
+        patternProperties:
+          '^(DocumentRef-[a-zA-Z0-9-.]+:)?(AdditionRef|LicenseRef)-[a-zA-Z0-9.-]+$':
+            allOf:
+              - $ref: https://controlman.repodynamics.com/schema/license-component
+              - required: [ name ]
+              - anyOf:
+                  - required: [ text_xml ]
+                  - required: [ text_plain ]
+        additionalProperties:
+          $ref: https://controlman.repodynamics.com/schema/license-component
+      config:
+        type: object
+        properties:
+          text:
+            $ref: https://controlman.repodynamics.com/schema/license-component-config
+          header:
+            $ref: https://controlman.repodynamics.com/schema/license-component-config
+      notice:
+        title: Notice
+        description: |
+          Custom license notice.
+        $ref: https://jsonschemata.repodynamics.com/string/nonempty
+      path:
+        type: object
+        additionalProperties: false
+        properties:
+          texts_plain:
+            type: array
+            items:
+              $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+          headers_plain:
+            type: array
+            items:
+              $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+  copyright:
+    title: Copyright
+    description: |
+      Copyright information of the project.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      By default, the copyright [`notice`](#ccc-copyright-notice)
+      is included in several places,
+      such as the license texts (when a pre-defined license is used),
+      the [main docstring](#ccc-pkg-file---init---py-docstring) of the package,
+      and the [footer](#ccc-theme-footer) of website and documentation files.
+      :::
+    examples:
+      - notice: ${{ copyright.period }} ${{ team.owner.name.full }}
+      - notice: ${{ copyright.period }} ${{ team.owner.name.full }}
+        year_start: 2020
+      - notice: ${{ copyright.period }} John Doe
+      - notice: John Doe
+        year_start: 2020
+    type: object
+    default: { }
+    additionalProperties: false
+    required: [ notice ]
+    properties:
+      notice:
+        title: Notice
+        description: |
+          Copyright notice of the project.
+          This is the final form of the notice that will be displayed.
+        default: ${{ copyright.period }} ${{ team.owner.name.full }}
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+        examples:
+          - ${{ copyright.period }} John Doe
+          - A Custom Copyright Notice
+      period:
+        title: Period
+        description: |
+          Year period to use in the copyright notice.
+          If not provided, it will be automatically set
+          using the value of [`start_year`](#ccc-copyright-start_year), as follows:
+          - If `start_year` is the same as the current year, 
+            the period is set to the current year, e.g., `2024`.
+          - If `start_year` is before the current year,
+            the period is set to `{start_year}–{CURRENT-YEAR}`, e.g., `2023–2024`.
+          - If `start_year` is after the current year, an error is raised.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      start_year:
+        title: Start Year
+        description: |
+          Start year of the project.
+          This can be used to dynamically set the [`period`](#ccc-copyright-period).
+          If not provided, it is automatically set to the repository creation year.
+        default_auto: repository creation year
+        type: integer
+        minimum: 1980
+        maximum: 2040
+  role:
+    title: Roles
+    description: |
+      Role definitions for project members.
+      For each role, add a key-value pair
+      where the key is an ID for the role,
+      and the value is a [`Role`](#ccc-defs-role) object.
+
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      You can attribute roles to [team members](#ccc-defs-entity-roles),
+      which will then be displayed on the project's website and citation data.
+      :::
+    type: object
+    additionalProperties:
+      title: Role
+      description: A role in the project.
+      examples:
+        - concept:
+            title: Conceptualization
+            description: Formulation and evolution of overarching project goals and aims.
+            abbreviation: CNP
+        - dev:
+            title: Software Development
+            description: Implementation of the software.
+            abbreviation: DEV
+        - manage:
+            title: Management
+            description: Project administration and coordination.
+            abbreviation: MAN
+      $ref: https://controlman.repodynamics.com/schema/role
+    examples:
+      - concept:
+          title: Conceptualization
+          description: Formulation and evolution of overarching project goals and aims.
+          abbreviation: CNP
+        dev:
+          title: Software Development
+          description: Implementation of the software.
+          abbreviation: DEV
+        manage:
+          title: Management
+          description: Project administration and coordination.
+          abbreviation: MAN
+        maint:
+          title: Maintenance
+          description: Maintenance of the software and development workflows.
+          abbreviation: MNT
+  team:
+    title: Team
+    description: |
+      Natural and legal persons
+      (e.g., copyright holders, authors, maintainers, research groups, institutions, etc.)
+      involved in the project.
+      For each person, define a key-value pair, where the key is the ID of the person.
+      The ID can then be used to reference the person in other configurations
+      using templating
+      (e.g. see [`maintainer`](#ccc-maintainer) and [`citation`](#ccc-citation)).
+      Also, the information of each person can be used directly
+      (e.g. see [`copyright.notice`](#ccc-copyright-notice)).
+      Note that the [`owner`](#ccc-team-owner) key is always automatically added.
+
+      :::{admonition} Automatic Data Filling
+      :class: important
+
+      For any person added here, additional information will be automatically filled
+      from web APIs, if available (see the [`Entity`](#ccc-defs-entity) object).
+      This is not done for other `Entity` objects defined elsewhere in the control center.
+      It is therefore recommended to define all persons involved in the project here,
+      and reference them elsewhere using templating.
+      :::
+    type: object
+    properties:
+      owner:
+        title: Owner
+        description: |
+          The repository owner on GitHub.
+          The `github` key is always automatically filled with information from the GitHub API.
+          Any other keys that are not provided are also 
+          automatically filled, as along as they have a corresponding information
+          in the GitHub API (cf. [`Entity`](#ccc-defs-entity)).
+        $ref: https://controlman.repodynamics.com/schema/entity
+    additionalProperties:
+      title: Person
+      description: A natural person or entity involved in the project.
+      $ref: https://controlman.repodynamics.com/schema/entity
+  maintainer:
+    title: Maintainers
+    description: |
+      Maintainers for different parts of the project,
+      such as pull request reviewers, issue assignees, and discussion moderators.
+      Each maintainer must be defined as an [`Entity`](#ccc-defs-entity) object.
+      It is recommended to define all maintainers in [`$.team`](#ccc-team),
+      and reference them here (and elsewhere) using templating.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      Maintainers are automatically assigned to corresponding tasks (e.g., issues, pull requests, discussions)
+      and their information is by default added to the project's documentation,
+      website, citation, README, and community files, as well as package metadata.
+      :::
+    type: object
+    additionalProperties: false
+    properties:
+      code_owners:
+        title: Code Owners
+        description: |
+          Pull request reviewers of the project.
+          
+          This is used to automatically maintain the
+          [CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+          file (cf. [`doc.code_owners`](#ccc-doc.code_owners)),
+          which will then be used to automatically assign reviewers to pull requests
+          based on the modified files.
+        type: object
+        additionalProperties: false
+        required: [ owners, path ]
+        properties:
+          owners:
+            title: Owners Definitions
+            description: |
+              Code owner definitions for different parts of the project.
+              For each filepath or glob pattern, add a key-value pair,
+              where the key is the path or glob pattern,
+              and the value is an array of code owners, i.e., [`Entities`](#ccc-defs-entities).
+              
+              :::{admonition} Order of Entries
+              :class: dropdown important
+              
+              Note that the [order of entries is important](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#example-of-a-codeowners-file);
+              the last matching pattern takes the most precedence.
+              :::
+            type: array
+            minItems: 1
+            uniqueItems: true
+            examples:
+              - - "*": [ '${{ team.owner }}' ]  # Default owners for all unassigned files.
+                - "/*": [ '${{ team.a_maintainer }}' ]  # All files directly under root directory.
+                - "/.github/": [ '${{ team.a_maintainer}}', '${{ team.another_maintainer }}' ]  # All files in `.github` directory.
+            items:
+              title: Owners Definition
+              description: Code owners defined for a specific path or glob pattern.
+              type: object
+              minProperties: 1
+              maxProperties: 1
+              additionalProperties:
+                title: Owners
+                description: Code owners of the path or glob pattern.
+                examples:
+                  - [ '${{ team.owner }}' ]
+                  - [ '${{ team.owner }}', '${{ team.a_maintainer }}' ]
+                $ref: https://controlman.repodynamics.com/schema/entities
+          path:
+            title: File Path
+              Path to the
+              [`CODEOWNERS`](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
+              file. This file must be named `CODEOWNERS` (case-sensitive, without extension)
+              and placed either in the `.github` directory, the `docs` directory,
+              or the root of the repository.
+            type: string
+            default: .github/CODEOWNERS
+            pattern: ^(?:|.github/|docs/)CODEOWNERS$
+            examples:
+              - CODEOWNERS
+              - .github/CODEOWNERS
+              - docs/CODEOWNERS
+          url:
+            title: URL
+            description: URL of the repository's `CODEOWNERS` file.
+            default: ${{ repo.url.blob }}/${{ maintainer.code_owners.path }}
+            examples:
+              - "https://github.com/RepoDynamics/PyPackIT/blob/main/CODEOWNERS"
+            $ref: https://jsonschemata.repodynamics.com/url/https
+      issue:
+        title: Issue Assignees
+        description: |
+          Assignees of project issues.
+          For each issue form defined in [`$.issue.forms`](#ccc-issue-forms),
+          add a key-value pair where the key is the issue form's [`id`](#ccc-issue-forms--wildcard--id),
+          and the value is an array of assignees, i.e., [`Entities`](#ccc-defs-entities).
+        examples:
+          - app_bug_api: [ '${{ team.owner }}' ]
+            app_bug_cli: [ '${{ team.owner }}', '${{ team.a_maintainer }}' ]
+        type: object
+        additionalProperties:
+          title: Form Assignees
+          description: Assignees of a specific issue form.
+          $ref: https://controlman.repodynamics.com/schema/entities
+      discussion:
+        title: Discussion Moderators
+        description: |
+          Moderators of project discussions.
+          For each discussion category form defined in
+          [`$.discussion.category.*.form`](#ccc-discussion-category--wildcard--form),
+          add a key-value pair where the key is the category's [`slug`](#ccc-discussion-category),
+          and the value is an array of assignees, i.e., [`Entities`](#ccc-defs-entities).
+        examples:
+          - announcements: [ '${{ team.some_maintainer_id }}', '${{ team.some-other-maintainer-id }}' ]
+            questions: [ '${{ team.a_maintainer }}' ]
+        type: object
+        additionalProperties:
+          title: Category Moderators
+          description: Moderators of a specific discussion category.
+          $ref: https://controlman.repodynamics.com/schema/entities
+      security:
+        title: Security Adviser
+        description: Project's security adviser and contact person.
+        examples:
+          - '${{ team.owner }}'
+          - '${{ team.some_maintainer_id }}'
+        $ref: https://controlman.repodynamics.com/schema/entity
+      code_of_conduct:
+        title: Code of Conduct Supervisor
+        description: Project's code of conduct supervisor and contact person.
+        examples:
+          - '${{ team.owner }}'
+          - '${{ team.some_maintainer_id }}'
+        $ref: https://controlman.repodynamics.com/schema/entity
+      support:
+        title: Support Contact
+        description: Project's support contact person.
+        examples:
+          - '${{ team.owner }}'
+          - '${{ team.some_maintainer_id }}'
+        $ref: https://controlman.repodynamics.com/schema/entity
+  citation:
+    title: Citation
+    description: |
+      Project's citation information.
+      
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      This is primarily used to automatically maintain a
+      [CITATION file](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files)
+      ([Citation File Format (CFF)](https://citation-file-format.github.io/)) for the project.
+      However, information that are only defined here, such as [`authors`](#ccc-citation-authors),
+      [`contacts`](#ccc-citation-contacts), and [`preferred_citation`](#ccc-citation-preferred_citation),
+      are also used in other places, such as the project's website, README, and package metadata.
+      :::
+
+      :::{admonition} Citation File Format (CFF)
+      :class: dropdown seealso
+      
+      This object closely follows the
+      [CFF v1.2.0 schema](https://github.com/citation-file-format/citation-file-format/blob/main/schema-guide.md)
+      (cf. [in JSON format](https://citation-file-format.github.io/1.2.0/schema.json)).
+      However, it is simplified (e.g., `entity` and `person` are merged into [`Entity`](#ccc-defs-entity)),
+      and many fields are automatically filled, e.g.:
+      
+      - `doi` (given you have [activated your Zenodo account](#install-zenodo)),
+        `version` and `date-released`are automatically filled for each new release.
+      - `cff-version` is automatically added to the file.
+      :::
+    type: object
+    additionalProperties: false
+    required: [ title, authors, message ]
+    properties:
+      title:
+        title: Title
+        description: |
+          Title of the citation.
+          This can be your project's [name](#ccc-name), [title](#ccc-title),
+          a combination of both, or any other custom title.
+        default: '${{ name }}: ${{ title }}'
+        examples:
+          - '${{ name }}: ${{ title }}'
+          - ${{ name }}
+          - ${{ pkg.name }}
+          - A Custom Title
+        $ref: https://jsonschemata.repodynamics.com/string/nonempty
+      authors:
+        title: Authors
+        description: |
+          Core author(s) of the project, ordered by contribution (highest first).
+          
+          :::{admonition} Usage
+          :class: dropdown note
+          
+          These are automatically displayed on the project's website,
+          the front page of the project's PDF documentation,
+          and the project's PyPI and TestPyPI pages
+          (by being added to package metadata, i.e.,
+          the [`project.authors`](https://packaging.python.org/en/latest/specifications/pyproject-toml/#authors-maintainers)
+          key of the `pyproject.toml` file).
+          :::
+        default: [ '${{ team.owner }}' ]
+        $ref: https://controlman.repodynamics.com/schema/entities
+        examples:
+          - [ '${{ team.owner }}', '${{ team.some_author }}' ]
+          - - name:
+                first: Jane
+                last: Doe
+              email:
+                id: jane@doe.com
+            - name:
+                legal: XYZ Organization
+              website: https://xyz.org
+              linkedin:
+                id: xyz-org
+      contacts:
+        title: Contacts
+        description: |
+          Project's contact persons.
+          It is recommended to define the persons in 
+          [`$.team`](#ccc-team) and reference them here using templating.
+        default: [ '${{ team.owner }}' ]
+        examples:
+          - [ '${{ team.owner }}', '${{ team.some_author }}' ]
+          - - name:
+                first: Jane
+                last: Doe
+              email:
+                user: janedoe@example.com
+            - name:
+                first: John
+                last: Doe
+              website: 'https://johndoe.com'
+        $ref: https://controlman.repodynamics.com/schema/entities
+      message:
+        title: Message
+        description: |
+          A message to include in the citation file.
+          On GitHub, this is also displayed when a user clicks on the ***Cite this repository*** button
+          on the repository's main page.
+        examples:
+          - If you use this software, please cite both the article from preferred-citation and the software itself.
+          - If you use this software, please cite it using the metadata from this file.
+          - Please cite this software using these metadata.
+          - Please cite this software using the metadata from 'preferred-citation'.
+        default: If you use ${{ name }}, please cite it using the metadata from this file.
+        $ref: https://jsonschemata.repodynamics.com/string/nonempty
+      preferred_citation:
+        title: Preferred Citation
+        description: |
+          A reference to another work that should be cited
+          instead of the software itself.
+        $ref: https://controlman.repodynamics.com/schema/reference
+      grant_ids:
+        title: Grant IDs
+        description: |
+          List of OpenAIRE-supported grants funding the research for this project.
+          These can be either a funder-DOI-prefixed grant ID or a European Commission grant ID.
+        examples:
+          - [ '10.13039/501100000780::283595', 283595 ]
+        $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+      zenodo_communities:
+        title: Zenodo Communities
+        description: |
+          ID list of Zenodo communities you wish the project to appear in.
+          The owner of the communities will be notified,
+          and can either accept or reject your request.
+        examples:
+          - [ ecfunded ]
+        $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+      references:
+        title: References
+        description: |
+          Reference(s) to other creative works related to, or used/referenced by, the project.
+        type: array
+        uniqueItems: true
+        items:
+          title: Reference
+          description: A reference to another work.
+          $ref: https://controlman.repodynamics.com/schema/reference
+      identifiers:
+        title: Identifiers
+        description: |
+          List of identifiers for the project.
+          These can be any type of identifier, such as DOI, URL, SWH, or any other custom identifier.
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          title: Identifier
+          description: An identifier for the project.
+          $ref: https://controlman.repodynamics.com/schema/identifier
+      language:
+        title: Language
+        description: |
+          [ISO 639-2](https://www.loc.gov/standards/iso639-2/php/code_list.php)
+          or 639-3 code of the primary natural language of the work.
+        type: string
+        default: eng
+        examples:
+          - eng
+      abstract:
+        title: Abstract
+        description: |
+          A brief description of the project.
+        $ref: https://jsonschemata.repodynamics.com/string/nonempty
+        default: ${{ abstract }}
+        examples:
+          - |
+            A custom description of the project
+            that can span multiple lines.
+      license:
+        title: License
+        description: |
+          SPDX [license ID](#ccc-license-id) of the project.
+        default: ${{ license.expression }}
+        $ref: https://jsonschemata.repodynamics.com/id/spdx-license
+      license_url:
+        title: License URL
+        description: The URL of the project's license (only required for non-SPDX licenses).
+        $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+      keywords:
+        title: Keywords
+        description: Keywords categorizing the project.
+        $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+        default: ${{ keywords }}
+        examples:
+          - [ A Custom Keyword, Another Custom Keyword ]
+      repository:
+        title: Repository
+        description: |
+          URLs of the project's repositories.
+        type: object
+        default: { }
+        additionalProperties: false
+        properties:
+          build:
+            title: Build
+            description: URL of the project in a build artifact/binary repository.
+            $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+          source:
+            title: Source
+            description: URL of the project in a source code repository.
+            default: ${{ repo.url.home }}
+            $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+          other:
+            title: Other
+            description: URL of the project in another type of repository.
+            $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+      url:
+        title: URL
+        description: URL of the project's landing (home) page.
+        default: ${{ web.url.home }}
+        $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+      type:
+        title: Type
+        description: Type of the work. This can be either `dataset` or `software`.
+        type: string
+        enum: [ dataset, software ]
+        default: software
+  funding:
+    title: Funding
+    description: |
+      Available funding options of the project.
+      You can specify up to four
+      [sponsored GitHub accounts](https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors),
+      up to four custom URLs,
+      and one account per supported external funding platform.
+
+      :::{admonition} Usage
+      :class: dropdown note
+      
+      These settings are used to automatically maintain the GitHub `FUNDING` configuration file,
+      which is used to
+      [display a sponsor button in your repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository).
+      Clicking on the button opens the ***Sponsor this project*** section,
+      where a list of links to your specified funding platforms is displayed to the user,
+      allowing them to sponsor your project.
+      :::
+    examples:
+      - github: [ '${{ owner.username }}', EXAMPLE-GITHUB-USERNAME ]
+        custom: [ 'https://paypal.me/EXAMPLE-PAYPAL-USERNAME' ]
+        tideleft: pypi/${{ package.name }}
+    type: object
+    additionalProperties: false
+    properties:
+      community_bridge:
+        title: LFX Mentorship
+        description: |
+          [LFX Mentorship (CommunityBridge)](https://lfx.linuxfoundation.org/tools/mentorship) project name.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      issuehunt:
+        title: IssueHunt
+        description: |
+          [IssueHunt](https://issuehunt.io/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      ko_fi:
+        title: Ko-fi
+        description: |
+          [Ko-fi](https://ko-fi.com/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      liberapay:
+        title: Liberapay
+        description: |
+          [Liberapay](https://liberapay.com/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      open_collective:
+        title: Open Collective
+        description: |
+          [Open Collective](https://opencollective.com/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      patreon:
+        title: Patreon
+        description: |
+          [Patreon](https://www.patreon.com/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      tidelift:
+        title: Tidelift
+        description: |
+          [Tidelift](https://tidelift.com/) package address.
+          This is a string with the format `<PLATFORM-NAME>/<PACKAGE-NAME>`,
+          where `<PACKAGE-NAME>` is the name of your package,
+          and platform name is the name of the package manager
+          hosting the package, i.e., one of
+          `npm`, `pypi`, `maven`, `rubygems`, `nuget`, or `packagist`.
+        examples:
+          - pypi/controlman
+        type: string
+        pattern: ^(npm|pypi|rubygems|maven|packagist|nuget)/\S+$
+      polar:
+        title: Polar
+        description: |
+          [Polar](https://www.polar.sh/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      buy_me_a_coffee:
+        title: Buy Me a Coffee
+        description: |
+          [Buy Me a Coffee](https://www.buymeacoffee.com/) username.
+        $ref: https://jsonschemata.repodynamics.com/string/oneline
+      github:
+        title: GitHub Sponsors
+        description: |
+          Usernames of up to four [GitHub Sponsors](https://docs.github.com/en/sponsors/) accounts.
+          One of these can be a
+          [sponsored organization account](https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-organization),
+          while the others must be
+          [sponsored personal accounts](https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-personal-account).
+        type: array
+        maxItems: 4
+        uniqueItems: true
+        items:
+          title: GitHub Sponsors Account
+          description: |
+            GitHub username of a sponsored account.
+            This can be either a personal or an organization account.
+          $ref: https://jsonschemata.repodynamics.com/id/github/user
+      custom:
+        title: Custom
+        description: |
+          URLs to up to four custom funding platforms.
+          These can be any URL, such as a PayPal donation link.
+        examples:
+          - [ 'https://paypal.me/EXAMPLE-PAYPAL-USERNAME', 'https://example.com/donate' ]
+          - [ 'https://example.com/donate' ]
+          - - 'https://funding-platform-1.com'
+            - 'https://funding-platform-2.com'
+            - 'https://funding-platform-3.com'
+            - 'https://funding-platform-4.com'
+        type: array
+        maxItems: 4
+        uniqueItems: true
+        items:
+          title: URL
+          description: |
+              URL to a custom funding platform.
+          examples:
+            - https://paypal.me/EXAMPLE-PAYPAL-USERNAME
+            - https://example.com/donate
+          $ref: https://jsonschemata.repodynamics.com/url/http-ftp-sftp
+  # Documentation
+  theme:
+    title: Theme
+    description: |
+      Configurations defining the visual theme of the project,
+      such as colors, logos, and badges.
+    type: object
+    additionalProperties: false
+    properties:
+#      path:
+#        title: Path
+#        description: |
+#          Path to the directory containing the project's media files.
+#
+#          :::{admonition} Usage
+#          :class: dropdown note
+#
+#          The media directory is used to store images, logos, and other media files
+#          that are displayed on the project's website and documentation files.
+#          By default, they are included in the website builds
+#          (see [`$.web.sphinx.config.html_static_path`](#ccc-web-sphinx-config-html_static_path))
+#          and thus can be directly used in the website, and linked to in the documentation.
+#          :::
+#        default: ${{ web.path.root }}/${{ web.path.source}}/_media
+#        $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+      color:
+        title: Colors
+        description: |
+          Colors of the project's light and dark themes.
+          Each color can be defined using any valid [CSS color format](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value),
+          such as hexadecimal, RGB, HSL, or named colors.
+        type: object
+        default: { }
+        required: [ primary, secondary ]
+        properties:
+          primary:
+            title: Primary
+            description: Primary color of the project.
+            $ref: https://controlman.repodynamics.com/schema/themed-color
+          secondary:
+            title: Secondary
+            description: Secondary color of the project.
+            $ref: https://controlman.repodynamics.com/schema/themed-color
+      logo:
+        title: Logo
+        description: |
+          Logos of the project.
+          All values must be filenames of files in the [media](#ccc-theme-path) directory,
+          given as paths relative to the media directory.
+        type: object
+        additionalProperties: false
+        default: { }
+        properties:
+          icon:
+            title: Icon
+            description: Favicon (website icon) of the project.
+            $ref: https://controlman.repodynamics.com/schema/media-file
+          simple:
+            title: Simple
+            description: Simple versions of the project's logo, to be used in small spaces.
+            type: object
+            additionalProperties: false
+            properties:
+              light:
+                title: Light
+                description: Light-themed version of the simple logo.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              dark:
+                title: Dark
+                description: Dark-themed version of the simple logo.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              raster:
+                title: Raster
+                description: |
+                  Raster version of the simple logo,
+                  to be used in places where vector graphics are not supported.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              ascii:
+                title: ASCII
+                description: |
+                  ASCII art version of the simple logo,
+                  to be used in command-line interfaces and text-based environments.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+          full:
+            title: Full
+            description: Full versions of the project's logo, to be used in large spaces.
+            type: object
+            additionalProperties: false
+            properties:
+              light:
+                title: Light
+                description: Light-themed version of the full logo.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              dark:
+                title: Dark
+                description: Dark-themed version of the full logo.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              raster:
+                title: Raster
+                description: |
+                  Raster version of the full logo,
+                  to be used in places where vector graphics are not supported.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+              ascii:
+                title: ASCII
+                description: |
+                  ASCII art version of the full logo,
+                  to be used in command-line interfaces and text-based environments.
+                $ref: https://controlman.repodynamics.com/schema/media-file
+      badge:
+        title: Badge
+        description: |
+          General settings for project badges.
+          These will be used as default values for all badges in the project.
+        $ref: https://docsman.repodynamics.com/schema/element/badge
+      footer:
+        title: Footer
+        description: |
+          Configurations of project's footer.
+          The footer is automatically added to the project's [README](#ccc-readme) and
+          [community health files](#ccc-health).
+        oneOf:
+          - type: string
+          - $ref: https://docsman.repodynamics.com/schema
+  readme:
+    title: README Files
+    description: |
+      These include README files that are displayed to users on landing pages of
+      project's repositories, such as GitHub, PyPI, and Anaconda, as well as
+      README files in different directories of the repository providing
+      technical information to contributors and reviewers.
+      
+      Configurations for README files in different directories of the repository.
+      For each readme file, add a key-value pair where the key is the path to the directory.
+      
+      :::{admonition} Supported Syntax
+      :class: dropdown info
+
+      [GitHub](https://docs.github.com/en/get-started/writing-on-github),
+      PyPI, and Anaconda.org all support markup languages such as Markdown and reStructuredText
+      for defining the contents of files.
+      That is, when the file extension is in a supported format (e.g., `.md`, `.rst`),
+      the contents are rendered as HTML on the respective platforms.
+      However, GitHub only allows [GitHub Flavored Markdown](https://github.github.com/gfm/) syntax,
+      and performs additional post-processing and sanitization after rendering the contents to HTML,
+      due to security concerns. This means that only a 
+      [limited subset of HTML features](https://docs.github.com/en/get-started/writing-on-github)
+      are supported.
+      Like GitHub, PyPI and Anaconda also impose several restrictions
+      and perform additional post-processing and sanitization.
+      PyPI uses the [Readme Renderer](https://github.com/pypa/readme_renderer) library
+      to render the README file, which only supports a
+      [limited subset of HTML tags](https://github.com/pypa/readme_renderer/blob/9c2eb81301bc230f2795cf7e6dc2c23f5815ea41/readme_renderer/clean.py#L20-L31)
+      and [attributes](https://github.com/pypa/readme_renderer/blob/9c2eb81301bc230f2795cf7e6dc2c23f5815ea41/readme_renderer/clean.py#L33-L65).
+      Since these do not completely overlap with the features supported by GitHub,
+      a separate [PyPI-friendly README](https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/)
+      must be provided for PyPI, to ensure that the contents are correctly rendered on the package index.
+      :::
+    type: object
+    additionalProperties:
+      title: Configuration for a directory README file.
+      $ref: https://controlman.repodynamics.com/schema/docfile
+    properties:
+      main:
+        title: >-
+          Main [`README`](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+          file of the GitHub repository.
+        allOf:
+          - properties:
+              path:
+                description: |
+                  It must be named `README` (case-sensitive) and placed either in the
+                  `.github` directory, the `docs` directory, or the root of the repository,
+                  and can have the extensions `.txt`, `.md`, or `.rst` (case-insensitive).
+                  If more than one of such files are present, the order of precedence is
+                  `.github`, then root, and finally the `docs` directory.
+                pattern: ^(?:|.github/|docs/)README(?i:.(txt|md|rst))?$
+                default: README.md
+                examples:
+                  - README
+                  - README.md
+                  - .github/README.txt
+                  - docs/README.rst
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+  health:
+    title: |
+      Configurations for 
+      [community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file).
+    type: object
+    additionalProperties: false
+    properties:
+      contributing:
+        title: Contributing Guidelines
+        description: |
+          This corresponds to the [`CONTRIBUTING`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)
+          file in the repository, which is automatically recognized by GitHub,
+          and displayed on the repository's homepage,
+          as well as when users create an issue or open a pull request.
+
+          This file is used to communicate how people can contribute to the project,
+          and may include information on how to report bugs, suggest enhancements,
+          and submit code changes, as well as references to documentation, contact information,
+          and other resources. We recommend to keep this file short,
+          and only include links to resources on the project's website,
+          as to avoid duplication of content.
+        allOf:
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+          - properties:
+              path:
+                title: |
+                  Path to the
+                  [`CONTRIBUTING`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors)
+                  file.
+                description: |
+                  This file must be named `CONTRIBUTING` (case-insensitive)
+                  and placed either in the `.github` directory, the `docs` directory,
+                  or the root of the repository. It can have the extensions `.txt`, `.md`, or `.rst`.
+                pattern: ^(?:|.github/|docs/)(?i:CONTRIBUTING(?:.(txt|md|rst))?)$
+                default: CONTRIBUTING.md
+                examples:
+                  - CONTRIBUTING
+                  - CONTRIBUTING.md
+                  - contributing.rst
+                  - docs/CONTRIBUTING.txt
+                  - .github/contributing.md
+      governance:
+        title: Governance Model
+        description: |
+          This corresponds to the `GOVERNANCE`
+          file in the repository, which is automatically recognized by GitHub,
+          and displayed on the repository's homepage.
+
+          This file is used to communicate how decisions are made in the project,
+          and may include information on how the project is managed, how decisions are made,
+          and how conflicts are resolved.
+          We recommend to keep this file short,
+          and only include links to resources on the project's website,
+          as to avoid duplication of content.
+        allOf:
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+          - properties:
+              path:
+                title: Path to the `GOVERNANCE` file.
+                description: |
+                  This file must be named `GOVERNANCE` (case-sensitive)
+                  and placed either in the `.github` directory, the `docs` directory,
+                  or the root of the repository. 
+                  It can have the extensions `.txt`, `.md`, or `.rst` (case-insensitive).
+                type: string
+                pattern: ^(?:|.github/|docs/)GOVERNANCE(?i:.(txt|md|rst))?$
+                default: GOVERNANCE.md
+                examples:
+                  - GOVERNANCE
+                  - GOVERNANCE.md
+                  - docs/GOVERNANCE.txt
+                  - .github/GOVERNANCE.md
+      security:
+        title: Security Policy
+        description: |
+          This corresponds to the
+          [`SECURITY`](https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
+          file in the repository, which is automatically recognized by GitHub,
+          and displayed on the repository's homepage,
+          as well as when users want to create a new issue or security advisory. 
+
+          This file is used to communicate how security vulnerabilities are handled in the project,
+          and may include information on how to report security vulnerabilities,
+          how they are triaged, and how they are resolved.
+          We recommend to keep this file short,
+          and only include links to resources on the project's website,
+          as to avoid duplication of content.
+        allOf:
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+          - properties:
+              path:
+                title: |
+                  Path to the
+                  [`SECURITY`](https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
+                  file.
+                description: |
+                  This file must be named `SECURITY` (case-sensitive)
+                  and placed either in the `.github` directory, the `docs` directory,
+                  or the root of the repository. 
+                  It can have the extensions `.txt`, `.md`, or `.rst` (case-insensitive).
+                type: string
+                pattern: ^(?:|.github/|docs/)SECURITY(?i:.(txt|md|rst))?$
+                default: SECURITY.md
+                examples:
+                  - SECURITY
+                  - SECURITY.md
+                  - docs/SECURITY.txt
+                  - .github/SECURITY.md
+      support:
+        title: Support Resources
+        description: |
+          This corresponds to the [`SUPPORT`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-support-resources-to-your-project)
+          file in the repository, which is automatically recognized by GitHub,
+          and displayed on the repository's homepage,
+          as well as when users are creating a new issue.
+
+          This file is used to communicate how users can get support for the project,
+          and may include information on how to ask questions, report issues, and request features.
+          We recommend to keep this file short,
+          and only include links to resources on the project's website,
+          as to avoid duplication of content.
+        allOf:
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+          - properties:
+              path:
+                title: Support Policy
+                description: |
+                  Path to the
+                  [`SUPPORT`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-support-resources-to-your-project)
+                  file (cf. [`doc.support`](#ccc-doc.support)).
+
+                  This file must be named `SUPPORT` (case-sensitive)
+                  and placed either in the `.github` directory, the `docs` directory,
+                  or the root of the repository. 
+                  It can have the extensions `.txt`, `.md`, or `.rst` (case-insensitive).
+                type: string
+                pattern: ^(?:|.github/|docs/)SUPPORT(?i:.(txt|md|rst))?$
+                default: SUPPORT.md
+                examples:
+                  - SUPPORT
+                  - SUPPORT.md
+                  - docs/SUPPORT.txt
+                  - .github/SUPPORT.md
+      code_of_conduct:
+        title: Code of Conduct
+        description: |
+          This corresponds to the
+          [`CODE_OF_CONDUCT`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project)
+          file in the repository, which is automatically recognized by GitHub,
+          and displayed on the repository's homepage,
+          as well as when users are creating a new issue or opening a pull request.
+          However, for "Code of conduct" to be marked as complete in the repository's community profile,
+          GitHub only accepts the
+          [Contributor Covenant](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html)
+          and the [Citizen Code of Conduct](http://stumptownsyndicate.org/).
+
+          This file is used to communicate the standards of behavior expected from contributors,
+          and may include information on how to report violations, how they are triaged,
+          and how they are resolved.
+        allOf:
+          - $ref: https://controlman.repodynamics.com/schema/docfile
+          - properties:
+              path:
+                title: |
+                  Path to the
+                  [`CODE_OF_CONDUCT`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project)
+                  file.
+                description: |
+                  This file must be named `CODE_OF_CONDUCT` (case-sensitive)
+                  and placed either in the `.github` directory, the `docs` directory,
+                  or the root of the repository.
+                  It can have the extensions `.txt`, `.md`, or `.rst` (case-insensitive).
+                type: string
+                pattern: ^(?:|.github/|docs/)CODE_OF_CONDUCT(?i:.(txt|md|rst))?$
+                default: CODE_OF_CONDUCT.md
+                examples:
+                  - CODE_OF_CONDUCT
+                  - CODE_OF_CONDUCT.md
+                  - docs/CODE_OF_CONDUCT.txt
+                  - .github/CODE_OF_CONDUCT.MD
+  web:
+    title: Configurations for the project's website.
+    type: object
+    additionalProperties: false
+    properties:
+      toc:
+        type: object
+      path:
+        title: Path to the website directory.
+        type: object
+        default: { }
+        additionalProperties: false
+        required: [ root, source ]
+        properties:
+          root:
+            $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            default: docs/website
+          source_rel:
+            $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            default: source
+          source:
+            $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            default: ${{ .root }}/${{ .source_rel }}
+          to_root:
+            title: Relative path from the source directory to the root of the repository.
+            default: ../../..
+      sphinx:
+        title: Configurations for the Sphinx website generator.
+        description: |
+          These are the [same key-value pairs](https://www.sphinx-doc.org/en/master/usage/configuration.html)
+          that can be added to the `conf.py` file of a Sphinx project.
+          They are automatically added to `conf.py` file during the website build process.
+          Note that not all keys are explicitly listed in the schema,
+          but any valid key can still be added here. However, there are some exceptions:
+          - [`extensions`](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions)
+            are automatically added based on the definitions in [`extension`](#ccc-web.extension),
+            and should not be set here.
+        type: object
+        additionalProperties: false
+        properties:
+          dependency:
+            default:
+              import_name: sphinx
+              pip:
+                spec: sphinx == 7.4.7
+              conda:
+                spec: sphinx == 7.4.7
+                channel: conda-forge
+              url:
+                docs: https://www.sphinx-doc.org/
+                source: https://github.com/sphinx-doc/sphinx
+            $ref: https://controlman.repodynamics.com/schema/dep-pkg
+          config:
+            type: object
+            additionalProperties: true
+            default: { }
+            properties:
+              project:
+                title: Name of the project.
+                type: string
+                default: ${{ name }}
+              author:
+                title: Author(s) of the project.
+                type: string
+                default: ${{ team.owner.name.full }}
+              project_copyright:
+                title: Copyright notice of the project.
+                type: string
+                default: ${{ copyright.notice }}
+              version:
+                title: Public (`major.minor`) version of the project.
+                description: |
+                  When not set (recommended),
+                  this is determined at build time from the latest
+                  [version tag](#ccc-tag.version) in the branch.
+                type: string
+                default_auto: determined from git tags
+              release:
+                title: Full version of the project.
+                description: |
+                  When not set (recommended),
+                  this is determined at build time from the latest
+                  [version tag](#ccc-tag.version) in the branch.
+                type: string
+                default_auto: determined from git tags
+              needs_sphinx:
+                title: Minimum supported version of Sphinx.
+                description: |
+                  The version must be in the form of `major.minor`,
+                  where `major` and `minor` are integers.
+                  This is automatically determined from the [`dependency`](#ccc-web.sphinx.dependency) definition.
+                type: string
+                default: '7.3'
+              today_fmt:
+                title: Format of the current date.
+                type: string
+                default: '%b %d, %Y'
+              numfig:
+                title: Numbering of figures.
+                type: boolean
+                default: true
+              numfig_format:
+                title: |
+                  Format of the figure numbering
+                  ([ref](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-numfig_format)).
+                type: object
+                properties:
+                  code-block:
+                    title: Format of code block numbering.
+                    type: string
+                    default: 'Code %s'
+                  figure:
+                    title: Format of figure numbering.
+                    type: string
+                    default: 'Fig. %s'
+                  section:
+                    title: Format of section numbering.
+                    type: string
+                    default: 'Section %s'
+                  table:
+                    title: Format of table numbering.
+                    type: string
+                    default: 'Table %s'
+              numfig_secnum_depth:
+                title: Depth of section numbering.
+                type: integer
+                default: 3
+              pygment_style:
+                title: Pygments style to use.
+                type: string
+                default: 'default'
+              show_authors:
+                title: Show authors in the output.
+                type: boolean
+                default: true
+              exclude_patterns:
+                title: Patterns to exclude from the build.
+                type: array
+                default:
+                  - "Thumbs.db"
+                  - ".DS_Store"
+                  - ".ipynb_checkpoints"
+                  - "README.md"
+                items:
+                  type: string
+              html_static_path:
+                title: Paths to static files.
+                description: |
+                  Paths that do not start with a `/` are relative to the website's `source` directory.
+                type: array
+                items:
+                  type: string
+              html_css_files:
+                title: Paths to CSS files.
+                description: |
+                  Any `.css` or `.css_t` file in a directory named `css`
+                  directly under the first defined path in `html_static_path`
+                  will be automatically added to this list, if not already defined here.
+                type: array
+                items:
+                  type: string
+              html_js_files:
+                title: Paths to JavaScript files.
+                description: |
+                  Any `.js` or `.js_t` file in a directory named `js`
+                  directly under the first defined path in `html_static_path`
+                  will be automatically added to this list, if not already defined here.
+                type: array
+                items:
+                  type: string
+              latex_engine:
+                title: LaTeX engine to use.
+                description: |
+                  * https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
+                  * https://www.sphinx-doc.org/en/master/latex.html
+                type: string
+                enum: [ pdflatex, xelatex, lualatex, platex, uplatex ]
+                default: 'pdflatex'
+              latex_show_pagerefs:
+                title: Show page references in LaTeX output.
+                type: boolean
+                default: true
+              latex_show_urls:
+                title: Show URLs in LaTeX output.
+                type: string
+                enum: [ no, footnote, inline ]
+                default: 'footnote'
+              latex_theme:
+                title: LaTeX theme to use.
+                type: string
+                enum: [ manual, howto ]
+                default: manual
+          extension:
+            title: Internal Sphinx extensions to be added.
+            description: |
+              All information about Sphinx internal extensions are added here.
+              These are used to add the [`extensions`](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions)
+              key and each extension's configurations to the `conf.py` file.
+            type: object
+            additionalProperties:
+              type: object
+              required: [ dependency ]
+              properties:
+                dependency:
+                  title: Extension information.
+                  description: |
+                    The `import_name` must be the name of the extension as it is imported in Python,
+                    i.e., what's added to the `extensions` list in the `conf.py` file.
+                  $ref: https://controlman.repodynamics.com/schema/dep-module
+                config:
+                  title: Configuration to be added to the Sphinx configuration.
+                  type: object
+                  additionalProperties: true
+          needs_package:
+            type: boolean
+            default: false
+        required: [ dependency ]
+      theme:
+        title: Theme of the website.
+        type: object
+        additionalProperties: false
+        required: [ dependency ]
+        properties:
+          dependency:
+            title: Name of the theme.
+            default:
+              import_name: pydata_sphinx_theme
+              pip:
+                spec: pydata-sphinx-theme == 0.15.4
+              conda:
+                spec: pydata-sphinx-theme == 0.15.4
+                channel: conda-forge
+              url:
+                docs: https://pydata-sphinx-theme.readthedocs.io/
+                source: https://github.com/pydata/pydata-sphinx-theme
+            anyOf:
+              - $ref: https://controlman.repodynamics.com/schema/dep-pkg
+              - $ref: https://controlman.repodynamics.com/schema/dep-module
+          config:
+            title: Configuration options for the theme.
+            type: object
+            additionalProperties: true
+      extension:
+        title: Extensions to be added to the Sphinx configuration.
+        description: |
+          All information about extensions, including dependencies and configurations, are added here.
+          These are used to add the [`extensions`](https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions)
+          key and each extension's configurations to the `conf.py` file.
+          They are also used to create the `requirements.txt` and `env.yaml`
+          files for the website build environment.
+        type: object
+        additionalProperties:
+          type: object
+          properties:
+            dependency:
+              title: Dependency to be installed.
+              $ref: https://controlman.repodynamics.com/schema/dep-pkg
+            config:
+              title: Configuration to be added to the Sphinx configuration.
+              type: object
+              additionalProperties: true
+      page:
+        title: Paths to important pages on the website.
+        description:
+          All paths must be relative to the root of the website directory, without suffix.
+        type: object
+        default: { }
+        additionalProperties:
+          title: Relative path to the page.
+          type: object
+          properties:
+            title:
+              title: Title of the page.
+              type: string
+              examples:
+                - Introduction
+                - User Manual
+                - Installation
+            path:
+              title: Path to the page.
+              type: string
+              examples:
+                - intro
+                - intro/index
+                - user-manual
+                - user-manual/installation/index
+            url:
+              title: URL of the page.
+              $ref: https://jsonschemata.repodynamics.com/url/http-explicit
+          examples:
+            - about/license
+            - help/contact
+      env:
+        title: Environment file configurations.
+        $ref: https://controlman.repodynamics.com/schema/env
+      url:
+        title: Website URLs.
+        type: object
+        default: { }
+        properties:
+          custom:
+            title: Custom domain (cname) for the website.
+            description: |
+              Custom domain of the website, if available.
+              Setting this will automatically deploy the GitHub Pages website to the given domain,
+              instead of the default GitHub Pages domain.
+              To learn more about configuring a custom domain with your DNS provider,
+              see [GitHub's documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+            type: object
+            additionalProperties: false
+            required: [ name, enforce_https ]
+            properties:
+              name:
+                type: string
+                format: uri
+                examples:
+                  - example.com
+                  - www.example.com
+                  - subdomain.example.com
+              enforce_https:
+                title: Enforce HTTPS for the custom domain.
+                type: boolean
+                default: true
+          base:
+            title: Base URL of the website.
+            description: |
+              If not set, this will be set to `https://${{ web.url.cname }}` if specified,
+              or the default GitHub Pages domain,
+              which is `https://${{ team.owner.github.user }}.github.io/${{ repo.name }}`,
+              unless the repository is for a
+              [user page](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)
+              (i.e., named `${{ team.owner.github.user }}.github.io`),
+              in which case the base URL is set to `https://${{ team.owner.github.user }}.github.io`.
+            $ref: https://jsonschemata.repodynamics.com/url/http-explicit
+            examples:
+              - 'https://${{ repo.info.owner.login }}.github.io'
+          home:
+            title: Homepage URL of the website.
+            description: |
+              This should point to the main landing page (i.e., `index` file) of the website.
+              If not set, this will be set to the base URL.
+            default: ${{ web.url.base }}
+            examples:
+              - ${{ web.url.base }}/some/path
+            $ref: https://jsonschemata.repodynamics.com/url/http-explicit
+      quicklinks:
+        title: Quicklinks
+        description: |
+          Quicklinks to important pages on the website.
+          These are displayed in the footer of the website.
+        type: array
+        items:
+          title: Group
+          type: object
+          required: [ links ]
+          properties:
+            title:
+              title: Title
+              type: string
+              examples:
+                - About
+                - Contact
+                - Help
+            links:
+              title: Links
+              type: array
+    required: [ path, sphinx ]
+  announcement:
+    title: Configurations of project announcements.
+    type: object
+    required: [ path, retention_days, url ]
+    properties:
+      path:
+        title: Path to the announcement banner file.
+        $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+        default: ${{ web.path.root }}/announcement.html
+        examples:
+          - docs/announcement.html
+      retention_days:
+        title: Number of days to keep an announcement.
+        default: 30
+        $ref: https://jsonschemata.repodynamics.com/number/non-negative
+      url:
+        title: URL to the announcement banner file.
+        $ref: https://jsonschemata.repodynamics.com/url/http-explicit
+        default: ${{ repo.url.raw }}/${{ announcement.path }}
+  # Package
+  pkg:
+    title: Package
+    description: |
+      Configurations of the project's Python package.
+    $ref: https://controlman.repodynamics.com/schema/pkg
+  test:
+    title: Test Suite
+    description: |
+      Configurations of the project's test suite.
+    $ref: https://controlman.repodynamics.com/schema/pkg
+  # ITS
+  changelog:
+    title: Changelog Configurations
+    description: |
+      Configurations for different changelog files.
+      Project's changelog templates and paths.
+      Configurations and templates for your project's changelogs and release notes.
+    type: object
+    additionalProperties:
+      title: Changelog
+      description: |
+        Configurations for a changelog file.
+        For each changelog, add a key-value pair,
+        where the key is the ID of the changelog, to reference in other places.
+      type: object
+      additionalProperties: false
+      required: [ name, title, path, intro, entry, sections ]
+      properties:
+        name:
+          title: Name
+          description: Name of the changelog.
+          $ref: https://jsonschemata.repodynamics.com/string/nonempty
+          examples:
+            - Public API
+        path:
+          title: Path
+          description: Path to the changelog file, relative to the root of the repository.
+          $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+          examples:
+            - CHANGELOG.md
+        title:
+          title: Title
+          description: Title of the changelog document.
+          $ref: https://jsonschemata.repodynamics.com/string/nonempty
+          examples:
+            - ${{ name }} Changelog (Public API)
+        intro:
+          title: Introduction
+          description: Introduction text of the changelog.
+          $ref: https://jsonschemata.repodynamics.com/string/nonempty
+          examples: |
+            All notable changes to this project will be documented in this file.
+
+            The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+            and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        entry:
+          title: Entry
+          description: Configurations for the entries in the changelog.
+          type: object
+          default: { }
+          additionalProperties: false
+          required: [ title, intro ]
+          properties:
+            title:
+              title: Title
+              description: Title of the entry.
+              type: string
+              minLength: 1
+              default: "[{ver_dist}] – {date}"
+            intro:
+              title: Introduction
+              description: Introduction text of the entry.
+              type: string
+              minLength: 1
+              default: |
+                - Commit Type: {commit_type}
+                - Commit Title: {commit_title}
+                - Parent Commit: [{parent_commit_hash}]({parent_commit_url})
+        sections:
+          title: Sections
+          description: Sections of each entry in the changelog.
+          type: array
+          minItems: 1
+          items:
+            title: Section
+            description: Section of the changelog.
+            type: object
+            additionalProperties: false
+            required: [ id, title, description ]
+            properties:
+              id:
+                title: ID
+                description: ID of the section, to reference in other places.
+                type: string
+              title:
+                title: Title
+                description: Title of the section.
+                type: string
+              description:
+                title: Description
+                description: Description of the section.
+                type: string
+  commit:
+    title: Configurations for different types of commits in your repository.
+    description: Commit types, sub-types and descriptions
+    type: object
+    additionalProperties: false
+    required: [ primary, secondary ]
+    default: { }
+    properties:
+      auto:
+        title: Automatic Commits
+        description: Automatic commit types
+        type: object
+        default: { }
+        additionalProperties: false
+        required: [ maintain, sync ]
+        properties:
+          maintain:
+            title: Maintain
+            description: |
+              Continuous maintenance and refactoring tasks.
+            default:
+              type: auto-maintain
+            $ref: https://controlman.repodynamics.com/schema/commit-auto
+          sync:
+            title: Sync
+            description: |
+              Continuous configuration automation and synchronization of dynamic files.
+            default:
+              type: auto-sync
+            $ref: https://controlman.repodynamics.com/schema/commit-auto
+      primary:
+        title: Primary Commits
+        description: Primary action commit types
+        type: object
+        default: { }
+        additionalProperties:
+          title: Custom Primary Commit
+          description: |
+            Configurations for a custom primary commit type.
+            For each custom commit type, a key-value pair must be added,
+            where the key is the ID of the commit type, to reference in other places.
+          $ref: https://controlman.repodynamics.com/schema/commit-primary
+        properties:
+          major:
+            title: Major Release
+            description: Configurations for a major release commit type.
+            default:
+              type: major
+              description: New major release containing breaking changes.
+            $ref: https://controlman.repodynamics.com/schema/commit-primary
+          minor:
+            title: Minor Release
+            description: Configurations for a minor release commit type.
+            default:
+              type: minor
+              description: New minor release containing backward-compatible new features and improvements.
+            $ref: https://controlman.repodynamics.com/schema/commit-primary
+          patch:
+            title: Patch Release
+            description: Configurations for a patch release commit type.
+            default:
+              type: patch
+              description: New patch release containing backward-compatible bug fixes.
+            $ref: https://controlman.repodynamics.com/schema/commit-primary
+          post:
+            title: Post-release
+            description: Configurations for a post-release commit type.
+            default:
+              type: post
+              description: New post-release containing non-API related changes.
+            $ref: https://controlman.repodynamics.com/schema/commit-primary
+      secondary:
+        title: Secondary Commits
+        description: |
+          Secondary action commit types.
+          For each commit type, a key-value pair must be added,
+          where the key is both the ID of the commit type (to reference in other places)
+          and its commit message type.
+        type: object
+        default: { }
+        additionalProperties:
+          title: Custom Secondary Commit
+          description: Configurations for a secondary commit type.
+          type: object
+          additionalProperties: false
+          properties:
+            description:
+              title: Description
+              description: Description of the commit type.
+              type: string
+            changelog_id:
+              title: Changelog ID
+              description: ID of the changelog to which the commit will be added.
+              type: string
+            changelog_section_id:
+              title: Changelog Section ID
+              description: ID of the section of the changelog to which the commit will be added.
+              type: string
+  label:
+    title: GitHub labels settings for the project
+    description: |
+      [GitHub docs](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels)
+    type: object
+    default: { }
+    additionalProperties: false
+    required: [ type, status, branch, version ]
+    properties:
+      type:
+        title: Primary Labels
+        description: Labels for primary commit types.
+        type: object
+        default: { }
+        additionalProperties: false
+        required: [ prefix, color, label ]
+        properties:
+          prefix:
+            title: Prefix
+            description: Prefix for label names.
+            default: 'type: '
+            $ref: https://controlman.repodynamics.com/schema/label-prefix
+          color:
+            title: Color
+            description: Color of the labels.
+            default: '#A00000'
+            $ref: https://jsonschemata.repodynamics.com/color/hex-string
+          label:
+            title: Labels
+            description: Primary labels.
+            type: object
+            default: { }
+            additionalProperties:
+              title: Custom Primary Labels
+              description: Custom primary labels.
+              $ref: https://controlman.repodynamics.com/schema/label-group-element
+            required: [ major, minor, patch, post ]
+            properties:
+              major:
+                title: Major Release
+                description: Label for major release.
+                default:
+                  suffix: Major Release
+                  description: ${{ commit.primary.major.description }}
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              minor:
+                title: Minor Release
+                description: Label for minor release.
+                default:
+                  suffix: Minor Release
+                  description: ${{ commit.primary.minor.description }}
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              patch:
+                title: Patch Release
+                description: Label for patch release.
+                default:
+                  suffix: Patch Release
+                  description: ${{ commit.primary.patch.description }}
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              post:
+                title: Post Release
+                description: Label for post release.
+                default:
+                  suffix: Post Release
+                  description: ${{ commit.primary.post.description }}
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+      subtype:
+        title: Secondary Type Labels
+        description: Issue sub types
+        $ref: https://controlman.repodynamics.com/schema/label-group
+      status:
+        title: Status
+        description: Issue/pull status
+        type: object
+        default: { }
+        additionalProperties: false
+        required: [ prefix, color, label ]
+        properties:
+          prefix:
+            title: Prefix
+            description: Prefix for the label name
+            default: 'status: '
+            $ref: https://controlman.repodynamics.com/schema/label-prefix
+          color:
+            title: Color
+            description: Color of the label.
+            default: '#0366d6'
+            $ref: https://jsonschemata.repodynamics.com/color/hex-string
+          label:
+            title: Labels
+            description: Labels for the issue sub-type
+            type: object
+            default : { }
+            additionalProperties: false
+            required:
+              - triage
+              - rejected
+              - duplicate
+              - invalid
+              - planning
+              - requirement_analysis
+              - design
+              - implementation
+              - testing
+              - deploy_alpha
+              - deploy_beta
+              - deploy_rc
+              - deploy_final
+            properties:
+              triage:
+                title: Triage
+                description: The issue is being triaged.
+                default:
+                  suffix: Triage
+                  description: The issue is being triaged.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              rejected:
+                title: Rejected
+                description: The issue/PR has been rejected.
+                default:
+                  suffix: Rejected
+                  description: The issue/PR has been rejected.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              duplicate:
+                title: Duplicate
+                description: The issue/PR is a duplicate.
+                default:
+                  suffix: Duplicate
+                  description: The issue/PR is a duplicate.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              invalid:
+                title: Invalid
+                description: The issue/PR is invalid.
+                default:
+                  suffix: Invalid
+                  description: The issue/PR is invalid.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              planning:
+                title: Planning
+                description: The issue is in the planning phase.
+                default:
+                  suffix: Planning
+                  description: The issue is in the planning phase.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              requirement_analysis:
+                title: Requirement Analysis
+                description: The issue is in the requirement analysis phase.
+                default:
+                  suffix: Requirement Analysis
+                  description: The issue is in the requirement analysis phase.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              design:
+                title: Design
+                description: The issue is in the design phase.
+                default:
+                  suffix: Design
+                  description: The issue is in the design phase.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              implementation:
+                title: Implementation
+                description: The issue is in the implementation phase.
+                default:
+                  suffix: Implementation
+                  description: The issue is in the implementation phase.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              testing:
+                title: Testing
+                description: The issue is in the testing phase.
+                default:
+                  suffix: Testing
+                  description: The issue is in the testing phase.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              deploy_alpha:
+                title: Alpha Release
+                description: The issue/PR is in alpha release.
+                default:
+                  suffix: Alpha Release
+                  description: The issue/PR is in alpha release.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              deploy_beta:
+                title: Beta Release
+                description: The issue/PR is in beta release.
+                default:
+                  suffix: Beta Release
+                  description: The issue/PR is in beta release.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              deploy_rc:
+                title: Release Candidate
+                description: The issue/PR is published as a release candidate.
+                default:
+                  suffix: Release Candidate
+                  description: The issue/PR is published as a release candidate.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+              deploy_final:
+                title: Final Release
+                description: The issue/PR has been merged into a release branch.
+                default:
+                  suffix: Final Release
+                  description: The issue/PR is published as a final release.
+                $ref: https://controlman.repodynamics.com/schema/label-group-element
+      branch:
+        title: Branch
+        description: Branch labels. This is an automatic label group.
+        default:
+          prefix: 'branch: '
+          description: Related to this specific branch of the repository.
+          color: '#0366d6'
+        $ref: https://controlman.repodynamics.com/schema/label-auto
+      version:
+        title: Version
+        description: Version labels. This is an automatic label group.
+        default:
+          prefix: 'Version: '
+          description: Related to this specific version of the package.
+          color: '#0366d6'
+        $ref: https://controlman.repodynamics.com/schema/label-auto
+      custom:
+        title: Custom Labels
+        description: Custom labels.
+        type: object
+        additionalProperties: false
+        properties:
+          single:
+            title: Single
+            description: Custom single labels.
+            type: object
+            additionalProperties:
+              type: object
+              additionalProperties: false
+              required: [ name, color, description ]
+              properties:
+                name:
+                  title: Name
+                  description: Name of the label
+                  type: string
+                color:
+                  title: Color
+                  description: Color of the label
+                  $ref: https://jsonschemata.repodynamics.com/color/hex-string
+                description:
+                  title: Description
+                  description: Description of the label.
+                  $ref: https://jsonschemata.repodynamics.com/config/github/label/description
+          group:
+            title: Label Groups
+            description: Custom label groups.
+            type: object
+            additionalProperties:
+              title: Label Group
+              description: A group of labels.
+              $ref: https://controlman.repodynamics.com/schema/label-group
+      all:
+        title: All labels
+        type: array
+        items:
+          type: object
+  issue:
+    title: Issues
+    description: |
+      Configurations of the project's issue tracking system (cf. [GitHub Issues](https://docs.github.com/en/issues/tracking-your-work-with-issues)).
+
+      These include [issue form](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
+      templates used to automatically maintain issue ticket forms,
+      and settings for the project's [issue template chooser]()https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser),
+      which is automatically maintained via the `.github/ISSUE_TEMPLATE/config.yaml` configuration file.
+      
+      # GitHub Issues Settings
+      This directory contains templates and configurations used when an issue is opened in the repository.
+
+      ## Templates
+      The issues templates use the GitHub's [issue forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
+      to create customizable web form fields. Each `.yml` file (other than `config.yml`) provides a template for
+      a specific issue type. The issue forms use the YAML format, with a series of defined [top-level keys](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms#top-level-syntax)
+      such as `name`, `description` and `labels`, and a [body syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema)
+      to define the form fields.
+
+      Any YAML file created in this directory using the specified syntax will be automatically added to the list of possible
+      issue forms that users can select from when opening a new issue in the repository.
+
+
+      ## Configurations
+      The [config.yml](../../.meta/config/issues_template_chooser.yaml) file contains the configurations for the
+      [template chooser](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser),
+      i.e. the landing page of the repository's 'Issues' section.
+
+      ### Options
+      - `blank_issues_enabled`: A boolean value defining whether free-form issues can be opened by users.
+      - `contact_links`: An array of dictionaries, defining additional external links for opening issues.
+      These options will be displayed alongside the available templates in the 'Issues' section of the repository.
+
+      ## References
+      - [GitHub Documentation](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates)
+  
+
+    type: object
+    default : { }
+    additionalProperties: false
+    required: [ blank_enabled ]
+    properties:
+      blank_enabled:
+        description: Whether to allow submission of free-form issues
+        type: boolean
+        default: false
+      contact_links:
+        description: External links to be shown on the issue template chooser
+        type: array
+        default: [ ]
+        uniqueItems: true
+        items:
+          type: object
+          additionalProperties: false
+          required: [ name, about, url ]
+          properties:
+            name:
+              description: Title shown on the issue template chooser
+              type: string
+            about:
+              description: Description shown on the issue template chooser
+              type: string
+            url:
+              description: URL to the external link
+              type: string
+              format: uri
+      form_element:
+        type: object
+        additionalProperties: true
+      forms:
+        title: Issue form definitions and configurations.
+        type: array
+        default: [ ]
+        uniqueItems: true
+        items:
+          type: object
+          additionalProperties: false
+          required: [ id, type, name, description, body ]
+          properties:
+            id:
+              title: Unique identifier of the issue form.
+              description: |
+                This is used to reference the form in other places
+                (e.g. as a key of the `maintainer.issue` object, to assign the issue to a maintainer),
+                and to generate the filename of the issue template's YAML file.
+                The ID must start with an alphanumeric character,
+                and can only contain alphanumeric characters, underscores, and hyphens.
+              type: string
+              pattern: '^[a-zA-Z0-9][a-zA-Z0-9_-]*$'
+            type:
+              title: Primary type of the issue.
+              description: |
+                Each form must be assigned a primary type,
+                which must match the key of one of the [primary type labels](../label/index.md#primary-types),
+                and consequently, the key of either one of the [primary action commit types](../commit/index.md#primary-action-types),
+                or one of the [primary custom commit types](../commit/index.md#primary-custom-types).
+
+                This is used to correlate each issue in the repository with a primary commit type:
+                {{ ccc.name }} automatically adds the corresponding primary type label
+                to each issue that is created using the form.
+                Subsequently, when a development branch is merged into a release branch,
+                {{ ccc.name }} first determines the corresponding issue of the branch from the branch name,
+                and then ascertains the corresponding primary commit type from the issue's primary type label,
+                in order to decide which actions to perform on the release branch.
+              type: string
+            subtype:
+              title: Subtype of the issue.
+              description: |
+                If two or more forms are assigned the same [primary type](#primary-type),
+                they must each define a unique subtype.
+                The subtype must match the key of one of the [subtype labels](../label/index.md#subtypes).
+                {{ ccc.name }} automatically adds the corresponding subtype label
+                to each issue that is created using the form,
+                and uses that with conjunction with the primary type label
+                to unambiguously identify the form that was used to create each issue in the repository.
+                It also helps maintainers and users
+                differentiate between issues with the same primary type.
+              type: string
+            pre_process:
+              description: |
+                Some issue forms, or some elements of an issue form, may only need to be present
+                when certain conditions are met. Instead of you having to manually modify issue forms
+                each time one of these conditions changes, {{ ccc.name }} allows you to dynamically
+                define conditions for each form and each of its elements, so that they are automatically
+                added/removed according to the specified conditions. This is done by adding a `pre_process`
+                key either to the form itself, or to specific elements of the form. The value of the
+                `pre_process` key must be an object with one of the following keys:
+                - `if_any`: The form/element is only displayed if any of the specified values evaluate to `True`.
+                - `if_all`: The form/element is only displayed if all of the specified values evaluate to `True`.
+                - `if_none`: The form/element is only displayed if none of the specified values evaluate to `True`.
+                - `if_equal`: The form/element is only displayed if all of the specified values are equal.
+
+                For any of the above keys, the value must be an array, where the elements of the array
+                can have any type (e.g., string, integer, boolean, etc.). For boolean conditions
+                (i.e., `if_any`, `if_all`, and `if_none`), the value of each element is cast to a boolean
+                in Python, thus for example, `0`, `0.0`, `""`, `[]`, `{}`, and `null` all evaluate to `False`,
+                while any non-zero number, non-empty string, non-empty list, and non-empty dictionary evaluates to `True`.
+
+                For example, in {{ ccc.name }}'s default configurations, there are three separate issue forms
+                defined for reporting bugs in the package's API, GUI, and CLI. However, your package may only have
+                some of these interfaces, in which case it makes sense to only show the corresponding issue forms
+                when the corresponding interfaces are present. This is achieved by adding a condition to each form.
+              examples:
+                - if_any: [ "${‎{ package.releases.gui_scripts }}" ] # Display a form only if the package has a GUI interface
+                - if_any: [ "${‎{ package.releases.cli_scripts }}" ] # Display a form only if the package has a CLI interface
+                - if_any: [ "${‎{ package.releases.has_scripts }}" ] # Display an element within a form only if the package has scripts
+              $ref: https://controlman.repodynamics.com/schema/gh-form-preprocess
+            post_process:
+              description: |
+                {{ ccc.name }} allows you to define post-processing instructions for each form,
+                which are executed after an issue is created using the form.
+
+                Issues that are created using GitHub's issue forms are visually not very appealing,
+                since GitHub simply creates a new `<h3>` heading for each form element,
+                and adds the user input underneath, without any formatting.
+                Moreover, there may be some elements that are only meant for the submission step,
+                and are not meant to be displayed in the issue body (e.g., checkboxes for agreeing with terms and conditions).
+                Therefore, {{ ccc.name }} allows you to define a template for the issue body,
+                which is used to reformat the issue body after the issue is created.
+                The template must be defined as a string representing valid Markdown and/or HTML syntax,
+                where the user input for each form element is referenced (similiar to Python strings)
+                using the syntax `{id}`, where `id` is the `id` of the corresponding form element.
+              examples:
+                - body: |
+                    <h2>Bug Location</h2>
+
+                    <ul>
+                    <li><b>Package Version</b>: {version}</li>
+                    <li><b>Fully Qualified Name</b>: {api_entry}</li>
+                    </ul>
+
+                    <h2>System and Version Specifications</h2>
+
+                    <ul>
+                    <li><b>Operating System</b>: {os}</li>
+                    <li><b>Python Version</b>: {python_version}</li>
+                    <li><b>Package Manager</b>: {package_manager}</li>
+                    <li>
+                    <details>
+                    <summary><b>Environment</b></summary>
+
+                    ```
+                    {environment}
+                    ```
+
+                    </details>
+                    </li>
+                    </ul>
+
+                    <h2>Bug Summary</h2>
+
+                    {summary}
+
+                    <h2>Unit-Test / Minimal Reproducible Example (MRE)</h2>
+
+                    {code}
+
+                    <h2>Error Message</h2>
+
+                    {log}
+              type: object
+              additionalProperties: false
+              properties:
+                assign_creator:
+                  title: Adding the Issue Creator as Assignee
+                  description: |
+                    You may want to ask the person who created an issue whether they would like to contribute
+                    to the resolution of the issue, and if so, add them as an assignee to the issue.
+                    {{ ccc.name }} allows you to do this automatically; first you need to add a `checkbox` element
+                    to the form, which asks the user whether they would like to be added as an assignee.
+                    Then, add a key `assign_creator` to the `post_process` object of the form, and under that,
+                    add a key `if_checkbox` whose value must be an object with a key `id`,
+                    specifying the `id` of the corresponding checkbox element.
+                    If the checkbox element has multiple checkboxes,
+                    you can also specify the `number` of the checkbox (starting from 1) that must be checked.
+                    Also, if you have formulated the checkbox label in a way that the creator must be added as an assignee
+                    if the checkbox is unchecked, you can set the `is_checked` key to `False`.
+
+                    ::::{dropdown} Example
+                    :::{code-block} yaml
+                    :caption: 🗂 `.meta/dev/issue.yaml`
+                    forms:
+                      - body:
+                          - type: checkboxes
+                            id: collab
+                            attributes:
+                              label: |
+                                Thank you again for filling this bug report.
+                                If you are willing to collaborate on fixing the issue,
+                                please select the option below.
+                              options:
+                                - label: I am willing to work on the issue and submit a pull request.
+                                  required: false
+                        post_process:
+                          assign_creator:
+                            if_checkbox:
+                              id: collab
+                              number: 1  # optional, default: 1
+                              is_checked: true  # optional, default: true
+                    :::
+                    ::::
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    if_checkbox:
+                      type: object
+                      additionalProperties: false
+                      properties:
+                        id:
+                          type: string
+                        number:
+                          type: integer
+                          default: 1
+                        is_checked:
+                          type: boolean
+                          default: true
+                      required: [ id, number, is_checked ]
+                body:
+                  title: Formatting the Issue Body
+                  type: string
+            name:
+              title: Name of the issue form.
+              description: |
+                Each form must have a unique name,
+                which is what is displayed to the user on the template chooser interface
+                when creating a new issue on GitHub.
+              examples:
+                - 🖥 App 🐞 Bug Report 📱 API
+              type: string
+            description:
+              title: Description of the issue form.
+              description: |
+                In addition to a name, each form must also have a description,
+                which appears below its name on the template chooser interface.
+              examples:
+                - Report a problem encountered while using the library's API.
+              type: string
+            labels:
+              title: Labels to be added to the issue.
+              description: |
+                Optionally, a list of additional labels can be assigned to each form,
+                which are then automatically added to each issue that is created using the form.
+                Each assigned label must exactly match the full name of an existing label in the repository,
+                as defined in the [label configurations](../label/index.md).
+
+                Note that the [primary type](../label/index.md#primary-types), [subtype](../label/index.md#subtypes),
+                and [status](../label/index.md#statuses) labels are automatically added to each issue,
+                and do not need to be specified here.
+              examples:
+                - [ first-custom-label, second-custom-label ]
+              type: array
+              uniqueItems: true
+              minItems: 1
+              items:
+                type: string
+            projects:
+              title: Projects to add the issue to.
+              description: |
+                Optionally, a list of projects can be specified for each form,
+                in which case each issue created using the issue form
+                is automatically added to all specified projects.
+                Each project must be specified in the format `PROJECT-OWNER/PROJECT-NUMBER`,
+                where `PROJECT-OWNER` is the username or organization name of the project owner,
+                and `PROJECT-NUMBER` is the number of the project in the project owner's repository.
+
+                Note that for this to work, either your project's
+                [auto-add workflow](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/adding-items-automatically)
+                must be enabled, or the person opening the issue must have write permissions for the specified projects.
+              examples:
+                - [ RepoDynamics/3, AAriam/1 ]
+              type: array
+              uniqueItems: true
+              items:
+                type: string
+            title:
+              description: |
+                Optionally, a default title can be added to each form,
+                which will automatically pre-populate the title field
+                when a user creates a new issue using the form.
+              examples:
+                - "API Bug: "
+              type: string
+            body:
+              $ref: https://controlman.repodynamics.com/schema/gh-form-body
+  doc:
+    description: Development process protocol specifications
+    type: object
+    default: { }
+    additionalProperties: false
+    required: [ prerelease_temp_path, protocol ]
+    properties:
+      prerelease_temp_path:
+        description: >-
+          Path to the file relative to the repository root
+          for storing pre-release development process protocols.
+        type: string
+        default: docs/prerelease_dev_protocols.md
+      protocol:
+        type: object
+        default: { }
+        additionalProperties: false
+        required: [ marker ]
+        properties:
+          template:
+            type: string
+            default: |
+              {%- macro make_user(user) -%}
+                {%- if user.name -%}
+                  {{ user.name }} (@{{ user.login }})
+                {%- else -%}
+                  @{{ user.login }}
+                {%- endif -%}
+              {%- endmacro -%}
+              
+              # Development Protocol #{{ issue.number }}
+              
+              - **Type**: {{ form.description }}
+              - **Client**: {{ make_user(issue.user) }}
+              - **Summary**: {{ pr_title }}
+              - **Current Status**: {{ status }}
+              - **Progress**:
+                {{ status_checkbox.triage }}{{ status_checkbox.planning }}{{ status_checkbox.requirement_analysis }}{{ status_checkbox.design }}{{ status_checkbox.implementation }}{{ status_checkbox.testing }}{{ status_checkbox.deploy }}
+              
+              {{ pr_list }}
+              
+              ## User Requirements Document (URD)
+              
+              {{ data.urd }}
+              
+              ## Triage
+              
+              {{ data.triage }}
+              
+              ## Plan
+              
+              {{ data.plan }}
+              
+              ## Software Requirements Specification (SRS)
+              
+              {{ data.srs }}
+              
+              ## Software Design Document (SDD)
+              
+              {{ data.sdd }}
+              
+              ## Implementation
+              
+              {{ data.description }}
+              
+              ### Task List
+              
+              {{ tasklist }}
+              
+              ## Testing
+              
+              {{ data.testing }}
+              
+              ## Deployment
+              
+              {{ data.deployment }}
+              
+              ## Timeline
+              
+              <div align="center">
+              
+              {{ timeline }}
+              
+              </div>
+              
+              {{ references }}
+          tasklist:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+            default:
+              value: "\n\n<!-- Tasklist\n
+                - [ ] secondary-commit-type: Summary of task 1.\n
+                \u0020\u0020Description of task 1.\n
+                \u0020\u0020- [ ] secondary-commit-type: Summary of subtask 1.1.\n
+                \u0020\u0020\u0020\u0020Description of subtask 1.1.\n
+                - [ ] secondary-commit-type: Summary of task 2.\n
+                \u0020\u0020Description of task 2.\n
+                -->\n\n"
+          timeline:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-dynamic-data
+            default:
+              value: >-
+
+                |    Date    |   Time   |              Actor               |                      Description                      |
+
+                | ---------- | -------- | -------------------------------- | ----------------------------------------------------- |
+              template: |
+                {%- macro make_entry(actor, description) -%}
+                  | {{ now.strftime("%Y.%m.%d") }} | {{ now.strftime("%H:%M:%S") }} | {{ "{:<32}".format(actor) }} | {{ "{:<53}".format(description) }} |
+                {%- endmacro -%}
+
+                {%- macro make_user(user) -%}
+                  {%- if user.name -%}
+                    {{ user.name }} (@{{ user.login }})
+                  {%- else -%}
+                    @{{ user.login }}
+                  {%- endif -%}
+                {%- endmacro -%}
+
+                {%- macro make_description() -%}
+                  {%- if action == "assigned" -%}
+                    Assigned to {{ make_user(payload.assignee) }}.
+                  {%- elif action == "unassigned" -%}
+                    Unassigned from {{ make_user(payload.assignee) }}.
+                  {%- elif action == "review_requested" -%}
+                    Assigned to {{ make_user(payload.requested_reviewer) }} for review.
+                  {%- elif action == "review_request_removed" -%}
+                    Unassigned from {{ make_user(payload.requested_reviewer) }} for review.
+                  {%- elif action == "synchronize" -%}
+                    New commits pushed to [{{ head.name }}]({{ head.url }}) (CI [{{ context.run_id }}]({{ workflow_url }})).
+                  {%- elif action == "labeled" -%}
+                    {%- set category = label.category -%}
+                    {%- if category == "type" -%}
+                        Type set to `{{ label.suffix }}`.
+                    {%- elif category == "subtype" -%}
+                        Subtype set to `{{ label.suffix }}`.
+                    {%- elif category == "version" -%}
+                          Target version set to `{{ label.suffix }}`.
+                    {%- elif category == "branch" -%}
+                          Target branch set to `{{ label.suffix }}`.
+                    {%- elif category == "status" -%}
+                      {%- set status = label.id -%}
+                      {%- if status == "triage" -%}
+                        Entered the triage phase.
+                      {%- elif status == "rejected" -%}
+                        Rejected and closed.
+                      {%- elif status == "duplicate" -%}
+                        Marked as duplicate and closed.
+                      {%- elif status == "invalid" -%}
+                        Marked as invalid and closed.
+                      {%- elif status == "planning" -%}
+                        Entered the planning phase.
+                      {%- elif status == "requirement_analysis" -%}
+                        Entered the requirement analysis phase.
+                      {%- elif status == "design" -%}
+                        Entered the design phase.
+                      {%- elif status == "implementation" -%}
+                        Entered the implementation phase.
+                      {%- elif status == "testing" -%}
+                        Entered the testing phase.
+                      {%- elif status == "deploy_alpha" -%}
+                        Deployed as alpha release.
+                      {%- elif status == "deploy_beta" -%}
+                        Deployed as beta release.
+                      {%- elif status == "deploy_rc" -%}
+                        Deployed as release candidate.
+                      {%- elif status == "deploy_final" -%}
+                        Deployed as final release.
+                      {%- else -%}
+                        Status changed to {{ status }}.
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- elif action == "opened" -%}
+                    {%- if event == "issues" -%}
+                      Issue ticket #{{ payload.issue.number }} submitted by {{ make_user(payload.issue.user) }}.
+                    {%- elif event == "pull_request" -%}
+                      Pull request #{{ payload.pull_request.number }} opened by {{ make_user(payload.pull_request.user) }}.
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endmacro %}
+                {{ make_entry(make_user(payload.sender), make_description()) -}}
+          references:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-dynamic-data
+            default:
+              template: |
+                [^{{ ref.id }}]: [{{ ref.title }}]({{ ref.url }})
+          pr_title:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+            default:
+              value: TBD
+          pr_list:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-dynamic-data
+            default:
+              template: |
+                {%- macro make_pull(pull) -%}
+                  #{{ pull.number }} (branch [{{ pull.head.name }}]({{ pull.head.url }}))
+                {%- endmacro -%}
+
+                {%- macro describe() -%}
+                  {%- if pulls|length == 1 -%}
+                    PR {{ make_pull(pulls[0]) }}.
+                  {%- else -%}
+                    the following PRs:
+                    {% for pull in pulls -%}
+                      > - {{ make_pull(pull) }}
+                    {% endfor -%}
+                  {%- endif -%}
+                {%- endmacro %}
+
+                > [!NOTE]
+                > The implementation, testing, and deployment are tracked in {{ describe() -}}
+          status:
+            $ref: https://controlman.repodynamics.com/schema/doc-protocol-dynamic-data
+            default:
+              template: |
+                {%- if status == "triage" -%}
+                  Submitted and awaiting triage.
+                {%- elif status == "rejected" -%}
+                  Rejected and closed.
+                {%- elif status == "duplicate" -%}
+                  Marked as duplicate and closed.
+                {%- elif status == "invalid" -%}
+                  Marked as invalid and closed.
+                {%- elif status == "planning" -%}
+                  In the planning phase.
+                {%- elif status == "requirement_analysis" -%}
+                  In the requirement analysis phase.
+                {%- elif status == "design" -%}
+                  In the design phase.
+                {%- elif status == "implementation" -%}
+                  In the implementation phase.
+                {%- elif status == "testing" -%}
+                  In the testing phase.
+                {%- elif status == "deploy_alpha" -%}
+                  Deployed as alpha release.
+                {%- elif status == "deploy_beta" -%}
+                  Deployed as beta release.
+                {%- elif status == "deploy_rc" -%}
+                  Deployed as release candidate.
+                {%- elif status == "deploy_final" -%}
+                  Deployed as final release.
+                {%- endif -%}
+          status_checkbox:
+            type: object
+            additionalProperties: false
+            default:
+              triage:
+                value: '\n  - [ ] Triage'
+              planning:
+                value: '\n  - [ ] Planning'
+              requirement_analysis:
+                value: '\n  - [ ] Requirement Analysis'
+              design:
+                value: '\n  - [ ] Design'
+              implementation:
+                value: '\n  - [ ] Implementation'
+              testing:
+                value: '\n  - [ ] Testing'
+              deploy:
+                value: '\n  - [ ] Deployment'
+            properties:
+              triage:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              planning:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              requirement_analysis:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              design:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              implementation:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              testing:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+              deploy:
+                $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+          data:
+            type: object
+            default:
+              description:
+                value: "\n\n**TBD**\n\n"
+              urd:
+                value: "\n\n{{ issue_body }}\n\n"
+              triage:
+                value: "\n\n**TBD**\n\n"
+              plan:
+                value: "\n\n**TBD**\n\n"
+              srs:
+                value: "\n\n**TBD**\n\n"
+              sdd:
+                value: "\n\n**TBD**\n\n"
+              testing:
+                value: "\n\n**TBD**\n\n"
+              deployment:
+                value: "\n\n**TBD**\n\n"
+            additionalProperties:
+              $ref: https://controlman.repodynamics.com/schema/doc-protocol-data
+          marker:
+            type: object
+            default: { }
+            additionalProperties: false
+            properties:
+              start:
+                type: string
+                default: '<!-- BEGIN: {} -->'
+              end:
+                type: string
+                default: '<!-- END: {} -->'
+          as_comment:
+            type: boolean
+            default: false
+  pull:
+    title: Pull Requests
+    description: GitHub pull request settings for the project
+    type: object
+    additionalProperties: false
+    properties:
+      template:
+        title: Templates
+        description: |
+          Different [pull request templates](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)
+          can only be accessed via [query parameters](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/using-query-parameters-to-create-a-pull-request)
+          . Otherwise, the main template directly under [./github] is used.
+          
+          For example, to use a template file named `my_custom_template.md`, add the following query string at the end of the
+          URL: `?template=my_custom_template.md`. A full URL may e.g. look like this:
+          `https://github.com/my-username/my-repo/compare/main...my-branch?template=my_custom_template.md`.
+          
+          - Pull request template filenames are not case-sensitive, and can have an extension such as `.md` or `.txt`.
+          - The YAML syntax used for issue forms is not supported for pull requests templates.
+          
+          By default, the template defined at [./github/pull_request_template.md](./github/pull_request_template.md)
+          is used when opening a pull request. To use the extra templates in this directory,
+          the `template` [query parameter](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/using-query-parameters-to-create-a-pull-request)
+          must be added to the URL of the pull request form, defining the name of the template to use.
+          For example, to use a template file named `my_custom_template.md`, add the following query string at the end of the
+          URL: `?template=my_custom_template.md`. A full URL may e.g. look like this:
+          https://github.com/my-username/my-repo/compare/main...my-branch?template=my_custom_template.md
+        type: object
+        additionalProperties:
+          type: string
+        properties:
+          default:
+            type: string
+  discussion:
+    title: GitHub Discussions
+    description: |
+      [GitHub Discussions](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/about-discussions)
+      configurations of the repository.
+    type: object
+    additionalProperties: false
+    properties:
+      category:
+        title: Discussion Categories
+        description: |
+          Information about available
+          [discussion categories](https://docs.github.com/en/discussions/managing-discussions-for-your-community/managing-categories-for-discussions),
+          and definition of [discussion category forms](https://docs.github.com/en/discussions/managing-discussions-for-your-community/creating-discussion-category-forms)
+          to customize the templates that are available for community members to use
+          when they open new discussions in the repository.
+
+          To define a form for an existing discussion category,
+          add a key-value pair where the key is the slug of the category name
+          in the repository. For example, to create a template for the "New Releases" category,
+          use the key `new-releases`.
+
+          :::{admonition} Manual Action Required
+          :class: attention
+
+          Defining forms here will automatically
+          [create discussion category forms](https://docs.github.com/en/discussions/managing-discussions-for-your-community/creating-discussion-category-forms)
+          in the `.github/DISCUSSION_TEMPLATE/` directory of the repository.
+          However, unlike issue forms, where adding a new template file in the `.github/ISSUE_TEMPLATE/` directory
+          automatically adds it to the list of available issues, discussion category forms only work when a
+          corresponding discussion category is already created in the repository.
+          Moreover, creating new discussion categories is not yet supported by the GitHub API.
+          This means that for each new discussion category form defined here, you must manually
+          [create the corresponding discussion category](https://docs.github.com/en/discussions/managing-discussions-for-your-community/managing-categories-for-discussions#creating-a-category)
+          in the repository. For example, if you define a form here under the key `new-releases`,
+          you must also create a category named `New Releases`, or any other name that matches the slug.
+          :::
+        type: object
+        additionalProperties:
+          title: Discussion Category
+          description: |
+            Information about a discussion category.
+          type: object
+          additionalProperties: false
+          properties:
+            name:
+              title: Name
+              description: |
+                Name of the discussion category.
+
+                This is automatically fetched from the 
+                [GitHub API](https://docs.github.com/en/graphql/reference/objects#discussioncategory).
+              type: string
+            id:
+              title: ID
+              description: |
+                Node ID of the `DiscussionCategory` object in the GitHub API.
+
+                This is automatically fetched from the 
+                [GitHub API](https://docs.github.com/en/graphql/reference/objects#discussioncategory).
+              type: string
+            form:
+              title: Category Form
+              description: |
+                Form definition for a specific discussion category, according to GitHub's
+                [syntax for discussion category forms](https://docs.github.com/en/discussions/managing-discussions-for-your-community/syntax-for-discussion-category-forms),
+                which is a subset of the [syntax for issue forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms).
+                
+                Each YAML file defines a form for a specific discussion category, indicated by the
+                filename, which must correspond with the slug for one of the discussion categories.
+                For example, the template for the "New Announcements" category should be stored in
+                `.github/DISCUSSION_TEMPLATE/new-announcements.yml`.
+                
+                To be recognized by GitHub, discussion category forms must be stored in the directory `/.github/DISCUSSION_TEMPLATE/`
+                (i.e. this directory).
+                
+                Each YAML file defines a form for a specific discussion category, indicated by the
+                filename, which must correspond with the slug for one of the discussion categories.
+                For example, the template for the "New Announcements" category should be stored in `.github/DISCUSSION_TEMPLATE/new-announcements.yml`.
+                Discussion forms, like issue forms, are written in YAML, using the
+                GitHub [form schema](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema).
+              type: object
+              additionalProperties: false
+              properties:
+                title:
+                  title: Title
+                  description: A default title that will be pre-populated in the discussion submission form.
+                  type: string
+                labels:
+                  title: Labels
+                  description: Labels that will automatically be added to discussions created with this template.
+                  type: array
+                  uniqueItems: true
+                  items:
+                    title: Label
+                    description: Name of an available label to add.
+                    type: string
+                body:
+                  $ref: https://controlman.repodynamics.com/schema/gh-form-body
+              examples:
+                - title: "[General] " # A default title that will be pre-populated in the discussion submission form.
+                  # Labels that will automatically be added to discussions created with this template.
+                  labels: [ "General Introduction" ]
+                  # Definition of the input types in the discussion form.
+                  body:
+                    - type: markdown
+                      attributes:
+                        value: |
+                          This is text that will show up in the template!
+                    - type: textarea
+                      id: improvements
+                      attributes:
+                        label: Top 3 improvements
+                        description: "What are the top 3 improvements we could make to this project?"
+                        value: |
+                          1.
+                          2.
+                          3.
+                          ...
+                        render: bash
+                      validations:
+                        required: true
+                    - type: markdown
+                      attributes:
+                        value: |
+                          ## Markdown header
+                          And some more markdown
+                    - type: input
+                      id: has-id
+                      attributes:
+                        label: Suggestions
+                        description: A description about suggestions to help you
+                      validations:
+                        required: true
+                    - type: dropdown
+                      id: download
+                      attributes:
+                        label: Which area of this project could be most improved?
+                        options:
+                          - Documentation
+                          - Pull request review time
+                          - Bug fix time
+                          - Release cadence
+                      validations:
+                        required: true
+                    - type: checkboxes
+                      attributes:
+                        label: Check that box!
+                        options:
+                          - label: This one!
+                            required: true
+                          - label: I won't stop you if you check this one, too
+                    - type: markdown
+                      attributes:
+                        value: |
+                          ### The thrilling conclusion
+                          _to our template_
+  # VCS
+  repo:
+    title: GitHub/Git repository settings.
+    description: |
+      These include general GitHub repository metadata
+      such as description, topics (keywords), and homepage URL,
+      as well as security configurations, merge strategies,
+      and section toggles (e.g., Discussions, Projects, Wiki).
+      Git settings include `.gitignore` and `.gitattributes` files.
+
+      Some keys are automatically retrieved from GitHub's REST
+      [API response](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+      during configuration synchronization and are always set to the source repository's metadata,
+      meaning that even in forked repositories,
+      these keys will always reflect the source repository's settings:
+      `id`, `node_id`, `name`, `full_name`, `created_at`, `default_branch`, and `url`.
+    type: object
+    default: { }
+    additionalProperties: false
+    properties:
+      description:
+        title: A short project description (cf. [`title`](#ccc-title)).
+        description: |
+          This is displayed on the GitHub repository's homepage,
+          and is added to repository metadata to improve 
+          project findability and visibility.
+        type: string
+        examples:
+          - ${{ title }}
+          - Another description different from project title.
+      topics:
+        title: |
+          Project
+          [topics](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics).
+        description: |
+          These keywords help others find your project on GitHub,
+          and can include project's intended purpose, subject area,
+          affinity groups, and other important qualities.
+          Note that GitHub only accepts up to 20 topics.
+        type: array
+        uniqueItems: true
+        maxItems: 20
+        default: ${{ slug.keywords[:20] }}
+        items:
+          title: A project keyword.
+          description: |
+            It must start with an alphanumeric character,
+            and can contain 50 or less ASCII alphanumeric characters and hyphens.
+          type: string
+          maxLength: 50
+          pattern: ^[A-Za-z0-9][A-Za-z0-9\-]*$
+      homepage:
+        title: URL of the project's homepage.
+        description: |
+          This is displayed on the GitHub repository's homepage,
+          helping users to easily find your project's website.
+        $ref: https://jsonschemata.repodynamics.com/url/http-explicit
+        default: ${{ web.url.home }}
+      secret_scanning:
+        title: Enable secret scanning.
+        type: boolean
+        default: true
+      secret_scanning_push_protection:
+        title: Enable secret scanning push protection.
+        type: boolean
+        default: true
+      vulnerability_alerts:
+        title: Enable vulnerability alerts.
+        type: boolean
+        default: true
+      automated_security_fixes:
+        title: Enable automated security fixes.
+        type: boolean
+        default: true
+      private_vulnerability_reporting:
+        title: Enable private vulnerability reporting.
+        description: |
+          https://docs.github.com/en/code-security/security-advisories/repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository#enabling-or-disabling-private-vulnerability-reporting-for-a-repository
+        type: boolean
+        default: true
+      has_issues:
+        title: Enable issues.
+        type: boolean
+        default: true
+      has_discussions:
+        title: Enable discussions.
+        type: boolean
+        default: true
+      has_projects:
+        title: Enable projects.
+        type: boolean
+        default: false
+      has_wiki:
+        title: Enable wiki pages.
+        type: boolean
+        default: false
+      allow_squash_merge:
+        title: Allow squash merges.
+        type: boolean
+        default: true
+      allow_merge_commit:
+        title: Allow merge commits.
+        type: boolean
+        default: false
+      allow_rebase_merge:
+        description: Allow rebase merge.
+        type: boolean
+        default: true
+      allow_auto_merge:
+        description: Allow automatic merge.
+        type: boolean
+        default: false
+      delete_branch_on_merge:
+        title: Delete head branch on merge.
+        description: |
+          https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-the-automatic-deletion-of-branches
+        type: boolean
+        default: true
+      allow_update_branch:
+        title: Allow head branch updates from base branch.
+        type: boolean
+        default: true
+      squash_merge_commit_title:
+        title: Default title of squash merge commit messages.
+        enum: [ PR_TITLE, COMMIT_OR_PR_TITLE ]
+        default: PR_TITLE
+      squash_merge_commit_message:
+        title: Default body of squash merge commit messages.
+        enum: [ PR_BODY, COMMIT_MESSAGES, BLANK ]
+        default: PR_BODY
+      merge_commit_title:
+        title: Default title of merge commit messages.
+        enum: [ PR_TITLE, MERGE_MESSAGE ]
+        default: PR_TITLE
+      merge_commit_message:
+        title: Default body of merge commit messages.
+        enum: [ PR_TITLE, PR_BODY, BLANK ]
+        default: PR_BODY
+      archived:
+        title: Archive the repository.
+        type: boolean
+        default: false
+      gitattributes:
+        title: The contents of the [`.gitattributes`](https://git-scm.com/docs/gitattributes) file.
+        description: |
+          These are definition of attributes for files and directories in the repository,
+          such as data type (e.g., text or binary), line endings, diff settings, 
+          and merge strategies, to manage how Git handles specific files.
+          The data must be an array of objects, as explained below.
+
+          :::{admonition} Learn More: `.gitattributes`
+          :class: dropdown seealso
+
+          - https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes
+          - https://github.com/alexkaratarakis/gitattributes/blob/master/Common.gitattributes
+          - https://github.com/alexkaratarakis/gitattributes/blob/master/Python.gitattributes
+          :::
+        type: array
+        uniqueItems: true
+        items:
+          title: Attributes for a specific filetype.
+          description: |
+            This must be a key-value pair, where the key is a path or glob pattern,
+            and the value is the attributes to set for the matched files,
+            specified as an array of strings.
+          type: object
+          minProperties: 1
+          maxProperties: 1
+          additionalProperties:
+            title: List of attributes to set for the matched files.
+            $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+      gitignore:
+        title: The contents of the [`.gitignore`](https://git-scm.com/docs/gitignore) file.
+        description: |
+          These are definition of files and directories in the repository 
+          to be excluded from version control by Git,
+          preventing them from being pushed to the remote repository.
+          The data must be an array of strings, where each string is a path or glob pattern to ignore.
+
+          :::{admonition} Learn More: `.gitignore`
+          :class: dropdown seealso
+
+          - [Default `gitignore` templates](https://github.com/github/gitignore)
+          :::
+        $ref: https://jsonschemata.repodynamics.com/array/unique-strings
+      id:
+        title: Repository ID.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: integer
+        format: int64
+        examples:
+          - 1296269
+      node_id:
+        title: Repository node ID.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: string
+        examples:
+          - MDEwOlJlcG9zaXRvcnkxMjk2MjY5
+      name:
+        title: Repository name.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: string
+        examples:
+          - PyPackIT
+      full_name:
+        title: Repository full name, i.e., `OWNER-USERNAME/REPOSITORY-NAME`.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: string
+        examples:
+          - RepoDynamics/PyPackIT
+      created_at:
+        title: Repository creation date.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        examples:
+          - 2024-12-31
+        $ref: https://jsonschemata.repodynamics.com/date/yyyy-mm-dd
+      default_branch:
+        title: Default branch name.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: string
+        examples:
+          - main
+      url:
+        title: GitHub repository URLs.
+        description: |
+          These are all automatically generated URLs for various GitHub repository pages,
+          such as the homepage, issues, pull requests, discussions, actions, releases, and security.
+          You can use these to link to specific pages in your repository.
+        default_auto: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+        type: object
+        default: { }
+        properties:
+          home:
+            title: Repository homepage.
+            auto_default: retrieved from [GitHub API](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository)
+            $ref: https://jsonschemata.repodynamics.com/url/https
+          tree:
+            title: URL of the default branch's tree view.
+            default: ${{ repo.url.home }}/tree/${{ branch.main.name }}
+            examples:
+              - "https://github.com/RepoDynamics/PyPackIT/tree/main"
+            $ref: https://jsonschemata.repodynamics.com/url/https
+          blob:
+            title: URL of the default branch's blob view.
+            default: ${{ repo.url.home }}/blob/${{ branch.main.name }}
+            examples:
+              - "https://github.com/RepoDynamics/PyPackIT/blob/main"
+            $ref: https://jsonschemata.repodynamics.com/url/https
+          raw:
+            title: URL of the default branch's raw file view.
+            default: 'https://raw.githubusercontent.com/${{ repo.full_name }}/${{ branch.main.name }}'
+            examples:
+              - "https://raw.githubusercontent.com/RepoDynamics/PyPackIT/main"
+            $ref: https://jsonschemata.repodynamics.com/url/https
+          issues:
+            title: GitHub Issues URLs.
+            type: object
+            default: { }
+            additionalProperties: false
+            properties:
+              home:
+                title: URL of the repository's GitHub Issues homepage.
+                default: ${{ repo.url.home }}/issues
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/issues"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+              chooser:
+                title: URL of repository's GitHub Issue template chooser.
+                default: ${{ repo.url.issues.home }}/new/choose
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/issues/new/choose"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+              new:
+                title: URLs for opening a new issue.
+                description: |
+                  For each issue form defined in [`issue.forms`](#ccc-issue.forms),
+                  a key-value pair is automatically added here,
+                  where the key is the [`id`](#ccc-issue.forms[i].id) of the form,
+                  and the value is the URL for opening a new issue with that form.
+                type: object
+                default: { }
+                additionalProperties:
+                  title: New Issue URL
+                  description: URL for opening a new issue with a specific template.
+                  examples:
+                    - "https://github.com/RepoDynamics/PyPackIT/issues/new?template=bug_report.yaml"
+                  $ref: https://jsonschemata.repodynamics.com/url/https
+          pulls:
+            title: GitHub Pull Requests URLs.
+            type: object
+            default: { }
+            properties:
+              home:
+                title: URL of the repository's GitHub Pull Requests homepage.
+                default: ${{ repo.url.home }}/pulls
+                $ref: https://jsonschemata.repodynamics.com/url/https
+          discussions:
+            title: GitHub Discussions URLs.
+            type: object
+            default: { }
+            properties:
+              home:
+                title: URL of the repository's GitHub Discussions homepage.
+                default: ${{ repo.url.home }}/discussions
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/discussions"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+              new:
+                title: URLs for opening a new discussion.
+                description: |
+                  For each discussion category in [`discussion.category`](#ccc-discussion.category),
+                  a key-value pair is automatically added here,
+                  where the key is the same as in `discussion.category` (i.e., the slug of the category name),
+                  and the value is the URL for opening a new discussion in that category.
+                type: object
+                default: { }
+                additionalProperties:
+                  title: URL for opening a new discussion in a specific category.
+                  examples:
+                    - "https://github.com/RepoDynamics/PyPackIT/discussions/new?category=announcements"
+                  $ref: https://jsonschemata.repodynamics.com/url/https
+          actions:
+            title: GitHub Actions URLs.
+            type: object
+            default: { }
+            properties:
+              home:
+                title: URL of the repository's GitHub Actions homepage.
+                default: ${{ repo.url.home }}/actions
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/actions"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+          releases:
+            title: GitHub Releases URLs.
+            type: object
+            default: { }
+            properties:
+              home:
+                title: URL of the repository's GitHub Releases homepage.
+                default: ${{ repo.url.home }}/releases
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/releases"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+          security:
+            title: GitHub Security URLs.
+            type: object
+            default: { }
+            properties:
+              home:
+                title: URL of the repository's GitHub Security homepage.
+                default: ${{ repo.url.home }}/security
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/security"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+
+              advisories:
+                title: URL of the repository's security advisories.
+                default: ${{ repo.url.security.home }}/advisories
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/security/advisories"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+              new_advisory:
+                title: URL for creating a new security advisory.
+                default: ${{ repo.url.security.advisories }}/new
+                examples:
+                  - "https://github.com/RepoDynamics/PyPackIT/security/advisories/new"
+                $ref: https://jsonschemata.repodynamics.com/url/https
+  branch:
+    title: GitHub/Git branch settings.
+    description:
+      These include names/prefixes and protection rules for different branch types.
+    type: object
+    default: { }
+    additionalProperties: false
+    required: [ main, release, pre, dev, auto ]
+    properties:
+      main:
+        title: Configurations for the default (aka main, trunk) branch of the repository.
+        default:
+          name: main
+        $ref: https://controlman.repodynamics.com/schema/branch
+      release:
+        title: Configurations for release branches.
+        default:
+          name: release/v
+        $ref: https://controlman.repodynamics.com/schema/branch
+      pre:
+        title: Configurations for pre-release branches.
+        default:
+          name: pre-release/v
+        $ref: https://controlman.repodynamics.com/schema/branch
+      dev:
+        title: Configurations for development branches.
+        default:
+          name: dev/
+        $ref: https://controlman.repodynamics.com/schema/branch
+      auto:
+        title: Configurations for auto-update branches.
+        default:
+          name: auto-update/
+        $ref: https://controlman.repodynamics.com/schema/branch
+  tag:
+    title: Configurations for the repository tags.
+    type: object
+    default: { }
+    additionalProperties: false
+    properties:
+      version:
+        title: Configurations for version tags.
+        type: object
+        default: { }
+        additionalProperties: false
+        properties:
+          prefix:
+            title: Prefix of version tags.
+            description: |
+              You must choose a prefix that does not conflict with other tags.
+              For example, if you choose `v` (so version tags are `v1.0.0`, `v1.0.1`, etc.),
+              then no other tags should start with `v`.
+            type: string
+            default: vers/
+            examples:
+              - version/
+              - ver/
+              - v/
+              - v
+        required: [ prefix ]
+    required: [ version ]
+  file:
+    type: object
+    additionalProperties: false
+    properties:
+      duplicate:
+        type: object
+        additionalProperties:
+          type: object
+          additionalProperties: false
+          required: [ destination ]
+          properties:
+            source:
+              $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            sources:
+              type: array
+              items:
+                $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            destination:
+              $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+          oneOf:
+            - required: [ source ]
+            - required: [ sources ]
+  # CI
+  control:
+    title: Configurations for the project's control center.
+    type: object
+    additionalProperties: false
+    required: [ path, cache ]
+    default: { }
+    properties:
+      path:
+        title: Path to the control center directory.
+        $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+        default: .control
+      cache:
+        title: Settings for cached data.
+        description: |
+          These include configuration extensions downloaded from external URLs
+          and data obtained through web-APIs.
+
+          :::{admonition} Not Extensible
+          :class: attention
+
+          These configurations are not extensible, 
+          as they are used to define extensions and their caching settings. 
+          :::
+
+          :::{admonition} Local Override
+          :class: tip dropdown
+
+          When working with a local clone of the repository on your computer,
+          you can override these configurations 
+          by creating a `.local_cc_config.yaml` file with the same syntax
+          in the root of the repository.
+          This file is automatically added to the `.gitignore` file
+          and thus will not be tracked by Git 
+          or pushed to the remote repository.
+          This allows you to maintain a local caching configuration 
+          without affecting the remote repository.
+          :::
+        type: object
+        additionalProperties: false
+        default: { }
+        required: [ retention_hours ]
+        properties:
+          retention_hours:
+            title: Number of hours to keep different cached data.
+            description: |
+              After the specified duration,
+              the cached data is considered stale
+              and will be automatically synced with the source.
+            type: object
+            additionalProperties: false
+            default: { }
+            required: [ extension, repo, user, orcid, doi, python ]
+            properties:
+              extension:
+                title: Configuration extensions retrieved from external URLs.
+                description: |
+                  These are extended data in control center configuration files
+                  defined with the `!ext` tag.
+                default: 0
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+              repo:
+                title: Repository data retrieved from GitHub API.
+                description: |
+                  This includes general repository settings,
+                  as well as details about discussion categories,
+                  which are used for the website's blog.
+                default: 1
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+              user:
+                title: Team member data retrieved from GitHub API.
+                description: |
+                  This includes GitHub user data such as
+                  name, email, avatar, bio, and other profile information.
+                default: 24
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+              orcid:
+                title: Publications data retrieved from ORCID API.
+                description: |
+                  This includes a list of all publication DOIs associated with an ORCID ID.
+                default: 240
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+              doi:
+                title: Publication data retrieved from DOI API.
+                description: |
+                  This corresponds to citation details associated with a specific DOI.
+                default: 1000
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+              python:
+                title: Python version data retrieved from the Python GitHub repository.
+                description: |
+                  This is a list of currently available Python versions,
+                  used to update workflow configurations such as CI/CD/CT pipelines.
+                default: 500
+                $ref: https://jsonschemata.repodynamics.com/number/non-negative
+      url:
+        title: URL of the project's configuration file.
+        default: ${{ repo.url.raw }}/.github/.control/.metadata.json
+        $ref: https://jsonschemata.repodynamics.com/url/https
+  schedule:
+    title: Configurations for scheduled workflow jobs.
+    description: |
+      These are the Continuous pipelines
+      triggered by GitHub Actions'
+      [`schedule`](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)
+      event.
+    type: object
+    additionalProperties: false
+    properties:
+      update:
+        title: Updating jobs.
+        description: |
+          Configurations for scheduled jobs that may result in updates to repository files and settings.
+          These include Continuous Configuration Automation (CCA) to synchronize project configurations,
+          as well as various Continuous Maintenance (CM) and Refactoring (CR) tasks.
+        $ref: https://controlman.repodynamics.com/schema/job-scheduled
+      test:
+        title: Testing jobs.
+        description: |
+          Configurations for the Continuous Testing (CT) pipeline of the package.
+        $ref: https://controlman.repodynamics.com/schema/job-scheduled
+  tool:
+    title: Configurations for tools used in the development workflow.
+    description: |
+      These include pre-integrated tools as well as any additional tools
+      that you can add to the project's workflow.
+    type: object
+    additionalProperties:
+      title: Additional tools
+      description: |
+        Configurations for additional tools that can be added to the project's workflow.
+      $ref: https://controlman.repodynamics.com/schema/tool
+    properties:
+      pre-commit:
+        title: Pre-commit hooks.
+        description: |
+          [Pre-commit](https://pre-commit.com/) is a framework for managing and maintaining
+          multi-language hooks.
+          These configurations define the pre-commit hooks to be used in the project.
+        $ref: https://controlman.repodynamics.com/schema/tool
+      codecov:
+        title: Codecov test coverage reporting.
+        description: |
+          [Codecov](https://about.codecov.io/) is an online platform
+          that provides code coverage metrics for your project.
+          After [signing up on Codecov](https://docs.codecov.com/docs/quick-start),
+          these configurations will automatically control the generation of coverage reports
+          and the submission of these reports to Codecov.
+        type: object
+        additionalProperties: false
+        properties:
+          config:
+            title: Configurations for CodeCov.
+            type: object
+            additionalProperties: false
+            properties:
+              file:
+                title: Configuration file.
+                description: |
+                  This will be used by CodeCov to generate coverage reports.
+                  Learn more about the [Codecov YAML configuration file](https://docs.codecov.com/docs/codecov-yaml),
+                type: object
+                additionalProperties: false
+                properties:
+                  type:
+                    title: Type of the configuration file.
+                    description: |
+                      CodeCov only supports YAML configuration files.
+                    const: yaml
+                    default: yaml
+                  path:
+                    title: Path to the configuration file.
+                    description: |
+                      CodeCov only looks for a `codecov.yml` or `.codecov.yml` file
+                      either in the root of the repository, or in `.github/` and `dev/` directories.
+                      (cf. [CodeCov documentation](https://docs.codecov.com/docs/codecov-yaml#can-i-name-the-file-codecovyml)).
+                    type: string
+                    pattern: ^(.github/|dev/)?.?codecov.yml$
+                    default: .github/.codecov.yml
+                  content:
+                    title: Configurations for CodeCov.
+                    description: |
+                      For a full reference, see the
+                      [Codecov YAML reference](https://docs.codecov.com/docs/codecovyml-reference).
+      readthedocs:
+        title: ReadTheDocs website hosting.
+        description: |
+          In addition to GitHub Pages, you can also host your project's documentation on ReadTheDocs.
+          This includes some manual steps to set up the website on ReadTheDocs,
+          but the rest of the process, including build configurations and preview links,
+          can be controlled through these configurations.
+        type: object
+        additionalProperties: false
+        required: [ config ]
+        properties:
+          config:
+            title: Configurations for the project's website on ReadTheDocs.
+            type: object
+            additionalProperties: false
+            required: [ file, workflow ]
+            properties:
+              file:
+                title: Configuration file.
+                description: |
+                  This will be used by ReadTheDocs to build the website on readthedocs.io.
+                properties:
+                  type:
+                    title: Type of the configuration file.
+                    description: |
+                      ReadTheDocs only supports YAML configuration files.
+                    const: yaml
+                    default: yaml
+                  path:
+                    title: Path to the configuration file.
+                    description: |
+                      By default, [ReadtheDocs](https://docs.readthedocs.io/en/stable/config-file/index.html#where-to-put-your-configuration-file)
+                      only looks for a `.readthedocs.yaml` file in the root of the repository.
+                      However, you can [change this manually](https://docs.readthedocs.io/en/stable/guides/setup/monorepo.html#how-to-use-a-readthedocs-yaml-file-in-a-sub-folder)
+                      by setting another path on the ReadTheDocs website,
+                      and then specifying that path here.
+                    type: string
+                    default: .readthedocs.yaml
+                    examples:
+                      - .github/.readthedocs.yaml
+                  content:
+                    title: Config
+                    description: |
+                      Configuration settings for the ReadTheDocs website.
+                      See also: https://docs.readthedocs.io/en/stable/config-file/v2.html
+                    type: object
+              workflow:
+                title: Workflow configurations for the ReadTheDocs website.
+                description: |
+                  These are used to create website preview links for pull requests.
+                type: object
+                additionalProperties: false
+                required: [ name, platform, version_scheme, language ]
+                properties:
+                  name:
+                    title: Name of the project on ReadTheDocs.
+                    description: |
+                      This is the slug name of the project.
+                    type: string
+                    default: ${{ repo.name }}
+                  platform:
+                    title: ReadTheDocs hosting platform type.
+                    type: string
+                    enum: [ community, business ]
+                    default: community
+                  version_scheme:
+                    title: Versioning scheme of the website.
+                    description: |
+                      See [ReadTheDocs documentation](https://docs.readthedocs.io/en/stable/versioning-schemes.html)
+                      for more information.
+                    type: object
+                    default: { }
+                    additionalProperties: false
+                    required: [ single_version, translation ]
+                    properties:
+                      single_version:
+                        title: Whether the website has a single version (vs. multiple versions).
+                        type: boolean
+                        default: false
+                      translation:
+                        title: Whether the website supports multiple languages.
+                        type: boolean
+                        default: false
+                  language:
+                    title: Language of the website.
+                    type: string
+                    default: en
+  local:
+    title: Directory structure of the repository.
+    description: |
+      From the seven [main directories](/manual/fundamentals/structure/index.md) in your repository
+      that {{ccc.name}} manages and works with,
+      the [GitHub directory](/manual/fundamentals/structure/github.md)
+      and the [Docs directory](/manual/fundamentals/structure/docs.md)
+      have fixed paths according to GitHub requirements,
+      while the path to the other five directories can be customized.
+      As discussed before,
+      [Customizing the path to the control center directory](/manual/control/structure/index.md#location)
+      requires a configuration file outside the control center directory.
+      The path to the remaining four directories,
+      i.e., the [source](/manual/fundamentals/structure/source.md),
+      [tests](/manual/fundamentals/structure/tests.md),
+      [website](/manual/fundamentals/structure/website.md), and
+      [local](/manual/fundamentals/structure/local.md) directories,
+      along with the paths to subdirectories of the local directory,
+      can be customized using the `path.yaml` file
+      in your repository's control center, as described in this section.
+
+      All paths are relative to the root of the repository.
+
+      The `local` key accepts an object with
+      keys `root`, `cache`, and `report`. The `root` key must be set to a string defining
+      the path to the local directory itself. The `cache` and `report` keys
+      correspond to the cache and report subdirectories of the local directory;
+      they accept an object with a key `root` that must be set to a string defining
+      the path to the corresponding subdirectory, relative to the root of the local directory.
+      In addition, they each define paths to other subdirectories of the corresponding cache/report subdirectory,
+      each used for a specific tool. By default, the following keys are defined
+      for both the `cache` and `report` subdirectories: `repodynamics`, `coverage`, `mypy`, `pylint`,
+      `pytest`, and `ruff`. Each of these keys must be set to a string defining the path
+      to the cache/report subdirectory for that tool,
+      relative to the root of the corresponding cache/report subdirectory.
+
+      You can also add other custom keys under `dir.local.cache` and `dir.local.report`
+      for other tools that you use, and reference them in the corresponding configuration files.
+      Note that you do not have to specify all keys in the `path.yaml` file;
+      for all keys that are not specified, {{ccc.name}} will use the default values.
+      Also, you can entirely omit the `path.yaml` file if you do not want to customize any paths.
+
+
+      For example, if you only want to
+      - change the path of the source directory to `my_source_directory`,
+      - change the path of the cache subdirectory to `my_cache_directory`, and
+      - add a new subdirectory `my_tool_subdirectory` under the report subdirectory
+        for the tool `my_tool`,
+
+      :::{admonition} Important Considerations
+      :class: important
+
+      - You must also manually create/rename/move the corresponding directories to match the set path,
+        in the same commit where you create/modify/delete the `path.yaml` file.
+      - All four main directories must be orthogonal to all other
+        [main directories](/manual/fundamentals/structure/index.md) in your repository,
+        meaning that they cannot be a subdirectory of any other main directory.
+      :::
+
+      {{ccc.name}} automatically manages a variety of files in your repository's main directories,
+      and performs a number of tasks that require access to these files.
+      For example, to run your tests and build your website, {{ccc.name}} needs to know
+      the path to tests and website directories. In addition, these paths are used as
+      substitutions in a number of other configuration files for your project,
+      so that you do not have to manually update these files when you change a path.
+      The following are just a few examples of configuration files where these paths are used:
+
+      :::{code-block} toml
+      :caption: 🗂 `package_python/build.toml`
+      [tool.setuptools.packages.find]
+      where = [ "${‎{ dir.pkg.source }}" ]
+
+      [tool.versioningit.onbuild]
+      source-file = "${‎{ dir.pkg.source }}/${‎{ package.name }}/__init__.py"
+      :::
+
+      :::{code-block} toml
+      :caption: 🗂 `package_python/tools/mypy.toml`
+      [tool.mypy]
+      cache_dir = "${‎{ dir.local.cache.mypy }}"
+      any_exprs_report = "${‎{ dir.local.report.mypy }}"
+      html_report = "${‎{ dir.local.report.mypy }}"
+      linecount_report = "${‎{ dir.local.report.mypy }}"
+      linecoverage_report = "${‎{ dir.local.report.mypy }}"
+      lineprecision_report = "${‎{ dir.local.report.mypy }}"
+      txt_report = "${‎{ dir.local.report.mypy }}"
+      :::
+
+
+      :::{code-block} toml
+      :caption: 🗂 `package_python/tools/ruff.toml`
+      [tool.ruff]
+      cache-dir = "${‎{ dir.local.cache.ruff }}"
+      :::
+
+      :::{code-block} yaml
+      :caption: 🗂 `ui/web.yaml`
+      readthedocs:
+        conda:
+          environment: ${‎{ dir.web }}/requirements.yaml
+        sphinx:
+          configuration: ${‎{ dir.web }}/source/conf.py
+      :::
+
+      :::{code-block} text
+      📦 <REPOSITORY-ROOT>
+       ┃
+       ┗ 🗂 .local
+         ┃
+         ┣ 🗂 cache
+         ┃ ┃
+         ┃ ┣ 🗂 coverage
+         ┃ ┃
+         ┃ ┣ 🗂 mypy
+         ┃ ┃
+         ┃ ┣ 🗂 pylint
+         ┃ ┃
+         ┃ ┣ 🗂 pytest
+         ┃ ┃
+         ┃ ┣ 🗂 repodynamics
+         ┃ ┃
+         ┃ ┗ 🗂 ruff
+         ┃
+         ┗ 🗂 report
+           ┃
+           ┣ 🗂 coverage
+           ┃
+           ┣ 🗂 mypy
+           ┃
+           ┣ 🗂 pylint
+           ┃
+           ┣ 🗂 pytest
+           ┃
+           ┣ 🗂 repodynamics
+           ┃
+           ┗ 🗂 ruff
+      :::
+    type: object
+    additionalProperties: false
+    default: { }
+    properties:
+      cache:
+        type: object
+        default: { }
+        additionalProperties: false
+        properties:
+          path:
+            title: Path to the local cache directory.
+            $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            default: .local/cache
+      report:
+        type: object
+        default: { }
+        additionalProperties: false
+        properties:
+          path:
+            title: Path to the local report directory.
+            $ref: https://jsonschemata.repodynamics.com/path/posix/absolute-from-cwd
+            default: .local/report
+  # Custom
+  custom:
+    title: User-defined custom metadata and configurations.
+    description: |
+      Here you can store custom data that can be dynamically referenced 
+      anywhere else in the project.
+    type: object
+  # Auto
+  slug:
+    title: Slugs of the project.
+    description: |
+      These are the automatically generated
+      slugified versions of the project's descriptors,
+      such as name, repository name, and keywords.
+      They can be used in places where only slugs are accepted.
+
+      Slugs are generated by removing non-ASCII characters from the input string,
+      converting it to lowercase,
+      replacing all non-alphanumeric characters with hyphens,
+      and removing leading and trailing hyphens.
+    type: object
+    properties:
+      name:
+        title: Slug of the project's name.
+        type: string
+      repo_name:
+        title: Slug of the project's repository name.
+        type: string
+      keywords:
+        title: Slugs of the project's keywords.
+        type: array
+        items:
+          type: string
+  project:
+    type: object
+    additionalProperties: true
+    properties:
+      file:
+        type: object
+        additionalProperties: false
+        properties:
+          config:
+            type: object
+            properties:
+              meta:
+                type: string
+              license:
+                type: string
+              citation:
+                type: string
+              funding:
+                type: string
+              codeowners:
+                type: string
+              gitattributes:
+                type: string
+              gitignore:
+                type: string
+              issue_chooser:
+                type: string
+          web_config:
+            type: object
+            properties:
+              env_conda:
+                title: Website build environment file for conda.
+                type: string
+              env_pip:
+                title: Website build environment file for pip.
+                type: string
+          tool_config:
+            type: object
+            additionalProperties:
+              type: string
+          tool_env_conda:
+            type: object
+            additionalProperties:
+              type: string
+          tool_env_pip:
+            type: object
+            additionalProperties:
+              type: string
+          discussion_form:
+            type: object
+            additionalProperties:
+              type: string
+          issue_form:
+            type: object
+            additionalProperties:
+              type: string
+          pull_template:
+            type: object
+            additionalProperties:
+              type: string
+          pkg_config:
+            $ref: https://controlman.repodynamics.com/schema/dynamicfile-pkg
+          test_config:
+            $ref: https://controlman.repodynamics.com/schema/dynamicfile-pkg
+          pkg_source:
+            type: object
+            additionalProperties:
+              type: string
+          test_source:
+            type: object
+            additionalProperties:
+              type: string
+          readme:
+            type: object
+            additionalProperties:
+              type: string
+          health:
+            type: object
+            additionalProperties:
+              type: string
+  version:
+    type: string
+
