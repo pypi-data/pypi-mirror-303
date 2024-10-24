@@ -1,0 +1,71 @@
+Metadata-Version: 2.3
+Name: piscada-foresight
+Version: 0.1.2
+Summary: Library for Piscada Foresight; Access knowledge-graph and timeseries data.
+Author-email: Tim Jagenberg <tim.jagenberg@piscada.com>
+Requires-Python: >=3.12
+Requires-Dist: authlib>=1.3.2
+Requires-Dist: gql[httpx]>=3.5.0
+Requires-Dist: pandas>=2.2.3
+Description-Content-Type: text/markdown
+
+# Piscada Foresight
+
+_*Access knowledge-graph and timeseries data.*_
+
+
+## Overview
+
+This library provides access to the knowledge-graph and timeseries data in the Foresight platform. It implements a Transport using [HTTPX](https://www.python-httpx.org/) to be used with the [GQL](https://gql.readthedocs.io/) GraphQL client. It also provides convenience functions:
+
+- `data` module: Read timeseries values as [Pandas](https://pandas.pydata.org/) DataFrames or Series
+- `graph` module: Query the knowledge-graph
+
+
+## Installation
+
+```bash
+pip install piscada-foresight
+```
+
+You will need access to a Piscada Foresight instance. The library uses the OAuth2 Authorization Code Flow with Proof Key for Code Exchange (PKCE) to act on behalf of your user. After an initial interactive login, the library persists the session state in `$HOME/.foresight-lib-py_state` and will use that to authenticate non-interactive the next time.
+
+
+## Usage
+
+```python
+from datetime import datetime, timedelta, timezone
+
+from gql import Client
+
+from piscada_foresight.data import get_value, get_values
+from piscada_foresight.http import ForesightHTTPXTransport
+
+# Create a transport with authentication and a GraphQL client:
+
+transport = ForesightHTTPXTransport("foresight.piscada.cloud")
+fs_client = Client(transport=transport, fetch_schema_from_transport=False)
+
+# Retrieve timeseries values for a specific entity:
+
+get_values(
+    fs_client,
+    "ENTITY_ID",
+    datetime.now(tz=timezone.utc) - timedelta(hours=8),
+)
+```
+
+
+## Contributing
+
+Contributions are welcome! You can contact us at [foresight@piscada.com](mailto:foresight@piscada.com).
+
+
+## Support
+
+If you have any questions, issues, or suggestions, please contact us at [foresight@piscada.com](mailto:foresight@piscada.com).
+
+
+## Copyright
+
+© Piscada AS 2024
