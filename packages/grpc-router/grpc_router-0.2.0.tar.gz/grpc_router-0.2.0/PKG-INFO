@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: grpc_router
+Version: 0.2.0
+Summary: A simple grpc router to establish a simple grpc mesh.
+Author-email: Ciprian Miclaus <ciprianm@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2024 Ciprian Miclaus
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: homepage, https://github.com/ciprianmiclaus2/grpc_router
+Project-URL: documentation, https://ciprianmiclaus2.github.io/grpc_router/
+Project-URL: repository, https://github.com/ciprianmiclaus2/grpc_router
+Project-URL: history, https://github.com/ciprianmiclaus2/grpc_router/blob/main/HISTORY.md
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: grpcio
+Requires-Dist: grpcio-reflection
+Requires-Dist: grpcio-health-checking
+Requires-Dist: protobuf
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Provides-Extra: dev
+Requires-Dist: grpcio-tools; extra == "dev"
+Requires-Dist: tox; extra == "dev"
+Requires-Dist: pre-commit; extra == "dev"
+Requires-Dist: pip; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Requires-Dist: toml; extra == "dev"
+
+# GRPC Router
+
+<p align="center">
+<a href="https://pypi.python.org/pypi/grpc_router">
+    <img src="https://img.shields.io/pypi/v/grpc_router.svg"
+        alt = "Release Status">
+</a>
+
+<a href="http://github.com/ciprianmiclaus2/grpc_router/">
+
+<img src="https://img.shields.io/pypi/pyversions/grpc_router.svg" alt="Python versions">
+</a>
+
+<a href="https://github.com/ciprianmiclaus2/grpc_router/actions">
+    <img src="https://github.com/ciprianmiclaus2/grpc_router/actions/workflows/python-package.yml/badge.svg?branch=main" alt="CI Status">
+</a>
+
+<a href="https://codecov.io/gh/ciprianmiclaus2/grpc_router" > 
+ <img src="https://codecov.io/gh/ciprianmiclaus2/grpc_router/graph/badge.svg?token=4N0N8XSVZY"/> 
+ </a>
+
+<a href="https://ciprianmiclaus2.github.io/grpc_router/">
+    <img src="https://img.shields.io/website/https/ciprianmiclaus2.github.io/grpc_router/index.html.svg?label=docs&down_message=unavailable&up_message=available" alt="Documentation Status">
+</a>
+
+</p>
+
+GRPC Router is a small components that implements a simple service register to be used for client side service discovery.
+Services register with the GRPC router, clients requests the details of such services in order to discover them and connect directly.
