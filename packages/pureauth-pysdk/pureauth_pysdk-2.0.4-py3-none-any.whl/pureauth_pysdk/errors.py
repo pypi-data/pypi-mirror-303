@@ -1,0 +1,2 @@
+class AccessTokenValidationError(Exception):
+    pass

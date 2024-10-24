@@ -1,0 +1,2 @@
+class EmployeeDTOMissingDataError(Exception):
+    pass
