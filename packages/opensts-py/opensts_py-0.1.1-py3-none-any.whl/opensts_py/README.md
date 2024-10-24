@@ -1,0 +1,47 @@
+# OpenSTS Python
+This Python package provides a simple MQTT client using the `paho-mqtt` library, with built-in support for subscribing to multiple topics and handling messages. The package supports configuration via environment variables for enhanced security.
+## Installation
+
+```bash
+pip install opensts-py
+```
+## Configuration
+
+This package uses environment variables for credentials. You can configure these by creating a `.env` file in the project directory:
+
+### Environment variables
+
+```env
+MQTT_BROKER=your_broker_address
+MQTT_PORT=1883
+MQTT_USERNAME=your_username
+MQTT_SECRET_KEY=your_secret_key
+```
+
+### Topics in MQTT
+In OpenSTS, MQTT topics follow a specific format to allow for proper identification of devices and applications.
+This ensures that data published by a device under a particular application can be easily accessed by authorized users or services.
+The topic format looks like this `applications/{Application ID}/devices/{Device ID}` e.g `applications/23/devices/12`. 
+
+The topics that you want to subscribe should be in the following format in a file named `topic.py`.
+```py title="topic.py"
+#List of topics to subscribe
+topics = [
+        "applications/23/devices/12",
+        "applications/24/devices/27"
+        ]
+```
+
+### Usage
+The following is an example script which can be used to check how to subscribe to data topics from OpenSTS Services
+```py title="example.py"
+from opensts_py import subscriber
+from topic import topics # This imports topics list from the topic.py file
+
+
+# Path to the .env file
+env_file_path = "./.env"
+
+# Subscribe to the topics
+subscriber(env_file_path, topics)
+```
