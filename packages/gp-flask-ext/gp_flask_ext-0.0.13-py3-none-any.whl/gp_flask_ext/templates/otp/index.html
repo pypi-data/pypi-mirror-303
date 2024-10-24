@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}OTP Login{% endblock %}
+
+{% block content %}
+<div id="app" v-loading="loading">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>Login</h1>
+      </el-row>
+      <el-row>
+        <el-link v-if="user" type="primary" @click="logout">{{ user }} - 登出</el-link>
+        <el-form v-else ref="form" :model="form" label-width="80px" inline>
+          <el-form-item label="验证码">
+            <el-input v-model="form.token" placeholder="验证码(6个数字,不要空格)"></el-input>
+          </el-form-item>
+          <div v-show="show">
+            <el-form-item label="用户名">
+              <el-input v-model="form.name" placeholder="admin"></el-input>
+            </el-form-item>
+          </div>
+          <el-form-item>
+            <el-button type="primary" @click="login">登录</el-button>
+            <el-button @click="show = !show">高级选项</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  // 从Flask模板引擎传递变量
+  const USER = "{{ user }}";
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data: () => ({
+      user: USER,
+      form: {
+        token: "",
+        name: "admin",
+      },
+      show: false,    // 是否显示高级选项
+      loading: false,
+    }),
+    methods: {
+      login() {
+        this.loading = true
+        this.form.token = this.form.token.trim()
+        axios.post("{{ url_for('otp.login') }}", this.form)
+          .then(response => {
+            this.form.token = ""
+            this.loading = false
+            this.$message({
+              message: response.data.message,
+              type: 'success',
+              onClose: () => {
+                next = response.data.next
+                if (next) {
+                  window.location.href = next
+                } else {
+                  window.location.href = "/"
+                }
+              }
+            });
+          })
+          .catch(error => {
+            console.log(error)
+            this.loading = false
+            this.$message({
+              message: error.response.data,
+              type: 'error'
+            });
+          })
+      },
+      logout() {
+        axios.post("{{ url_for('otp.logout') }}")
+          .then(response => {
+            this.user = ""
+            this.$message({
+              message: response.data,
+              type: 'success'
+            });
+          })
+          .catch(error => {
+            console.log(error)
+            this.$message({
+              message: error.response.data,
+            })
+          })
+      }
+    },
+    mounted() {
+      // this.init()
+    }
+  })
+</script>
+{% endblock %}

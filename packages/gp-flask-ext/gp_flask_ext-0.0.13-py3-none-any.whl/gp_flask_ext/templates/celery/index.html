@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block title %}Celery{% endblock %}
+
+{% block style %}
+<style>
+  .code-block {
+    white-space: pre-wrap;    /* 自动换行（在空白处换行） */
+    overflow-x: auto;        /* 添加水平滚动条 */
+  }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div id="app" v-loading="loading">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>Celery</h1>
+      </el-row>
+      <el-row>
+        <el-form ref="form" :model="formData" label-width="150px">
+          <div>
+            <el-form-item label="任务">
+              <el-select v-model="formData.name" :data="tasks" filterable placeholder="任务" @change="handleTaskChange">
+                <el-option v-for="item in tasks" :key="item.name" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <el-form-item label="参数">
+            <json-editor v-model="formData.kwargs" :value="formData.kwargs"></json-editor>
+          </el-form-item>
+          <el-form-item>
+            <el-checkbox v-model="showAdvanced">高级选项</el-checkbox>
+          </el-form-item>
+          <div v-if="showAdvanced">
+            <el-form-item label="倒计时 (秒)">
+              <el-input type="number" min="0" v-model="formData.countdown"></el-input>
+            </el-form-item>
+
+            <el-form-item label="执行时间">
+              <el-date-picker v-model="formData.eta" type="datetime" placeholder="选择时间"></el-date-picker>
+            </el-form-item>
+
+            <el-form-item label="过期时间 (秒)">
+              <el-input type="number" v-model="formData.expires"></el-input>
+            </el-form-item>
+
+            <el-form-item label="队列">
+              <el-select v-model="formData.queue" filterable placeholder="队列">
+                <el-option v-for="item in queues.list" :key="item.Id" :label="item.Title" :value="item.Title"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="优先级 (0-9)">
+              <el-input type="number" v-model="formData.priority" min="0" max="9"></el-input>
+            </el-form-item>
+
+            <el-form-item label="序列化方法">
+              <el-select v-model="formData.serializer" placeholder="选择序列化方法">
+                <el-option label="pickle" value="pickle"></el-option>
+                <el-option label="json" value="json"></el-option>
+                <el-option label="yaml" value="yaml"></el-option>
+                <el-option label="msgpack" value="msgpack"></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="忽略结果">
+              <el-checkbox v-model="formData.ignore_result">忽略结果</el-checkbox>
+            </el-form-item>
+
+            <el-form-item label="消息头 (JSON)">
+              <el-input type="textarea" v-model="formData.headers"></el-input>
+            </el-form-item>
+          </div>
+          <el-form-item>
+            <el-button type="primary" @click="send">调用</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
+      <el-row>
+        <h3>结果</h3>
+        <el-dialog
+          :visible.sync="resultDialog.visible"
+          width="70%">
+          <h3 slot="title" class="dialog-title"><span>[[resultDialog.title]]</span>
+            <i v-if="resultDialog.resultError" class="el-icon-error"></i>
+            <i v-else class="el-icon-success"></i>
+          </h3>
+          <div>
+            <pre><code class="code-block">[[ resultDialog.result ]]</code></pre>
+          </div>
+        </el-dialog>
+        <el-table v-show="results.list.length > 0" :data="results.list" stripe
+          style="width: 100%; margin-top: 20px;">
+          <el-table-column prop="name" label="任务名" width="280px"></el-table-column>
+          <el-table-column prop="task_id" label="任务ID" width="320px"></el-table-column>
+          <el-table-column prop="queue" label="队列" width="120px"></el-table-column>
+          <el-table-column prop="timestamp" label="更新时间" width="120px"></el-table-column>
+          <el-table-column prop="state" :filters="stateList" :filter-method="filterState" label="状态" width="180px">
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.state | stateFilter">[[ scope.row.state ]]</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="result" label="结果">
+            <template slot-scope="scope">
+              <el-button v-if="scope.row.result" type="text" @click="showResult(scope.row, false)">查看结果</el-button>
+              <el-button v-else-if="scope.row.state==='FAILURE'" type="warning" @click="showResult(scope.row, true)">查看异常</el-button>
+              <el-button v-else type="text" disabled>暂无结果</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+            background
+            layout="prev, pager, next"
+            :current-page="results.pageInfo.page"
+            :page-size="results.pageInfo.pageSize"
+            :total="results.pageInfo.totalRows"
+            @current-change="getResults"
+          >
+        </el-pagination>
+      </el-row>
+      <el-row>
+        <h3>任务</h3>
+        <el-table v-show="tasks.length > 0" :data="tasks" stripe
+          style="width: 100%; margin-top: 20px;">
+          <el-table-column prop="name" label="任务名" width="260px">
+          </el-table-column>
+          <el-table-column prop="doc" label="文档"  width="280px">
+          </el-table-column>
+          <el-table-column prop="kwargs" label="默认参数">
+            <!-- 这里用JsonEditor -->
+            <template slot-scope="scope">
+              <json-editor :value="scope.row.kwargs"></json-editor>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-row>
+      <el-row v-show="task">
+        <div><pre><code>[[task]]</code></pre></div>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+{% include 'json-editor.html' %}
+<script>
+  // const DEFAULT_MAX_TOKENS = {{ max_tokens }}; // 默认最大字数, 从Flask模板引擎传递变量
+  // const DEFAULT_MODEL = "{{ model }}";
+  const $TASKS_URL = "{{ url_for('celery.tasks') }}"
+  const $SEND_URL = "{{ url_for('celery.send') }}"
+  const $RESULTS_URL = "{{ url_for('celery.results') }}"
+  const $STATES_URL = "{{ url_for('celery.state') }}"
+  const $QUEUES_URL = "{{ url_for('celery.queues') }}"
+  // 从Flask模板引擎传递变量
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data: () => ({
+      formData: {
+        kwargs: {},
+        name: '',
+        countdown: 0,
+        eta: '',
+        expires: null,
+        queue: 'celery',
+        priority: null,
+        serializer: 'json',
+        ignore_result: false,
+        headers: '',
+      },
+      showAdvanced: false,
+      task: null,
+      loading: false,
+      show: false,    // 是否显示高级选项
+      resultDialog: {
+        title: '',      // 对话框标题
+        visible: false, // 是否显示结果详情对话框
+        result: '',     // 显示结果详情对话框的内容
+        isError: false, // 是否为异常
+      },
+      tasks: [
+        {"name": '', "signature": {}, "kwargs": {}}
+      ],
+      results: {
+        list: [],
+        pageInfo: {
+          isFirstPage: true,
+          isLastPage: false,
+          page: 1,
+          pageSize: 25,
+          totalRows: 0,
+        }
+      },
+      stateList: [],
+      queues: {},
+    }),
+    computed: {
+      buttonIconClass() {
+        return this.speaking ? 'el-icon-loading' : 'el-icon-reading';
+      }
+    },
+    methods: {
+      getTasks() {
+        axios.get($TASKS_URL)
+          .then(response => {
+            this.tasks = response.data;
+            // console.log(this.tasks)
+            this.$nextTick(() => {
+              this.formData.name = this.tasks[0].name
+            })
+          })
+      },
+      getStates() {
+        axios.get($STATES_URL)
+          .then(response => {
+            this.stateList = response.data.map(state => ({text: state, value: state}))
+          })
+      },
+      getResults(page = 1) {
+        const pageSize = this.results.pageInfo.pageSize;
+        const offset = (page - 1) * pageSize;
+        axios.get($RESULTS_URL, {
+          params: {
+            offset: offset,
+            limit: pageSize
+          }
+        })
+          .then(response => {
+            this.results = response.data;
+          })
+      },
+      getQueues() {
+        axios.get($QUEUES_URL)
+          .then(response => {
+            this.queues = response.data
+          })
+      },
+      showResult(row, error) {
+        if (error) {
+          this.resultDialog.result = row.exception
+        }
+        else{
+          try {
+            this.resultDialog.result = JSON.stringify(JSON.parse(row.result), null, 2)
+          } catch (e) {
+            // do nothing
+            this.resultDialog.result = row.result
+          }
+        }
+        this.resultDialog.title = row.name + " - " + row.task_id
+        this.resultDialog.isError = error
+        this.resultDialog.visible = true
+      },
+      // 处理任务选择的变化
+      handleTaskChange(taskname) {
+        const selectedTask = this.tasks.find(task => task.name === taskname);
+        if (selectedTask) {
+          // 直接使用后端返回的默认 kwargs
+          this.formData.kwargs = selectedTask.kwargs;
+        }
+      },
+      send() {
+        this.loading = true
+        axios.post($SEND_URL, this.formData)
+          .then(response => {
+            this.task = JSON.stringify(response.data, null, 2)
+            this.loading = false
+          })
+          .catch(error => {
+            console.log(error.response)
+            this.$message.error('请求失败:' + error.response.statusText)
+            this.loading = false
+          })
+          .then(() => {
+            // 延迟一秒再刷新结果列表
+            setTimeout(() => {
+              this.getResults()
+            }, 1000)
+          })
+      },
+      filterState(value, row) {
+        return row.state === value;
+      },
+    },
+    filters: {
+      stateFilter(state) {
+        switch (state) {
+          case 'SUCCESS':
+            return 'success';
+          case 'FAILURE':
+            return 'danger';
+          default:
+            return '';
+        }
+      }
+    },
+    mounted() {
+      this.getTasks()
+      this.getResults()
+      this.getStates()
+      this.getQueues()
+    }
+  })
+</script>
+{% endblock %}

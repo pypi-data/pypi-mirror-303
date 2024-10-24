@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}protobuf{% endblock %}
+
+{% block style %}
+<style>
+  .el-main {
+    text-align: center;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  <el-container>
+    <el-main>
+      <el-table :data="fileList" stripe style="width: 100%">
+        <el-table-column prop="filename" label="文件名" width="320">
+        </el-table-column>
+        <el-table-column prop="size" label="大小" width="180">
+        </el-table-column>
+        <el-table-column prop="md5" label="md5">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-link type="primary" :href="'{{ url_for('pb.raw') }}?pb=' + scope.row.filename">下载</el-link>
+            <el-button type="text" @click="handleClick(scope.row)">解析</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <transition name="el-fade-in">
+        <el-table v-show="schemaList.length > 0" ref="filterTable" :data="schemaList" stripe
+          style="width: 100%; margin-top: 20px;">
+          <el-table-column prop="name" label="字段名" width="260">
+          </el-table-column>
+          <el-table-column prop="type" label="类型" :filters="typeList" :filter-method="filterType" width="280">
+          </el-table-column>
+          <el-table-column prop="schema" label="结构">
+            <!-- 这里用JsonEditor -->
+            <template slot-scope="scope">
+              <json-editor :value="scope.row.schema"></json-editor>
+            </template>
+          </el-table-column>
+        </el-table>
+      </transition>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+{% include 'json-editor.html' %}
+<script>
+  new Vue({
+    el: '#app',
+    data: () => ({
+      visible: false,
+      show: false,
+      fileList: [],
+      schemaList: [],
+      typeList: [],
+    }),
+    methods: {
+      handleClick(row) {
+        this.schemaList = []
+        axios.get("{{ url_for('pb.schema') }}?pb=" + row.filename)
+          .then(response => {
+            //this.typeList = Array.from(new Set(response.data.map(item => ({text: item.type, value: item.type}))))
+
+            this.typeList = Array.from(new Set(response.data.map(item => item.type))).map(
+              type => ({ text: type, value: type })
+            )
+            this.schemaList = response.data
+            // this.schemaList = response.data.map(item => {
+            //   return {
+            //     name: item.name,
+            //     type: item.type,
+            //     schema: JSON.stringify(item.schema)
+            //   }
+            // })
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
+      filterType(value, row) {
+        return row.type === value;
+      }
+    },
+    mounted() {
+      axios.get("{{ url_for('pb.filelist') }}")
+        .then(response => {
+          this.fileList = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  })
+</script>
+{% endblock %}

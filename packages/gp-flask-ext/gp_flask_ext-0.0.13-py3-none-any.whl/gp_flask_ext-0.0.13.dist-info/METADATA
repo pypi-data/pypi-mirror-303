@@ -1,0 +1,181 @@
+Metadata-Version: 2.1
+Name: gp-flask-ext
+Version: 0.0.13
+Summary: flask extension for gp
+Author: hil
+Author-email: hil@carota.ai
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown; charset=UTF-8
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: loguru
+Requires-Dist: requests
+Provides-Extra: full
+Requires-Dist: loguru ; extra == 'full'
+Requires-Dist: requests ; extra == 'full'
+Requires-Dist: protobuf ==3.13 ; extra == 'full'
+Requires-Dist: paho-mqtt ==1.5 ; extra == 'full'
+Requires-Dist: flask-socketio ==5.3.6 ; extra == 'full'
+Requires-Dist: celery ; extra == 'full'
+Requires-Dist: pyotp ; extra == 'full'
+Requires-Dist: openai ; extra == 'full'
+
+# gp-flask-ext
+
+开放项目, 用于扩展flask框架.
+
+目前支持的扩展有:
+
+- `flask_nocodb`: 用于对接NOCODB数据库
+- `flask_gitlab_oauth`: 用于对接Gitlab OAuth
+- `flask_mqtt`: 用于对接MQTT
+- `flask_protobuf`: 用于解析Protobuf
+- `flask_strapi`: 用于对接Strapi
+
+## 构建
+    
+```bash
+# Build wheel
+pip install build
+python -m build --wheel .
+
+# Upload to pypi
+pip install twine
+twine upload dist/*
+```
+
+## 安装
+
+```bash
+pip install gp-flask-ext
+```
+
+## 使用
+
+```python
+from flask import Flask
+from gp_flask_ext import flask_gitlab_oauth, flask_nocodb
+
+app = Flask(__name__)
+
+flask_nocodb.init(app {
+    'url': 'http://localhost:8080',
+    'api_token': 'your-api-token',
+    'project_id': 'your-project-id'
+})
+
+flask_gitlab_oauth.init(app, {
+    'client_id': 'your-client-id',
+    'client_secret': 'your-client-secret',
+    'redirect_uri': 'http://localhost:5000/oauth/callback',
+    'gitlab_url': 'https://gitlab.com',
+    'scope': 'api'
+})
+```
+
+
+## 配置文件
+
+
+### 通用配置文件
+
+适用于所有模块. `0.0.10` 版本新增.
+
+```python
+blueprint = True   # 是否启用蓝图, 可选, 默认True
+blueprint_name = "mqtt"  # 蓝图名称, 可选
+blueprint_url_prefix = "/mqtt"  # 蓝图URL前缀, 可选
+ext_name = "mqtt"  # 扩展名称, 可选, 可以使用 app.extensions[ext_name] 获取扩展实例
+```
+
+### 各模块配置文件
+
+```python
+# NOCODB 配置
+NOCODB_URL = os.getenv("NOCODB_URL", "http://localhost:8080")  # 建议使用环境变量
+NOCODB_API_TOKEN = os.getenv("NOCODB_API_TOKEN")                    # 建议使用环境变量
+
+NOCODB_CONFIG = dict(
+    url = NOCODB_URL,
+    api_token = NOCODB_API_TOKEN,
+    project_id = "py64mim32384hzn",     # 默认项目
+    project = "台架",                   # 默认项目名称, 可选
+    table_id = "mm9ydgsnc2516rj",       # 默认主表
+    blueprint = True                    # 是否启用蓝图, 可选, 默认True
+)
+
+# MQTT 配置
+MQTT_USERNAME = os.getenv("MQTT_USERNAME")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
+MQTT_CONFIG = dict(
+    mqtt_client_id = "gp_hostapi",
+    host = "mqtt.mydomain.com",         # 可以是域名或IP
+    port =  1883,
+    topic = "hil/sub",                  # 监听的主题
+    echo_topic = "hil/pub",             # 回传的主题， 可选
+    qos = 0,
+    username = MQTT_USERNAME or "your-username",
+    password = MQTT_PASSWORD or "your-password",
+    blueprint = True,                    # 是否启用蓝图, 可选, 默认True
+    
+    # 是否启用TLS, 可选, 默认False
+    # 如果为True, 则需要配 ca_certs, client_certs, client_key 文件路径
+    # 支持`绝对`和`相对`路径, 如果为相对路径, 则相对于instance目录
+    tls = False,
+    ca_certs = "cert/ca_cert_chain.pem",        # ca证书, pem格式, 如果启用TLS, 必须配置
+    client_certs = "cert/client_cert.pem",      # 客户端证书, pem格式, 如果启用TLS, 必须配置
+    client_key = "cert/client_cert_key.key",    # 客户端私钥, pem格式, 如果启用TLS, 必须配置
+    
+    # 是否启用socketio, 可选, 默认True
+    socketio = True,
+    # socketio异步模式, socketio=True时生效. 可选, 默认threading; 其他选项: eventlet, gevent
+    socketio_async_mode = "threading",   
+)
+
+# Protobuf 配置
+PROTOBUF_CONFIG = dict(
+    path = "proto-20240811",        # proto文件所在目录, 相对于instance目录, 或绝对路径
+    blueprint = True,               # 是否启用蓝图, 可选, 默认True
+)
+
+# Strapi 配置
+STRAPI_URL = os.getenv("STRAPI_URL", "http://localhost:1337")
+STRAPI_USERNAME = os.getenv("STRAPI_USERNAME")
+STRAPI_PASSWORD = os.getenv("STRAPI_PASSWORD")
+STRAPI_CONFIG = dict(
+    url = STRAPI_URL,
+    identifier = STRAPI_USERNAME,   # 用户名, 可以为None
+    password = STRAPI_PASSWORD      # 密码, 可以为None
+)
+# celery 配置
+CELERY_CONFIG = dict(
+    broker_url="redis://broker.emqx.io",
+    result_backend="redis://broker.emqx.io",
+    enable_utc = True,
+    timezone  = 'Asia/Shanghai'
+)
+
+# otp 配置
+OTP_CONFIG = dict(
+    # 可以是一个字符串, 用于单用户, 默认用户名为admin
+    # pyota.random_base32() 产生随机key
+    # secret = "5ISK3F6SAA42HFHI2NBS3KVRELP6QDNS",    
+    # secret 可以是一个字典, 用于多用户 List[(username, secret)]
+    secret = [
+        ('admin', '5ISK3F6SAA42HFHI2NBS3KVRELP6QDNS'),
+        ('test', 'HVLRSUEBKZ6KQXTTNR4M64BDFUIRRPWQ'),
+        ('test2', 'KDHBJMLNZ7CJN3GGY2FJ2JJ7EOHCQFPJ'),
+    ],  
+
+    # 是否启用session检查, 可选, 默认True
+    check_session = True,
+
+    # 白名单, 可选, 默认为空
+    whitelist = [
+        "chatgpt.index",    # 允许访问的视图函数-endpoint
+    ],     
+)
+```
+

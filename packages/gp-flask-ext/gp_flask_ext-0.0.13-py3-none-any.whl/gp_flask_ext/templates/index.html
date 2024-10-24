@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}index{% endblock %}
+
+{% block style %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app" v-loading="loading">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>Index</h1>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+{% include 'json-editor.html' %}
+<script>
+  // 从Flask模板引擎传递变量
+  //const $TASKS_URL = "{{ url_for('celery.tasks') }}"
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data: () => ({
+      title: 'Index',   // 页面标题
+      formData: {
+      },
+      loading: false,
+      dialog: {
+        title: '',      // 对话框标题
+        visible: false, // 是否显示结果详情对话框
+        content: '',    // 显示结果详情对话框的内容
+        error: false,   // 是否为异常
+      },
+      items: {
+        list: [],
+        pageInfo: {
+          isFirstPage: true,
+          isLastPage: false,
+          page: 1,
+          pageSize: 25,
+          totalRows: 0,
+        }
+      },
+    }),
+    methods: {
+      init() {
+        document.title = this.title
+      }
+    },
+    filters: {
+    },
+    mounted() {
+        this.init()
+    }
+  })
+</script>
+{% endblock %}

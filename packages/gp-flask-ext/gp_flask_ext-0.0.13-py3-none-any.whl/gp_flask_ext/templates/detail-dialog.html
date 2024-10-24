@@ -1,0 +1,130 @@
+<style>
+  .detail-dialog .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 300px; /* 控制显示区域宽度 */
+  }
+</style>
+
+<script>
+  Vue.component('detail-dialog', {
+    delimiters: ['[[', ']]'],
+    template: `
+      <div class="detail-dialog">
+        <!-- 详情对话框 -->
+        <el-dialog :title="title" :visible.sync="show" :width="width">
+          <el-descriptions :title="detailTitle" border :column="column" direction="vertical" v-if="detail">
+            <el-descriptions-item v-for="(value, key) in detail" 
+              :span="getSpan(value)"
+              :key="key" 
+              :label="key">
+              <el-tooltip class="item" effect="dark" :content="formatTooltip(value)" placement="top">
+                <span class="truncate"><pre><code>[[ formatValue(value) ]]</code></pre></span>
+              </el-tooltip>
+            </el-descriptions-item>
+          </el-descriptions>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="copyAsJSON(detail)">复制为 JSON</el-button> 
+            <el-button @click="copyDetails(detail)">复制</el-button>
+            <el-button @click="show = false">关闭</el-button>
+          </span>
+        </el-dialog>
+      </div>
+    `,
+    props: {
+      title: {
+        type: String,
+        default: '详情信息'
+      }
+    },
+    data() {
+      return {
+        width: '60%',
+        column: 3,
+        show: false,
+        detail: {},
+        detailTitle: '',
+      }
+    },
+    methods: {
+      openDialog(title, detail) {
+        // 打开对话框并设置详细数据
+        this.detailTitle = title;
+        this.detail = detail;
+        this.show = true;
+      },
+      getSpan(value) {
+        // 假设超过20个字符则占用2列
+        if (typeof value !== 'string') {
+          return 1;
+        }
+        var span = Math.ceil(value.length / 40);
+        return span > this.column ? this.column : span;
+        return span;
+      },
+      formatTooltip(value) {
+        if (typeof value !== 'string') {
+          return JSON.stringify(value, null, 2); // 对非字符串进行JSON格式化
+        }
+        return value;
+      },
+      formatValue(value) {
+        // 格式化详细数据，只显示前40个字符, 暂时不用
+        if (typeof value !== 'string') {
+          return JSON.stringify(value, null, 2);
+        }
+        return value;
+      },
+      copyDetails(row) {
+        // 将详细内容格式化为字符串
+        const details = Object.entries(row)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('\n');
+
+        // 使用 Clipboard API 复制内容
+        navigator.clipboard.writeText(details).then(() => {
+          this.$message({
+            message: '复制成功！',
+            type: 'success',
+          });
+        }).catch(err => {
+          console.error('复制失败:', err);
+          this.$message({
+            message: '复制失败，请重试。',
+            type: 'error',
+          });
+        });
+      },
+      copyAsJSON(row) {
+        // 将 detailedData 转换为 JSON 字符串
+        const jsonDetails = JSON.stringify(row, null, 2); // 生成格式化的 JSON 字符串
+
+        // 使用 Clipboard API 复制 JSON 内容
+        navigator.clipboard.writeText(jsonDetails).then(() => {
+          this.$message({
+            message: 'JSON 复制成功！',
+            type: 'success',
+          });
+        }).catch(err => {
+          console.error('复制失败:', err);
+          this.$message({
+            message: '复制失败，请重试。',
+            type: 'error',
+          });
+        });
+      },
+      getFilterTag(filters, value) {
+        // 根据值从 filters 返回对应的标签, 用于el-tag显示
+        for (const filter of filters) {
+          if (filter.value === value) {
+            return filter.tag;
+          }
+        }
+        return '';
+      }
+    },
+  });
+  </script>
+  

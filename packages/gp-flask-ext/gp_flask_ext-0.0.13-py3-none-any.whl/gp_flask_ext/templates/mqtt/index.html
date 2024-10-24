@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}MQTT via SSE{% endblock %}
+
+{% block style %}
+<style>
+  .el-main {
+    text-align: center;
+  }
+
+  .el-row {
+    margin: 10px 0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>MQTT via SSE</h1>
+      </el-row>
+      <el-row>
+        <el-descriptions title="MQTT信息" :column="3" border>
+          <el-descriptions-item label="Host">[[ config.host ]]</el-descriptions-item>
+          <el-descriptions-item label="Port">[[ config.port ]]</el-descriptions-item>
+          <el-descriptions-item label="客户端ID">[[ config.mqtt_client_id	 ]]</el-descriptions-item>
+          <el-descriptions-item label="用户名">[[ config.username ]]</el-descriptions-item>
+          <el-descriptions-item label="qos">[[ config.qos ]]</el-descriptions-item>
+          <el-descriptions-item label="topic">[[ config.topic ]]</el-descriptions-item>
+        </el-descriptions>
+      </el-row>
+      <el-row>
+        <h3>会话列表</h3>
+        <el-table :data="sessionList" stripe style="width: 100%">
+          <el-table-column prop="tag" label="tag" width="220">
+            <template slot-scope="scope">
+              <el-link type="primary" :href="base_url + scope.row.tag">[[ scope.row.tag ]]</el-link>
+            </template>
+          </el-table-column>
+          <el-table-column prop="expried" label="expried" width="220">
+            <template slot-scope="scope">
+              <span>[[ new Date(scope.row.expried * 1000).toLocaleString() ]]</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="tag" label="tag">
+          </el-table-column>
+        </el-table>
+      </el-row>
+      <el-row>
+        <el-form inline>
+          <el-form-item label="Topic">
+            <el-input v-model="topic" placeholder="Enter your topic"></el-input>
+          </el-form-item>
+          <el-form-item label="Message">
+            <el-input v-model="message" placeholder="Enter your message"></el-input>
+          </el-form-item>
+          <el-form-item><el-button type="primary" @click="subscribe">Subscribe</el-button></el-form-item>
+          <el-form-item><el-button type="primary" @click="publish">Publish</el-button></el-form-item>
+          <el-form-item><el-button type="primary" @click="clear">Clear</el-button></el-form-item>
+        </el-form>
+
+        <el-table :data="messageList" stripe style="width: 100%">
+          <el-table-column prop="topic" label="topic" width="220">
+          </el-table-column>
+          <el-table-column prop="timestamp" label="timestamp" width="220">
+          </el-table-column>
+          <el-table-column prop="payload" label="payload">
+          </el-table-column>
+        </el-table>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  // 从Flask模板引擎传递变量
+  const $BASE_URL = "{{ url_for('mqtt.session', tag='') }}";
+  const TOPIC = "{{ topic }}";
+  // console.log($BASE_URL);
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data() {
+      return {
+        config: {},
+        message: '',
+        topic: TOPIC,
+        messageList: [],
+        sessionList: [],
+        base_url: $BASE_URL
+      };
+    },
+    methods: {
+      connect() {
+        var socket = io();
+        socket.on('log', function (msg) {
+          console.log(msg);
+        });
+
+        socket.on('connect', () => {
+          // socket.emit('message', {data: 'I\'m connected!'});
+          console.log("connected");
+        });
+
+        socket.on('mqtt_message', (msg) => {
+          console.log("mqtt_message", msg);
+          // const data = JSON.parse(msg);
+          this.messageList.push(msg);
+        });
+      },
+      connectSSE() {
+        const eventSource = new EventSource('/mqtt/events');
+        eventSource.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          this.messageList.push(data);
+          console.log("onmessage", event.data);
+        };
+
+        eventSource.onopen = (event) => {
+          console.log("onopen");
+        };
+        eventSource.onerror = (error) => {
+          console.error('Error occurred: ', error);
+        };
+      },
+      clear() {
+        this.messageList = [];
+        this.message = '';
+        this.topic = '';
+      },
+      subscribe() {
+        axios.post('/mqtt/subscribe', {
+          topic: this.topic
+        })
+        .then(response => {
+          console.log(response);
+          // 提示订阅成功
+          this.$message({
+            message: 'Subscribe success',
+            type: 'success'
+          });
+        })
+        .catch(error => {
+          console.error('Error occurred: ', error);
+        })
+      },
+      publish() {
+        axios.post('/mqtt/publish', {
+          topic: this.topic,
+          payload: this.message
+        })
+        .then(response => {
+          console.log(response);
+          // 提示发送成功
+          this.$message({
+            message: 'Send success',
+            type: 'success'
+          });
+          // this.message = '';
+          // this.topic = '';
+        })
+        .catch(error => {
+          console.error('Error occurred: ', error);
+        });
+      },
+      getSessionList() {
+        axios.get('/mqtt/sessions')
+          .then(response => {
+            this.sessionList = response.data;
+          })
+          .catch(error => {
+            console.error('Error occurred: ', error);
+          });
+      },
+      init() {
+        axios.get('/mqtt/test')
+          .then(response => {
+            console.log(response);
+            this.config = response.data;
+          })
+          .catch(error => {
+            console.error('Error occurred: ', error);
+          });
+      }
+    },
+    mounted() {
+      this.init();    // 初始化, 获取配置信息
+      this.connect(); // 连接socketio
+      this.getSessionList();  // 获取session列表
+    }
+  })
+</script>
+{% endblock %}

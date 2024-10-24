@@ -1,0 +1,272 @@
+<style>
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 300px; /* 控制显示区域宽度 */
+  }
+  .img-thumbnail {
+    max-width: 100%;
+    max-height: 200px;
+    cursor: pointer;
+  }
+  .full-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .video-thumbnail {
+    max-width: 100%;
+    max-height: 200px;
+  }
+</style>
+
+<script>
+  Vue.component('table-with-pagination', {
+    delimiters: ['[[', ']]'],
+    template: `
+      <div>
+        <h3>[[ title ]]</h3> <!-- 动态标题 -->
+        <el-table
+          :data="tableData.list"
+          v-loading="loading"
+          :stripe="stripe"
+          :border="border"
+          style="width: 100%">
+          <!-- 动态生成表格列 -->
+          <el-table-column
+            v-for="(column, index) in columns"
+            :key="index"
+            :prop="column.prop"
+            :label="column.label"
+            :width="column.width"
+            :filters="column.filters"
+            :sortable="column.sortable"
+            :filter-method="column.filterMethod"
+          > 
+            <template slot-scope="scope">
+              <div v-if="column.fields && column.fields.length > 0">
+                <div v-for="(field, idx) in column.fields" :key="idx">                  
+                  <strong>[[ field ]]:</strong> [[ scope.row[field] ]]
+                </div>
+              </div>
+              <div v-else-if="column.filters">
+                <el-tag :type="getFilterTag(column.filters, scope.row[column.prop])">[[ scope.row[column.prop] ]]</el-tag>
+              </div>
+              <div v-else-if="column.render === 'img'">
+                <img :src="scope.row[column.prop]" 
+                  :alt="[[ scope.row[column.prop] ]]" 
+                  class="img-thumbnail" @click="showImage(scope.row[column.prop])" />
+              </div>
+              <div v-else-if="column.render === 'video'">
+                <video :src="scope.row[column.prop]" controls class="video-thumbnail">Your browser does not support the video tag.</video>
+              </div>
+              <div v-else>
+                [[ scope.row[column.prop] ]]
+              </div>
+            </template>
+          </el-table-column>
+          <!-- 固定的查看详情列 -->
+          <el-table-column label="操作" width="100" fixed="right" v-if="showDetail">
+            <template slot-scope="scope">
+              <el-button @click="openDialog(scope.row)" type="text" size="small">查看详情</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="tableData.pageInfo.pageSize"
+          :current-page="tableData.pageInfo.page"
+          :total="tableData.pageInfo.totalRows"
+          @current-change="handlePageChange">
+        </el-pagination>
+
+        <!-- 详情对话框 -->
+        <el-dialog title="详细信息" :visible.sync="showDialog" :width="dialogConfig.width">
+          <el-descriptions border :column="dialogConfig.column" v-if="detailData">
+            <el-descriptions-item v-for="(value, key) in detailData" 
+              :span="getSpan(value)"
+              :key="key" 
+              :label="key">
+              <el-tooltip class="item" effect="dark" :content="String(value)" placement="top">
+                <span class="truncate">[[ value ]]</span>
+              </el-tooltip>
+            </el-descriptions-item>
+          </el-descriptions>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="copyAsJSON(detailData)">复制为 JSON</el-button> 
+            <el-button @click="copyDetails(detailData)">复制</el-button>
+            <el-button @click="showDialog = false">关闭</el-button>
+          </span>
+        </el-dialog>
+
+        <el-dialog
+          :visible.sync="showImageDialog"
+          width="80%"
+          title="图片预览">
+          <img :src="imageUrl" alt="图片" class="full-image">
+        </el-dialog>
+      </div>
+    `,
+    props: {
+      url: {
+        type: String,
+        required: true,
+      },
+      title: {
+        type: String,
+        default: '数据表格'  // 默认标题
+      },
+      stripe: {
+        type: Boolean,
+        default: false,
+      },
+      border: {
+        type: Boolean,
+        default: false,
+      },
+      showDetail: {         // 是否显示`操作`栏
+        type: Boolean,
+        default: true,
+      },
+      columns: {
+        type: Array,
+        default: function() {
+          return [
+            { prop: 'id', label: 'Id', width: 80, sortable: true}
+          ];
+        },
+      },
+      pageSize: {
+        type: Number,
+        default: 25,
+      },
+    },
+    data() {
+      return {
+        tableData: {
+          list: [],
+          pageInfo: {
+            isFirstPage: true,
+            isLastPage: false,
+            page: 1,
+            pageSize: this.pageSize,  // 默认每页显示条数
+            totalRows: 0,
+          }
+        },
+        loading: false,
+        showDialog: false,  // 控制dialog的显示
+        dialogConfig: {
+          width: '60%',
+          column: 3,
+        },
+        detailData: {},     // 存储当前行的详细数据
+        showImageDialog: false,  // 控制大图 dialog 显示
+        imageUrl: '',  // 存储当前点击的图片 URL
+      }
+    },
+    methods: {
+      fetchData(page = 1) {
+        this.loading = true;
+        const pageSize = this.tableData.pageInfo.pageSize;
+        const offset = (page - 1) * pageSize;
+        axios.get(this.url, {
+            params: {
+              offset: offset,
+              limit: pageSize
+            }
+          })
+          .then((response) => {
+            this.tableData = response.data;
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      },
+      handlePageChange(newPage) {
+        this.tableData.pageInfo.page = newPage;
+        this.fetchData(newPage);
+      },
+      openDialog(row) {
+        // 打开对话框并设置详细数据
+        this.detailData = row;
+        this.showDialog = true;
+      },
+      getSpan(value) {
+        // 假设超过20个字符则占用2列
+        if (typeof value !== 'string') {
+          return 1;
+        }
+        var span = Math.floor(value.length / 40) + 1;
+        span = span > this.dialogConfig.column ?  this.dialogConfig.column : span;
+        // console.log(span, value)
+        return span;
+      },
+      formatValue(value) {
+        // 格式化详细数据，只显示前40个字符, 暂时不用
+        if (typeof value !== 'string') {
+          return value;
+        }
+        const maxLength = 40;
+        return value.length > maxLength ? value.substring(0, maxLength) + '...' : value;
+      },
+      copyDetails(row) {
+        // 将详细内容格式化为字符串
+        const details = Object.entries(row)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('\n');
+
+        // 使用 Clipboard API 复制内容
+        navigator.clipboard.writeText(details).then(() => {
+          this.$message({
+            message: '复制成功！',
+            type: 'success',
+          });
+        }).catch(err => {
+          console.error('复制失败:', err);
+          this.$message({
+            message: '复制失败，请重试。',
+            type: 'error',
+          });
+        });
+      },
+      copyAsJSON(row) {
+        // 将 detailedData 转换为 JSON 字符串
+        const jsonDetails = JSON.stringify(row, null, 2); // 生成格式化的 JSON 字符串
+
+        // 使用 Clipboard API 复制 JSON 内容
+        navigator.clipboard.writeText(jsonDetails).then(() => {
+          this.$message({
+            message: 'JSON 复制成功！',
+            type: 'success',
+          });
+        }).catch(err => {
+          console.error('复制失败:', err);
+          this.$message({
+            message: '复制失败，请重试。',
+            type: 'error',
+          });
+        });
+      },
+      getFilterTag(filters, value) {
+        // 根据值从 filters 返回对应的标签, 用于el-tag显示
+        for (const filter of filters) {
+          if (filter.value === value) {
+            return filter.tag;
+          }
+        }
+        return '';
+      },
+      showImage(src) {
+        this.imageUrl = src;  // 设置图片 URL
+        this.showImageDialog = true;  // 显示大图 dialog
+      },
+    },
+    mounted() {
+      this.fetchData();
+    }
+  });
+  </script>
+  

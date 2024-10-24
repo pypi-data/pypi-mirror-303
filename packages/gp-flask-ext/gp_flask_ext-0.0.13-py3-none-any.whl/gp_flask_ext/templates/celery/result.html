@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}index{% endblock %}
+
+{% block style %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app" v-loading="loading">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>[[ title ]]</h1>
+      </el-row>
+      <el-row>
+        <table-with-pagination :url="url" title="结果列表" :columns="columns" :page-size="10"></table-with-pagination>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+{% include 'json-editor.html' %}
+{% include 'table-with-pagination.html' %}
+<script>
+  // 从Flask模板引擎传递变量
+  //const $TASKS_URL = "{{ url_for('celery.tasks') }}"
+  const $RESULTS_URL = "{{ url_for('celery.results') }}"
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data: () => ({
+      title: 'Task Result',   // 页面标题
+      loading: false,
+      url: $RESULTS_URL,
+      columns: [
+        { prop: 'Id', label: 'Id', width: 100, sortable: true },
+        { prop: 'task_id', label: '任务/ID', width: 420, fields: ['name', 'task_id'] },
+        { prop: 'queue', label: '队列', width: 100 },
+        { prop: 'state', label: '状态', width: 100, 
+            filters: [
+                { text: 'PENDING', value: 'PENDING', tag: 'info' },
+                { text: 'STARTED', value: 'STARTED', tag: 'primary' },
+                { text: 'SUCCESS', value: 'SUCCESS', tag: 'success' },
+                { text: 'FAILURE', value: 'FAILURE', tag: 'danger' },
+                { text: 'REVOKED', value: 'REVOKED', tag: 'warning' },
+            ],
+            filterMethod(value, row) {
+                return row.state === value
+            },
+        },
+        { prop: 'timestamp', label: '更新时间', sortable: true },
+      ],
+    }),
+    methods: {
+      init() {
+        document.title = this.title
+      }
+    },
+    filters: {
+    },
+    mounted() {
+        this.init()
+    }
+  })
+</script>
+{% endblock %}

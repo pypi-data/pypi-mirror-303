@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}index{% endblock %}
+
+{% block style %}
+<style>
+.el-table .el-tag {
+  margin-right: 15px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="app" v-loading="loading">
+  <el-container>
+    <el-main>
+      <el-row>
+        <h1>[[ title ]]</h1>
+      </el-row>
+      <el-row>
+        <el-tabs>
+          <el-tab-pane label="队列列表">
+            <el-table :data="activeQueues" style="width: 100%">
+              <el-table-column prop="worker" label="worker" width="300"></el-table-column>
+              <el-table-column prop="value" label="value">
+                <template slot-scope="scope">
+                  <el-tag v-for="(item) in scope.row.value" :key="item.name">
+                    [[ item.name ]]
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="100" fixed="right">
+                <template slot-scope="scope">
+                  <el-button @click="openDialog(scope.row)" type="text" size="small">查看详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="状态信息">
+            <el-table :data="stats" style="width: 100%">
+              <el-table-column prop="worker" label="worker" width="300"></el-table-column>
+              <el-table-column prop="value" label="value">
+                <template slot-scope="scope">
+                  <el-descriptions border :column="1">
+                    <el-descriptions-item label="clock">[[ scope.row.value.clock ]]</el-descriptions-item>
+                    <el-descriptions-item label="pid">[[ scope.row.value.pid ]]</el-descriptions-item>
+                    <el-descriptions-item label="broker">[[ scope.row.value.broker.hostname ]]</el-descriptions-item>
+                    <el-descriptions-item label="concurrency">[[ scope.row.value.pool['max-concurrency'] ]]</el-descriptions-item>
+                  </el-descriptions>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="100" fixed="right">
+                <template slot-scope="scope">
+                  <el-button @click="openDialog(scope.row)" type="text" size="small">查看详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="配置页面">
+            <el-table :data="conf" style="width: 100%">
+              <el-table-column prop="worker" label="worker" width="300"></el-table-column>
+              <el-table-column prop="value" label="value">
+                <template slot-scope="scope">
+                  <el-descriptions border :column="1">
+                    <el-descriptions-item label="broker_url">[[ scope.row.value.broker_url ]]</el-descriptions-item>
+                    <el-descriptions-item label="result_backend">[[ scope.row.value.result_backend ]]</el-descriptions-item>
+                    <el-descriptions-item label="timezone">[[ scope.row.value.timezone ]]</el-descriptions-item>
+                    <el-descriptions-item label="result_extended">[[ scope.row.value.result_extended ]]</el-descriptions-item>
+                    <el-descriptions-item label="include">[[ scope.row.value.include ]]</el-descriptions-item>
+                  </el-descriptions>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="100" fixed="right">
+                <template slot-scope="scope">
+                  <el-button @click="openDialog(scope.row)" type="text" size="small">查看详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="注册任务">
+            <el-table :data="registered" style="width: 100%">
+              <el-table-column prop="worker" label="worker" width="300"></el-table-column>
+              <el-table-column prop="value" label="value">
+                <template slot-scope="scope">
+                  <el-tag v-for="(item) in scope.row.value" :key="item" type="success">
+                    [[ item ]]
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="100" fixed="right">
+                <template slot-scope="scope">
+                  <el-button @click="openDialog(scope.row)" type="text" size="small">查看详情</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+      </el-row>
+      <el-row>
+        <detail-dialog title="查看详情" ref="detailDialog"></detail-dialog>
+      </el-row>
+    </el-main>
+  </el-container>
+</div>
+{% endblock %}
+
+{% block script %}
+{% include 'json-editor.html' %}
+{% include 'detail-dialog.html' %}
+<script>
+  // 从Flask模板引擎传递变量
+  const $QUEUES_URL = "{{ url_for('celery.inspect_queues') }}"
+  const $STATS_URL = "{{ url_for('celery.inspect_stats') }}"
+  const $CONF_URL = "{{ url_for('celery.inspect_conf') }}"
+  const $REGISTERED_URL = "{{ url_for('celery.inspect_registered') }}"
+  const app = new Vue({
+    el: '#app',
+    // 分隔符以为 [[]], 避免与Flask模板语言冲突
+    delimiters: ['[[', ']]'],
+    data: () => ({
+      title: 'Celery Inspect',   // 页面标题
+      loading: false,
+      stats: [],
+      conf: [],
+      registered: [],
+      activeQueues : []
+    }),
+    methods: {
+      getQueues() {
+        this.loading = true
+        axios.get($QUEUES_URL).then(response => {
+          this.activeQueues = response.data
+          this.loading = false
+        })
+      },
+      getStats() {
+        this.loading = true
+        axios.get($STATS_URL).then(response => {
+          this.stats = response.data
+          this.loading = false
+        })
+      },
+      getConf() {
+        this.loading = true
+        axios.get($CONF_URL).then(response => {
+          this.conf = response.data
+          this.loading = false
+        })
+      },
+      getRegistered() {
+        this.loading = true
+        axios.get($REGISTERED_URL).then(response => {
+          this.registered = response.data
+          this.loading = false
+        })
+      },
+      openDialog(row) {
+        // 打开对话框并设置详细数据
+        this.$refs.detailDialog.openDialog(row.worker, row.value);
+      },
+      init() {
+        document.title = this.title
+        this.getQueues()
+        this.getStats()
+        this.getConf()
+        this.getRegistered()
+      }
+    },
+    filters: {
+    },
+    mounted() {
+        this.init()
+    }
+  })
+</script>
+{% endblock %}
