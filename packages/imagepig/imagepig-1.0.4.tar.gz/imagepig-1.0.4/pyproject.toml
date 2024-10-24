@@ -1,0 +1,48 @@
+[project]
+name = "imagepig"
+version = "1.0.4"
+authors = [
+  { name="Pavel Mises", email="pavel@double.plus" },
+]
+description = "Package to use Image Pig, the API for AI images"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://imagepig.com/"
+Repository = "https://github.com/double-plus/imagepig-python"
+Issues = "https://github.com/double-plus/imagepig-python/issues"
+Documentation = "https://imagepig.com/docs/"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+# see https://docs.astral.sh/ruff/rules/
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "I", # isort
+    "N", # pep8-naming
+    "UP", # pyupgrade
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "PTH", # flake8-use-pathlib
+    "RUF", # ruff-specific rules
+]
