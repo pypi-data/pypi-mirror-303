@@ -1,0 +1,28 @@
+Metadata-Version: 2.3
+Name: tytorch
+Version: 0.8.2
+Summary: Based on a fork of the amazing mltrainer and mads_datasets by R. Grouls, tytorch is an opinionated base for working with data for and training with pytorch.
+Project-URL: homepage, https://github.com/safersephy/tytorch
+Author: Tijs van der Velden
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.11.5
+Requires-Dist: loguru
+Requires-Dist: mlflow>=2.16.2
+Requires-Dist: polars>=1.9.0
+Requires-Dist: pydantic
+Requires-Dist: ray>=2.37.0
+Requires-Dist: torch>=2.4.1
+Requires-Dist: torcheval>=0.0.7
+Requires-Dist: torchinfo>=1.8.0
+Requires-Dist: torchvision>=0.19.1
+Requires-Dist: tqdm>=4.66.5
+Description-Content-Type: text/markdown
+
+Based on a fork of the amazing mltrainer and mads_datasets by R. Grouls, 
+tytorch is an opinionated base for working with data for and training with pytorch.
+
+The Dataset and DataPipeline follows a strategy pattern that provides for a relatively flat class hierarchy while at the same time allowing for maximum code reuse
+
+The Trainer assumes mlflow for tracking and ray for tuning and is compatible with all the pytorch native dataloaders and objects, as well as the mads_datasets factories and datasets.

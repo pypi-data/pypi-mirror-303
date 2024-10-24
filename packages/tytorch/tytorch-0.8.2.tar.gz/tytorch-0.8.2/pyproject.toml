@@ -1,0 +1,55 @@
+[project]
+name = "tytorch"
+version = "0.8.2"
+description = "Based on a fork of the amazing mltrainer and mads_datasets by R. Grouls, tytorch is an opinionated base for working with data for and training with pytorch."
+authors = [
+    { name = "Tijs van der Velden" }
+]
+dependencies = [
+    "loguru",
+    "pydantic",
+    "mlflow>=2.16.2",
+    "torch>=2.4.1",
+    "ray>=2.37.0",
+    "torcheval>=0.0.7",
+    "tqdm>=4.66.5",
+    "torchinfo>=1.8.0",
+    "torchvision>=0.19.1",
+    "polars>=1.9.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+readme = "README.md"
+requires-python = ">= 3.11.5"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ipykernel",
+    "types-requests>=2.32.0.20240914",
+    "hyperopt>=0.2.7",
+    "mads-datasets>=0.3.12",
+]
+
+[tool.ruff.lint]
+
+select = ["E4", "E7", "E9", "F", "N", "I"]
+ignore = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["tytorch"]
+
+
+
+[project.urls]
+homepage = "https://github.com/safersephy/tytorch"
