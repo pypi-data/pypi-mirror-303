@@ -1,0 +1,209 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "defer-imports"
+description = "Lazy imports with regular syntax in pure Python."
+requires-python = ">=3.9"
+license = "MIT"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+authors = [{ name = "Sachaa-Thanasius", email = "sachaathanasius@gmail.com" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+bench = ["slothy==1.0.0"]
+test = ["pytest", "pytest-rerunfailures"]
+cov = ["defer-imports[test]", "coverage", "covdefaults"]
+dev = ["defer-imports[bench,cov]", "hatch", "pre-commit", "typing-extensions"]
+
+[project.urls]
+Homepage = "https://github.com/Sachaa-Thanasius/defer-imports"
+Documentation = "https://github.com/Sachaa-Thanasius/defer-imports#readme"
+Issues = "https://github.com/Sachaa-Thanasius/defer-imports/issues"
+Source = "https://github.com/Sachaa-Thanasius/defer-imports"
+
+[tool.hatch.version]
+path = "src/defer_imports/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/defer_imports"]
+
+
+# -------- Benchmark config
+
+[tool.hatch.envs.bench]
+features = ["bench"]
+
+[[tool.hatch.envs.bench.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+[tool.hatch.envs.bench.scripts]
+stdlib = "python -m bench.bench_samples"
+import-time = 'python -X importtime -c "import {args:defer_imports}"'
+simple-import-time = 'python -m timeit -n 1 -r 1 -- "import {args:defer_imports}"'
+
+
+# -------- Test config
+
+[tool.hatch.envs.hatch-test]
+features = ["cov"]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12", "3.13", "pypy3.9", "pypy3.10"]
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+addopts = ["--import-mode=importlib", "--strict-markers", "--strict-config"]
+
+[tool.coverage.paths]
+defer_imports = ["src"]
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+source = ["defer_imports", "tests"]
+
+[tool.coverage.report]
+fail_under = 90
+exclude_lines = ["^\\s*(?:el)?if TYPE_CHECKING:$"]
+
+
+# -------- Linter config
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "E",
+    "I",
+    "UP",
+    "YTT",
+    "ANN",
+    "S",
+    "BLE",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "EM",
+    "ISC",
+    "G",
+    "INP",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "RSE",
+    "RET",
+    "SIM",
+    "TID",
+    "PTH",
+    "ERA",
+    "PL",
+    "TRY",
+    "RUF",
+]
+extend-ignore = [
+    # ---- General ignores
+    "S101",    # Use of assert here is a known quantity for typing cases. All uses should be safe to optimize out.
+    "SIM105",  # Suppressable exception. contextlib.suppress is a stylistic choice with overhead.
+    "C90",     # McCabe complexity.
+    "ANN101",  # Type of Self for self is usually implicit and/or known by the type-checker.
+    "ANN102",  # Type of type[Self] for cls is usually implicit and/or known by the type-checker.
+    "ANN204",  # Special method return types are usually implicit and/or known by type checker.
+    "ANN401",  # Any is needed for some annotations.
+    "UP038",   # isinstance performs better with tuples than unions.
+    "PT001",   # pytest recommends against empty parentheses on pytest.fixture.
+    "PT004",   # Prepending a leading underscore for fixtures that return nothing isn't common practice.
+    "PD011",   # Erroneous issue that triggers for any .values attribute access at all.
+    "PLR2004", # "Magic number" depends on the use case.
+    "RUF002",  # "Ambiguous character" depends on the use case.
+    "RUF003",  # "Ambiguous character" depends on the use case.
+
+    # ---- Recommended by Ruff when using Ruff format
+    "E111",
+    "E114",
+    "E117",
+    "COM812",
+    "COM819",
+    "E501",
+    "ISC001",
+    "ISC002",
+
+    # ---- Project-specific rules
+    "RET505", # Returns in both parts of if-else can be more readable.
+    "SIM108", # if-else instead of a ternary can be more readable. 
+]
+unfixable = [
+    "ERA", # Prevent unlikely erroneous deletion.
+]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+combine-as-imports = true
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.lint.per-file-ignores]
+# ---- Package code
+"src/defer_imports/*.py" = [
+    "A002", # Allow some shadowing of builtins by parameter names.
+]
+
+# ---- Test code
+"tests/**/test_*.py" = [
+    "T201", # Printing is fine.
+    "T203", # Pretty-printing is fine.
+    # Don't need return annotations in tests.
+    "ANN201",
+    "ANN202",
+    "S102",   # exec is used to test for NameError within a module's namespace.
+]
+"tests/sample_stdlib_imports.py" = [
+    "F401",   # Unused imports are fine; we're testing import success.
+    "ERA001", # Plenty of imports are commented out with explanations next to them.
+]
+"bench/**/*.py" = [
+    "T201",   # Printing is fine.
+    "F401",   # Unused imports are fine; we're testing import speed.
+    "ERA001", # Plenty of imports are commented out with explanations next to them.
+]
+
+
+# -------- Type-checker config
+
+[tool.pyright]
+include = ["src/defer_imports", "tests"]
+pythonVersion = "3.9"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
+
+reportPrivateUsage = "none"
+reportUnnecessaryIsInstance = "information"
+reportCallInDefaultInitializer = "warning"
+reportImportCycles = "information"
+reportPropertyTypeMismatch = "error"
+reportShadowedImports = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
