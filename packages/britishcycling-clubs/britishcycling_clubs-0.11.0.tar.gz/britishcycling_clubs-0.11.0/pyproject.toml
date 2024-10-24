@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "britishcycling-clubs"
+version = "0.11.0"
+description = "Unofficial library to automate aspects of British/Scottish/Welsh Cycling's club Membership Manager system"
+authors = ["elliot-100 <3186037+elliot-100@users.noreply.github.com>"]
+readme = "README.md"
+homepage = "https://github.com/elliot-100/britishcycling-clubs"
+repository = "https://github.com/elliot-100/britishcycling-clubs"
+packages = [{include = "britishcycling_clubs"}]
+include = ["CHANGELOG.md"]
+license = "GPL-3.0-only"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+beautifulsoup4 = ">=4.12.2"
+requests = ">=2.23.1"
+playwright = ">=1.39.0"
+
+[tool.poetry.group.dev.dependencies]
+pdoc = ">=14.6.0"
+ruff = ">=0.5.7"
+
+[tool.poetry.group.test.dependencies]
+mypy = ">=1.11.1"
+pytest = ">=7.4.4"
+types-requests = ">=2.32.0"
+types-beautifulsoup4 = ">=4.12.0"
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = "playwright"
+disallow_untyped_calls = false
+
+[tool.ruff]
+target-version = "py38"  # Ruff doesn't respect Python version in [tool.poetry.dependencies]
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+# Ignore rules that conflict with Ruff formatter:
+#   COM812 Trailing comma missing
+#   ISC001 Implicitly concatenated string literals on one line
+ignore = ["COM812", "ISC001"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore rules that aren't relevant/useful in tests:
+#   PLR2004 Magic value used in comparison
+#   S101 Use of assert detected
+"**/{tests}/*" = ["PLR2004", "S101"]
+# Ignore rules that aren't relevant/useful in example scripts:
+#   T203 `pprint` found
+"example*.py" = ["T203"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
