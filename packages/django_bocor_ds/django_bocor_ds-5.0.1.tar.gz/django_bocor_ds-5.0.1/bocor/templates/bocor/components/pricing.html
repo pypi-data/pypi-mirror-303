@@ -1,0 +1,32 @@
+<section id="pricing" class="pricing section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2 data-aos="fade-in">Pricing</h2>
+      <p data-aos="fade-in">{{ pricing_subtitle | safe }}</p>
+    </div>
+
+    <div class="row no-gutters">
+      {% for item in pricing %}
+      {% if item.featured %}
+      <div class="col-lg-4 box featured" data-aos="zoom-in">
+        <span class="featured-badge">Featured</span>
+      {% else %}
+      <div class="col-lg-4 box" data-aos="zoom-in">
+      {% endif %}
+        <h3>{{ item.title }}</h3>
+        <h4>{{ item.price }}<span>per month</span></h4>
+        <ul>
+          {% for pcontent in item.pcontents %}
+          <li><i class="bx bx-check"></i> {{ pcontent }}</li>
+          {% endfor %}
+          {% for ncontent in item.ncontents %}
+          <li class="na"><i class="bx bx-x"></i> <span>{{ ncontent }}</span></li>
+          {% endfor %}
+        </ul>
+        <a href="{{ pricing_btn.1 }}" class="get-started-btn">{{ pricing_btn.0 }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
