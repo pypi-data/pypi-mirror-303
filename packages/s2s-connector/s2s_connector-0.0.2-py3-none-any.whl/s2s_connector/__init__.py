@@ -1,0 +1,2 @@
+
+from s2s_connector.connector import S2SConnector
