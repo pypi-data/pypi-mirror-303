@@ -1,0 +1,27 @@
+<section id="faq" class="faq section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2 data-aos="fade-in">{{ faq_title }}</h2>
+      <p data-aos="fade-in">{{ faq_subtitle | safe }}</p>
+    </div>
+
+    {% for item in faq %}
+    {% if forloop.first %}
+    <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up">
+    {% else %}
+    <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="{% cycle '100' '200' '300' '400' '500' %}">
+    {% endif %}
+      <div class="col-lg-5">
+        <i class="bx bx-help-circle"></i>
+        <h4>{{ item.q | safe }}</h4>
+      </div>
+      <div class="col-lg-7">
+        <p>
+          {{ item.a | safe }}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
