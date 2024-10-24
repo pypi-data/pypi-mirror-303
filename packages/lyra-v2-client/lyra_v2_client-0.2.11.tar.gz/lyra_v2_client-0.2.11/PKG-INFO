@@ -1,0 +1,75 @@
+Metadata-Version: 2.1
+Name: lyra-v2-client
+Version: 0.2.11
+Summary: 
+Author: 8baller
+Author-email: 8ball030@gmail.com
+Requires-Python: >=3.8.1,<3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pandas (>=1,<=3)
+Requires-Dist: python-dotenv (>=0.14.0,<0.18.0)
+Requires-Dist: requests (>=2,<3)
+Requires-Dist: rich-click (>=1.7.1,<2.0.0)
+Requires-Dist: setuptools (>=68.2.2,<70)
+Requires-Dist: web3 (>=6,<7)
+Requires-Dist: websocket-client (>=0.32.0,<1)
+Description-Content-Type: text/markdown
+
+# Lyra V2 Python Client.
+
+This repo provides a unified interface for the Lyra V2 Exchange.
+
+Please checkout the [examples](./examples) directory for usage.
+
+Here is a quick demonstration of the cli functionality.
+
+![alt text](lyra_demo.gif "Demo of cli tools.")
+
+## Install
+
+```bash
+pip install lyra-v2-client
+```
+
+## Dev
+
+### Formatting
+
+```bash
+make fmt
+```
+
+### Linting
+
+```bash
+make lint
+```
+
+### Tests
+
+```bash
+make tests
+```
+
+For convience, all commands can be run with:
+
+```
+make all
+```
+
+### Releasing
+
+We can use `tbump` to automatically bump our versions in preparation of a release.
+
+```bash 
+export new_version=0.1.5
+tbump $new_version
+```
+
+The release workflow will then detect that a branch with a `v` prefix exists and create a release from it.
+
+Additionally, the package will be published to PyPI.
+
