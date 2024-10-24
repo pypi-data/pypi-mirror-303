@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "agenticos"
+version = "0.0.3.154744"
+description = "Tapping into the power of AI agents"
+authors = ["Sebastian Kuepers <s.kuepers@house-of-communication.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+agentops = "^0.3.7"
+pydantic = "^2.0"  # Pydantic is required for data validation
+requests = "^2.31.0"  # Requests is required for handling HTTP requests
+fastapi = {extras = ["standard"], version = "^0.114.2"}
+click = "^8.1.7"
+crewai-tools = "^0.12.1"
+websocket-client = "^1.8.0"
+pydantic-settings = "^2.5.2"
+
+[tool.poetry.dev-dependencies]
+pytest = ">=8.0.0,<9.0.0"  # For testing
+pytest-mock = "^3.10.0"  # To mock objects in pytest
+requests-mock = "^1.10.0"  # Mock requests during testing
+black = "^23.1.0"  # Code formatter (optional for development)
+isort = "^5.10.1"  # Import sorting (optional for development)
+poetry-dynamic-versioning = "^1.4.0"  # Enables dynamic versioning from VCS tags
+mypy = "^1.11.2"
+httpx = "^0.27.0"
+
+[tool.poetry.scripts]
+contentful_taxonomy = "agenticos.workflows.contentful_taxonomy_creator.main:run"
+agentic = "agenticos.cli.cli:agenticos"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
+
+[tool.poetry-dynamic-versioning]
+enable = false
+pattern = "^(?P<base>[0-9]+\\.[0-9]+\\.[0-9]+)"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+target-version = ['py310']
+exclude = "agenticos/cli/templates/*"
+
+[tool.isort]
+profile = "black"
+py_version = 310
+skip = "agenticos/cli/templates/*"
+
+[tool.mypy]
+python_version = "3.10"
+exclude = "agenticos/cli/templates"
+ignore_missing_imports = true
+implicit_reexport = true
