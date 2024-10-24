@@ -1,0 +1,29 @@
+[build-system]
+  requires      = ["setuptools", "setuptools-scm"]
+  build-backend = "setuptools.build_meta"
+
+[project]
+  name = "drift-monitor"
+  description = "Drift monitoring client in Python."
+  readme = "README.md"
+  requires-python = ">=3.10"
+  license = { text = "MIT License" }
+  classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+  ]
+  dynamic = ["version", "dependencies"]
+
+  [project.urls]
+    "Homepage"    = "https://codebase.helmholtz.cloud/m-team/ai/drift-monitoring-detector/-/tree/main"
+    "Bug Tracker" = "https://codebase.helmholtz.cloud/m-team/ai/drift-monitoring-detector/-/issues"
+
+[tool.setuptools.dynamic]
+  version      = { file = "src/drift_monitor/VERSION" }
+  dependencies = { file = ["requirements.txt"] }
+
+[tool.pytest.ini_options]
+  addopts    = ["--import-mode=importlib"]
+  pythonpath = ["src", "examples"]
+  env        = ["TESTING=true", "DRIFT_MONITOR_URL=mock"]
