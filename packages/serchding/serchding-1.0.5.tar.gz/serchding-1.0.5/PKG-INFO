@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: serchding
+Version: 1.0.5
+Summary: Fulltext search for linkding
+Author: Xuanli
+Author-email: ludwigchen@proton.me
+Requires-Python: >=3.12,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.12
+Requires-Dist: clean-text (>=0.6.0,<0.7.0)
+Requires-Dist: click (>=8.1.7,<9.0.0)
+Requires-Dist: dacite (>=1.8.1,<2.0.0)
+Requires-Dist: fake-useragent (>=1.5.1,<2.0.0)
+Requires-Dist: html2text (>=2024.2.26,<2025.0.0)
+Requires-Dist: requests (>=2.32.3,<3.0.0)
+Requires-Dist: unidecode (>=1.3.8,<2.0.0)
+Requires-Dist: validators (>=0.34.0,<0.35.0)
+Requires-Dist: whoosh-reloaded (>=2.7.5,<3.0.0)
+Description-Content-Type: text/markdown
+
+# serchding: Fulltext search for linkding
+
+## Usage
+
+Setup:
+
+```sh
+TOKEN=1a3451a3451a3451a3451a3451a3451a3451a345
+BASE_URL=https://example.com
+serchding auth set -t $TOKEN -b $BASE_URL
+serchding sync
+```
+
+Search:
+
+```sh
+# "statistics" OR "significant"
+# matches other word forms: significance etc
+serchding search statistics significant
+
+# "brain" AND "anatomy"
+serchding search brain AND anatomy
+
+# fuzzy matching within one Levenshtein edit
+# matches joe, joker, coke etc
+serchding search joke~
+
+# 2 edits
+# matches jo, joe, josh, etc
+serchding search joke~2
+
+# 1 edit with a 4-char exact prefix
+# matches state but not tat
+serchding search stat~/4
+
+# globbing
+# matches state, status, statistics
+serchding search stat*
+```
+
+For full reference, see [whoosh docs](https://whoosh.readthedocs.io/en/latest/querylang.html).
+
+Dump JSON-formatted bookmarks:
+
+```sh
+mkdir bookmarks
+serchding dump bookmarks
+```
+
+## Limitations
+
+- Fulltext retrieval doesn't work with javascript-dependent web pages.
+
